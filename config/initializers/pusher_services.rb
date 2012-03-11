@@ -20,23 +20,31 @@ class PusherChannels
     db_populate_channels
   end
 
-  def on_public_event(channel_name, event_name, &blk)
+  def on_public_channel_event(channel_name, event_name, &blk)
     public_event_name = "rylyz-#{event_name}"
-    public_socket(channel_name).bind(public_event_name) do |data|
-      blk.call( data )
-    end
+    on_channel_event(:public, channel_name, public_event_name, blk)
   end
-
-  def on_private_event(channel_name, event_name, &blk)
+  def on_private_channel_event(channel_name, event_name, &blk)
     private_event_name = "client-rylyz-#{event_name}"
-    private_socket(channel_name).bind(private_event_name) do |data|
-      blk.call( data )
-    end
+    on_channel_event(:private, channel_name, private_event_name, blk)
   end
-  def on_presence_event(channel_name, event_name, &blk)
+  def on_presence_channel_event(channel_name, event_name, &blk)
     presence_event_name = "client-rylyz-#{event_name}"
-    presence_socket(channel_name).bind(presence_event_name) do |data|
-      blk.call( data )
+    on_channel_event(:presence, channel_name, presence_event_name, blk)
+  end
+  def on_channel_event(scope, channel, scoped_event_name, &blk)
+    channel_socket(scope, channel_name).bind(scoped_event_name) do |data|
+      begin #safeguard the handler block
+        blk.call( data )
+      rescue RuntimeError => e
+        # Handle exception
+      rescue Exception => e
+        # Handle exception
+      else
+        # Do this if no exception was raised
+      ensure
+        # Do this whether or not an exception was raised
+      end
     end
   end
 
@@ -50,6 +58,15 @@ class PusherChannels
     s
   end
 
+  def stop_public_channel(channel_name)   stop_channel(:public, channel_name)   end
+  def stop_private_channel(channel_name)  stop_channel(:private, channel_name)  end
+  def stop_presence_channel(channel_name) stop_channel(:presence, channel_name) end
+  def stop_channel(scope, channel_name)
+    channel = @channels[scope][channel_name]
+    return if not channel
+    #+++TODO turn off the socket and end the thread.
+
+  end
   def start_public_channel(channel_name)   start_channel(:public, channel_name)   end
   def start_private_channel(channel_name)  start_channel(:private, channel_name)  end
   def start_presence_channel(channel_name) start_channel(:presence, channel_name) end
@@ -68,18 +85,18 @@ class PusherChannels
           Thread.current[:last_heartbeat] = nil
 
           options = {:secret => Pusher.secret}
-          connection = PusherClient::Socket.new(Pusher.key, options)
+          socket = PusherClient::Socket.new(Pusher.key, options)
 
-          connection.subscribe(scoped_channel_name, "USER_ID")
-          connection.bind('pusher:heartbeat') do |data|
+          socket.subscribe(scoped_channel_name, "USER_ID")
+          socket.bind('pusher:heartbeat') do |data|
             Thread.current[:last_heartbeat] = Time.now()
           end
-          connection.bind('pusher:connection_established') do |data|
+          socket.bind('pusher:connection_established') do |data|
             Thread.current[:connected] = true
           end
-          Thread.current[:socket] = connection
+          Thread.current[:socket] = socket
 
-          connection.connect # thread goes to sleep and waits for channel events
+          socket.connect # thread goes to sleep and waits for channel events
         end
     sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
     listener_thread
@@ -107,15 +124,12 @@ class PusherChannels
 
 end
 
-
 p = PusherChannels.instance
-#p.start_private_channel("wyjyt")
-#p.start_private_channel("chat")
 
-p.on_private_event("wyjyt", 'start-wyjyt') do |data|
+p.on_private_channel_event("wyjyt", 'start-wyjyt') do |data|
    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:token => data})
 end
 
-p.on_private_event("wyjyt", 'text-event') do |data|
+p.on_private_channel_event("wyjyt", 'text-event') do |data|
   puts "==== #{data} ===="
 end

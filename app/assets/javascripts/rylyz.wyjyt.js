@@ -15,36 +15,50 @@ var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
 Rylyz.Wyjyt = {
   //channelName: 'private-rylyz',
-  channelName: 'wyjyt',
-  triggerStartWyjyt: function() {
+  wyjytChannelName: 'wyjyt',
+  wyjytChannel: null,
+  clientChannel: null,
+  wyjytSource:{ },
+  triggerWyjytChannelConnected: function() {
+    //create a private client channel then disconnect from the wyjyt channel
     //+++ refactor so it is independent of Pusher or any socketService!
     console.info("o-- Cycle: about to start wyjyt");
 
     var ip = 'unknown';
-    var wyjytSource = {
+    var src = {
       uid: Rylyz.UID(),
       referrer: document.referrer,
       url: document.URL,
-    }
-
-    var wyjytSourceChannelName = wyjytSource.uid
-    var onSuccess = function() {
-      console.info("x-- subscribed to " +wyjytSourceChannelName+ "channel!!!")
-
-      var channel = Rylyz.Pusher.privateChannel(wyjytSourceChannelName);
-      channel.bind('client-rylyz-start-wyjyt', function(data) {
-        Rylyz.Wyjyt.handleEvent4StartWyjyt(data);
-      });
-
-      var wyjytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.channelName);
-      var triggered = wyjytChannel.trigger('client-rylyz-start-wyjyt', JSON.stringify(wyjytSource)); //add refferrerr, ip, clientUID and stuff
     };
-    var onFail = function() {
+    jQuery.extend(Rylyz.Wyjyt.wyjytSource, src);
+
+    var clientChannelName = src.uid
+    var onConnect = function() {
+      console.info("x-- subscribed to " +clientChannelName+ "channel!!!")
+      Rylyz.Wyjyt.triggerClientChannelConnected();
+    };
+    var onFail = function(status) {
       console.error("could not establish channel client-rylyz-"+ wyjytSource.uid)
+      Rylyz.Wyjyt.triggerClientChannelFailed(status);
     };
-
-    var channel = Rylyz.Pusher.privateChannel(wyjytSourceChannelName, onSuccess, onFail);
-
+    Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(clientChannelName, onConnect, onFail);
+  },
+  triggerWyjytChannelFailed: function(status) {
+    if(status == 408 || status == 503){
+      // retry?
+    }
+  },
+  triggerClientChannelConnected: function() {
+    //Once we have a private client channel, we can disconnect from the wyjyt channel
+    //setup all event handlers for the client connection
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.Wyjyt.wyjytSource.uid , "start-wyjyt", function(data) { Rylyz.Wyjyt.handleEvent4StartWyjyt(data); });
+    var triggered = Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName, 'start-wyjyt', {});
+    Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
+  },
+  triggerClientChannelFailed: function(status) {
+    if(status == 408 || status == 503){
+      // retry?
+    }
   },
   handleEvent4AppInstall: function(datas) {
   },
@@ -98,7 +112,7 @@ Rylyz.Wyjyt = {
   //+++ add other socket loaders here
   loadChat: function() {
     //var channel = Rylyz.Pusher.channel("chat");
-    var channel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.channelName);
+    var channel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.wyjytChannelName);
 
     //var channel = Rylyz.Pusher.channel("wyjyt");
 
@@ -115,7 +129,8 @@ Rylyz.Wyjyt = {
         "text": textbox.attr('value')
       }
       //alert("about to trigger chat data");
-      var triggered = channel.trigger('client-rylyz-text-event', JSON.stringify(data))
+      //var triggered = channel.trigger('client-rylyz-text-event', JSON.stringify(data))
+      triggered = Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName, 'text-event', data);
       var line = jQuery('<li class="local"></li>').html(data.text)
       display.prepend(line);
     });
@@ -144,6 +159,7 @@ Rylyz.Wyjyt = {
 
 window.Rylyz.Pusher = {
   singleton: null,
+  socketID: null,
   channels: {},
   config: {
     authEndpoint: rylyzPlayerHost + '/wyjyt/pusher_auth',
@@ -154,30 +170,66 @@ window.Rylyz.Pusher = {
     Pusher.log = function(message) { if (window.console && window.console.log) window.console.log(message); };    
 
     //create the wyjyt channel its callbacks
-    var onSubscriptionSuccess = function() {
-      console.info("*******Subscribe to channel: " + Rylyz.Wyjyt.channelName);
-      channel.bind('Rylyz.Wyjyt.channelName',
-        function(data) {
-          console.log(data);
-          Rylyz.Wyjyt.handleEvent4StartWyjyt(data);
-        });
-      Rylyz.Wyjyt.triggerStartWyjyt();
+    var onConnect = function() {
+      console.info("***********************************Subscribe to channel: " + Rylyz.Wyjyt.wyjytChannelName);
+      Rylyz.Wyjyt.triggerWyjytChannelConnected();
     }
-    var onSubscriptionFailure = function(status) {
-      console.error("Pusher Error[" +status+ "]: Failed to subscribe to channel: " + Rylyz.Wyjyt.channelName);
-      if(status == 408 || status == 503){
-        // retry?
-      }
+    var onFail = function(status) {
+      console.error("Pusher Error[" +status+ "]: Failed to subscribe to channel: " + Rylyz.Wyjyt.wyjytChannelName);
+      Rylyz.Wyjyt.triggerWyjytChannelFailed(status);
     }
-    var channel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.channelName, onSubscriptionSuccess, onSubscriptionFailure);
-
+    Rylyz.Wyjyt.wyjytChannel = this.privateChannel(Rylyz.Wyjyt.wyjytChannelName, onConnect, onFail);
   },
   authenticateConnection: function() {
+    if (this.singleton) return this.singleton;
     Pusher.channel_auth_endpoint = Rylyz.Pusher.config.authEndpoint;
-    Rylyz.Pusher.singleton = new Pusher(Rylyz.Pusher.config.apiKeyPusher);
-    return Rylyz.Pusher.singleton;
+    this.singleton = new Pusher(Rylyz.Pusher.config.apiKeyPusher);
+    this.singleton.connection.bind('connected', function() {
+      var p = Rylyz.Pusher.singleton;
+      Rylyz.Pusher.socketID = p.socket_id || p.connection.socket_id;
+      Rylyz.Wyjyt.wyjytSource.pusher_socket_id = Rylyz.Pusher.socketID;
+    });
+    return this.singleton;
   },
 
+  onPublicChannelEvent: function(channelName, eventName, handler) {
+    return this.onChannelEvent("public", channelName, eventName, handler);
+  },
+  onPrivateChannelEvent: function(channelName, eventName, handler) {
+    return this.onChannelEvent("private", channelName, eventName, handler);
+  },
+  onPresenceChannelEvent: function(channelName, eventName, handler) {
+    return this.onChannelEvent("presence", channelName, eventName, handler);
+  },
+  onChannelEvent: function(scope, channelName, eventName, handler) {
+    var scopedEventName = "rylyz-" + eventName;
+    if ("public"!=scope) scopedEventName = "client-" + scopedEventName;
+
+    var channel = this.channel(scope, channelName);
+    return channel.bind(scopedEventName, handler);
+  },
+  triggerPublicChannelEvent: function(channelName, eventName, tokens) {
+    return this.triggerChannelEvent("public", channelName, eventName, tokens);
+  },
+  triggerPrivateChannelEvent: function(channelName, eventName, tokens) {
+    return this.triggerChannelEvent("private", channelName, eventName, tokens);
+  },
+  triggerPresenceChannelEvent: function(channelName, eventName, tokens) {
+    return this.triggerChannelEvent("presence", channelName, eventName, tokens);
+  },
+  triggerChannelEvent: function(scope, channelName, eventName, tokens) {
+    var scopedChannelName = scope + "-rylyz-" + channelName;
+    var scopedEventName = "rylyz-" + eventName;
+    if ("public"!=scope) scopedEventName = "client-" + scopedEventName;
+    var channel = this.channel(scope, channelName);
+    var payload = this.payload(tokens);
+    return channel.trigger(scopedEventName, payload); //add refferrerr, ip, clientUID and stuff
+  },
+  payload: function(tokens) {
+    var p = jQuery.extend({}, Rylyz.Wyjyt.wyjytSource, tokens)
+    p = JSON.stringify(p);
+    return p;
+  },
   publicChannel: function(channelName, onSuccessCallback, onFailureCallback) {
     return this.channel("public", channelName, onSuccessCallback, onFailureCallback);
   },
@@ -210,6 +262,19 @@ window.Rylyz.Pusher = {
     //+++put the channel in a pending state bucket, on sucess, move into a subscribed state
     Rylyz.Pusher.channels[scopedChannelName] = channel;
     return channel;
+  },
+  closePublicChannel: function(channelName) {
+    return this.closeChannel("public", channelName);
+  },
+  closePrivateChannel: function(channelName) {
+    return this.closeChannel("private", channelName);
+  },
+  closePresenceChannel: function(channelName) {
+    return this.closeChannel("presence", channelName);
+  },
+  closeChannel: function(scope, channelName) {
+    var scopedChannelName = scope + "-rylyz-" + channelName
+    return this.singleton.unsubscribe(scopedChannelName);
   },
 };
 
