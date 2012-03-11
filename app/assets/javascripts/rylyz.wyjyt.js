@@ -53,7 +53,7 @@ Rylyz.Wyjyt = {
     //setup all event handlers for the client connection
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.Wyjyt.wyjytSource.uid , "start-wyjyt", function(data) { Rylyz.Wyjyt.handleEvent4StartWyjyt(data); });
     var triggered = Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName, 'start-wyjyt', {});
-    Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
+    //Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
   },
   triggerClientChannelFailed: function(status) {
     if(status == 408 || status == 503){

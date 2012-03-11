@@ -1,35 +1,22 @@
-== rylyz player service
-This Service Provides:
-o Socket Services (Pusher) for wyjyts
-o rylyz openApp javascript framework
+== This rylyz-player service provides:
+o The rylyz wyjyt.js  [http://rylyz-player.herokuapp.com/assets/rylyz.wyjyt.js]
+o The Socket Services (Pusher) that the wyjyt uses
+o The rylyz openApp javascript framework
+o An example blog page showing a usage of wyjyt.js [http://rylyz-player.herokuapp.com/blogger/blog]
 
-== Start this service on port 80
+
+== This service dependends on rylyz-open-app service
+o Run the rylyz-player on port 80
+o Run the rylyz-open-app service on port 8000 of the same machine
+o rylyz-player will issue get requests to rylyz-open-app on http://127.0.0.1:8000
+
+== To start this service on port 80
 --> $ sudo apachectl stop
 --> $ rvmsudo rails server -p 80
 
 Running on port 80 leverages the benefits of websockets
 When running locally, turn off your default webserver.
 
-
-== /etc/hosts
-For dev environment: add the following to your /etc/hosts file
-
-127.0.0.1       rylyz-player.heroku.com
-127.0.0.1       rylyz-wyjyt.herokuapp.com
-
-
-== Architecture 
-When socket requests come in, the listeners will route the request to
-the app server running on localhost but on a different port.
-This service will make get request to localhost that look something like this:
-HTTParty.get('http://127.0.0.1:8000/openapp/load', :query => {:game => "connect-4"})
-
-== configure your  wyjyt.js
-You can set the wyjyt.js file to look something like this:
-<---------------------------------------
-var  rylyzPlayerHost = "http://rylyz-player.heroku.com";
-
-var  wyjytHost = 'http://rylyz-wyjyt.herokuapp.com';      //<- for deployment on heroku
-var  wyjytHost ='http://rylyz-wyjyt.herokuapp.com:8888';  // <-- for local deployment (just don't push up to heroku !)
-
----------------------------------------->
+== Update /etc/hosts for Dev
+When running locally, add the following to your /etc/hosts file
+127.0.0.1       rylyz-player.herokuapp.com
