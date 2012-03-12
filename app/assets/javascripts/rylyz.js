@@ -27,7 +27,8 @@
     return unique;
   };
 
-  window.Rylyz.showApp = function(appName) {
+  window.Rylyz.showApp = function(appName, appSpotSelector) {
+    var spotSelector = appSpotSelector || "#app-spot"
     var oldApp = null, newApp = null;
     var newApp = Rylyz.lookupApp(appName);
     if (!newApp) throw "No app named '" +appName+ "' was found. Can not show it!"
@@ -36,7 +37,7 @@
     if (Rylyz.activeApp) {
       //activeApp.minimize();
     }
-    newApp.renderInto($('#app-spot'));
+    newApp.renderInto($(spotSelector));
     Rylyz.activeApp = newApp;
   };
 
@@ -93,8 +94,7 @@
   };
   */
 
-  Rylyz.loadAppDisplays  = function (appSpotSelector){  //load (intantiate) all appDisplays
-    var spotSelector = appSpotSelector || "#app-spot"
+  Rylyz.loadAppDisplays  = function (){  //load (intantiate) all appDisplays
     var appName = null;
     var appDisplay = null;
     var appTemplates = $(Rylyz.Tag + " > app[name]");

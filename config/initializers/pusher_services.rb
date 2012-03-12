@@ -1,6 +1,7 @@
 require 'singleton'
 require 'httparty'
 require 'pusher-client'
+require 'active_support/inflector'
 
 Pusher.app_id = '16344'
 Pusher.key    = 'a9206fc7a3b77a7986c5'
@@ -20,26 +21,43 @@ class PusherChannels
     db_populate_channels
   end
 
-  def on_public_channel_event(channel_name, event_name, &blk)
+  def trigger_public_channel_event(channel_name, event_name, tokens)
+    #public_event_name = "rylyz-#{event_name}"
+    trigger_channel_event(:public, channel_name, event_name, tokens)
+  end
+  def trigger_private_channel_event(channel_name, event_name, tokens)
+    #private_event_name = "client-rylyz-#{event_name}"
+    trigger_channel_event(:private, channel_name, event_name, tokens)
+  end
+  def trigger_presence_channel_event(channel_name, event_name, tokens)
+    #presence_event_name = "client-rylyz-#{event_name}"
+    trigger_channel_event(:presence, channel_name, event_name, tokens)
+  end
+  def trigger_channel_event(scope, channel_name, event_name, tokens)
+    scoped_channel_name = "#{scope.to_s}-rylyz-#{channel_name}"
+    Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
+  end
+
+  def on_public_channel_event(channel_name, event_name, &block)
     public_event_name = "rylyz-#{event_name}"
-    on_channel_event(:public, channel_name, public_event_name, blk)
+    PusherChannels.instance.on_channel_event(:public, channel_name, public_event_name, block)
   end
-  def on_private_channel_event(channel_name, event_name, &blk)
+  def on_private_channel_event(channel_name, event_name, &block)
     private_event_name = "client-rylyz-#{event_name}"
-    on_channel_event(:private, channel_name, private_event_name, blk)
+    PusherChannels.instance.on_channel_event(:private, channel_name, private_event_name, block)
   end
-  def on_presence_channel_event(channel_name, event_name, &blk)
+  def on_presence_channel_event(channel_name, event_name, &block)
     presence_event_name = "client-rylyz-#{event_name}"
-    on_channel_event(:presence, channel_name, presence_event_name, blk)
+    PusherChannels.instance.on_channel_event(:presence, channel_name, presence_event_name, block)
   end
-  def on_channel_event(scope, channel, scoped_event_name, &blk)
+  def on_channel_event(scope, channel_name, scoped_event_name, handler)
     channel_socket(scope, channel_name).bind(scoped_event_name) do |data|
       begin #safeguard the handler block
-        blk.call( data )
+        handler.call( data )
       rescue RuntimeError => e
-        # Handle exception
+        puts "Runtime Exception! #{e}"
       rescue Exception => e
-        # Handle exception
+        puts "Exception! #{e}"
       else
         # Do this if no exception was raised
       ensure
@@ -52,10 +70,9 @@ class PusherChannels
   def private_socket(channel_name)  channel_socket(:private, channel_name)  end
   def presence_socket(channel_name) channel_socket(:presence, channel_name) end
   def channel_socket(scope, channel_name)
+    listener_thread = listener_thread_for_channel(scope, channel_name)
     s = nil
-    listener_thread = listener_thread_for_channel(scope,channel_name)
     s = listener_thread[:socket] if listener_thread
-    s
   end
 
   def stop_public_channel(channel_name)   stop_channel(:public, channel_name)   end
@@ -63,21 +80,32 @@ class PusherChannels
   def stop_presence_channel(channel_name) stop_channel(:presence, channel_name) end
   def stop_channel(scope, channel_name)
     channel = @channels[scope][channel_name]
+    Pusher[scoped_channel_name].trigger("started-listening", {}.to_json )
+
     return if not channel
     #+++TODO turn off the socket and end the thread.
-
   end
-  def start_public_channel(channel_name)   start_channel(:public, channel_name)   end
-  def start_private_channel(channel_name)  start_channel(:private, channel_name)  end
-  def start_presence_channel(channel_name) start_channel(:presence, channel_name) end
-  def start_channel(scope, channel_name)
-    @channels[scope][channel_name] ||= listener_thread_for_channel(scope, channel_name)
+
+  def start_public_channel(channel_name, handlers=nil)   start_channel(:public, channel_name, handlers)   end
+  def start_private_channel(channel_name, handlers=nil)  start_channel(:private, channel_name, handlers)  end
+  def start_presence_channel(channel_name, handlers=nil) start_channel(:presence, channel_name, handlers) end
+  def start_channel(scope, channel_name, handlers=nil)
+    Thread::exclusive {
+      @channels[scope][channel_name] = listener_thread_for_channel(scope, channel_name)
+    }
+    return @channels[scope][channel_name] if handlers.nil?
+
+    handlers.each do |event_name, handler_blk|
+      on_channel_event(scope, channel_name, event_name, handler_blk)
+    end
+    @channels[scope][channel_name]
   end
 
   def listener_thread_for_channel(scope, channel_name)
+    return @channels[scope][channel_name] if @channels[scope][channel_name]
     scoped_channel_name = "#{scope.to_s}-rylyz-#{channel_name}"
     listener_thread = Thread.new do
-          puts "launching Thread #{scoped_channel_name}"
+          puts "-------o #{scoped_channel_name} Thread Starting"
           Thread.current[:connected] = false
           Thread.current[scope] = true
           Thread.current[:name] = scoped_channel_name
@@ -88,17 +116,36 @@ class PusherChannels
           socket = PusherClient::Socket.new(Pusher.key, options)
 
           socket.subscribe(scoped_channel_name, "USER_ID")
-          socket.bind('pusher:heartbeat') do |data|
-            Thread.current[:last_heartbeat] = Time.now()
-          end
+          s = scope
+          c = channel_name
           socket.bind('pusher:connection_established') do |data|
             Thread.current[:connected] = true
+            PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
+          end
+
+        # socket.bind('pusher_internal:member_removed') do |data|
+        #   puts "-------x Unsubscribed! #{data}"
+            # can add another listener to stop this listener if needed on this event
+            # just check it if it was a single private channel, or if there are no more users, or etc...
+            # {
+            #   "event": "pusher_internal:member_removed",
+            #   "channel": "presence-example-channel",
+            #   "data": {
+            #     "user_id": String,
+            #   }
+            # }
+        # end
+
+          socket.bind('pusher:heartbeat') do |data|
+            Thread.current[:last_heartbeat] = Time.now()
           end
           Thread.current[:socket] = socket
 
           socket.connect # thread goes to sleep and waits for channel events
         end
+    @channels[scope][channel_name] = listener_thread        
     sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
+    puts "-------x #{scoped_channel_name} Thread Launched"
     listener_thread
   end
 
@@ -124,12 +171,79 @@ class PusherChannels
 
 end
 
-p = PusherChannels.instance
+# See: http://pusher.com/docs/pusher_protocol
+# handlers = {
+#  "pusher:heartbeat" => {},
+#  "pusher:connection_established" => {},
+#  "pusher:error" => {},  # "data": { "message": String, "code": Integer }
+# }
 
-p.on_private_channel_event("wyjyt", 'start-wyjyt') do |data|
-   local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:token => data})
+# PusherChannels.instance.on_private_channel_event("wyjyt", "start-wyjyt") do |data|
+#    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
+# end
+
+PusherChannels.instance.start_private_channel("wyjyt")
+PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do |data|
+  tokens = JSON.parse(data)
+  uid_channel = tokens["uid"]
+  PusherChannels.instance.start_private_channel(uid_channel)
+
+  PusherChannels.instance.on_private_channel_event(uid_channel, "event") do |data|
+    tokens = nil
+    target = nil
+    action = nil
+    begin
+      # lookup the TargetController 
+      tokens = JSON.parse(data)
+      target = tokens["target"] || "application"
+      target = target.underscore.camelize + "Controller"
+      #lookup the method to call
+      action = tokens["action"] || "unknown"
+      action = "on_" + action.underscore
+    rescue
+      puts "----------------------------------------------------------------"
+      puts "UID Channel Exception for target: #{target} action: #{action}"
+      puts "Could not read data in to json"
+      puts "data: #{data}"
+      puts "Exception: #{e}"
+      puts e.backtrace
+      puts "----------------------------------------------------------------"
+    ensure
+      tokens = tokens || {}
+    end
+    begin #safeguard the handler block
+      # lookup the TargetController and call the method
+      c = Kernel.const_get(target)
+      c.send(action, tokens)
+    rescue RuntimeError => e
+      puts "----------------------------------------------------------------"
+      puts "UID Channel Runtime Exception invoking target: #{target} action: #{action}"
+      puts "tokens: #{tokens}"
+      puts "Exception: #{e}"
+      puts e.backtrace
+      puts "----------------------------------------------------------------"
+    rescue Exception => e
+      puts "----------------------------------------------------------------"
+      puts "UID Channel Exception invoking target: #{target} action: #{action}"
+      puts "tokens: #{tokens}"
+      puts "Exception: #{e}"
+      puts e.backtrace
+      puts "----------------------------------------------------------------"
+    else
+      # Do this if no exception was raised
+    ensure
+      # Do this whether or not an exception was raised    
+    end
+  end
 end
 
-p.on_private_channel_event("wyjyt", 'text-event') do |data|
-  puts "==== #{data} ===="
-end
+PusherChannels.instance.start_private_channel("app-service")
+# PusherChannels.instance.on_private_channel_event("app-service", "start-app") do |data|
+#   tokens = JSON.parse(params[:data])
+#   app_name = tokens["app_name"]
+#   # on_events - start channel_set
+# end
+
+# PusherChannels.instance.on_private_channel_event("wyjyt", 'text-event') do |data|
+#   puts "==== #{data} ===="
+# end

@@ -1,0 +1,13 @@
+%rylyz
+
+	%app{:name=>"chat", "data-defaults"=>"{title:'Connect Four!'}", :"start-screen" => "splash"}
+		%h1 [[title]]
+		%screen{:name=>"splash"}
+
+	%screen{:name=>"splash", "data-defaults"=>"{message: '', name:''}" }
+		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'start-new-or-join'}"}
+			I am a Splash page!
+		%h2 
+			[[message]]
+			%h3
+				[[name]]
