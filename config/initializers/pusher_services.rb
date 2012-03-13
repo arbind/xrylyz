@@ -204,6 +204,12 @@ class PusherChannels
 
 end
 
+puts "=========================================="
+puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
+puts "Pusher app_id => #{RylyzPlayer::Application.config.pusher_app_id}"
+puts "Pusher key    => #{RylyzPlayer::Application.config.pusher_key}"
+puts "=========================================="
+
 # See: http://pusher.com/docs/pusher_protocol
 # handlers = {
 #  "pusher:heartbeat" => {},
