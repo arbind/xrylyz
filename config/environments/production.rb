@@ -1,6 +1,11 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  #Pusher config
+  config.pusher_app_id = '11345'                # Arbind's (Doesn't support javascript client-side trigger api)
+  config.pusher_key    = '9e8005254d8e45390324' # Arbind's (Doesn't support javascript client-side trigger api)
+  config.pusher_secret = '5026e00f82749e73e212' # Arbind's (Doesn't support javascript client-side trigger api)
+
   # Code is not reloaded between requests
   config.cache_classes = true
 

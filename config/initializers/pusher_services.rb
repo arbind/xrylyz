@@ -36,10 +36,9 @@ class ChatClub < Club
 end
 
 
-
-Pusher.app_id = '16344'
-Pusher.key    = 'a9206fc7a3b77a7986c5'
-Pusher.secret = '46bf19dc91f45ca2d1b0'
+Pusher.app_id = RylyzPlayer::Application.config.pusher_app_id
+Pusher.key    = RylyzPlayer::Application.config.pusher_key
+Pusher.secret = RylyzPlayer::Application.config.pusher_secret
 
 PusherClient.logger = Logger.new(STDOUT)
 

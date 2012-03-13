@@ -5,14 +5,9 @@ o The rylyz openApp javascript framework
 o An example blog page showing a usage of wyjyt.js [http://rylyz-player.herokuapp.com/blogger/blog]
 
 
-== This service dependends on rylyz-open-app service
-o Run the rylyz-player on port 80
-o Run the rylyz-open-app service on port 8000 of the same machine
-o rylyz-player will issue get requests to rylyz-open-app on http://127.0.0.1:8000
-
 == To start this service on port 80
 --> $ sudo apachectl stop
---> $ rvmsudo rails server -p 80
+--> $ rvmsudo RAILS_ENV=development  rails s -p80
 
 Running on port 80 leverages the benefits of websockets
 When running locally, turn off your default webserver.
@@ -20,3 +15,14 @@ When running locally, turn off your default webserver.
 == Update /etc/hosts for Dev
 When running locally, add the following to your /etc/hosts file
 127.0.0.1       rylyz-player.herokuapp.com
+
+
+== Pusher APP ID
+configure pushher app ids in config/environments/xxx.rb
+Keep in mind that this server will launch listeners - 
+If you start a server in heroku, one in EC2, and one on your local box,
+then all 3 servers will be listenting and responding to the same pusher events.
+
+To avoid this - start the server in the correct RAILS_ENV,
+Otherwise, register and get your own Pusher APP ID, and create a personal RAILS_ENV
+for your own development by copying development.rb and updating the pusher App ID, key and secret
