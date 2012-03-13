@@ -1,13 +1,20 @@
 class WyjytController < ApplicationController
   protect_from_forgery :except => :pusher_auth
-  before_filter :enable_CORS_access, :only => :pusher_auth
 
   def pusher_auth
   	puts "+++++++++++++++++++++++++++++++++++++++++++++++"
   	puts params
   	puts "+++++++++++++++++++++++++++++++++++++++++++++++"
-    pusher_response = Pusher[params[:channel_name]].authenticate(params[:socket_id])
-    render :json => pusher_response
+    if should_deny_access?
+      render :json => "bad_robot".to_json
+    else
+      enable_CORS_access
+      socket_id = params[:socket_id]
+      v = Visitor.new
+      VISITORS_AUTHENTICATING[:socket_id] = v
+      pusher_response = Pusher[params[:channel_name]].authenticate(socket_id)
+      render :json => pusher_response
+    end
   end
 
   private

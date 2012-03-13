@@ -3,6 +3,40 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+VISITORS_AUTHENTICATING = {}
+VISITORS = {}
+
+
+class Member
+  attr_accessor :id, :name, :email, :nickname
+  #attr_reader :my_readable_property
+  #attr_writer :my_writable_property
+end
+
+class Visitor
+  attr_accessor :id, :wyjyt_uid, :socket_id, :nickname, :member
+end
+
+
+class Player
+  attr_accessor :id, :visitor
+end
+
+class Club
+  attr_accessor :id, :channel_name, :visitors, :sub_clubs
+end
+
+class AppClub < Club
+end
+
+class GameClub < Club
+end
+
+class ChatClub < Club
+end
+
+
+
 Pusher.app_id = '16344'
 Pusher.key    = 'a9206fc7a3b77a7986c5'
 Pusher.secret = '46bf19dc91f45ca2d1b0'
@@ -202,7 +236,7 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
       action = "on_" + action.underscore
     rescue
       puts "----------------------------------------------------------------"
-      puts "UID Channel Exception for target: #{target} action: #{action}"
+      puts "UID Channel Exception for #{target}.#{action}"
       puts "Could not read data in to json"
       puts "data: #{data}"
       puts "Exception: #{e}"
@@ -217,14 +251,14 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
       c.send(action, tokens)
     rescue RuntimeError => e
       puts "----------------------------------------------------------------"
-      puts "UID Channel Runtime Exception invoking target: #{target} action: #{action}"
+      puts "UID Channel Runtime Exception invoking #{target}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace
       puts "----------------------------------------------------------------"
     rescue Exception => e
       puts "----------------------------------------------------------------"
-      puts "UID Channel Exception invoking target: #{target} action: #{action}"
+      puts "UID Channel Exception invoking #{target}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace

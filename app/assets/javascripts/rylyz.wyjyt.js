@@ -1,6 +1,6 @@
 (function() {
 var  rylyzPlayerHost = "http://rylyz-player.herokuapp.com";
-var  wyjytCSS = rylyzPlayerHost + '/wyjyt/wyjyt.css';
+var  wyjytCSS = rylyzPlayerHost + '/assets/wyjyt.css';
 
   
 var jQuery; // Localized jQuery variable
@@ -35,8 +35,7 @@ Rylyz.Wyjyt = {
   },
   loadRylyzCore: function(callbackOnComplete) {
     //+++ load all from one js file
-    var scriptNames = [ "rylyz.util", "modernizr-2.0.6.js",
-      "underscore-min.1.3.1.js" , "backbone-min.0.9.1.js",
+    var scriptNames = [ "modernizr-2.0.6.js", "underscore-min.1.3.1.js" , "backbone-min.0.9.1.js",
       "rylyz.util.js", "rylyz.util.string.js",
       "rylyz.context.js", "rylyz.display.referencetable.js",
       "rylyz.display.object.js", "rylyz.display.collection.js", "rylyz.display.screen.js", "rylyz.display.app.js",

@@ -1,13 +1,45 @@
 %rylyz
 
-	%app{:name=>"chat", "data-defaults"=>"{title:'Connect Four!'}", :"start-screen" => "splash"}
+	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "splash"}
 		%h1 [[title]]
 		%screen{:name=>"splash"}
+		%screen{:name=>"chat"}
 
 	%screen{:name=>"splash", "data-defaults"=>"{message: '', name:''}" }
-		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'start-new-or-join'}"}
+		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat'}"}
 			I am a Splash page!
 		%h2 
 			[[message]]
 			%h3
 				[[name]]
+
+	%screen{:name=>"chat"}
+		%h2
+
+:javascript
+/   var button  = jQuery('<button class="red">Trigger</button>');
+/   var textbox = jQuery('<input type="text" name="" value="your text">');
+/   var display = jQuery('<ul id="rylyz-display"></ul>');
+/   display.appendTo('#rylyz-widget');
+/   textbox.appendTo('#rylyz-widget');
+/   button.appendTo('#rylyz-widget');
+
+/   button.bind('click', function() {
+/     console.log('click');
+/     var data = {
+/       "text": textbox.attr('value')
+/     }
+/     //alert("about to trigger chat data");
+/     //var triggered = channel.trigger('client-rylyz-text-event', JSON.stringify(data))
+/     triggered = Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.uidChannelName(), 'text-event', data);
+/     var line = jQuery('<li class="local"></li>').html(data.text)
+/     display.prepend(line);
+/   });
+
+/   var channel = Rylyz.Pusher.privateChannel(Rylyz.uidChannelName());
+/   channel.bind('client-rylyz-text-event', function(data) {
+/     console.log(data);
+/     var line = jQuery('<li></li>').html(data.text)
+/     display.prepend(line);
+/   });
+/ },
