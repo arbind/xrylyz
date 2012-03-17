@@ -1,3 +1,48 @@
+rylyz {display:none;}
+
+h1, h2, h3, h4, h5, h6, h7 {text-align: center;}
+
+.app{
+  border: 2px solid blue;
+  margin: 18px;
+  padding:20px;
+  min-width:600px;
+  max-width: 760px;
+  min-height:400px;
+
+  .screen {
+    border: 0; //1px solid black;
+    margin: 0px;
+    padding:0px;
+
+    .object {
+      
+    }
+
+    .collection {
+      
+    }
+
+    .item {
+      
+    }
+
+    .display {
+      
+    }
+  }
+}
+
+form, fieldset {
+  margin:0;
+  padding:0;
+  border: 0;
+  background-color:purple;
+}
+
+h1 {
+  color:blue;
+}
 #-rylyz-widget {
   width: 300px;
   height: 220px;

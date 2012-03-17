@@ -1,7 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.1'
-gem 'pg'
+#gem 'pg'
+gem 'mongoid'
+gem 'bson_ext'
 
 gem 'json'
 gem 'haml'
@@ -33,7 +35,7 @@ end
 # gem 'capistrano'
 
 # To use debugger
-#gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
   # Pretty printed test output

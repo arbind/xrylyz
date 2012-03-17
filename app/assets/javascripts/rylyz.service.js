@@ -85,9 +85,14 @@
 		handleDataEvent4Update: function(event) {
 
 		},
-		handleDataEvent4Add: function(event) {
-
+		handleDataEvent4AddItem: function(event) {
+			display = Rylyz.lookupDisplay(event);
+			//+++ check display
+			data = event['data'];
+			//+++check data
+			display.collection.add(data);
 		},
+
 		handleDataEvent4Remove: function(event) {
 
 		},
@@ -129,7 +134,10 @@
       	context: event.context,
       	formData: event.formData
       }
-      $.get(url, ev, function(response){console.log(response)});			
+      //+++ TODO make this independent of Pusher!
+      Rylyz.Pusher.triggerUIDEvent("data-input", ev);
+
+      //$.get(url, ev, function(response){console.log(response)});			
 		},
 		fireHIEvent4Chat: function(event) {
       var url = Rylyz.urlAPI + "/fire/hi_event/chat.json";
@@ -215,6 +223,19 @@
 		},
 	};
 
+
+
+
+  var hAddItem = {
+		queue:"app-server",
+		type:"add-item",
+    handleEvent: function(ev) {
+    	console.log(ev)
+    	Rylyz.Service.handleDataEvent4AddItem(ev);
+    }
+  }
+  Rylyz.event.registerQueueHandler(hAddItem);
+
   var hScreenNavigation = {
     queue: "screen",
     type: "navigation",
@@ -227,24 +248,27 @@
     type: "navigation",
     handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
   }
-  Rylyz.event.registerQueueHandler(hScreenNavigation);
+  Rylyz.event.registerQueueHandler(hLoadApp);
 
   var hFormSubmit = {
   	queue: "form",
   	type: "submit",
   	handleEvent: function(ev) { 
-      alert('form submitted and handled in handler');
       f = srcElementForDOMEvent(ev.domEvent);
       var formData = extractFormData(f);
       ev.formData = formData;
+      alert('form submitted and handled in handler: ' + formData.toString());
 
       var display = Rylyz.lookupDisplay(ev);
+      //if form should only be submitted once, unbind its submit handler:
+      /*
       display.$("form").unbind('submit'); //+++actually get form from the ev
       display.$("form").submit(function(){
         //send app message that form is already submitted
         display.app.flash("Already Submitted!");
         return false;
       }); //make sure a form is submitted only once
+			*/
       Rylyz.Service.fireHIEvent4DataEntry(ev);
       //+++fire event to send formData to server
   	}

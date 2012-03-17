@@ -4,6 +4,19 @@
 window.DBUG = window.DBUG || false;
 window.dbugOut = window.dbugOut || function(){ return null };
 
+window.Rylyz = window.Rylyz || {}
+
+Rylyz.refreshCSS = function() {
+  var css_link, links = [];
+  jQuery("head link").each(function(idx, link) { links.push(link.href); })
+  jQuery("head link").remove();
+  jQuery.each(links, function(idx, href) {
+    css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: href });
+    css_link.appendTo('head');
+    console.log(href);
+  });
+};
+
 
 // add peek to array
 if ('function' != typeof Array.prototype.peek) {
@@ -23,7 +36,7 @@ if ('function' != typeof extractFormDataSet) {
     if ('string' == typeof form.id ) formData.id = form.id;
     if ('string' == typeof form.name ) formData.name = form.name;
 
-    var dataSet = [];
+    var dataSet = {};
 
     var element;
     var data;
@@ -31,11 +44,13 @@ if ('function' != typeof extractFormDataSet) {
       element = form.elements[i]
       if (undefined == element.value) continue;
 
+      var count = 0;
       data = {};
       if ('string' == typeof element.type) data.type = element.type;
       if ('string' == typeof element.name) data.name = element.name;
+      if (!data.name) data.name = data.type + "-"+count++;
       if ('string' == typeof element.value) data.value = element.value;
-      dataSet.push(data);
+      dataSet[data.name] = data;
     };
     formData.dataSet = dataSet;
     return formData;

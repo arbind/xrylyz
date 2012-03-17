@@ -1,0 +1,60 @@
+.chat-app {
+	top:0;
+	left:0;
+	border: 8px solid black;
+	background-color:#333333;
+	padding:20px;
+	h1 {
+		color:#000055;
+	}
+	.screen {
+		h1 {
+			color:#005500;
+		}
+		h2 {
+			color:#550055;
+		}
+	}
+}
+
+.chat-room-screen {
+	color: white;
+	top:0;
+	left:0;
+	border: 2px solid blue;
+	background-color:#333355;
+	padding:20px;
+
+	.messages {
+		border: 1px solid blue;
+		background-color:#555588;
+		padding:20px;
+		.messages-collection {
+		border: 1px solid red;
+			ul {
+				li {
+					padding: 0;
+					margin-right:20px;
+					border: 0;
+					line-height: 2em;
+					border-top: 1px solid #666677;
+					color:#999955;
+					list-style-image:none;
+					list-style-type:none;
+				}				
+			}
+		}
+		form {
+			fieldset {
+				ul {
+					li {
+						input.text {
+							color:#CCCCFF;
+							border: 4px dotted blue;
+						}
+					}
+				}
+			}
+		}
+	}
+}

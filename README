@@ -26,3 +26,4 @@ then all 3 servers will be listenting and responding to the same pusher events.
 To avoid this - start the server in the correct RAILS_ENV,
 Otherwise, register and get your own Pusher APP ID, and create a personal RAILS_ENV
 for your own development by copying development.rb and updating the pusher App ID, key and secret
+

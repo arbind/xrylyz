@@ -109,8 +109,9 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     console.info("Initializing Complete " +this.dataType+ ": " + this.name);
   },
   initializeRootTagCSS: function() {
-    var sp = " ";
-    this.$el.addClass(this.dataType +sp+ this.name);
+    var dash = "-";
+    //this.$el.addClass(this.name +sp+ this.dataType );
+    this.$el.addClass(this.name +dash+ this.dataType );
   },
   initializeTemplateName: function() {
     this.templateName = this.templateName || this.options.templateName || this.name;

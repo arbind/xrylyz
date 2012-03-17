@@ -1,0 +1,58 @@
+%rylyz
+
+	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "splash"}
+		%h1 [[title]]
+		%screen{:name=>"splash"}
+		%screen{:name=>"new-room"}
+		%screen{:name=>"room-list"}
+		%screen{:name=>"chat-room"}
+
+	%screen{:name=>"new-room"}
+		%h2 new Room
+
+	%screen{:name=>"splash", "data-defaults"=>"{message: '', name:''}" }
+		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room'}"}
+			I am a Splash page!
+		%h2 
+			[[message]]
+			%h3
+				[[name]]
+		%h2{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'room-list'}"}
+			View Rooms
+
+	%screen{:name=>"room-list"}
+		%h2
+			Chat Room List
+		.rooms
+			%collection{:name=>"rooms"}	
+
+	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1'}, {id:10, name:'room10'},{id:100, name:'room100'},]"}
+		%ul
+			%collection
+
+	%item{:name=>"room-item"}
+		%li{:data=>"[[id]]"} [[name]]
+
+
+	%screen{:name=>"chat-room"}
+		%h2 Chat Room
+		.messages
+			%collection{:name=>"messages"}	
+		%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}
+			%ul
+				%li
+					%input.text{:type => "text", :name => "message"}
+			%input{:type => "submit", :value => "OK", :class => "button"}
+
+	%collection{:name=>"messages", :item=>"message-item", "data-defaults"=>"[{message:'player2b'}, {message:'player33b'}]"}
+		%ul
+			%collection
+		%ol
+			%li game object model
+			%li connection object model (like clubs and rooms)
+			%li approach for apps to send messages to its visitor(s)
+			%li way to submit forms to the app controller
+			%li update the widget to use the sockets, instead of making ajax calls..
+
+	%item{:name=>"message-item"}
+		%li [[message]]

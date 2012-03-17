@@ -3,9 +3,14 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+NoOBJECT = {}
+
+#+++TODO: store all channel related data in redis
 VISITORS_AUTHENTICATING = {}
 VISITORS = {}
 
+APP_CHANNELS = {}
+SCREEN_CHANNELS = {}
 
 class Member
   attr_accessor :id, :name, :email, :nickname
@@ -54,6 +59,23 @@ class PusherChannels
     db_populate_channels
   end
 
+  def channel_name_for_app(app_name)
+    channel_name = APP_CHANNELS[app_name]
+    return channel_name unless channel_name.nil?
+    rand = SecureRandom.uuid
+    stamp = Time.now.strftime("%Y-%m-%d-%H-%M-%S")
+    APP_CHANNELS[app_name] = "#{rand}-#{stamp}"
+  end
+
+  def channel_name_for_screen(app_name, screen_name)
+    key = "#{app_name}.#{screen_name}"
+    channel_name = SCREEN_CHANNELS[key]
+    return channel_name unless channel_name.nil
+    rand = SecureRandom.uuid
+    stamp = Time.now.strftime("%Y-%m-%d-%H-%M-%S")
+    SCREEN_CHANNELS[key] = "#{rand}-#{stamp}"
+  end
+
   def trigger_public_channel_event(channel_name, event_name, tokens)
     #public_event_name = "rylyz-#{event_name}"
     trigger_channel_event(:public, channel_name, event_name, tokens)
@@ -68,6 +90,7 @@ class PusherChannels
   end
   def trigger_channel_event(scope, channel_name, event_name, tokens)
     scoped_channel_name = "#{scope.to_s}-rylyz-#{channel_name}"
+    puts "Sending #{event_name} on #{scoped_channel_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
   end
 
@@ -234,8 +257,13 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
     begin
       # lookup the TargetController 
       tokens = JSON.parse(data)
-      target = tokens["target"] || "application"
-      target = target.underscore.camelize + "Controller"
+      context = tokens["context"] || NoOBJECT
+      appName = context["appName"] || "rylyz"
+      appController = "App#{appName.underscore.camelize}Controller"
+
+      screenName = context["screenName"] || nil
+      screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
+
       #lookup the method to call
       action = tokens["action"] || "unknown"
       action = "on_" + action.underscore
@@ -252,8 +280,9 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
     end
     begin #safeguard the handler block
       # lookup the TargetController and call the method
-      c = Kernel.const_get(target)
-      c.send(action, tokens)
+      targetClass = Kernel.const_get(appController)
+      targetClass  = targetClass .const_get(screenController) unless screenName.nil?
+      targetClass .send(action, tokens)
     rescue RuntimeError => e
       puts "----------------------------------------------------------------"
       puts "UID Channel Runtime Exception invoking #{target}.#{action}"

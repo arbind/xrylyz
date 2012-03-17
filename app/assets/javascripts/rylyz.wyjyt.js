@@ -1,6 +1,6 @@
 (function() {
 var  rylyzPlayerHost = "http://rylyz-player.herokuapp.com";
-var  wyjytCSS = rylyzPlayerHost + '/assets/wyjyt.css';
+var  wyjytCSS = 'rylyz.wyjyt';
 
   
 var jQuery; // Localized jQuery variable
@@ -21,10 +21,14 @@ Rylyz.Wyjyt = {
   clientChannel: null,
   wyjytSource: {},
 
+  fetchCSS: function(name) {
+    var css_href = rylyzPlayerHost + '/assets/' + name + ".css";
+    var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
+    css_link.appendTo('head');
+  },
   setup: function() {
     jQuery(document).ready(function($) {
-      var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: wyjytCSS });
-      css_link.appendTo('head');
+      Rylyz.Wyjyt.fetchCSS(wyjytCSS);
 
       //setup socket service and register socket event handlers
       var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
@@ -34,6 +38,10 @@ Rylyz.Wyjyt = {
     });
   },
   loadRylyzCore: function(callbackOnComplete) {
+    if (Rylyz.Service) {
+      callbackOnComplete();
+      return;
+    }
     //+++ load all from one js file
     var scriptNames = [ "modernizr-2.0.6.js", "underscore-min.1.3.1.js" , "backbone-min.0.9.1.js",
       "rylyz.util.js", "rylyz.util.string.js",
@@ -71,6 +79,15 @@ Rylyz.Wyjyt = {
       // retry?
     }
   },
+  onChannelConnected: function(chanelName) {
+    console.info("---------o subscribed to custom channel: " + chanelName);
+  },
+  onChannelFailed: function(status) {
+    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+    if(status == 408 || status == 503){
+      // retry?
+    }
+  },
   onAppInstall: function(datas) {},
   onAppInstallFail: function(datas) {},
   onSuspendApp: function(appName) {},
@@ -78,7 +95,9 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
 
   start: function(data) {
-    Rylyz.Pusher.triggerUIDEvent("open_app", {app:"chat"})
+    var app_name = "chat";
+    Rylyz.Wyjyt.fetchCSS(app_name);
+    Rylyz.Pusher.triggerUIDEvent("open_app", {app:app_name})
     // Rylyz.Wyjyt.loadChat();
     // console.info("o-- Cycle: got data back to Start Wyjyt: " + data);
   },
@@ -168,18 +187,39 @@ window.Rylyz.Pusher = {
     console.info("o-- Cycle: about to start wyjyt");
     var onConnect, onFail;
 
-    Rylyz.Wyjyt.clientChannel = this.privateChannel(Rylyz.uidChannelName(), this.onUIDChannelConnected, this.onUIDChannelFailed);
-    this.onPrivateChannelEvent(Rylyz.uidChannelName(), "started-listening", function(data) {
+    Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.uidChannelName(), Rylyz.Pusher.onUIDChannelConnected, Rylyz.Pusher.onUIDChannelFailed);
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "started-listening", function(data) {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
       Rylyz.Wyjyt.start();
     });
-    this.onPrivateChannelEvent(Rylyz.uidChannelName(), "open-app", function(data) {
-      console.log ("AAAAPPPPENNNNNDINGGG");
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "open-app", function(data) {
       var display = data["display"];
       jQuery("#rylyz-widget").append(display);
       Rylyz.loadAppDisplays();
       Rylyz.showApp('chat', "#rylyz-widget");
-    })
+    });
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "fire-event", function(data) {
+      Rylyz.event.fireEvent(data);
+    });
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "launch-listener", function(data) {
+      scope = data["scope"];
+      wuid = data["wid"];
+      launchChannel = data["launchChannel"];
+      //+++TODO: break this into 2 = launch-channel-listener and launch-channel-event-listner
+      chanelEvents = data['channelEvents'];
+      if (wuid != Rylyz.uidChannelName()) throw "Received incomprehensible event: " + data;
+      onConnect = function(){ Rylyz.Pusher.onChannelConnected(launchChannel); }
+      channel = Rylyz.Pusher.channel(scope, launchChannel, onConnect, Rylyz.Pusher.onChannelFailed);
+      Rylyz.Pusher.channels[launchChannel] = channel;
+      ///+++TODO: save channel based on context so it can be unloaded
+      Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "chat", function(data) {
+        //++TODO: get eventNames to listen to from the launchChannel event, and add a listener to each one.
+        alert("whohoo got a chat event: " + data)
+      });
+      Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
+        Rylyz.event.fireEvent(ev);
+      });      
+    });
   },
 
   onWyjytChannelConnected: function() {
@@ -205,6 +245,17 @@ window.Rylyz.Pusher = {
       // retry?
     }
     Rylyz.Wyjyt.onUIDChannelFailed(status)
+  },
+  onChannelConnected: function(chanelName) {
+    Rylyz.Wyjyt.onChannelConnected(chanelName);
+    console.info("---------o subscribed to custom channel: " + chanelName);
+  },
+  onChannelFailed: function(status) {
+    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+    if(status == 408 || status == 503){
+      // retry?
+    }
+    Rylyz.Wyjyt.onChannelFailed(status)
   },
   authenticateConnection: function() {
     if (this.singleton) return this.singleton;
@@ -358,6 +409,9 @@ function restoreJQuery() {
   // Call our main function
   Rylyz.Wyjyt.setup();
 }
+
+//some debug functions
+window.rylyzRefreshCSS = Rylyz.Wyjyt.refreshCSS;
 
 bootstrap(); //start loading everything
 

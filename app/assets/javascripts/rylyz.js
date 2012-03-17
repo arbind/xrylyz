@@ -50,35 +50,46 @@
   //window.Rylyz.refTables = { models:{}, collections:{}, screens:{}, currentScreen:null } //remove this
   //window.Rylyz.refTable = { objectData:{},  objectDisplays:{}, collectionData:{}, collectionDisplays:{}, appData:{}, appDisplays:{}, screenData:{}, screenDisplays:{}}
 
-  Rylyz.lookupApp = function(info) {
-    if(!info) throw "can not look up Display: info given is null!";
-    var name;
-    if ('string' == typeof(info) ) name=info;
-    else {
-      if ($.isArray(info)) throw "Can not lookup name of app when given an array: \n" + toString(info);
-      if (!info.hasOwnProperty('appName'))  throw "Can not lookup app when no appName is specified: \n" + toString(info);
-      name = info.appName;
+
+
+  window.Rylyz.lookupProperty = function(info, propertyName) {
+    if(!info) throw "can not look up "+propertyName+": info given is null!";
+
+    var value=null;
+    if ('string' == typeof(info) ) value=info;
+    else if (info.hasOwnProperty(propertyName)) value = info[propertyName];
+    else if ($.isArray(info)) throw "Can not lookup "+propertyName+" when given an array: \n" + toString(info);
+    else if (info.hasOwnProperty('context')){
+      var context = info['context'];
+      if (context.hasOwnProperty(propertyName)) value = context[propertyName];
     }
-    return Rylyz.appReferenceTable.lookupApp(name);
+    return value;
+  }
+
+  Rylyz.lookupApp = function(info) {
+    var appName = Rylyz.lookupProperty(info, 'appName');
+    if (!appName) throw "Did not find appName for info: " + toString(info);
+    return Rylyz.appReferenceTable.lookupApp(appName);
   }
 
   window.Rylyz.lookupScreen= function(info) {
-    if(!info) throw "can not look up Display: info given is null!";
-
     var app = Rylyz.lookupApp(info);
-    if(!app) throw "Can not look up Screen: No app found for info: " + toString(info);
-
-    var screenName = info.screenName
+    if(!app){
+      console.log ('info=' + toString(info));
+      console.log ('context=' + toString(info['context']));
+      console.log ('appname=' + toString(info['context']['appName']));
+      throw "Can not look up Screen: No app found for info: " + toString(info);
+    } 
+    var screenName = Rylyz.lookupProperty(info, 'screenName');
+    if (!screenName) throw "Did not find screenName for info: " + toString(info);
     return app.lookupScreen(screenName);
   }
 
   window.Rylyz.lookupDisplay= function(info) {
-    if(!info) throw "can not look up Display: info is null! "
-
     var screen= Rylyz.lookupScreen(info);
     if(!screen) throw "Can not look up Display: No screen found for info: " + toString(info);
 
-    var displayName =  info.displayName
+    var displayName =  Rylyz.lookupProperty(info, 'displayName');
     if (undefined == displayName) return screen;
     return screen.displayTable[displayName];
   }
