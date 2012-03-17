@@ -112,8 +112,10 @@ class PusherChannels
         handler.call( data )
       rescue RuntimeError => e
         puts "Runtime Exception! #{e}"
+        #+++ Report exception back to widget (Trigger on scope channel_name)
       rescue Exception => e
         puts "Exception! #{e}"
+        #+++ Report exception back to widget (Trigger on scope channel_name)
       else
         # Do this if no exception was raised
       ensure
@@ -252,51 +254,60 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
 
   PusherChannels.instance.on_private_channel_event(uid_channel, "event") do |data|
     tokens = nil
-    target = nil
-    action = nil
     begin
       # lookup the TargetController 
       tokens = JSON.parse(data)
-      context = tokens["context"] || NoOBJECT
-      appName = context["appName"] || "rylyz"
-      appController = "App#{appName.underscore.camelize}Controller"
+      # context = tokens["context"] || NoOBJECT
+      # appName = context["appName"] || "rylyz"
+      # appController = "App#{appName.underscore.camelize}Controller"
 
-      screenName = context["screenName"] || nil
-      screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
+      # screenName = context["screenName"] || nil
+      # screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
 
       #lookup the method to call
-      action = tokens["action"] || "unknown"
-      action = "on_" + action.underscore
-    rescue
+    rescue Exception => e
       puts "----------------------------------------------------------------"
-      puts "UID Channel Exception for #{target}.#{action}"
+      puts "UID Channel Exception for #{target_controller}.#{action}"
       puts "Could not read data in to json"
       puts "data: #{data}"
       puts "Exception: #{e}"
       puts e.backtrace
       puts "----------------------------------------------------------------"
+      ev = {
+        exception: e.to_s
+      }
+      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
     ensure
       tokens = tokens || {}
     end
     begin #safeguard the handler block
-      # lookup the TargetController and call the method
-      targetClass = Kernel.const_get(appController)
-      targetClass  = targetClass .const_get(screenController) unless screenName.nil?
-      targetClass .send(action, tokens)
+      target_controller = AppRylyzController::lookup_controller(tokens) || AppRylyzController
+      action = tokens["action"] || "unknown"
+      action = "on_" + action.underscore
+      target_controller.send(action, tokens)
     rescue RuntimeError => e
       puts "----------------------------------------------------------------"
-      puts "UID Channel Runtime Exception invoking #{target}.#{action}"
+      puts "UID Channel Runtime Exception invoking #{target_controller}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace
       puts "----------------------------------------------------------------"
+      #+++TODO make this a convenience function: to trigger exceptions back 
+      ev = {
+        exception: e.to_s
+      }
+      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
     rescue Exception => e
       puts "----------------------------------------------------------------"
-      puts "UID Channel Exception invoking #{target}.#{action}"
+      puts "UID Channel Exception invoking #{target_controller}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace
       puts "----------------------------------------------------------------"
+      ev = {
+        exception: e.to_s
+      }
+      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
     else
       # Do this if no exception was raised
     ensure

@@ -4,26 +4,23 @@
 	
 	window.Rylyz.Service = {};
 	window.Rylyz.Service = {
-	
+
+		//Exception reporting
+		reportServerSideException: function(channel, data) {
+      var exception = data["exception"];
+      console.error("Server Side Exception received on channel: "+channel+" !\n Message: " + exception);
+    },
+    
 		//Data Events
 		fireDataEvent4LoadApp: function(event) {
-      var url = Rylyz.urlAPI + "/fire/data_event/load_app.json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      $.get(url, event, function(response){console.log(response)});
+			Rylyz.Wyjyt.triggerUIDEvent("load-data", event)
 		},
 
 		fireDataEvent4LoadScreen: function(event) {
-      var url = Rylyz.urlAPI + "/fire/data_event/load_screen.json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      $.get(url, event, function(response){console.log(response)});
+			Rylyz.Wyjyt.triggerUIDEvent("load-data", event)
 		},
 
-		handleDataEvent4LoadApp: function(event) {
-			var app = Rylyz.lookupApp(event);
-			if (app) app.model.set(event.data);
-		},
-
-		handleDataEvent4LoadScreen: function(events) {
+		handleDataEvent4LoadData: function(events) {
 			//var screen = Rylyz.lookupScreen(event);
 			//if (screen) screen.model.set(event.data);
 			var eventList = events;
@@ -43,6 +40,10 @@
 			 	 }
 			 	 else {
 			 	 	console.warn("Display not found! Can not load screen data." + event);
+			 	 	if (!event.context) return;
+			 	 	console.warn("appName: " + event.context.appName);
+			 	 	console.warn("screenName: " + event.context.screenName);
+			 	 	console.warn("displayName: " + event.context.displayName);
 			 	 }
 			});
 
@@ -230,25 +231,35 @@
 		queue:"app-server",
 		type:"add-item",
     handleEvent: function(ev) {
-    	console.log(ev)
+    	console.log(ev);
     	Rylyz.Service.handleDataEvent4AddItem(ev);
     }
   }
-  Rylyz.event.registerQueueHandler(hAddItem);
+  Rylyz.event.registerEventHandler(hAddItem);
+
+  var hLoadData = {
+		queue:"app-server",
+		type:"load-data",
+    handleEvent: function(ev) {
+    	console.log(ev);
+    	Rylyz.Service.handleDataEvent4LoadData(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hLoadData);
 
   var hScreenNavigation = {
     queue: "screen",
     type: "navigation",
     handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
   }
-  Rylyz.event.registerQueueHandler(hScreenNavigation);
+  Rylyz.event.registerEventHandler(hScreenNavigation);
 
-  var hLoadApp = {
-    queue: "screen",
-    type: "navigation",
-    handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
-  }
-  Rylyz.event.registerQueueHandler(hLoadApp);
+  // var hLoadApp = {
+  //   queue: "screen",
+  //   type: "navigation",
+  //   handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
+  // }
+  // Rylyz.event.registerQueueHandler(hLoadApp);
 
   var hFormSubmit = {
   	queue: "form",
@@ -273,6 +284,6 @@
       //+++fire event to send formData to server
   	}
   }
-  Rylyz.event.registerQueueHandler(hFormSubmit);
+  Rylyz.event.registerEventHandler(hFormSubmit);
 
 })(jQuery)

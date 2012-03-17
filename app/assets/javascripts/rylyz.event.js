@@ -100,6 +100,12 @@ Rylyz.event = function() {
         console.error(handler);
         throw msg;
       }
+      if (handler.type) {
+        var msg = "queue handler for [" +q+ "] should not specify an event type [" +handler.type+ "]!";
+        console.error(msg);
+        console.error(handler);
+        throw msg;
+      }
       registry[q] = registry[q] || [];
       if ('undefined' === typeof handler.enabled ) handler.enabled = true;
       registry[q].push(handler);

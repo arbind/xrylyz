@@ -20,29 +20,33 @@
 		%h2{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'room-list'}"}
 			View Rooms
 
-	%screen{:name=>"room-list"}
+	%screen{:name=>"room-list", "data-defaults"=>"{num_rooms: 0}"} 
 		%h2
-			Chat Room List
+			Chat Room List ([[num_rooms]])
+		%form{:id=>"new-room-form", :target=>"", :action => "", :method => "", :name=>"new-room"}
+			.field
+				%input.text{:type => "text", :name => "newRoomName"}
+				%input{:type => "submit", :value => "New Room", :class => "button"}
 		.rooms
 			%collection{:name=>"rooms"}	
 
-	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1'}, {id:10, name:'room10'},{id:100, name:'room100'},]"}
+	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1', num_users:3}, {id:10, name:'room10', num_users:3},{id:100, name:'room100', num_users:3},]"}
 		%ul
 			%collection
 
 	%item{:name=>"room-item"}
-		%li{:data=>"[[id]]"} [[name]]
+		%li{:data=>"[[id]]"} [[name]] (has [[num_users]] users)
 
 
 	%screen{:name=>"chat-room"}
 		%h2 Chat Room
 		.messages
-			%collection{:name=>"messages"}	
+			%collection{:name=>"messages"}
 		%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}
 			%ul
 				%li
 					%input.text{:type => "text", :name => "message"}
-			%input{:type => "submit", :value => "OK", :class => "button"}
+					%input{:type => "submit", :value => "OK", :class => "button"}
 
 	%collection{:name=>"messages", :item=>"message-item", "data-defaults"=>"[{message:'player2b'}, {message:'player33b'}]"}
 		%ul

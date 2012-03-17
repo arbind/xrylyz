@@ -105,34 +105,6 @@ Rylyz.Wyjyt = {
   openApp: function(appName) {
     console.info("o-- Cycle: about to open app: " + appName);
   },
-  //+++ add other socket loaders here
-  loadChat: function() {
-    var button  = jQuery('<button class="red">Trigger</button>');
-    var textbox = jQuery('<input type="text" name="" value="your text">');
-    var display = jQuery('<ul id="rylyz-display"></ul>');
-    display.appendTo('#rylyz-widget');
-    textbox.appendTo('#rylyz-widget');
-    button.appendTo('#rylyz-widget');
-
-    button.bind('click', function() {
-      console.log('click');
-      var data = {
-        "text": textbox.attr('value')
-      }
-      //alert("about to trigger chat data");
-      //var triggered = channel.trigger('client-rylyz-text-event', JSON.stringify(data))
-      triggered = Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.uidChannelName(), 'text-event', data);
-      var line = jQuery('<li class="local"></li>').html(data.text)
-      display.prepend(line);
-    });
-
-    var channel = Rylyz.Pusher.privateChannel(Rylyz.uidChannelName());
-    channel.bind('client-rylyz-text-event', function(data) {
-      console.log(data);
-      var line = jQuery('<li></li>').html(data.text)
-      display.prepend(line);
-    });
-  },
 
   //loads an array of scripts one at a time from a baseURL (not loaded in parallel)
   loadScriptsSerially: function(endpoint, scriptNames, callbackOnComplete) {
@@ -148,19 +120,23 @@ Rylyz.Wyjyt = {
         Rylyz.Wyjyt.loadScriptsSerially(endpoint, scriptNames, callbackOnComplete);
       }
     );
-
-
-    // if (0 == scriptNames.length) { // all scripts are loaded, call the callback
-    //   if (callbackOnComplete) callbackOnComplete();
-    //   return; 
-    // }
-    // var scriptName = scriptNames.shift();
-    // console.info("Loading Javascript: " + scriptName);
-    // $ = jQuery;
-    // jQuery.getScript(endpoint+"/"+scriptName, function() {
-    //   Rylyz.Wyjyt.loadScriptsSerially(endpoint, scriptNames, callbackOnComplete);
-    // });  
   },
+
+  triggerUIDEvent: function(action, tokens) {
+    Rylyz[socketService].triggerUIDEvent(action, tokens);
+  },
+  triggerPublicChannelEvent: function(channelName, eventName, tokens) {
+    Rylyz[socketService].triggerPublicChannelEvent(channelName, action, tokens);
+  },
+  triggerPrivateChannelEvent: function(channelName, eventName, tokens) {
+    Rylyz[socketService].triggerPrivateChannelEvent(channelName, action, tokens);
+  },
+  triggerPresenceChannelEvent: function(channelName, eventName, tokens) {
+    Rylyz[socketService].triggerPresenceChannelEvent(channelName, action, tokens);
+  },
+
+
+
 }
 Rylyz.uidChannelName = function() { return Rylyz.Wyjyt.wyjytSource.uid; }
 
@@ -201,6 +177,9 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "fire-event", function(data) {
       Rylyz.event.fireEvent(data);
     });
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "server-side-exception", function(data) {
+      Rylyz.Service.reportServerSideException(Rylyz.uidChannelName(), data)
+    });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "launch-listener", function(data) {
       scope = data["scope"];
       wuid = data["wid"];
@@ -219,6 +198,11 @@ window.Rylyz.Pusher = {
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
         Rylyz.event.fireEvent(ev);
       });      
+      Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "server-side-exception", function(data) {
+        Rylyz.Service.reportServerSideException(launchChannel, data)
+        var exception = data["exception"];
+        console.error("Server Side Exception!\n Message: " + exception)
+      });
     });
   },
 
