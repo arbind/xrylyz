@@ -95,9 +95,9 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
 
   start: function(data) {
-    var app_name = "chat";
-    Rylyz.Wyjyt.fetchCSS(app_name);
-    Rylyz.Pusher.triggerWIDEvent("open_app", {app:app_name})
+    var app_name = data["app"];
+    Rylyz.Wyjyt.fetchCSS("app_" + app_name);
+    Rylyz.Pusher.triggerWIDEvent("open_app", data)
     // Rylyz.Wyjyt.loadChat();
     // console.info("o-- Cycle: got data back to Start Wyjyt: " + data);
   },
@@ -166,13 +166,14 @@ window.Rylyz.Pusher = {
     Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      Rylyz.Wyjyt.start();
+      Rylyz.Wyjyt.start({app:'connect4'});
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var display = data["display"];
       jQuery("#rylyz-widget").append(display);
       Rylyz.loadAppDisplays();
-      Rylyz.showApp('chat', "#rylyz-widget");
+      //Rylyz.showApp('chat', "#rylyz-widget");
+      Rylyz.showApp('connect4', "#rylyz-widget");
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {

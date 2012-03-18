@@ -14,6 +14,7 @@ class ChatRoom
   end
 
   def add_visitor(visitor)
+  	raise "nil visitor can not be added" if visitor.nil?
     Thread::exclusive {
 	  	self.visitor_ids ||= []
 	  	visitor_ids << visitor.id
@@ -23,6 +24,10 @@ class ChatRoom
 
 	def visitors
 		return [] if visitor_ids.nil?
+		size = visitor_ids.size
+		visitor_ids.delete_if {|vid| VISITORS[vid].nil? }
+		save if size > visitor_ids.size
+	
 		visitor_ids.collect {|vid| VISITORS[vid]}
 	end
 
