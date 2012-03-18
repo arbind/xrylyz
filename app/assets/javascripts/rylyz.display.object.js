@@ -24,7 +24,8 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     else o = this.name;
     return o;
   },
-  materializeEvent: function (hash) {
+  materializeEvent: function (options) {
+    var hash = options || {}
     if (!this.eventBase) {
       var appName=null, screenName=null, displayName=null, origin=null, ctx=null;
       if (this.app) appName=this.app.name;
@@ -37,16 +38,14 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       ctx = this.context.data();
       this.eventBase = {
         origin: origin,
-        appName: appName,
-        screenName: screenName,
-        displayName: displayName,
         context: ctx,
       };
       if (this.app) this.eventBase.appName = this.app.name;
       if (this.screen) this.eventBase.screenName = this.screen.name;
     };
-    $.extend(hash, this.eventBase); //! this modifies hash
+    jQuery.extend(hash, this.eventBase); //! this modifies hash
     hash.context = this.context.data();
+    hash.settings = this.settings;
     return hash;
   },
   getTemplateSelector: function() {
@@ -338,26 +337,11 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   fireOn: function(domEventType, suppressWarning) {
     var eventType = $.trim(domEventType.toLowerCase()); //name of the dom event in lower case
     var fireOn = "fire-on" + eventType.capitalize(); //name of the data attribute
-    var appName, screenName, displayName;
-    if ('app' == this.dataType) {
-      appName = this.name;
-      screenName = null;
-      displayName = null;
-    }
-    else if ('screen' == this.dataType) {
-      appName = this.app.name || null;
-      screenName = this.name || null;
-      displayName = null;
-    }
-    else {
-      appName = this.app.name || null;
-      screenName = this.screen.name || null;
-      displayName = this.name;
-    }
 
+    var eventBase = this.materializeEvent();
     this.$("[" + fireOn + "]").bind(eventType, function(domEvent) {
       console.log('click!!');
-      Rylyz.event.fireOnDOMEvent(eventType, domEvent, appName, screenName, displayName);
+      Rylyz.event.fireOnDOMEvent(eventType, domEvent, eventBase);
     });
     //verify the syntax
     var onClickElements = this.$("[" + fireOn + "]");

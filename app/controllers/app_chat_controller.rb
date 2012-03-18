@@ -9,51 +9,97 @@ class AppChatController < AppRylyzController
   # +++TODO: define broadcast event names for this app
   # +++TODO: define private events names for this app
 
-  def self.on_load_data(tokens)
+  def self.on_load_data(visitor, tokens)
   end
 
-  def self.on_data_input(tokens)
+  # def self.on_data_input(visitor, tokens)
 
-    ScreenChatRoomController::say_hi
+  #   ScreenChatRoomController::say_hi
 
-    wid = tokens['uid']
-    # +++TODO: map uid to user
-    formMetadata = tokens['formData']
-    inputDataSet = formMetadata['dataSet']
-    messageInput = inputDataSet['message']
-    message = messageInput['value']
+  #   wid = tokens['wid'] || tokens['uid']
+  #   # +++TODO: map uid to user
+  #   formMetadata = tokens['formData']
+  #   inputDataSet = formMetadata['dataSet']
+  #   messageInput = inputDataSet['message']
+  #   message = messageInput['value']
 
-    ctx = {app: app_name, screen:'chat-room', display:'messages'}
-    data = { message:message }
-    event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
+  #   ctx = {app: app_name, screen:'chat-room', display:'messages'}
+  #   data = { message:message }
+  #   event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
 
-    puts "App uid: #{app_uid}"
+  #   puts "App uid: #{app_uid}"
 
-    PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
-  end
-
+  #   PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
+  # end
 
   class ScreenSplashController < AppRylyzScreenController
-    def self.on_load_data(tokens)
+    def self.on_load_data(visitor, tokens)
     end
   end
 
-  class ScreenNickNameController < AppRylyzScreenController
+  class ScreenNicknameController < AppRylyzScreenController
     # update user on_data_input4nickname
-    def self.on_data_input4message(tokens)
+    def self.on_data_input(visitor, tokens)
+      wid = tokens['wid']
+
+      # +++TODO: map uid to user
+      formMetadata = tokens['formData']
+      inputDataSet = formMetadata['dataSet']
+      nicknameInput = inputDataSet['nickname']
+      nickname = nicknameInput['value']
+      visitor.nickname = nickname
+
+      event  = {queue:'app-server', type:'update-me', data: visitor.for_display}
+      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", event)
+
+      ctx = {appName: app_name}
+      event  = {queue:'screen', type:'navigation', nextScreen:'room-list', context:ctx }
+      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", event)
+
     end
 
-    def self.on_load_data(tokens)
+    def self.on_load_data(visitor, tokens)
+      puts "--------- Load Data"
+      puts tokens
+      puts "--------- Load Data"
     end
   end
 
   class ScreenChatRoomController < AppRylyzScreenController
 
-    def self.on_load_data(tokens)
+    def self.on_load_data(visitor, tokens)
+      wid = tokens['wid'] || tokens['uid']
+
+      settings = tokens["settings"]
+      select = settings["select"]
+      chat_room = ChatRoom.find(select)
+
+      ctx = {appName: app_name, screenName:'chat-room'}
+      event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
+      PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
+
+      #+++ is it required to start a listener thread?
+      #PusherChannels.instance.start_private_channel(chat_room.channel_id)
+      # this is a 1-way channel - from app to wyjyt - so no need to bind listeners
+      PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", {launchChannel:chat_room.channel_id, scope:'private', wid:wid})
+
+      ctx = {appName: app_name, screenName:'chat-room', displayName:'messages'}
+      name = visitor.nickname || 'person'
+      data = { message:"#{visitor.nickname} just joined the room!" }
+      event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
+      PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
     end
 
-    def self.on_data_input(tokens)
-      wid = tokens['uid']
+    def self.on_data_input(visitor, tokens)
+      puts "============="
+      puts tokens
+      puts "============="
+      wid = tokens['wid'] || tokens['uid']
+      # lookup the chat room:
+      settings = tokens['settings']
+      select = settings['select']
+      chat_room = ChatRoom.find(select)
+
       # +++TODO: map uid to user
       formMetadata = tokens['formData']
       inputDataSet = formMetadata['dataSet']
@@ -64,14 +110,14 @@ class AppChatController < AppRylyzController
       data = { message:message }
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
       puts "Screen::App uid: #{app_uid}"
-      PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
+      PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
     end
 
   end
 
   class ScreenRoomListController < AppRylyzScreenController
 
-    def self.on_load_data(tokens)
+    def self.on_load_data(visitor, tokens)
       ctx = {appName: app_name, screenName:'room-list'}
       data = {num_rooms: ChatRoom.all.count }
       event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
@@ -84,11 +130,10 @@ class AppChatController < AppRylyzController
       event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
       puts "Screen::App uid: #{app_uid}"
       PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
-
     end
 
-    def self.on_data_input(tokens)
-      wid = tokens['uid']
+    def self.on_data_input(visitor, tokens)
+      wid = tokens['wid'] || tokens['uid']
       # +++TODO: map uid to user
       formMetadata = tokens['formData']
       inputDataSet = formMetadata['dataSet']

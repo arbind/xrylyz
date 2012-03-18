@@ -6,39 +6,53 @@ require 'active_support/inflector'
 NoOBJECT = {}
 
 #+++TODO: store all channel related data in redis
-VISITORS_AUTHENTICATING = {}
-VISITORS = {}
 
 APP_CHANNELS = {}
 SCREEN_CHANNELS = {}
+OBJECT_CHANNELS = {}
 
-class Member
-  attr_accessor :id, :name, :email, :nickname
-  #attr_reader :my_readable_property
-  #attr_writer :my_writable_property
-end
+# VISITORS_AUTHENTICATING = {}
+VISITORS = {} # lookup visitor by id temporary memory storage! 
+VISITORS_WIDS = {} # lookup visior by wid
+VISITORS_SOCKETS = {} # lookup visior by socket_id
 
 class Visitor
-  attr_accessor :id, :wyjyt_uid, :socket_id, :nickname, :member
+
+  attr_accessor :id, :wid, :socket_id, :nickname, :source_url
+
+  def initialize
+    self.id = SecureRandom.uuid
+    VISITORS[id] = self  # make this visitor available by id
+  end
+
+  def for_display
+    self
+  end
+
 end
 
+# class Member
+#   attr_accessor :id, :name, :email, :nickname
+#   #attr_reader :my_readable_property
+#   #attr_writer :my_writable_property
+# end
 
-class Player
-  attr_accessor :id, :visitor
-end
+# class Player
+#   attr_accessor :id, :visitor
+# end
 
-class Club
-  attr_accessor :id, :channel_name, :visitors, :sub_clubs
-end
+# class Club
+#   attr_accessor :id, :channel_name, :visitors, :sub_clubs
+# end
 
-class AppClub < Club
-end
+# class AppClub < Club
+# end
 
-class GameClub < Club
-end
+# class GameClub < Club
+# end
 
-class ChatClub < Club
-end
+# class ChatClub < Club
+# end
 
 
 Pusher.app_id = RylyzPlayer::Application.config.pusher_app_id
@@ -76,6 +90,15 @@ class PusherChannels
     SCREEN_CHANNELS[key] = "#{rand}-#{stamp}"
   end
 
+  def channel_name_for_class_id(classz, id)
+    key = "#{classz.name}.#{id}"
+    channel_name = OBJECT_CHANNELS[key]
+    return channel_name unless channel_name.nil?
+    rand = SecureRandom.uuid
+    stamp = Time.now.strftime("%Y-%m-%d-%H-%M-%S")
+    OBJECT_CHANNELS[key] = "#{rand}-#{stamp}"
+  end
+
   def trigger_public_channel_event(channel_name, event_name, tokens)
     #public_event_name = "rylyz-#{event_name}"
     trigger_channel_event(:public, channel_name, event_name, tokens)
@@ -111,10 +134,18 @@ class PusherChannels
       begin #safeguard the handler block
         handler.call( data )
       rescue RuntimeError => e
-        puts "Runtime Exception! #{e}"
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        puts "-----  Runtime Exception! #{e}"
+        puts "Ehen handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts e.backtrace
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)
       rescue Exception => e
-        puts "Exception! #{e}"
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        puts "----- Exception! #{e}"
+        puts "Ehen handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts e.backtrace
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)
       else
         # Do this if no exception was raised
@@ -247,12 +278,23 @@ puts "=========================================="
 # end
 
 PusherChannels.instance.start_private_channel("wyjyt")
-PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do |data|
+PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do |data|
   tokens = JSON.parse(data)
-  uid_channel = tokens["uid"]
-  PusherChannels.instance.start_private_channel(uid_channel)
 
-  PusherChannels.instance.on_private_channel_event(uid_channel, "event") do |data|
+  wid = tokens["wid"]
+  url = tokens["url"]
+  socket_id = tokens["pusher_socket_id"]
+
+  visitor = VISITORS_SOCKETS[socket_id]
+  visitor.wid = wid
+  visitor.source_url = url
+  VISITORS_WIDS[wid] = visitor # make visitor available by wid lookup
+  PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+
+
+  PusherChannels.instance.start_private_channel(wid)
+  PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
+    visitor = VISITORS_WIDS[wid]
     tokens = nil
     begin
       # lookup the TargetController 
@@ -266,17 +308,17 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
 
       #lookup the method to call
     rescue Exception => e
-      puts "----------------------------------------------------------------"
-      puts "UID Channel Exception for #{target_controller}.#{action}"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+      puts "WID Channel Exception for #{target_controller}.#{action}"
       puts "Could not read data in to json"
       puts "data: #{data}"
       puts "Exception: #{e}"
       puts e.backtrace
-      puts "----------------------------------------------------------------"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       ev = {
         exception: e.to_s
       }
-      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
+      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
     ensure
       tokens = tokens || {}
     end
@@ -284,30 +326,30 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
       target_controller = AppRylyzController::lookup_controller(tokens) || AppRylyzController
       action = tokens["action"] || "unknown"
       action = "on_" + action.underscore
-      target_controller.send(action, tokens)
+      target_controller.send(action, visitor, tokens)
     rescue RuntimeError => e
-      puts "----------------------------------------------------------------"
-      puts "UID Channel Runtime Exception invoking #{target_controller}.#{action}"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+      puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace
-      puts "----------------------------------------------------------------"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       #+++TODO make this a convenience function: to trigger exceptions back 
       ev = {
         exception: e.to_s
       }
-      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
+      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
     rescue Exception => e
-      puts "----------------------------------------------------------------"
-      puts "UID Channel Exception invoking #{target_controller}.#{action}"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+      puts "WID Channel Exception invoking #{target_controller}.#{action}"
       puts "tokens: #{tokens}"
       puts "Exception: #{e}"
       puts e.backtrace
-      puts "----------------------------------------------------------------"
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       ev = {
         exception: e.to_s
       }
-      PusherChannels.instance.trigger_private_channel_event(uid_channel, 'server-side-exception', ev)
+      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
     else
       # Do this if no exception was raised
     ensure
@@ -316,7 +358,8 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-uid-channel") do
   end
 end
 
-PusherChannels.instance.start_private_channel("app-service")
+
+# PusherChannels.instance.start_private_channel("app-service")
 # PusherChannels.instance.on_private_channel_event("app-service", "start-app") do |data|
 #   tokens = JSON.parse(params[:data])
 #   app_name = tokens["app_name"]

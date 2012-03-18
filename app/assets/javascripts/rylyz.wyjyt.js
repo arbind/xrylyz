@@ -51,8 +51,8 @@ Rylyz.Wyjyt = {
       ];
     console.info("o-- Cycle: about to load javascripts");
     Rylyz.Wyjyt.loadScriptsSerially(rylyzPlayerHost+ "/assets", scriptNames, function() {
-      // now we can call frameworke functions like Rylyz.UID();
-      Rylyz.Wyjyt.wyjytSource.uid = Rylyz.Wyjyt.wyjytSource.uid || Rylyz.UID();
+      // now we can call framework functions like Rylyz.wid();
+      Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
       callbackOnComplete(); 
     });
@@ -70,11 +70,11 @@ Rylyz.Wyjyt = {
       // retry?
     }
   },
-  onUIDChannelConnected: function() {
-      console.info("---------o subscribed to uid channel: " + Rylyz.uidChannelName())
+  onWIDChannelConnected: function() {
+      console.info("---------o subscribed to wid channel: " + Rylyz.wid())
   },
-  onUIDChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+  onWIDChannelFailed: function(status) {
+    console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -83,7 +83,7 @@ Rylyz.Wyjyt = {
     console.info("---------o subscribed to custom channel: " + chanelName);
   },
   onChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+    console.error("---------! Error [" +status+" ]: Could not establish channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -97,7 +97,7 @@ Rylyz.Wyjyt = {
   start: function(data) {
     var app_name = "chat";
     Rylyz.Wyjyt.fetchCSS(app_name);
-    Rylyz.Pusher.triggerUIDEvent("open_app", {app:app_name})
+    Rylyz.Pusher.triggerWIDEvent("open_app", {app:app_name})
     // Rylyz.Wyjyt.loadChat();
     // console.info("o-- Cycle: got data back to Start Wyjyt: " + data);
   },
@@ -122,8 +122,8 @@ Rylyz.Wyjyt = {
     );
   },
 
-  triggerUIDEvent: function(action, tokens) {
-    Rylyz[socketService].triggerUIDEvent(action, tokens);
+  triggerWIDEvent: function(action, tokens) {
+    Rylyz[socketService].triggerWIDEvent(action, tokens);
   },
   triggerPublicChannelEvent: function(channelName, eventName, tokens) {
     Rylyz[socketService].triggerPublicChannelEvent(channelName, action, tokens);
@@ -138,7 +138,7 @@ Rylyz.Wyjyt = {
 
 
 }
-Rylyz.uidChannelName = function() { return Rylyz.Wyjyt.wyjytSource.uid; }
+Rylyz.wid = function() { return Rylyz.Wyjyt.wyjytSource.wid; }
 
 window.Rylyz.Pusher = {
   singleton: null,
@@ -152,10 +152,10 @@ window.Rylyz.Pusher = {
     WEB_SOCKET_DEBUG = true; // Flash fallback logging - don't include this in production
     Pusher.log = function(message) { if (window.console && window.console.log) window.console.log(message); };    
 
-    // establish a private UID channel
-    // once uid channel connects, establish a private wyjyt channel
-    // once wyjyt channel connects, let the server know about the UID channel so it can listen
-    // the serve will send an ack on new uid channel
+    // establish a private WID channel
+    // once wid channel connects, establish a private wyjyt channel
+    // once wyjyt channel connects, let the server know about the wID channel so it can listen
+    // the serve will send an ack on new wid channel
     // once ack is received, disconnect from the wyjyt channel
 
     //create a private client channel then let the widget know about it from the wyjyt channel
@@ -163,30 +163,35 @@ window.Rylyz.Pusher = {
     console.info("o-- Cycle: about to start wyjyt");
     var onConnect, onFail;
 
-    Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.uidChannelName(), Rylyz.Pusher.onUIDChannelConnected, Rylyz.Pusher.onUIDChannelFailed);
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "started-listening", function(data) {
+    Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
       Rylyz.Wyjyt.start();
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "open-app", function(data) {
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var display = data["display"];
       jQuery("#rylyz-widget").append(display);
       Rylyz.loadAppDisplays();
       Rylyz.showApp('chat', "#rylyz-widget");
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "fire-event", function(data) {
+
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {
+      Rylyz.me = data; ///+++ turn this into a Model Class that can be referenced by other displays
+    });
+
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "fire-event", function(data) {
       Rylyz.event.fireEvent(data);
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "server-side-exception", function(data) {
-      Rylyz.Service.reportServerSideException(Rylyz.uidChannelName(), data)
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "server-side-exception", function(data) {
+      Rylyz.Service.reportServerSideException(Rylyz.wid(), data)
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.uidChannelName(), "launch-listener", function(data) {
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "launch-listener", function(data) {
       scope = data["scope"];
-      wuid = data["wid"];
+      wid = data["wid"];
       launchChannel = data["launchChannel"];
       //+++TODO: break this into 2 = launch-channel-listener and launch-channel-event-listner
       chanelEvents = data['channelEvents'];
-      if (wuid != Rylyz.uidChannelName()) throw "Received incomprehensible event: " + data;
+      if (wid != Rylyz.wid()) throw "Received incomprehensible event: " + data;
       onConnect = function(){ Rylyz.Pusher.onChannelConnected(launchChannel); }
       channel = Rylyz.Pusher.channel(scope, launchChannel, onConnect, Rylyz.Pusher.onChannelFailed);
       Rylyz.Pusher.channels[launchChannel] = channel;
@@ -207,7 +212,7 @@ window.Rylyz.Pusher = {
   },
 
   onWyjytChannelConnected: function() {
-    Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName,"open-uid-channel")
+    Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName,"open-wid-channel")
     Rylyz.Wyjyt.onWyjytChannelConnected();
     console.info("---------o subscribed to wyjyt channel!!!")
   },
@@ -216,26 +221,26 @@ window.Rylyz.Pusher = {
     if(status == 408 || status == 503){
       // retry?
     }
-    Rylyz.Wyjyt.onUIDChannelFailed(status)
+    Rylyz.Wyjyt.onWIDChannelFailed(status)
   },
-  onUIDChannelConnected: function() {
+  onWIDChannelConnected: function() {
     Rylyz.Wyjyt.wyjytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.wyjytChannelName, Rylyz.Pusher.onWyjytChannelConnected, Rylyz.Pusher.onWyjytChannelFailed);
-    Rylyz.Wyjyt.onUIDChannelConnected();
-      console.info("---------o subscribed to uid channel: " + Rylyz.uidChannelName())
+    Rylyz.Wyjyt.onWIDChannelConnected();
+      console.info("---------o subscribed to wid channel: " + Rylyz.wid())
   },
-  onUIDChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+  onWIDChannelFailed: function(status) {
+    console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
-    Rylyz.Wyjyt.onUIDChannelFailed(status)
+    Rylyz.Wyjyt.onWIDChannelFailed(status)
   },
   onChannelConnected: function(chanelName) {
     Rylyz.Wyjyt.onChannelConnected(chanelName);
     console.info("---------o subscribed to custom channel: " + chanelName);
   },
   onChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish uid channel: "+ Rylyz.uidChannelName())
+    console.error("---------! Error [" +status+" ]: Could not establish channel")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -279,10 +284,10 @@ window.Rylyz.Pusher = {
     }
     return channel.bind(eventName, h);
   },
-  triggerUIDEvent: function(action, tokens) {
+  triggerWIDEvent: function(action, tokens) {
     data = { action: action }
     jQuery.extend(data, tokens)
-    return Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.uidChannelName(), "event", data);
+    return Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.wid(), "event", data);
   },
   triggerPublicChannelEvent: function(channelName, eventName, tokens) {
     return Rylyz.Pusher.triggerChannelEvent("public", channelName, eventName, tokens);
@@ -299,7 +304,7 @@ window.Rylyz.Pusher = {
     if ("public"!=scope) scopedEventName = "client-" + scopedEventName;
     var channel = this.channel(scope, channelName);
     var payload = this.payload(tokens);
-    return channel.trigger(scopedEventName, payload); //add refferrerr, ip, clientUID and stuff
+    return channel.trigger(scopedEventName, payload); //add refferrerr, ip, clientWID and stuff
   },
   payload: function(tokens) {
     var p = jQuery.extend({}, Rylyz.Wyjyt.wyjytSource, tokens)

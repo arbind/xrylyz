@@ -3,15 +3,19 @@
 	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "splash"}
 		%h1 [[title]]
 		%screen{:name=>"splash"}
-		%screen{:name=>"new-room"}
+		%screen{:name=>"nickname"}
 		%screen{:name=>"room-list"}
 		%screen{:name=>"chat-room"}
 
-	%screen{:name=>"new-room"}
-		%h2 new Room
+	%screen{:name=>"nickname"}
+		%h2 Enter Your Nickname:
+		%form{:id=>"registration-form", :target=>"", :action => "", :method => "", :name=>"nickname"}
+			.field
+				%input.text{:type => "text", :name => "nickname"}
+				%input{:type => "submit", :value => "Ok", :class => "button"}
 
 	%screen{:name=>"splash", "data-defaults"=>"{message: '', name:''}" }
-		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room'}"}
+		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'nickname'}"}
 			I am a Splash page!
 		%h2 
 			[[message]]
@@ -35,11 +39,11 @@
 			%collection
 
 	%item{:name=>"room-item"}
-		%li{:data=>"[[id]]"} [[name]] (has [[num_users]] users)
+		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room', select:'[[id]]'}" }
+			[[name]] (has [[num_users]] users)
 
-
-	%screen{:name=>"chat-room"}
-		%h2 Chat Room
+	%screen{:name=>"chat-room", "data-defaults"=>"{name:'noname'}" }
+		%h2 Chat Room [[name]]
 		.messages
 			%collection{:name=>"messages"}
 		%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}

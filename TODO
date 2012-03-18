@@ -1,0 +1,22 @@
++++ TODO
+
+o Create a  ModelReferenceTable for BackBone Models only.
+Allow displays to reference a model by name in the ModelReferenceTable
+(Instead of creating their own default-empty model)
+This will let multiple display's point to the same model.
+the server will still update models, by sending updates to a named display,
+All other displays referencing that same model should auto-update as well.
+
+o Create a conditional navigation for click events.
+Say you want to navigate to the chat room screen on click,
+if you have already registerd your name, then nav to chat room screen
+else nav to registration screen first to enter name, then to the chat room screen
+
+o prepopulate form data with model
+
+o Create a wizard which has many screens bound to the same model set
+(May also be able to use this for the conditional navigation)
+  + model set (maybe one root model?)
+  + screen set (all the screens in the wizard)
+  + rule set - specify screen flow logic
+

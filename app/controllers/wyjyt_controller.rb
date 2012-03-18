@@ -10,9 +10,10 @@ class WyjytController < ApplicationController
     else
       enable_CORS_access
       socket_id = params[:socket_id]
-      v = Visitor.new
-      VISITORS_AUTHENTICATING[:socket_id] = v
       pusher_response = Pusher[params[:channel_name]].authenticate(socket_id)
+      # if all is well, create a visitor session
+      v = Visitor.new
+      VISITORS_SOCKETS[socket_id]=v  #make this visitor available by socket_id
       render :json => pusher_response
     end
   end

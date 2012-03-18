@@ -164,7 +164,7 @@ Rylyz.event = function() {
       if (DBUG) dbugOut('scheduled countdowntimer: ' + countDownName + "to fire event: " +ev.type+ " in " +waitForMilliseconds+" ms");
     },
     //+++rename to fireThisDOMEvent, since it converts dom event to rylyz event and  fires immediately:
-    fireOnDOMEvent: function(eventType, domEvent, appName, screenName, displayName) {  
+    fireOnDOMEvent: function(eventType, domEvent, eventBase) {  
       var srcElement = srcElementForDOMEvent(domEvent);
       if (!srcElement) return;
       var fireOn = "fire-on" + eventType.capitalize(); //name of the data attribute
@@ -199,9 +199,7 @@ Rylyz.event = function() {
         console.error(msg);
         return;
       }
-      ev.appName = appName;
-      ev.screenName = screenName;
-      ev.displayName = displayName;
+      jQuery.extend(ev, eventBase)
       this.fireEvent(ev);
     },
     fireEvent: function(ev) {

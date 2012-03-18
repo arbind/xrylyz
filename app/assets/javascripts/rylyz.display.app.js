@@ -5,9 +5,9 @@ window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   startScreen: null,
   triggerDataLoadStart: function(settings) {
     var ev = {
-      appName:this.name
+      context: { appName:this.name }
     }
-    Rylyz.Service.fireDataEvent4LoadApp(ev);
+    Rylyz.Service.fireDataEvent4Load(ev);
   },
   getTemplateSelector: function() {
     if (!this.name) { throw "No app template found for <app name='" +this.name+ "'>\n"; }

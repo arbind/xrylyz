@@ -22,19 +22,19 @@ class AppRylyzScreenController
   	PusherChannels.instance.channel_name_for_screen(app_name, screen_name)
   end
 
-  def self.on_unknown (tokens)
+  def self.on_unknown (visitor, tokens)
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   	puts tokens
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
-  def self.on_close_uid_channel (tokens) #+++ change wyjyt uid channel to presence channel
-  	# uid_channel = "client-rylyz-#{tokens['uid']}"
-  	#  PusherChannels.stop_private_channel(uid_channel)
+  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
+  	# wid = "client-rylyz-#{tokens['wid']}"
+  	#  PusherChannels.stop_private_channel(wid)
 	end
 
-  def self.on_open_screen (tokens)
-  #   wid = tokens['uid']
+  def self.on_open_screen (visitor, tokens)
+  #   wid = tokens['wid'] || tokens['uid']
   #   context = tokens['context']
   #   app_name = context["appName"]
   #   screen_name = context["screenName"]

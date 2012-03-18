@@ -14,14 +14,14 @@ class AppRylyzController
     output = haml_engine.render
   end
 
-  def self.on_unknown (tokens)
+  def self.on_unknown (visitor, tokens)
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   	puts tokens
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
-  def self.on_close_uid_channel (tokens) #+++ change wyjyt uid channel to presence channel
-  	# uid_channel = "client-rylyz-#{tokens['uid']}"
+  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
+  	# uid_channel = "client-rylyz-#{tokens['wid']}"
   	#  PusherChannels.stop_private_channel(uid_channel)
 	end
 
@@ -101,12 +101,12 @@ class AppRylyzController
     return AppRylyzController # default
   end
 
-  def self.on_open_app (tokens)
+  def self.on_open_app (visitor, tokens)
     # lookup the TargetController 
     app = tokens["app"] || "wyjyt"
 		app = "App#{app.underscore.camelize}Controller"
 
-    wid = tokens['uid']
+    wid = tokens['wid'] || tokens['uid']
     app_name = tokens["app"]
     puts "OPENING #{app_name} FOR #{tokens}"
     app_display = render(app_name)

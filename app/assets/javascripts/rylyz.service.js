@@ -12,12 +12,8 @@
     },
     
 		//Data Events
-		fireDataEvent4LoadApp: function(event) {
-			Rylyz.Wyjyt.triggerUIDEvent("load-data", event)
-		},
-
-		fireDataEvent4LoadScreen: function(event) {
-			Rylyz.Wyjyt.triggerUIDEvent("load-data", event)
+		fireDataEvent4Load: function(event) {
+			Rylyz.Wyjyt.triggerWIDEvent("load-data", event)
 		},
 
 		handleDataEvent4LoadData: function(events) {
@@ -133,10 +129,11 @@
       	queue: event.queue,
       	type: event.type,
       	context: event.context,
+      	settings: event.settings,
       	formData: event.formData
       }
       //+++ TODO make this independent of Pusher!
-      Rylyz.Pusher.triggerUIDEvent("data-input", ev);
+      Rylyz.Pusher.triggerWIDEvent("data-input", ev);
 
       //$.get(url, ev, function(response){console.log(response)});			
 		},
@@ -162,11 +159,8 @@
 		},
 		fireHIEvent4Navigation: function(event) {
       if (!ev.nextScreen) throw "Navigation event must specify nextScreen! " + ev;
-      var url = Rylyz.urlAPI + "/fire/hi_event/navigation.json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      //$.get(url, event, function(response){console.log(response)});
       var nextScreenRoute = {
-      	appName: ev.appName,
+      	appName: Rylyz.lookupProperty(ev, 'appName'),
       	screenName: ev.nextScreen
       }
       var screen = Rylyz.lookupScreen(nextScreenRoute);

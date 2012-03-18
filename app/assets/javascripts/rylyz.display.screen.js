@@ -11,11 +11,13 @@ window.Rylyz.ScreenDisplay = Rylyz.ObjectDisplay.extend({
     thisApp = this.app;
     thisScreen = this;
     var ev = {
-      appName:thisApp.name,
-      screenName:thisScreen.name,
+      context: {
+        appName:thisApp.name,
+        screenName:thisScreen.name,
+      },
       settings: newSettings
     }
-    Rylyz.Service.fireDataEvent4LoadScreen(ev);
+    Rylyz.Service.fireDataEvent4Load(ev);
   },
   getTemplateSelector: function() {
     if (!this.name) { throw "No screen template found for <screen name='" +this.name+ "'> \n"; }
