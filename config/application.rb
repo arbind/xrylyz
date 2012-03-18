@@ -1,6 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
 #require 'rails/all'
+# Pick only the frameworks you want:
+# require "active_record/railtie"  -- disabled for MongoDB
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
