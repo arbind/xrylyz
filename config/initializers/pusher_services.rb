@@ -26,7 +26,11 @@ class Visitor
   end
 
   def for_display
-    self
+    {
+      id: id,
+      nickname: nickname,
+      source_url: source_url
+    }
   end
 
 end

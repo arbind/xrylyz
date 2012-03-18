@@ -73,7 +73,9 @@ class AppChatController < AppRylyzController
       settings = tokens["settings"]
       select = settings["select"]
       chat_room = ChatRoom.find(select)
-
+      puts "%%%%%%%%%%%%%%%%%"
+      puts "found #{chat_room.name} with #{chat_room.num_visitors} visitors"
+      puts "%%%%%%%%%%%%%%%%%"
       ctx = {appName: app_name, screenName:'chat-room'}
       event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
       PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
@@ -86,6 +88,24 @@ class AppChatController < AppRylyzController
       ctx = {appName: app_name, screenName:'chat-room', displayName:'messages'}
       name = visitor.nickname || 'person'
       data = { message:"#{visitor.nickname} just joined the room!" }
+      event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
+      PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
+      
+      data = chat_room.visitors_for_display
+      ctx = {appName: app_name, screenName:'chat-room', displayName:'people'}
+      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
+
+      puts "%%%%%%%%%%%%%%%%%"
+      puts "Before room #{chat_room.name} has #{chat_room.num_visitors} visitors"
+      puts "%%%%%%%%%%%%%%%%%"
+      chat_room.add_visitor visitor
+      puts "%%%%%%%%%%%%%%%%%"
+      puts "After room #{chat_room.name} has #{chat_room.num_visitors} visitors"
+      puts "%%%%%%%%%%%%%%%%%"
+
+      data = visitor.for_display
+      ctx = {appName: app_name, screenName:'chat-room', displayName:'people'}
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
       PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
     end

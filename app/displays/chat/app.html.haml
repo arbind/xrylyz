@@ -34,16 +34,18 @@
 		.rooms
 			%collection{:name=>"rooms"}	
 
-	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1', num_users:3}, {id:10, name:'room10', num_users:3},{id:100, name:'room100', num_users:3},]"}
+	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1', num_visitors:3}, {id:10, name:'room10', num_visitors:3},{id:100, name:'room100', num_users:3},]"}
 		%ul
 			%collection
 
 	%item{:name=>"room-item"}
 		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room', select:'[[id]]'}" }
-			[[name]] (has [[num_users]] users)
+			[[name]] (has [[num_visitors]] visitors)
 
 	%screen{:name=>"chat-room", "data-defaults"=>"{name:'noname'}" }
 		%h2 Chat Room [[name]]
+		.people
+			%collection{:name=>"people"}
 		.messages
 			%collection{:name=>"messages"}
 		%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}
@@ -64,3 +66,18 @@
 
 	%item{:name=>"message-item"}
 		%li [[message]]
+
+
+	%collection{:name=>"people", :item=>"person", "data-defaults"=>"[{nickname:'p1', source_url:'http://google.com'}, {nickname:'ppp1', source_url:'http://google.com'}]"}
+		%ul
+			%collection
+
+	%item{:name=>"person"}
+		%li 
+			[[nickname]]
+			(from
+			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=200, width=200');", :href=>"#"}
+				[[source_url]]
+			)
+
+

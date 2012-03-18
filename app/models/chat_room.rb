@@ -3,21 +3,39 @@ class ChatRoom
   include Mongoid::Timestamps
   field :name, :type => String, :default=>nil
   field :_channel_id, :type => String, :default=>nil
-  field :users, :type => Array, :default=>nil
+  field :visitor_ids, :type => Array, :default=>nil
 
   def channel_id ()
   	_channel_id ||= PusherChannels.instance.channel_name_for_class_id(self.class, _id)
   end
 
-  def num_users
-  	users.try(:count) || 0
+  def num_visitors
+  	visitor_ids.try(:count) || 0
   end
+
+  def add_visitor(visitor)
+    Thread::exclusive {
+	  	self.visitor_ids ||= []
+	  	visitor_ids << visitor.id
+      save
+    }
+	end
+
+	def visitors
+		return [] if visitor_ids.nil?
+		visitor_ids.collect {|vid| VISITORS[vid]}
+	end
+
+	def visitors_for_display
+	  return [] if 0==num_visitors
+	  visitors.collect{ |visitor| visitor.for_display }
+	end
 
   def for_display
   	{
   		id: _id,
   		name: name,
-  		num_users: num_users
+  		num_visitors: num_visitors
   	}
   end
 end
