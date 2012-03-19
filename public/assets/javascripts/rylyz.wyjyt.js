@@ -51,7 +51,7 @@ Rylyz.Wyjyt = {
       "rylyz.js", "rylyz.event.js", "rylyz.service.js"
       ];
     console.info("o-- Cycle: about to load javascripts");
-    Rylyz.Wyjyt.loadScriptsSerially("http://" + Rylyz.PlayerHost+ "/assets", scriptNames, function() {
+    Rylyz.Wyjyt.loadScriptsSerially("http://" + Rylyz.PlayerHost+ "/assets/javascripts", scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
