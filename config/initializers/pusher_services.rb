@@ -307,7 +307,6 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
   VISITORS_WIDS[wid] = visitor # make visitor available by wid lookup
   PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
 
-
   PusherChannels.instance.start_private_channel(wid)
   PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
     visitor = VISITORS_WIDS[wid]
@@ -339,10 +338,39 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
       tokens = tokens || {}
     end
     begin #safeguard the handler block
-      target_controller = AppRylyzController::lookup_controller(tokens) || AppRylyzController
-      action = tokens["action"] || "unknown"
-      action = "on_" + action.underscore
-      target_controller.send(action, visitor, tokens)
+
+      controllers = AppRylyzController::lookup_controller(tokens) 
+      action = tokens["action"] || "action_is_unknown"
+
+      #for hi events, the event type will specify the handler 
+      if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
+
+      action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
+
+      target_controller = nil
+
+      ctrlr = controllers[:display_controller] #see if display controller has a handler
+      target_controller = ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+      ctrlr = controllers[:screen_controller]  #else see if scereen controllerhas a handler
+      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+      ctrlr = controllers[:app_controller]  #else see if app controller has a handler
+      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+      ctrlr = AppRylyzController   #finally see if rylyz controller has a handler
+      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+      target_controller.send(action, visitor, tokens) unless target_controller.nil?
+      if target_controller.nil?
+        msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!" 
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        puts msg
+        puts "tokens: #{tokens}"
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        ev = { exception: msg }
+        PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+      end
     rescue RuntimeError => e
       puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"
@@ -351,9 +379,7 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
       puts e.backtrace
       puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
       #+++TODO make this a convenience function: to trigger exceptions back 
-      ev = {
-        exception: e.to_s
-      }
+      ev = { exception: e.to_s }
       PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
     rescue Exception => e
       puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -362,9 +388,7 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
       puts "Exception: #{e}"
       puts e.backtrace
       puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      ev = {
-        exception: e.to_s
-      }
+      ev = { exception: e.to_s }
       PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
     else
       # Do this if no exception was raised

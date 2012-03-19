@@ -167,14 +167,15 @@ window.Rylyz.Pusher = {
     Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      Rylyz.Wyjyt.start({app:'connect4'});
+      Rylyz.Wyjyt.start({app:'chat'});
+      // Rylyz.Wyjyt.start({app:'connect4'});
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var display = data["display"];
       jQuery("#rylyz-widget").append(display);
       Rylyz.loadAppDisplays();
-      //Rylyz.showApp('chat', "#rylyz-widget");
-      Rylyz.showApp('connect4', "#rylyz-widget");
+      Rylyz.showApp('chat', "#rylyz-widget");
+      // Rylyz.showApp('connect4', "#rylyz-widget");
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {

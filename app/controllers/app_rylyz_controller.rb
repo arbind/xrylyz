@@ -14,18 +14,6 @@ class AppRylyzController
     output = haml_engine.render
   end
 
-  def self.on_unknown (visitor, tokens)
-  	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  	puts tokens
-  	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  end
-
-  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
-  	# uid_channel = "client-rylyz-#{tokens['wid']}"
-  	#  PusherChannels.stop_private_channel(uid_channel)
-	end
-
-
   def self.lookup_property(info, property_name)
     if(info.nil?); raise "Can not look up #{property_name}: info given is nil!" end
 
@@ -41,12 +29,7 @@ class AppRylyzController
     return nil if app_name.nil?
 
     controller_name = "App#{app_name.underscore.camelize}Controller"
-    begin
-      controller = Kernel.const_get(controller_name)
-    rescue
-      controller = nil
-    end
-    controller
+    controller = Kernel.const_get(controller_name) rescue nil
   end
 
   def self.lookup_screen_controller(info)
@@ -57,12 +40,7 @@ class AppRylyzController
     return nil if screen_name.nil?
 
     controller_name = "Screen#{screen_name.underscore.camelize}Controller"
-    begin
-      controller = app_controller.const_get(controller_name)
-    rescue
-      controller = nil
-    end
-    controller
+    controller = app_controller.const_get(controller_name) rescue nil
   end
 
   def self.lookup_display_controller(info)
@@ -73,33 +51,30 @@ class AppRylyzController
     return nil if display_name.nil?
 
     controller_name = "Display#{display_name.underscore.camelize}Controller"
-
-    begin
-      controller = screen_controller.const_get(controller_name)
-    rescue
-      controller = nil
-    end
-    controller
+    controller = screen_controller.const_get(controller_name) rescue nil
   end
 
   def self.lookup_controller (info)
-    display_name = lookup_property(info, "displayName")
-    if not display_name.nil?
-      display_controller = lookup_display_controller(info)
-      return display_controller unless display_controller.nil?
-    end 
-
-    screen_name = lookup_property(info, "screenName")
-    if not screen_name.nil?
-      screen_controller = lookup_screen_controller(info)
-      return screen_controller unless screen_controller.nil?
-    end 
-
+    display_controller = lookup_display_controller(info)
+    screen_controller = lookup_screen_controller(info)
     app_controller = lookup_app_controller(info)
-    return app_controller unless app_controller.nil?
-
-    return AppRylyzController # default
+    {
+      app_controller: app_controller,
+      screen_controller: screen_controller,
+      display_controller: display_controller
+    }
   end
+
+  def self.on_unknown (visitor, tokens)
+  	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  	puts tokens
+  	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  end
+
+  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
+  	# uid_channel = "client-rylyz-#{tokens['wid']}"
+  	#  PusherChannels.stop_private_channel(uid_channel)
+	end
 
   def self.on_open_app (visitor, tokens)
     # lookup the TargetController 

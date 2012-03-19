@@ -44,12 +44,68 @@
 			});
 
 		},
-
-		fireDataEvent4lookup: function(event) {
-      var url = Rylyz.urlAPI + "/fire/data_event/lookup.json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      $.get(url, event, function(response){console.log(response)});
+		handleDataEvent4UpdateObject: function(event) {
 		},
+		handleDataEvent4AddCollectionItem: function(event) {
+			display = Rylyz.lookupDisplay(event);
+			//+++ check display
+			data = event['data'];
+			//+++check data
+			display.collection.add(data);
+		},
+		handleDataEvent4RemoveCollectionItem: function(event) {
+		},
+
+		fireHIEvent: function(event) {
+      //+++ TODO make this independent of Pusher!
+      Rylyz.Wyjyt.triggerWIDEvent("hi", event);
+		},
+		fireHIEvent4DataInput: function(event) {
+      var ev = {
+      	queue: event.queue,
+      	type: event.type,
+      	context: event.context,
+      	settings: event.settings,
+      	formData: event.formData
+      }
+      //+++ TODO make this independent of Pusher!
+      Rylyz.Wyjyt.triggerWIDEvent("data-input", ev);
+
+		},
+		fireHIEvent4Navigation: function(event) {
+      if (!ev.nextScreen) throw "Navigation event must specify nextScreen! " + ev;
+      var nextScreenRoute = {
+      	appName: Rylyz.lookupProperty(ev, 'appName'),
+      	screenName: ev.nextScreen
+      }
+      var screen = Rylyz.lookupScreen(nextScreenRoute);
+      if (!screen) throw "A screen named '" +ev.nextScreen+ "'' can not be found to handle this navigation event!";
+      var newSettings = {
+      	select: event.select || null
+      };
+      Rylyz.showScreenWithFadeIn(screen, newSettings);
+		},
+	};
+
+		/*
+
+
+		ev = event;
+		+++ if (currentApp().currentScreen().fireHiEvent4xxx) {
+			ev = currentApp().currentScreen().fireHiEvent4xxx(ev) { //screen can override and morph the event if needed
+			if (!ev) return; //fire method has been overriden by the screen and returned false.
+		}
+		fireHiEvent(ev), fireDataEvent(ev), etc..
+
+	  //specify serverPlugin: URLbased, Pusher, other?
+
+			ServerPlugin:
+			  fireHIEvent(event)
+			  fireDataEvent(event)
+			  fireTimerEvent(event)
+
+
+
 		handleDataEvent4Load: function(events) {
 			var eventList = events;
 			if (!$.isArray(eventList)) eventList = [events]; //place into array
@@ -66,76 +122,24 @@
 			    	display.model.set(event.data);
 			 	 	}
 			 	 }
-		 	 	/*
-	      //var dataCollection = Rylyz.refTables.collections[event.name] || null;
-	      var modelData = Rylyz.currentApp.currentScreen.referenceTable.lookupData(event.name) || null;
-				if ($.isArray(event.data)){
-  		    modelData.reset(event.data);
-  	  	}
-  	  	else {
-	      	//var dataObject = Rylyz.refTables.models[event.name];
-		    	modelData.set(event.data);
-		 	 	}
-		 	 	*/
+		 	 	
+	   //    //var dataCollection = Rylyz.refTables.collections[event.name] || null;
+	   //    var modelData = Rylyz.currentApp.currentScreen.referenceTable.lookupData(event.name) || null;
+				// if ($.isArray(event.data)){
+  		//     modelData.reset(event.data);
+  	 //  	}
+  	 //  	else {
+	   //    	//var dataObject = Rylyz.refTables.models[event.name];
+		  //   	modelData.set(event.data);
+		 	//  	}
+		 	 	
 		 	})
 		},
-		handleDataEvent4Update: function(event) {
-
-		},
-		handleDataEvent4AddItem: function(event) {
-			display = Rylyz.lookupDisplay(event);
-			//+++ check display
-			data = event['data'];
-			//+++check data
-			display.collection.add(data);
-		},
-
-		handleDataEvent4Remove: function(event) {
-
-		},
-
-
-		/*
-		ev = event;
-		+++ if (currentApp().currentScreen().fireHiEvent4xxx) {
-			ev = currentApp().currentScreen().fireHiEvent4xxx(ev) { //screen can override and morph the event if needed
-			if (!ev) return; //fire method has been overriden by the screen and returned false.
-		}
-		fireHiEvent(ev), fireDataEvent(ev), etc..
-	  */
-	  //specify serverPlugin: URLbased, Pusher, other?
-	  /*
-			ServerPlugin:
-			  fireHIEvent(event)
-			  fireDataEvent(event)
-			  fireTimerEvent(event)
-	  */
-
 		//User/Client events fired to Service
 		fireTimerEvent: function(event) {
       var url = Rylyz.urlAPI + "/fire/hi_event/timer.json";
       if (DBUG) dbugOut("sending event to server:" + url);
       $.get(url, event, function(response){console.log(response)});
-		},
-		fireHIEvent: function(event) {
-      var url = Rylyz.urlAPI + "/"+ev.type+"/"+ev.column+". json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      $.get(url, function(response){console.log(response)});
-		},
-		fireHIEvent4DataEntry: function(event) {
-      var url = Rylyz.urlAPI + "/fire/hi_event/data_entry.json";
-      if (DBUG) dbugOut("sending event to server:" + url);
-      var ev = {
-      	queue: event.queue,
-      	type: event.type,
-      	context: event.context,
-      	settings: event.settings,
-      	formData: event.formData
-      }
-      //+++ TODO make this independent of Pusher!
-      Rylyz.Pusher.triggerWIDEvent("data-input", ev);
-
-      //$.get(url, ev, function(response){console.log(response)});			
 		},
 		fireHIEvent4Chat: function(event) {
       var url = Rylyz.urlAPI + "/fire/hi_event/chat.json";
@@ -157,19 +161,6 @@
       if (DBUG) dbugOut("sending event to server:" + url);
       $.get(url, event, function(response){console.log(response)});
 		},
-		fireHIEvent4Navigation: function(event) {
-      if (!ev.nextScreen) throw "Navigation event must specify nextScreen! " + ev;
-      var nextScreenRoute = {
-      	appName: Rylyz.lookupProperty(ev, 'appName'),
-      	screenName: ev.nextScreen
-      }
-      var screen = Rylyz.lookupScreen(nextScreenRoute);
-      if (!screen) throw "A screen named '" +ev.nextScreen+ "'' can not be found to handle this navigation event!";
-      var newSettings = {
-      	select: event.select || null
-      };
-      Rylyz.showScreenWithFadeIn(screen, newSettings);
-		},
 		fireHIEvent4Screen: function(event) {
       var url = Rylyz.urlAPI + "/fire/hi_event/screen.json";
       if (DBUG) dbugOut("sending event to server:" + url);
@@ -185,6 +176,7 @@
       if (DBUG) dbugOut("sending event to server:" + url);
       $.get(url, event, function(response){console.log(response)});
 		},
+
 		//Game Events received from Service
 		handleGameEvent: function(event) {
 
@@ -216,9 +208,18 @@
 		handleGameEvent4Widget: function(event) {
 
 		},
-	};
+		*/
 
 
+
+  var hFireHIEvent = {
+		queue:"hi",
+    handleEvent: function(ev) {
+    	console.log(ev);
+    	Rylyz.Service.fireHIEvent(ev);
+    }
+  }
+  Rylyz.event.registerQueueHandler(hFireHIEvent);
 
 
   var hAddItem = {
@@ -226,7 +227,7 @@
 		type:"add-item",
     handleEvent: function(ev) {
     	console.log(ev);
-    	Rylyz.Service.handleDataEvent4AddItem(ev);
+    	Rylyz.Service.handleDataEvent4AddCollectionItem(ev);
     }
   }
   Rylyz.event.registerEventHandler(hAddItem);
@@ -274,7 +275,7 @@
         return false;
       }); //make sure a form is submitted only once
 			*/
-      Rylyz.Service.fireHIEvent4DataEntry(ev);
+      Rylyz.Service.fireHIEvent4DataInput(ev);
       //+++fire event to send formData to server
   	}
   }
