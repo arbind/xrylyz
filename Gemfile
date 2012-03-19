@@ -2,6 +2,11 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.1'
 
+# run thin in production
+group :production do
+  gem 'thin'
+end
+
 #MongoDB
 gem 'mongoid'
 gem 'bson_ext'
