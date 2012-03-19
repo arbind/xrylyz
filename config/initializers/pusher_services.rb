@@ -5,8 +5,9 @@ require 'active_support/inflector'
 
 #HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
 #if ("heroku"==ENV["APP_HOST"]);
-puts ENV
-HOST = "#{ENV["APP_NAME"]}.herokuapp.com"
+puts "host = #{HOST}"
+RYLYZ_PLAYER_HOST = "#{ENV["APP_NAME"]}.herokuapp.com"
+puts "player host = #{RYLYZ_PLAYER_HOST}"
 #end
 
 NoOBJECT = {}
@@ -91,7 +92,7 @@ class PusherChannels
   # Revist this approach when re-architecting for scaleability having multiple servers.
   # !!!! end
   def materialize_channel_name(scope, channel_name)
-    "#{scope.to_s}-rylyz-#{channel_name}-#{HOST}"
+    "#{scope.to_s}-rylyz-#{channel_name}-#{RYLYZ_PLAYER_HOST}"
   end
 
   def channel_name_for_app(app_name)
