@@ -4,6 +4,9 @@ o The Socket Services (Pusher) that the wyjyt uses
 o The rylyz openApp javascript framework
 o An example blog page showing a usage of wyjyt.js [http://rylyz-player.herokuapp.com/blogger/blog]
 
+== To Build
+make sure to manually compile the styesheets:
+--> $ sass --watch app/assets/sass:public/assets/css
 
 == To start this service on port 80
 --> $ sudo apachectl stop
