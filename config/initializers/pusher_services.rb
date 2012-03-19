@@ -3,6 +3,8 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
+
 NoOBJECT = {}
 
 #+++TODO: store all channel related data in redis
@@ -85,7 +87,7 @@ class PusherChannels
   # Revist this approach when re-architecting for scaleability having multiple servers.
   # !!!! end
   def materialize_channel_name(scope, channel_name)
-    "#{scope.to_s}-rylyz-#{channel_name}-#{Socket.gethostname}"
+    "#{scope.to_s}-rylyz-#{channel_name}-#{HOST}"
   end
 
   def channel_name_for_app(app_name)
