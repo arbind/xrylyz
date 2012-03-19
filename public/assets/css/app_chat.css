@@ -1,0 +1,38 @@
+.chat-app {
+  top: 0;
+  left: 0;
+  border: 8px solid black;
+  background-color: #333333;
+  padding: 20px; }
+  .chat-app h1 {
+    color: #000055; }
+  .chat-app .screen h1 {
+    color: #005500; }
+  .chat-app .screen h2 {
+    color: #550055; }
+
+.chat-room-screen {
+  color: white;
+  top: 0;
+  left: 0;
+  border: 2px solid blue;
+  background-color: #333355;
+  padding: 20px; }
+  .chat-room-screen .messages {
+    border: 1px solid blue;
+    background-color: #555588;
+    padding: 20px; }
+    .chat-room-screen .messages .messages-collection {
+      border: 1px solid red; }
+      .chat-room-screen .messages .messages-collection ul li {
+        padding: 0;
+        margin-right: 20px;
+        border: 0;
+        line-height: 2em;
+        border-top: 1px solid #666677;
+        color: #999955;
+        list-style-image: none;
+        list-style-type: none; }
+    .chat-room-screen .messages form fieldset ul li input.text {
+      color: #CCCCFF;
+      border: 4px dotted blue; }

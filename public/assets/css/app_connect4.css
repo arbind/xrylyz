@@ -1,0 +1,12 @@
+.connect4-app {
+  top: 0;
+  left: 0;
+  border: 8px solid purple;
+  background-color: #333388;
+  padding: 20px; }
+  .connect4-app h1 {
+    color: #5555CC; }
+  .connect4-app .screen h1 {
+    color: #005500; }
+  .connect4-app .screen h2 {
+    color: #550055; }
