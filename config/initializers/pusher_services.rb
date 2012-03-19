@@ -77,6 +77,17 @@ class PusherChannels
     db_populate_channels
   end
 
+  # !!!! begin
+  # to isolate a listener to this server only: add a hostname to the channel name:
+  # adding hostname to end of a channel name will ensure that listeners run only on 1 machine
+  # be aware that in order to communicate to this server's listener:
+  # the javascript clients must also add this same hostname to its channels 
+  # Revist this approach when re-architecting for scaleability having multiple servers.
+  # !!!! end
+  def materialize_channel_name(scope, channel_name)
+    "#{scope.to_s}-rylyz-#{channel_name}-#{Socket.gethostname}"
+  end
+
   def channel_name_for_app(app_name)
     channel_name = APP_CHANNELS[app_name]
     return channel_name unless channel_name.nil?
@@ -104,19 +115,16 @@ class PusherChannels
   end
 
   def trigger_public_channel_event(channel_name, event_name, tokens)
-    #public_event_name = "rylyz-#{event_name}"
     trigger_channel_event(:public, channel_name, event_name, tokens)
   end
   def trigger_private_channel_event(channel_name, event_name, tokens)
-    #private_event_name = "client-rylyz-#{event_name}"
     trigger_channel_event(:private, channel_name, event_name, tokens)
   end
   def trigger_presence_channel_event(channel_name, event_name, tokens)
-    #presence_event_name = "client-rylyz-#{event_name}"
     trigger_channel_event(:presence, channel_name, event_name, tokens)
   end
   def trigger_channel_event(scope, channel_name, event_name, tokens)
-    scoped_channel_name = "#{scope.to_s}-rylyz-#{channel_name}"
+    scoped_channel_name = materialize_channel_name(scope, channel_name)
     puts "Sending #{event_name} on #{scoped_channel_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
   end
@@ -196,7 +204,7 @@ class PusherChannels
 
   def listener_thread_for_channel(scope, channel_name)
     return @channels[scope][channel_name] if @channels[scope][channel_name]
-    scoped_channel_name = "#{scope.to_s}-rylyz-#{channel_name}"
+    scoped_channel_name = materialize_channel_name(scope, channel_name)
     listener_thread = Thread.new do
           puts "-------o #{scoped_channel_name} Thread Starting"
           Thread.current[:connected] = false

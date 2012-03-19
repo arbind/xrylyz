@@ -1,5 +1,4 @@
 (function() {
-var  rylyzPlayerHost = "http://rylyz-player.herokuapp.com";
 var  wyjytCSS = 'rylyz.wyjyt';
 
   
@@ -7,6 +6,7 @@ var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
 
 window.Rylyz = window.Rylyz || {};
+Rylyz.PlayerHost = null;
 var socketService = "Pusher"; // use this messaging service
 
 var jQueryVersion = '1.7.1';
@@ -22,12 +22,13 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
 
   fetchCSS: function(name) {
-    var css_href = rylyzPlayerHost + '/assets/' + name + ".css";
+    var css_href = "http://" + Rylyz.PlayerHost + '/assets/' + name + ".css";
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },
   setup: function() {
     jQuery(document).ready(function($) {
+      Rylyz.PlayerHost = jQuery("#rylyz-widget").attr("data-hostname");
       Rylyz.Wyjyt.fetchCSS(wyjytCSS);
 
       //setup socket service and register socket event handlers
@@ -50,7 +51,7 @@ Rylyz.Wyjyt = {
       "rylyz.js", "rylyz.event.js", "rylyz.service.js"
       ];
     console.info("o-- Cycle: about to load javascripts");
-    Rylyz.Wyjyt.loadScriptsSerially(rylyzPlayerHost+ "/assets", scriptNames, function() {
+    Rylyz.Wyjyt.loadScriptsSerially("http://" + Rylyz.PlayerHost+ "/assets", scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
@@ -145,7 +146,7 @@ window.Rylyz.Pusher = {
   socketID: null,
   channels: {},
   config: {
-    authEndpoint: rylyzPlayerHost + '/wyjyt/pusher_auth',
+    authEndpointPath: '/wyjyt/pusher_auth',
     apiKeyPusher: 'a9206fc7a3b77a7986c5',
   },
   setup: function() {
@@ -249,7 +250,7 @@ window.Rylyz.Pusher = {
   },
   authenticateConnection: function() {
     if (this.singleton) return this.singleton;
-    Pusher.channel_auth_endpoint = Rylyz.Pusher.config.authEndpoint;
+    Pusher.channel_auth_endpoint = "http://" + Rylyz.PlayerHost + Rylyz.Pusher.config.authEndpointPath;
     this.singleton = new Pusher(Rylyz.Pusher.config.apiKeyPusher);
     this.singleton.connection.bind('connected', function() {
       var p = Rylyz.Pusher.singleton;
@@ -300,7 +301,7 @@ window.Rylyz.Pusher = {
     return Rylyz.Pusher.triggerChannelEvent("presence", channelName, eventName, tokens);
   },
   triggerChannelEvent: function(scope, channelName, eventName, tokens) {
-    var scopedChannelName = scope + "-rylyz-" + channelName;
+    var scopedChannelName = Rylyz.Pusher.materializeChannelName(scope, channelName);
     var scopedEventName = "rylyz-" + eventName;
     if ("public"!=scope) scopedEventName = "client-" + scopedEventName;
     var channel = this.channel(scope, channelName);
@@ -329,7 +330,7 @@ window.Rylyz.Pusher = {
       if (!p) throw "Could not establish connection with pusher!";
     };
     //convert all channels to private so they are bi-directional (required by Pusher Trigge API)
-    var scopedChannelName = scope + "-rylyz-" + channelName
+    var scopedChannelName = Rylyz.Pusher.materializeChannelName(scope, channelName);
     var channel = Rylyz.Pusher.channels[scopedChannelName];
     if (channel) {
       //+++check if channel is ok, else destroy it an re-subscribe
@@ -355,11 +356,14 @@ window.Rylyz.Pusher = {
     return Rylyz.Pusher.closeChannel("presence", channelName);
   },
   closeChannel: function(scope, channelName) {
-    var scopedChannelName = scope + "-rylyz-" + channelName
+    var scopedChannelName = Rylyz.Pusher.materializeChannelName(scope, channelName);
     return Rylyz.Pusher.unsubscribe(scopedChannelName);
   },
   unsubscribe: function(channelName) {
     Rylyz.Pusher.authenticateConnection().unsubscribe(channelName);
+  },
+  materializeChannelName: function(scope, channelName) {
+    return scope + "-rylyz-" + channelName  + "-" + Rylyz.PlayerHost;
   }
 };
 
