@@ -22,7 +22,7 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
 
   fetchCSS: function(name) {
-    var css_href = "http://" + Rylyz.PlayerHost + '/assets/css' + name + ".css";
+    var css_href = "http://" + Rylyz.PlayerHost + '/assets/css/' + name + ".css";
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },
