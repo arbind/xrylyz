@@ -22,7 +22,7 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
 
   fetchCSS: function(name) {
-    var css_href = "http://" + Rylyz.PlayerHost + '/assets/' + name + ".css";
+    var css_href = "http://" + Rylyz.PlayerHost + '/assets/css' + name + ".css";
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },
@@ -51,7 +51,7 @@ Rylyz.Wyjyt = {
       "rylyz.js", "rylyz.event.js", "rylyz.service.js"
       ];
     console.info("o-- Cycle: about to load javascripts");
-    Rylyz.Wyjyt.loadScriptsSerially("http://" + Rylyz.PlayerHost+ "/assets/javascripts", scriptNames, function() {
+    Rylyz.Wyjyt.loadScriptsSerially("http://" + Rylyz.PlayerHost+ "/assets/js", scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
