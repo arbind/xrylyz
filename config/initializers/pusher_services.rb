@@ -3,11 +3,9 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
-#HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
-#if ("heroku"==ENV["APP_HOST"]);
-RYLYZ_PLAYER_HOST = "#{ENV["APP_NAME"]}.herokuapp.com"
-puts "player host = #{RYLYZ_PLAYER_HOST}"
-#end
+RYLYZ_PLAYER_HOST = Socket::gethostname rescue "localhost"
+RYLYZ_PLAYER_HOST = "#{ENV["APP_NAME"]}.herokuapp.com" unless ENV["APP_NAME"].nil?
+puts "RYLYZ_PLAYER_HOST = #{RYLYZ_PLAYER_HOST}"
 
 NoOBJECT = {}
 
