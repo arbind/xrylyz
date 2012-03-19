@@ -5,7 +5,6 @@ require 'active_support/inflector'
 
 #HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
 #if ("heroku"==ENV["APP_HOST"]);
-puts "host = #{HOST}"
 RYLYZ_PLAYER_HOST = "#{ENV["APP_NAME"]}.herokuapp.com"
 puts "player host = #{RYLYZ_PLAYER_HOST}"
 #end
