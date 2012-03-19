@@ -3,8 +3,11 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
-HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
-if ("heroku"==ENV["APP_HOST"]); HOST = "#{ENV["APP_NAME"]}.herokuapp.com" end
+#HOST = "#{Socket::gethostbyname(Socket::gethostname)[0]}" rescue "localhost"
+#if ("heroku"==ENV["APP_HOST"]);
+puts ENV
+HOST = "#{ENV["APP_NAME"]}.herokuapp.com"
+#end
 
 NoOBJECT = {}
 
