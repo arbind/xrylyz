@@ -3,6 +3,37 @@ class AppConnect4Controller < AppRylyzController
   def self.on_load_data(visitor, tokens)
   end
 
+	  def self.on_join_game(visitor, tokens)
+	  	wid = tokens["wid"]
+      select = tokens["select"]
+      game = Connect4Game.find(select)
+
+	    game.player2_visitor = visitor
+
+	    game.game_is_in_progress = true
+  	  game.player_to_act = 1
+      if game.save
+	      ctx = {appName: app_name}
+	     	settings = { select: game.id.to_s }
+	      event  = {queue:'screen', type:'navigation', nextScreen:'play-game', context:ctx, settings:settings }
+
+	      # set context for player num
+        # session[:player_num] = 2
+        # Pusher["connect4-#{@connect4_game.id}"].trigger('refresh', '{started!}')
+        # format.html { redirect_to @connect4_game, notice: 'Game has started!.' }
+
+        #+++ navigate both players to the game?
+
+	      PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
+	      PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event)
+
+      else
+      	#+++ todo if save fails
+      end
+    end
+
+
+
   class ScreenInputNicknameController < AppRylyzScreenController
 
   	def self.on_data_input(visitor, tokens) 
@@ -31,6 +62,10 @@ class AppConnect4Controller < AppRylyzController
 	  def self.on_load_data(visitor, tokens)
 	  	games = Connect4Game.all
 
+	  	games.each do |game|
+	  		game.destroy if not game.is_active?
+	  	end
+
 	  	client_events = []
 
       ctx = {appName: app_name, screenName:'lobby', displayName:'overview'}
@@ -50,10 +85,11 @@ class AppConnect4Controller < AppRylyzController
 	  	wid = tokens["wid"]
 	    new_game = Connect4Game.new
 
-	    new_game.player1 = visitor.nickname
+	    new_game.player1_visitor = visitor
+
 	    if new_game.save
 	      ctx = {appName: app_name, screenName:'lobby', displayName:'games'}
-	      data = new_game.for_display
+	      data = new_game.for_display_as_list_item
 	      event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
 	      PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
 
@@ -130,14 +166,16 @@ class AppConnect4Controller < AppRylyzController
       settings = tokens["settings"]
       select = settings["select"]
       game = Connect4Game.find(select)
-      ctx = {appName: app_name, screenName:'play-game'}
-      event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
-      PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
+
+      # ctx = {appName: app_name, screenName:'play-game'}
+      # event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
+      # PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
 
 	    move = tokens['column']
 
 	    # lookup myplayer num by visitor
-	    data = game.move(1, move.to_i)
+	    data = game.move(visitor, move.to_i)
+	    return if data.nil?  #invalid move - send message to visitor
 	    # event = game.move(my_player_num, move.to_i)
       ctx = {appName: app_name, screenName:'play-game', displayName:'game-pieces'}
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}

@@ -25,9 +25,8 @@
 			%collection
 
 	%item{:name=>"game-item"}
-		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'play-game', select:'[[id]]'}" }
+		%li{"fire-onClick"=>"{queue:'hi', type:'join_game', select:'[[id]]'}" }
 			[[player1]] vs [[player2]] ([[id]])
-
 
 	%screen{:name=>"play-game"}
 		%h2 Play Game

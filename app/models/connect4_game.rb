@@ -11,10 +11,33 @@ class Connect4Game
   field :winner, :type => Integer, :default => 0
   field :player_to_act, :type => Integer, :default => 1
 
+  field :player1_visitor_id, :type => String, :default=>nil
+  field :player2_visitor_id, :type => String, :default=>nil
+
   field :_channel_id, :type => String, :default=>nil
 
 
   after_initialize :allocate_arrays, :channel_id
+
+  def player1_visitor
+    VISITORS[player1_visitor_id]
+  end
+  def player2_visitor
+    VISITORS[player2_visitor_id]
+  end
+
+  def player1_visitor=(visitor)
+      self.player1 = visitor.nickname
+      self.player1_visitor_id = visitor.id.to_s
+  end
+  def player2_visitor=(visitor)
+      self.player2 = visitor.nickname
+      self.player2_visitor_id = visitor.id.to_s
+  end
+
+  def is_active?
+    return (not player1_visitor.nil?) # true if player1 is a visitor
+  end
 
   def channel_id ()
     _channel_id ||= PusherChannels.instance.channel_name_for_class_id(self.class, _id)
@@ -86,18 +109,16 @@ class Connect4Game
     }
   end
 
-  def move(player_num, column_num)
-  puts "!!!!!moving1 #{player_num}  #{column_num}"
+  def move(visitor, column_num)
+    player_num = -1
+    player_num = 1 if (visitor.id.to_s == player1_visitor_id)
+    player_num = 2 if (visitor.id.to_s == player2_visitor_id)
     event = {}
-  puts "!!!!!moving1.0"
     return nil unless 0==winner             #player(winner) has won the game
-  puts "!!!!!moving1.1"
-    #return nil unless game_is_in_progress     #game is not in progress
-    #return nil unless player_to_act==player_num #Its not your turn!
+    return nil unless game_is_in_progress     #game is not in progress
+    return nil unless player_to_act==player_num #Its not your turn!
     return nil if column_num < 0                #Error: invalid move
-  puts "!!!!!moving1.2"
     return nil if column_num >= column_count    #Error: invalid move
-  puts "!!!!!moving2"
 
     col =  self.board[column_num] 
     row_num = -1
@@ -108,7 +129,6 @@ class Connect4Game
     end
     return if row_num < 0                    #Error: invalid move
     return if row_num >= row_count           #Error: invalid move
-  puts "!!!!!moving3"
 
     puts "droping token for player #{player_num} into colum #{column_num}"
     board[column_num][row_num] = player_num
@@ -116,12 +136,10 @@ class Connect4Game
       self.winner=player_num 
       self.game_is_in_progress = false
     end
-  puts "!!!!!moving4"
     #verify game_is_in_progress
     self.player_to_act = other_player(player_num)
     #last_move
     save
-  puts "!!!!!moving5"
     event[:col] = column_num;
     event[:row] = row_num;
     event[:color] = player_token(player_num)
@@ -177,8 +195,6 @@ private
   def allocate_arrays
     if players.nil?
       self.players = Array.new(2)
-      # self.players[0] = player2
-      # self.players[1] = player1
     end
     if (board.nil? || board.empty?)
       self.board = []

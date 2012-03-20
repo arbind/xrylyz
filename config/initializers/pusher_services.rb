@@ -23,8 +23,8 @@ OBJECT_CHANNELS = {}
 
 # VISITORS_AUTHENTICATING = {}
 VISITORS = {} # lookup visitor by id temporary memory storage! 
-VISITORS_WIDS = {} # lookup visior by wid
-VISITORS_SOCKETS = {} # lookup visior by socket_id
+VISITOR_WIDS = {} # lookup visior by wid
+VISITOR_SOCKETS = {} # lookup visior by socket_id
 
 class Visitor
 
@@ -307,15 +307,15 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
   url = tokens["url"]
   socket_id = tokens["pusher_socket_id"]
 
-  visitor = VISITORS_SOCKETS[socket_id]
+  visitor = VISITOR_SOCKETS[socket_id]
   visitor.wid = wid
   visitor.source_url = url
-  VISITORS_WIDS[wid] = visitor # make visitor available by wid lookup
+  VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
   PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
 
   PusherChannels.instance.start_private_channel(wid)
   PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
-    visitor = VISITORS_WIDS[wid]
+    visitor = VISITOR_WIDS[wid]
     tokens = nil
     begin
       # lookup the TargetController 

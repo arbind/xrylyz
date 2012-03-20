@@ -80,8 +80,10 @@
       }
       var screen = Rylyz.lookupScreen(nextScreenRoute);
       if (!screen) throw "A screen named '" +ev.nextScreen+ "'' can not be found to handle this navigation event!";
+      var select = event.select || null;
+      if (!select && event.settings) select = event.settings.select;
       var newSettings = {
-      	select: event.select || null
+      	select: select
       };
       Rylyz.showScreenWithFadeIn(screen, newSettings);
 		},

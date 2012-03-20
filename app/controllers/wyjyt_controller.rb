@@ -14,7 +14,7 @@ class WyjytController < ApplicationController
       # if all is well, create a visitor session
       v = Visitor.new
       v.socket_id = socket_id
-      VISITORS_SOCKETS[socket_id]=v  #make this visitor available by socket_id
+      VISITOR_SOCKETS[socket_id]=v  #make this visitor available by socket_id
       render :json => pusher_response
     end
   end
