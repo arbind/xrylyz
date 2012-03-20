@@ -1,0 +1,109 @@
+
+<script id="game-board-template" type="text/template" >
+<div class="board_canvas">
+  <@ var idx = 0; @>
+  <@ _.each(_.range(columnCount), function(col) { @>
+  <div class="dropspot" fire-onClick="{ queue:'hi', type:'move', column:<@= idx++ @> }"></div>
+  <@ }); @>
+  <div class="board">
+    <div class="game-pieces-spot"></div>
+    <div class="holes">
+    <@ var idx = 0; @>
+      <@ _.each(_.range(columnCount), function(col) { @>
+      <div class='column'>
+        <@ _.each(_.range(rowCount), function(row) { @>
+        <div class='hole' fire-onMouseOver="{ queue:'mindlinks', type:'move', column:<@= idx @> }" fire-onClick="{ queue:'hi', type:'move', column:<@= idx @> }"></div>
+        <@ }); @>
+      </div>
+      <@ idx++; @>
+      <@ }); @>
+    </div>
+    <div class="board_sheen">&nbsp;</div>
+  </div>
+</div>
+</script>
+
+
+<script id="game-status-template" type="text/template" >
+  <h3> connect <@= connect_to_win_count @> to win </h3>
+  <div class="menu" fire-onClick="{ queue:'screen', type:'navigation', nextScreen:'winner-screen' }">navigate </div>
+  <h4>
+    <@ if (0<winner) { @>
+    Player <@= winner @> wins!
+    <@ }; @>
+    &nbsp;
+  </h4>
+  <h5>
+    <@ if (0<message) { @>
+    <@= message @>
+    <@ }; @>
+    &nbsp;
+  </h5>
+  <h4> 
+    <@ if (0<player_to_act) { @>
+    Player <@= player_to_act @> - Its your turn!
+    <@ }; @>
+    &nbsp;
+  </h4>
+</script>
+
+
+<script id="me-template" type="text/template" >
+
+</script>
+
+
+<script id="game-list-item-template" type="text/template" >
+  <div class="game-list-item" fire-onClick="{ queue:'screen', type:'navigation', nextScreen:'main-screen', select:'<@= gameID @>' }">
+   <@= player1 @> vs <@= player2 @>
+  </div>
+</script>
+
+<script id="game-list-template" type="text/template" >
+  <div class="collection"/>
+</script>
+
+<script id="game-list-screen-template" type="text/template" >
+  <div id="screen game-list-screen"/>  
+    <div class="game-list-spot"/>
+    <div class="menu" fire-onClick="{ queue:'screen', type:'navigation', nextScreen:'main-screen' }">navigate </div>
+  </div>
+</script>
+
+<script id="winner-screen-template" type="text/template" >
+  <div id="screen main-screen"/>  
+    <div class="menu" fire-onClick="{ queue:'screen', type:'navigation', nextScreen:'main-screen' }">navigate </div>
+    <div class="game-board-spot"/>
+  </div>
+</script>
+
+<script id="Connect4-App-template" type="text/template" >
+  <div id="app Connect4-App">
+    <div class="screen-spot"/>  
+  </div>
+</script>
+
+
+<script id="game-status-template" type="text/template" >
+  <h3> connect <@= connect_to_win_count @> to win </h3>
+  <div class="menu" fire-onClick="{ queue:'screen', type:'navigation', nextScreen:'winner-screen' }">navigate </div>
+  <h4>
+    <@ if (0<winner) { @>
+    Player <@= winner @> wins!
+    <@ }; @>
+    &nbsp;
+  </h4>
+  <h5>
+    <@ if (0<message) { @>
+    <@= message @>
+    <@ }; @>
+    &nbsp;
+  </h5>
+  <h4> 
+    <@ if (0<player_to_act) { @>
+    Player <@= player_to_act @> - Its your turn!
+    <@ }; @>
+    &nbsp;
+  </h4>
+</script>
+

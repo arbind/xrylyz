@@ -64,10 +64,10 @@ Rylyz.event = function() {
       var q = eh.queue
       var type = eh.type;
       if (!type || !q) {
-        var msg = "The event's type: and queue: must be specifed when registering an event handler!";
+        var msg = "The event's type: and queue: must be specifed when for an event handler!";
         console.error(msg);
         console.error(eh);
-        throw msg;
+        //throw msg;
       }
       return q + "." + type;
     },
@@ -203,7 +203,12 @@ Rylyz.event = function() {
       this.fireEvent(ev);
     },
     fireEvent: function(ev) {
-      Rylyz.event.enqueue(ev);
+      var eventList = ev;
+      if (!$.isArray(ev)) eventList = [ev];  // create a list of events
+
+      $.each(eventList, function(idx, e){ // fire each one
+        Rylyz.event.enqueue(e);
+      });
     },
     enqueue: function(ev) {
       var key = this.registryKey(ev);

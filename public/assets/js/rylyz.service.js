@@ -263,8 +263,7 @@
       f = srcElementForDOMEvent(ev.domEvent);
       var formData = extractFormData(f);
       ev.formData = formData;
-      alert('form submitted and handled in handler: ' + formData.toString());
-
+console.log(ev)
       var display = Rylyz.lookupDisplay(ev);
       //if form should only be submitted once, unbind its submit handler:
       /*

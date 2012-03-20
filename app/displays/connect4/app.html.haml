@@ -1,10 +1,78 @@
 %rylyz
 	
-	%app{:name=>"connect4", :"start-screen" => "splash"}
+	%app{:name=>"connect4", :"start-screen" => "input-nickname"}
 		%h1 Connect 4!
-		%screen{:name=>"splash"}
+		%screen{:name=>"input-nickname"}
+		%screen{:name=>"lobby"}
+		%screen{:name=>"play-game"}
 
-	%screen{:name=>"splash"}
-		%h2 splash
-		.start-new-game{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}"}
-			Play a New Game!
+	%screen{:name=>"input-nickname"}
+		%h2 Enter Your Nickname To Play:
+		%form{:id=>"nickname-form", :target=>"", :action => "", :method => "", :name=>"nickname"}
+			.field
+				%input.text{:type => "text", :name => "nickname"}
+				%input{:type => "submit", :value => "Ok", :class => "button"}
+
+	%screen{:name=>"lobby"}
+		%h2 Lobby
+		.create-new-game{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
+			Start New Game
+		%collection{:name=>"games"}
+
+	%collection{:name=>"games", :item=>"game-item", "data-defaults"=>"[{id:1, player1:'a', player2:'b'},{id:2, player1:'a', player2:'b'}, {id:3, player1:'a', player2:'b'}]"}
+		%h3 Games
+		%ul
+			%collection
+
+	%item{:name=>"game-item"}
+		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'play-game', select:'[[id]]'}" }
+			[[player1]] vs [[player2]] ([[id]])
+
+
+	%screen{:name=>"play-game"}
+		%h2 Play Game
+		.screen.main-screen
+			%div{:style=>"float:right"}
+				%xxxobject{:name=>"status"}
+			%object{:name=>"game-board"}
+				%collection{:name=>"game-pieces"}
+			%object{:name=>"player1"}
+			%object{:name=>"player2"}
+
+	%object{:name=>"player1", "data-defaults"=>"{player_num:1, name:'kim', is_turn_to_act:true, color:'red'}"}
+		%h1 Player [[player_num]]: [[name]]
+		! [! if (is_turn_to_act) { !]
+		%div{:class=>"chip [[color]]"}
+		! [! } !]
+
+	%object{:name=>"player2", "data-defaults"=>"{player_num:2, name:'jim', is_turn_to_act:true, color:'blue'}"}
+		%h1 Player [[player_num]]: [[name]]
+		! [! if (is_turn_to_act) { !]
+		%div{:class=>"chip [[color]]"}
+		! [! } !]
+
+	%item{:name=>"chip"}
+		%div{:class=>"chip [[color]] c[[col]] r[[row]]"}
+
+	%collection{:name=>"game-pieces", :item=>"chip"}
+		%collection
+
+	%object{:name=>"game-board", "data-defaults"=>"{column_count:5, row_count:5}"}
+		%h1 Game Board [[column_count]] x [[row_count]]
+		.board_canvas
+			! [! var idx = 0; !]
+			! [! _.each(_.range(column_count), function(col) { !]
+			.dropspot{"fire-onClick"=>"{ queue:'hi', type:'move', column:[[ idx++ ]] }"}
+			! [! }); !]
+			.board
+				.game-pieces-spot
+				.holes
+					! [! var idx = 0; !]
+					! [! _.each(_.range(column_count), function(col) { !]
+					.column
+						! [! _.each(_.range(row_count), function(row) { !]
+						.hole{"fire-onMouseOver"=>"{ queue:'mindlinks', type:'move', column:[[ idx ]] }", "fire-onClick"=>"{ queue:'hi', type:'move', column:[[ idx ]] }"}
+						! [! }); !]
+					! [! idx++; !]
+					! [! }); !]
+				.board_sheen &nbsp;

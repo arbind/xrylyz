@@ -3,6 +3,12 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+# +++TOOD detect when wid is no longer connected:
+# 1. scan threads and collect the ones time of last send or receive > 5 seconds
+# 2. ping the wids of the collected threads, setting a timer to check for a pong
+# 3. if wid does not pong by the time the timer comes back, that thread may be disconnected
+# Alternatively: Use a presence channel with the callbacks for Unsubscribe
+
 RYLYZ_PLAYER_HOST = Socket::gethostname rescue "localhost"
 RYLYZ_PLAYER_HOST = "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HEROKU_APP_NAME"].nil?
 puts "RYLYZ_PLAYER_HOST = #{RYLYZ_PLAYER_HOST}"

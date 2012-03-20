@@ -2,8 +2,10 @@ class ChatRoom
   include Mongoid::Document
   include Mongoid::Timestamps
   field :name, :type => String, :default=>nil
-  field :_channel_id, :type => String, :default=>nil
   field :visitor_ids, :type => Array, :default=>nil
+  field :_channel_id, :type => String, :default=>nil
+
+  after_initialize :channel_id
 
   def channel_id ()
   	_channel_id ||= PusherChannels.instance.channel_name_for_class_id(self.class, _id)

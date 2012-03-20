@@ -63,7 +63,7 @@ $piece-size: 50px;
     left:0;
     width:100%;
     height:100%;
-    background-image:image-url('sheen.png');
+    background-image:url('http://arbinds-macbook-air.local/assets/img/sheen.png');
     background-size: cover;
   }
 
@@ -78,7 +78,7 @@ $piece-size: 50px;
     z-index:3;
     width: $piece-size;
     height: $piece-size;
-    background-image:image-url('hole.png');
+    background-image:url('http://arbinds-macbook-air.local/assets/img/hole.png');
     background-size: cover;
   }
   .dropspot {
@@ -89,7 +89,7 @@ $piece-size: 50px;
   }
   .chip {
     position:absolute;
-    z-index:-1;
+    z-index:2;
     background-color: transparent;
     width:$piece-size;
     height:$piece-size;
@@ -97,13 +97,13 @@ $piece-size: 50px;
   }
 
   .red {
-    background-image:image-url('red_chip.png');
+    background-image:url('http://arbinds-macbook-air.local/assets/img/red_chip.png');
   }
   .blue {
-    background-image:image-url('blue_chip.png');
+    background-image:url('http://arbinds-macbook-air.local/assets/img/blue_chip.png');
   }
   .black {
-    background-image:image-url('black_chip.png');
+    background-image:url('http://arbinds-macbook-air.local/assets/img/black_chip.png');
   }
   .bg{
     position:fixed;

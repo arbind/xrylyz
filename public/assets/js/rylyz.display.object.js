@@ -256,20 +256,25 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       return this;
     }
     this.$el.html(htmlContent);
+
+    //re-bind handlers for this display
     this.fireOn("click"); // bind all click events
     this.fireOn("hover"); // bind all hover events
-    if (this.renderCollectionObjects) this.renderCollectionObjects();      
-    this.loadSubDisplays();
-    this.renderSubDisplays();
-    if (this.launch) this.launch();
 
-    this.$("form").unbind('submit');
     var thisDisplay = this;
+    this.$("form").unbind('submit'); //rebind forms
     this.$("form").submit(function(event){
       ev = thisDisplay.materializeEvent({queue:'form', type:'submit', domEvent:event});
       Rylyz.event.fireEvent(ev);
       return false;
     });
+
+    //render sub displays
+    if (this.renderCollectionObjects) this.renderCollectionObjects();      
+    this.loadSubDisplays();
+    this.renderSubDisplays();
+    if (this.launch) this.launch();
+
 
     this.triggerRenderEnd();
 
@@ -340,7 +345,6 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
     var eventBase = this.materializeEvent();
     this.$("[" + fireOn + "]").bind(eventType, function(domEvent) {
-      console.log('click!!');
       Rylyz.event.fireOnDOMEvent(eventType, domEvent, eventBase);
     });
     //verify the syntax
