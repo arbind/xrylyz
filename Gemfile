@@ -7,6 +7,9 @@ group :production do
   gem 'thin'
 end
 
+#Server Monitoring
+gem 'newrelic_rpm'
+
 #MongoDB
 gem 'mongoid'
 gem 'bson_ext'
