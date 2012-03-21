@@ -167,19 +167,26 @@ class AppConnect4Controller < AppRylyzController
       select = settings["select"]
       game = Connect4Game.find(select)
 
-      # ctx = {appName: app_name, screenName:'play-game'}
-      # event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
-      # PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
-
 	    move = tokens['column']
-
-	    # lookup myplayer num by visitor
+      client_events = []
+      
 	    data = game.move(visitor, move.to_i)
 	    return if data.nil?  #invalid move - send message to visitor
-	    # event = game.move(my_player_num, move.to_i)
       ctx = {appName: app_name, screenName:'play-game', displayName:'game-pieces'}
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
-      PusherChannels.instance.trigger_private_channel_event(game.channel_id, "fire-event", event)
+      client_events << event
+
+      ctx = {appName: app_name, screenName:'play-game', displayName:'player1'}
+      data = game.player1_for_display
+      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      client_events << event
+
+      ctx = {appName: app_name, screenName:'play-game', displayName:'player2'}
+      data = game.player2_for_display
+      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      client_events << event
+
+      PusherChannels.instance.trigger_private_channel_event(game.channel_id, "fire-event", client_events)
 	  end
 
 

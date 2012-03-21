@@ -6,12 +6,13 @@ window.dbugOut = window.dbugOut || function(){ return null };
 
 window.Rylyz = window.Rylyz || {}
 
+window.refreshCSSUniqueCounter = 0;
 Rylyz.refreshCSS = function() {
   var css_link, links = [];
   jQuery("head link").each(function(idx, link) { links.push(link.href); })
   jQuery("head link").remove();
   jQuery.each(links, function(idx, href) {
-    css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: href });
+    css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: href+"?a="+refreshCSSUniqueCounter++});
     css_link.appendTo('head');
     console.log(href);
   });
@@ -21,6 +22,20 @@ Rylyz.refreshCSS = function() {
 // add peek to array
 if ('function' != typeof Array.prototype.peek) {
   Array.prototype.peek = function(){ return this.length? (this[this.length-1]) : (null) ; }
+}
+
+
+
+if ('function' != typeof hostnameOfURL) {
+  window.hostnameOfURL = function (url) {
+    return (url.match(/:\/\/(.[^/]+)/)[1]).replace('www.','');
+  }
+}
+
+if ('function' != typeof maxLength) {
+  window.hostnameOfURL = function (url) {
+    return (url.match(/:\/\/(.[^/]+)/)[1]).replace('www.','');
+  }
 }
 
 

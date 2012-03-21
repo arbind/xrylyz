@@ -14,6 +14,7 @@ var jQueryScriptURL = 'https://ajax.googleapis.com/ajax/libs/jquery/' +jQueryVer
 var pusherVersion = '1.11';
 var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
+var uniqueCounter = 0;
 Rylyz.Wyjyt = {
   //channelName: 'private-rylyz',
   wyjytChannelName: 'wyjyt',
@@ -22,7 +23,7 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
 
   fetchCSS: function(name) {
-    var css_href = "http://" + Rylyz.PlayerHost + '/assets/css/' + name + ".css";
+    var css_href = "http://" + Rylyz.PlayerHost + '/assets/css/' + name + ".css?a="+uniqueCounter++;
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },

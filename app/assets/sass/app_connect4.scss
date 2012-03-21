@@ -4,57 +4,165 @@
 $piece-size: 50px;
 
 .connect4-app {
-  top: 0;
-  left: 0;
-  border: 8px solid purple;
-  background-color: #333388;
-  padding: 20px; }
+  background-color: #1C1D1B;
+  padding: 10px 8px; 
+	width: ($piece-size*16)+38;
+	min-height: ($piece-size*8);
+	border: 20px solid rgba(8,8,8,0.8);
+  border-radius: 18px;
+	-o-border-radius: 18px;
+	-moz-border-radius: 18px;
+	-webkit-border-radius: 18px;
+
+	background-clip: padding-box;
+	-o-background-clip: padding;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding;
+
+
+	h4.your-turn{
+		color: yellow;
+	}
+	.player-panel h2, .player-panel h3, .player-panel h4, .player-panel h5 {
+		margin: 0.7em 0;
+	}
+
+  .play-game-screen, .input-nickname-screen, .lobby-screen {
+  	width: 100%;
+  	height: 100%;
+  }
+
   .connect4-app h1 {
     color: #5555CC; }
-  .connect4-app .screen h1 {
-    color: #005500; }
-  .connect4-app .screen h2 {
-    color: #550055; }
+
+ 	.turn-true, .turn-false {
+ 	}
+
+ 	.turn-indicator {
+	 	.chip {
+	 		position: static;
+	 		margin: 0px auto;
+	 	}
+	}
+ 	.turn-true{
+ 		opacity: 1;
+ 		filter:Alpha(opacity=100);
+ 	}
+ 	.turn-false {
+ 		opacity:0.18;
+ 		filter:Alpha(opacity=18); 	
+ 	}
+
+ 	.your-turn {
+ 		text-align: center;
+ 		font-weight:bold;
+ 	}
+ 	.your-turn.turn-true{
+
+ 	}
+ 	.your-turn.turn-false{
+ 		opacity:0;
+ 		filter:Alpha(opacity=0);
+ 	}
 
 
-  .player1-spot{
-    float:left;
-  }
-  .player2-spot{
-    float:left;
-  }
-  .game-board-spot{
-    float:left;
-  }
-  
-  .button-bar {
-    border: 1px solid red;
-    padding:8px;
-    margin: 12px auto;
-    .button {
-      float:left;
-      min-width: 45px;
-      line-height:1.8em;
-      padding: 8px;
-      border: 1px solid #CCCCCC;
-      margin-right: 12px;
-    }
-  }
 
-  .board {
-    position:absolute;
-    clear:both;
-    top: $piece-size;
-    left:0px;
-    z-index:2;
-  }
-  .board_canvas {
-    position:absolute;
-    float:left;
-    z-index:0;
-    background-color:#F8F8F8;
-  }
-  
+	.input-nickname-screen {
+		color: yellow;
+		form.nickname {
+	    width: $piece-size*8;
+	    height: $piece-size*4;
+	    margin: $piece-size auto; 
+  		background-color: #2C2D2B;
+	    border: 3px solid #101010;  		
+		  border-radius: 8px;
+		};
+		form {
+			.field {
+				width: 300px;
+				margin: 20px auto;
+				input {
+					 border: 1px solid white;
+						width: 200px;
+				    margin: 10px 40px;
+				    padding: 5px;
+				    font-size: 14px;
+				    text-shadow: 0px 1px 0px #fff;
+				    outline: none;
+				}
+				input:focus {
+				    -webkit-box-shadow: 0px 0px 5px yellow;
+				    -moz-box-shadow: 0px 0px 5px yellow;
+				    box-shadow: 0px 0px 5px yellow;
+				}
+			};
+		}
+	}
+  .main-screen {
+  	min-width: $piece-size*16;
+  	min-height: $piece-size*8;
+  	background-color:#282828b;
+  	.player-panel {
+	  	float:left;
+	    width: $piece-size*4;
+	    height: $piece-size*4;
+	    margin: $piece-size*2 18px; 
+  		background-color: #2C2D2B;
+	    border: 3px solid #101010;  		
+		  border-radius: 8px;
+			-o-border-radius: 8px;
+			-moz-border-radius: 8px;
+			-webkit-border-radius: 8px;
+	 		h2.blue, h3.blue, h4.blue, h5.blue { color: blue; }
+	 		h2.red, h3.red, h4.red, h5.red { color: red; }
+	 		h2.yellow, h3.yellow, h4.yellow, h5.yellow { color: yellow; }
+	 		a, a:visited, a:active {
+	 			color:yellow;
+	 			text-decoration: none;
+	 		}
+	 		a:hover {
+	 			color: #FFFFCC;
+	 		}
+	  }
+	  .player-panel.player1 {
+	    clear:left;
+	  }
+	  .board_canvas {
+	    z-index:0;
+	    float:left;
+	    min-width: $piece-size*7;
+	    min-height: $piece-size*6;
+	    background-color:transparent;
+		  .dropspot {
+		    float:left;
+		    width: $piece-size;
+		    height: $piece-size;
+		    background-color: transparent;
+		  }
+		  .board {
+		    clear:left;
+		    position:relative;
+		    z-index:2;
+		    min-width: $piece-size*7;
+		    min-height: $piece-size*6;
+			  .column {
+			  	&:hover {
+		  	 		opacity: 0.88;
+				 		filter:Alpha(opacity=88);
+			  	}
+			    float:left;
+  		    background-color: transparent;
+				  .hole {
+				    z-index:3;
+				    width: $piece-size;
+				    height: $piece-size;
+				    background-image:url('http://arbinds-macbook-air.local/assets/img/hole.png');
+				    background-size: cover;
+				  }
+			  }  
+		  }
+	  }
+	}  
   .board_sheen { /* overlay the board with a nice sheen */
     position:absolute;
     z-index:5;
@@ -70,49 +178,25 @@ $piece-size: 50px;
   .move {
     float:left;
     width:$piece-size;
-  }  
-  .column {
-    float:left;
-  }  
-  .hole {
-    z-index:3;
-    width: $piece-size;
-    height: $piece-size;
-    background-image:url('http://arbinds-macbook-air.local/assets/img/hole.png');
-    background-size: cover;
-  }
-  .dropspot {
-    float:left;
-    width: $piece-size;
-    height: $piece-size;
-    background-color:blue;
-  }
+  } 
   .chip {
     position:absolute;
-    z-index:2;
     background-color: transparent;
     width:$piece-size;
     height:$piece-size;
     background-size: cover;
   }
-
-  .red {
+  .chip.inplay {
+      z-index:-1;
+  }
+  .chip.red {
     background-image:url('http://arbinds-macbook-air.local/assets/img/red_chip.png');
   }
-  .blue {
+  .chip.blue {
     background-image:url('http://arbinds-macbook-air.local/assets/img/blue_chip.png');
   }
-  .black {
+  .chip.black {
     background-image:url('http://arbinds-macbook-air.local/assets/img/black_chip.png');
-  }
-  .bg{
-    position:fixed;
-    left: 0;
-    top: 100px;
-    height:250px;
-    width:250px;
-    background-color:blue;
-    z-index:1;
   }
 
   .c0 { left: (0 * $piece-size);}
@@ -133,3 +217,4 @@ $piece-size: 50px;
   .r2 { top: (3 * $piece-size);}
   .r1 { top: (4 * $piece-size);}
   .r0 { top: (5 * $piece-size);}
+}

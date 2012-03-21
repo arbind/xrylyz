@@ -93,9 +93,12 @@ class Connect4Game
   end
 
   def hPlayer(player_num)
+    visitor = player2_visitor
+    visitor = player1_visitor if player_num = 1
     {
       :player_num=>player_num,
       :name => player(player_num),
+      :source_url => visitor.source_url,
       :color => player_token(player_num),
       :is_turn_to_act => player_turn_to_act?(player_num)
     }
@@ -174,6 +177,7 @@ class Connect4Game
   def player_turn_to_act?(num)
     return false unless game_is_in_progress
     return true if player(player_to_act) == player(num)
+    return false
   end
 
   def player_token(num)
