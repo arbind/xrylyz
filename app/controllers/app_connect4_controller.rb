@@ -1,5 +1,10 @@
 class AppConnect4Controller < AppRylyzController
 
+	# +++TODO
+	# Send Message: Its your turn, only to wid
+	# Send Message: You Won / Lost once game is over to wid
+
+
   def self.on_load_data(visitor, tokens)
   end
 
@@ -65,6 +70,9 @@ class AppConnect4Controller < AppRylyzController
 	  	games.each do |game|
 	  		game.destroy if not game.is_active?
 	  	end
+
+	  	# only show games where player 1 is waiting for a player.
+	  	games = games.select { |game| game.player2_visitor.nil? and not game.player1_visitor.nil? }
 
 	  	client_events = []
 
@@ -140,10 +148,11 @@ class AppConnect4Controller < AppRylyzController
       event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
       client_events << event
 
-      ctx = {appName: app_name, screenName:'play-game', displayName:'player2'}
-      data = game.player2_for_display
-      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      client_events << event
+
+			ctx = {appName: app_name, screenName:'play-game', displayName:'player2'}
+			data = game.player2_for_display
+			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+			client_events << event
 
       PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
       
@@ -169,23 +178,21 @@ class AppConnect4Controller < AppRylyzController
 
 	    move = tokens['column']
       client_events = []
-      
+
 	    data = game.move(visitor, move.to_i)
 	    return if data.nil?  #invalid move - send message to visitor
       ctx = {appName: app_name, screenName:'play-game', displayName:'game-pieces'}
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
       client_events << event
 
-      ctx = {appName: app_name, screenName:'play-game', displayName:'player1'}
-      data = game.player1_for_display
-      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      client_events << event
-
-      ctx = {appName: app_name, screenName:'play-game', displayName:'player2'}
-      data = game.player2_for_display
-      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      client_events << event
-
+			ctx = {appName: app_name, screenName:'play-game', displayName:'player1'}
+			data = game.player1_for_display
+			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+			client_events << event
+			ctx = {appName: app_name, screenName:'play-game', displayName:'player2'}
+			data = game.player2_for_display
+			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+			client_events << event
       PusherChannels.instance.trigger_private_channel_event(game.channel_id, "fire-event", client_events)
 	  end
 

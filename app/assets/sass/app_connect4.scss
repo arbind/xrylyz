@@ -3,11 +3,14 @@
 
 $piece-size: 50px;
 
+.button {
+}
+
 .connect4-app {
   background-color: #1C1D1B;
   padding: 10px 8px; 
 	width: ($piece-size*16)+38;
-	min-height: ($piece-size*8);
+	min-height: ($piece-size*9)+20;
 	border: 20px solid rgba(8,8,8,0.8);
   border-radius: 18px;
 	-o-border-radius: 18px;
@@ -65,8 +68,6 @@ $piece-size: 50px;
  		filter:Alpha(opacity=0);
  	}
 
-
-
 	.input-nickname-screen {
 		color: yellow;
 		form.nickname {
@@ -79,34 +80,81 @@ $piece-size: 50px;
 		};
 		form {
 			.field {
-				width: 300px;
+		    width: $piece-size*8;
 				margin: 20px auto;
-				input {
-					 border: 1px solid white;
-						width: 200px;
-				    margin: 10px 40px;
-				    padding: 5px;
-				    font-size: 14px;
-				    text-shadow: 0px 1px 0px #fff;
-				    outline: none;
+				input.text {
+					background-color:#FFFFCC;
+					color: #010101;
+					font-weight: bold;
+				  border: 1px solid yellow;
+					width: 200px;
+			    margin: 10px 40px;
+			    padding: 5px;
+			    font-size: 14px;
+			    text-shadow: 0px 1px 0px #fff;
+			    outline: none;
 				}
-				input:focus {
-				    -webkit-box-shadow: 0px 0px 5px yellow;
-				    -moz-box-shadow: 0px 0px 5px yellow;
-				    box-shadow: 0px 0px 5px yellow;
+				a.button {
+					margin: 0px 38px;
+					width: 165px;
+				}
+				input.text:focus {
+			    -webkit-box-shadow: 0px 0px 5px yellow;
+			    -moz-box-shadow: 0px 0px 5px yellow;
+			    box-shadow: 0px 0px 5px yellow;
 				}
 			};
 		}
 	}
+
+	.lobby-screen {
+		color: yellow;
+		.games-collection {
+			width: 300px;
+			height: 200px;
+			overflow: scroll;
+			margin: 20px auto;
+			padding: 8px 20px;
+  		background-color: #2C2D2B;
+	    border: 3px solid #101010;  		
+		  border-radius: 8px;
+			-o-border-radius: 8px;
+			-moz-border-radius: 8px;
+			-webkit-border-radius: 8px;
+			ul {
+				list-style: none;
+				margin-top: 0px;
+				margin-left: 10px;
+				padding-left: 1em;
+				text-indent: -2em;
+				li {
+					padding: 4px 0px;
+				}
+			}
+		}
+  	.button-bar {
+  		clear: both;
+  		width: 300px;
+  		margin: 20px auto;
+  		.button {
+  			margin-left: 40px;
+  		}
+  	};
+	}
   .main-screen {
   	min-width: $piece-size*16;
-  	min-height: $piece-size*8;
+  	min-height: $piece-size*9;
   	background-color:#282828b;
+  	.button-bar {
+  		clear: both;
+  		float: right;
+  		margin: 10px 20px;
+  	};
   	.player-panel {
 	  	float:left;
 	    width: $piece-size*4;
-	    height: $piece-size*4;
-	    margin: $piece-size*2 18px; 
+	    height: $piece-size*6;
+	    margin: $piece-size*1 18px;
   		background-color: #2C2D2B;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;

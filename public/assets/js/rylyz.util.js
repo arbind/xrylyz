@@ -24,17 +24,18 @@ if ('function' != typeof Array.prototype.peek) {
   Array.prototype.peek = function(){ return this.length? (this[this.length-1]) : (null) ; }
 }
 
-
-
 if ('function' != typeof hostnameOfURL) {
   window.hostnameOfURL = function (url) {
-    return (url.match(/:\/\/(.[^/]+)/)[1]).replace('www.','');
-  }
-}
-
-if ('function' != typeof maxLength) {
-  window.hostnameOfURL = function (url) {
-    return (url.match(/:\/\/(.[^/]+)/)[1]).replace('www.','');
+    if (null==url || ""==url) return "";
+    try { 
+      var tokens = url.match(/:\/\/(.[^/]+)/)
+      if (null==tokens || tokens.length < 2 ) return "";
+      var hostname = tokens[1];
+      if (null==hostname) return "";
+      hostname = hostname.replace('www.','');
+      return hostname;
+    }
+    catch (e) { return ""; }
   }
 }
 

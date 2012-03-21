@@ -11,23 +11,24 @@
 			%h3 Enter Your Nickname To Play:
 			.field
 				%input.text{:type => "text", :name => "nickname"}
-				- # %input{:type => "submit", :value => "Ok", :class => "button"}
+			.field
+				%a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
 
 
 	%screen{:name=>"lobby"}
-		%h2 Lobby
-		.create-new-game{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
-			Start New Game
+		%h2 Games
 		%collection{:name=>"games"}
+		.button-bar
+			.button.star{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
+				Start New Game
 
 	%collection{:name=>"games", :item=>"game-item", "data-defaults"=>"[{id:1, player1:'a', player2:'b'},{id:2, player1:'a', player2:'b'}, {id:3, player1:'a', player2:'b'}]"}
-		%h3 Games
 		%ul
 			%collection
 
 	%item{:name=>"game-item"}
-		%li{"fire-onClick"=>"{queue:'hi', type:'join_game', select:'[[id]]'}" }
-			[[player1]] vs [[player2]] ([[id]])
+		%li.star{"fire-onClick"=>"{queue:'hi', type:'join_game', select:'[[id]]'}" }
+			Play vs [[player1]]
 
 	%screen{:name=>"play-game"}
 		.main-screen
@@ -36,14 +37,16 @@
 			%object{:name=>"game-board"}
 			.player-panel.player2
 				%object{:name=>"player2"}
+			.button-bar
+				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
 
-	%object{:name=>"player1", "data-defaults"=>"{player_num:1, name:'kim', is_turn_to_act:true, color:'blue', source_url:'http://www.tumblr.com/mypost/from/yesterday'}"}
+	%object{:name=>"player1", "data-defaults"=>"{player_num:1, name:'Waiting for Player1', is_turn_to_act:true, color:'blue', source_url:'http://google.com'}"}
 		%h2{:class=>"[[color]] ellipsis"}
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
 			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650');", :href=>"#"}
-				[[ url ]]
+				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]
 		%h4{:class=>"your-turn turn-[[is_turn_to_act]]"}
@@ -51,13 +54,13 @@
 		%div{:class=>"turn-indicator"}
 			%div{:class=>"chip [[color]] turn-[[is_turn_to_act]]"}
 
-	%object{:name=>"player2", "data-defaults"=>"{player_num:2, name:'jim', is_turn_to_act:false, color:'red', source_url:'http://www.google.com'}"}
+	%object{:name=>"player2", "data-defaults"=>"{player_num:2, name:'Waiting for Player 2', is_turn_to_act:false, color:'red', source_url:'http://google.com'}"}
 		%h2{:class=>"[[color]] ellipsis"}
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
 			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650');", :href=>"#"}
-				[[ url ]]
+				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]
 		%h4{:class=>"your-turn turn-[[is_turn_to_act]]"}
@@ -75,7 +78,7 @@
 		.board_canvas
 			! [! var idx = 0; !]
 			! [! _.each(_.range(column_count), function(col) { !]
-			.dropspot{"fire-onClick"=>"{ queue:'hi', type:'move', column:[[ idx++ ]] }"}
+			.dropspot{"xxfire-onClick"=>"{ queue:'hi', type:'move', column:[[ idx++ ]] }"}
 			! [! }); !]
 			.board
 				%collection{:name=>"game-pieces"}

@@ -18,6 +18,10 @@
   window.Rylyz.activeApp = null;
 
 
+  window.Rylyz.sendForm = function(domElement) {
+    jQuery(domElement).closest('form').submit();
+  }
+  
   window.Rylyz.materializeUID = function (pattern) {
     pattern = pattern ||  'rylyz-xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx';
     var unique = pattern.replace(/[xy]/g, function(c) {

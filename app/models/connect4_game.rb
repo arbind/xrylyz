@@ -20,9 +20,12 @@ class Connect4Game
   after_initialize :allocate_arrays, :channel_id
 
   def player1_visitor
+    return nil if player1_visitor_id.nil?
     VISITORS[player1_visitor_id]
   end
+
   def player2_visitor
+    return nil if player2_visitor_id.nil?
     VISITORS[player2_visitor_id]
   end
 
@@ -93,12 +96,13 @@ class Connect4Game
   end
 
   def hPlayer(player_num)
-    visitor = player2_visitor
-    visitor = player1_visitor if player_num = 1
+    visitor = (1==player_num) ? player1_visitor : player2_visitor
+    source_url = visitor.nil? ? "" : visitor.source_url
+    name = player(player_num) || "Wating ..."
     {
       :player_num=>player_num,
-      :name => player(player_num),
-      :source_url => visitor.source_url,
+      :name => name,
+      :source_url => source_url,
       :color => player_token(player_num),
       :is_turn_to_act => player_turn_to_act?(player_num)
     }
