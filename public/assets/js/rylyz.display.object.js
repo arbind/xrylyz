@@ -3,7 +3,7 @@ window.Rylyz.ObjectData = window.Rylyz || {};
 window.Rylyz.ObjectData = Backbone.Model.extend({});
 window.Rylyz.ObjectDisplay = Backbone.View.extend({
   dataType: 'object',
-  dataDefaults: {},
+  dataDefaults: null,
   isCollectionItem: false,
 
   app:null,
@@ -12,7 +12,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
   referenceTable: null,
   context: null,
-  settings: {},
+  settings: null,
   eventBase: null, //cache the basic event info for this object
 
   tagName: "div",  //html tag element
@@ -73,9 +73,14 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   initialize: function() {
     this.triggerInitStart();
 
+
+    this.settings = {};
+    this.dataDefaults = {};
     this.referenceTable = new Rylyz.ReferenceTable();
+
     this.context = new Rylyz.Context();
     this.context.display = this;
+    
     this.name = this.name || this.options.name || null;
     this.app = this.app || this.options.app || null;
     this.screen = this.screen || this.options.screen || null;

@@ -1,0 +1,42 @@
+.wyjyt-app {
+  color: white;
+  background-color: #1C1D1B;
+  padding: 10px 8px;
+  width: 838px;
+  min-height: 470px;
+  border: 20px solid rgba(8, 8, 8, 0.8);
+  border-radius: 18px;
+  -o-border-radius: 18px;
+  -moz-border-radius: 18px;
+  -webkit-border-radius: 18px;
+  background-clip: padding-box;
+  -o-background-clip: padding;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding; }
+  .wyjyt-app .space-screen {
+    width: 100%;
+    height: 100%; }
+    .wyjyt-app .space-screen .launch {
+      color: #2222FF;
+      position: relative;
+      width: 180px;
+      height: 180px;
+      clear: both;
+      margin: 20px auto;
+      background-color: #2C2D2B;
+      color: white;
+      border: 3px solid #101010;
+      border-radius: 8px;
+      -o-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -webkit-border-radius: 8px; }
+      .wyjyt-app .space-screen .launch:hover {
+        color: #CCCC88;
+        border-color: #CCCC88;
+        background-color: #3C3D3B; }
+      .wyjyt-app .space-screen .launch .name {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        line-height: 2em; }

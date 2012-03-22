@@ -1,0 +1,60 @@
+// Do not edit the CSS file directly! (See the README)
+// Make changes to SCSS file - then compile into css styesheets 
+
+$piece-size: 50px;
+
+.button {
+}
+
+.wyjyt-app {
+	color: white;
+  background-color: #1C1D1B;
+  padding: 10px 8px; 
+	width: ($piece-size*16)+38;
+	min-height: ($piece-size*9)+20;
+	border: 20px solid rgba(8,8,8,0.8);
+  border-radius: 18px;
+	-o-border-radius: 18px;
+	-moz-border-radius: 18px;
+	-webkit-border-radius: 18px;
+
+	background-clip: padding-box;
+	-o-background-clip: padding;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding;
+
+
+  .space-screen {
+  	width: 100%;
+  	height: 100%;
+
+  	.launch {
+  		color: #2222FF;
+  		position: relative;
+  		width: 180px;
+  		height: 180px;
+  		clear: both;
+  		margin: 20px auto;
+  		background-color: #2C2D2B;
+  		color: white;
+	    border: 3px solid #101010;
+	    &:hover {
+	  		color: #CCCC88;
+		    border-color: #CCCC88;
+		    background-color: #3C3D3B;
+	    }
+		  border-radius: 8px;
+			-o-border-radius: 8px;
+			-moz-border-radius: 8px;
+			-webkit-border-radius: 8px;
+			.name {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				text-align: center;
+				line-height: 2em;
+			}
+  	}
+  }
+
+}

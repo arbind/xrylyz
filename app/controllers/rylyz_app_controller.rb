@@ -78,15 +78,15 @@ class RylyzAppController
 
   def self.on_open_app (visitor, tokens)
     # lookup the TargetController 
-    app = tokens["app"] || "wyjyt"
-		app = "App#{app.underscore.camelize}Controller"
+    app_name = lookup_property(tokens, "appName") || "wyjyt"
+		app_controller_name = "App#{app_name.underscore.camelize}Controller"
 
     wid = tokens['wid'] || tokens['uid']
-    app_name = tokens["app"]
+    #app_name = tokens["app"]
     puts "OPENING #{app_name} FOR #{tokens}"
     app_display = render(app_name)
 
-    c = Kernel.const_get(app)
+    c = Kernel.const_get(app_controller_name)
     aid = c::app_uid
 
     #+++ is it required to start a listener thread?

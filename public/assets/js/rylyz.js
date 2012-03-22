@@ -13,15 +13,28 @@
   };
 
   window.Rylyz = window.Rylyz || {}
-  window.Rylyz.Tag = "rylyz";
+  Rylyz.Tag = "rylyz";
 
-  window.Rylyz.activeApp = null;
+  Rylyz.appReferenceTable = new Rylyz.ReferenceTable();
+  Rylyz.appStack = [];
 
-  window.Rylyz.sendForm = function(domElement) {
+  Rylyz.currentApp = function() { return Rylyz.appStack.peek(); };
+  Rylyz.pushApp = function(app){
+    var a = app;
+    if ('string' == typeof app) a = Rylyz.lookupApp(app);
+    if ('app'!=a.dataType) throw "Only an app can only pushed onto the appStack!";
+    Rylyz.appStack.push(a);
+  };
+  Rylyz.popApp = function() {
+    if (Rylyz.appStack.length) return this.appStack.pop();
+    return null;
+  };
+
+  Rylyz.sendForm = function(domElement) {
     jQuery(domElement).closest('form').submit();
   }
 
-  window.Rylyz.materializeUID = function (pattern) {
+  Rylyz.materializeUID = function (pattern) {
     pattern = pattern ||  'rylyz-xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx';
     var unique = pattern.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -30,32 +43,34 @@
     return unique;
   };
 
-  window.Rylyz.showApp = function(appName, appSpotSelector) {
+  Rylyz.showApp = function(appName, appSpotSelector) {
     var spotSelector = appSpotSelector || "#app-spot"
     var oldApp = null, newApp = null;
     var newApp = Rylyz.lookupApp(appName);
     if (!newApp) throw "No app named '" +appName+ "' was found. Can not show it!"
 
-    if (newApp==Rylyz.activeApp) return; //already loaded
-    if (Rylyz.activeApp) {
-      //activeApp.minimize();
+    if (newApp==Rylyz.currentApp()) return; //already loaded
+    oldApp = Rylyz.popApp();
+    if (oldApp) {
+      oldApp.minimize()
     }
+    newApp.triggerShowStart({});
     newApp.renderInto($(spotSelector));
-    Rylyz.activeApp = newApp;
+    Rylyz.pushApp(newApp);
+    newApp.triggerShowEnd();
   };
 
-  window.Rylyz.currentScreen = function() {
-    if (!Rylyz.activeApp) return null;
-    return Rylyz.activeApp.currentScreen();
+  Rylyz.currentScreen = function() {
+    if (!Rylyz.currentApp()) return null;
+    return Rylyz.currentApp().currentScreen();
   };
 
-  window.Rylyz.appReferenceTable = new Rylyz.ReferenceTable();
   //window.Rylyz.refTables = { models:{}, collections:{}, screens:{}, currentScreen:null } //remove this
   //window.Rylyz.refTable = { objectData:{},  objectDisplays:{}, collectionData:{}, collectionDisplays:{}, appData:{}, appDisplays:{}, screenData:{}, screenDisplays:{}}
 
 
 
-  window.Rylyz.lookupProperty = function(propertyName, info) {
+  Rylyz.lookupProperty = function(propertyName, info) {
     console.log(info);
     if(!info) throw "can not look up "+propertyName+": info given is null!";
 
@@ -76,7 +91,7 @@
     return Rylyz.appReferenceTable.lookupApp(appName);
   }
 
-  window.Rylyz.lookupScreen= function(info) {
+  Rylyz.lookupScreen= function(info) {
     var app = Rylyz.lookupApp(info);
     if(!app){
       console.log ('info=' + toString(info));
@@ -89,7 +104,7 @@
     return app.lookupScreen(screenName);
   }
 
-  window.Rylyz.lookupDisplay= function(info) {
+  Rylyz.lookupDisplay= function(info) {
     var screen= Rylyz.lookupScreen(info);
     if(!screen) throw "Can not look up Display: No screen found for info: " + toString(info);
 
@@ -109,18 +124,18 @@
   };
   */
 
-  Rylyz.loadAppDisplays  = function (){  //load (intantiate) all appDisplays
-    var appName = null;
+  Rylyz.loadAppDisplays  = function (appName){  //load (intantiate) all appDisplays
     var appDisplay = null;
-    var appTemplates = $(Rylyz.Tag + " > app[name]");
+    var appTemplates = $(Rylyz.Tag + "[name="+appName+"] > app[name="+appName+"]");
 
     $.each(appTemplates, function(idx, template) {
-      appName = template.getAttribute('name');
-      appDisplay = new Rylyz.AppDisplay({name:appName});
+      appTemplateName = template.getAttribute('name');
+      //+++TODO check see if app is already loaded, else create new AppDisplay
+      appDisplay = new Rylyz.AppDisplay({name:appTemplateName});
     })
   };
 
-  window.Rylyz.showScreenWithFadeIn = function(screen, newSettings) { //+++ putinto app
+  Rylyz.showScreenWithFadeIn = function(screen, newSettings) { //+++ putinto app
     if (!screen) {
       throw "showScreenWithFadeIn: No Screen specified!"
       return;
@@ -143,7 +158,7 @@
     }
   };
 
-  window.Rylyz.showScreen = function(screen, newSettings) {
+  Rylyz.showScreen = function(screen, newSettings) {
     if (screen) {
       var app = screen.app;
       app.showScreen(screen.name, newSettings);

@@ -5,7 +5,7 @@ window.Rylyz.CollectionDisplay = Rylyz.ObjectDisplay.extend({
 
   app: null,
   screen:null,
-  dataDefaults: [],
+  dataDefaults:null,
 
   initializeTemplateName: function() {
     this.templateName = this.templateName || this.options.templateName || this.name;
@@ -15,6 +15,7 @@ window.Rylyz.CollectionDisplay = Rylyz.ObjectDisplay.extend({
     this.collection = this.collection || this.options.collection || this.collectionData || this.options.collectionData || new Rylyz.CollectionData(this.dataDefaults);
   },
   initializeCollectionDisplay: function() {
+    this.dataDefaults = [];
     if (!this.app) throw "The Collection named " +this.name+ " needs to specify an app!"
     if (!this.screen) throw "The Collection named " +this.name+ " needs to specify a screen!"
     //this.screen.referenceTable.storeData(this.name, this.model);

@@ -1,7 +1,7 @@
 window.Rylyz.AppData = Rylyz.ObjectData.extend({});
 window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   dataType: 'app',
-  screenStack:[],
+  screenStack:null,
   startScreen: null,
   triggerDataLoadStart: function(settings) {
     var ev = {
@@ -19,6 +19,7 @@ window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   },
 
   initializeAppDisplay: function() {
+    this.screenStack = [];
     Rylyz.appReferenceTable.storeData(this.name, this.model);
     Rylyz.appReferenceTable.storeAppDisplay(this.name, this);
   },
@@ -60,12 +61,17 @@ window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   renderSubDisplays: function() {
     if (!this.subDisplaysAreLoaded) this.loadSubDisplays();
     var screenName = this.startScreen;
+    console.info("--1" + this.name + ": " + screenName + ": ");
 
     var screen = this.currentScreen();
     if (screen) screenName = screen.name;
 
+    console.info("--1" + this.name + ": " + screenName + ": ");
+
     if (!screenName) throw "This app has no current screen, and no start screen is defined!"
+    console.info("--1" + this.name + ": " + screenName + ": ");
     this.showScreen(screenName);
+    console.info("--2");
   },
   showScreen: function(screenName, newSettings) {
     var oldScreen = this.popScreen();

@@ -1,7 +1,7 @@
 window.Rylyz.ScreenData = Rylyz.ObjectData.extend({});
 window.Rylyz.ScreenDisplay = Rylyz.ObjectDisplay.extend({
   dataType: 'screen',
-  displayTable: [], //holds a flat list of all subdisplays in this screen - even if they are sub displays of another subdisplay
+  displayTable: null, //holds a flat list of all subdisplays in this screen - even if they are sub displays of another subdisplay
   triggerShowStart: function(newSettings) {
     this.select = null;
     if (newSettings) $.extend(this.settings, newSettings);
@@ -29,6 +29,7 @@ window.Rylyz.ScreenDisplay = Rylyz.ObjectDisplay.extend({
   },
   initializeParent: function() {this.parent = this.app; },
   initializeScreenDisplay: function() {
+    this.displayTable = [];
     if (!this.app) throw "The Screen named " +this.name+ " needs to specify an app!"
     if (this.screen) throw "The Screen named " +this.name+ "can not specify any screen: in its constructor"
   },

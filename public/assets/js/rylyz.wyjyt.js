@@ -1,6 +1,6 @@
 (function() {
 var  wyjytCSS = 'rylyz.wyjyt';
-var startApp = 'connect4';
+var startApp = 'wyjyt';
   
 var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
@@ -100,9 +100,18 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
 
   start: function(data) {
-    var app_name = data["app"];
+    var app_name = Rylyz.lookupProperty("app", data);
+    if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
+    if (null==app_name) {
+      console.error("No App name was specified for start()!")
+      console.error(data)
+      return;
+    }
     Rylyz.Wyjyt.fetchCSS("app_" + app_name);
-    Rylyz.Pusher.triggerWIDEvent("open_app", data)
+    ev = {
+      appName: app_name
+    };
+    Rylyz.Pusher.triggerWIDEvent("open_app", ev);
     // Rylyz.Wyjyt.loadChat();
     // console.info("o-- Cycle: got data back to Start Wyjyt: " + data);
   },
@@ -177,16 +186,16 @@ window.Rylyz.Pusher = {
 
     Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
+      //+++ move into wygyt as a function
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", "Rylyz.Wyjyt.start({app:'"+startApp+"'})");
+      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", "Rylyz.Wyjyt.start('"+startApp+"')");
       jQuery("#rylyz-widget").html(html);
-      //Rylyz.Wyjyt.start({app:startApp});
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
-      jQuery("#rylyz-widget").html(display);
-      Rylyz.loadAppDisplays();
+      jQuery("#rylyz-widget").html(display);  
+      Rylyz.loadAppDisplays(appName);
       Rylyz.showApp(appName, "#rylyz-widget");
     });
 
