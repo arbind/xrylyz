@@ -75,7 +75,7 @@
 		fireHIEvent4Navigation: function(event) {
       if (!ev.nextScreen) throw "Navigation event must specify nextScreen! " + ev;
       var nextScreenRoute = {
-      	appName: Rylyz.lookupProperty(ev, 'appName'),
+      	appName: Rylyz.lookupProperty('appName', ev),
       	screenName: ev.nextScreen
       }
       var screen = Rylyz.lookupScreen(nextScreenRoute);

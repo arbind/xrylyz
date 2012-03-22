@@ -91,13 +91,27 @@ class AppRylyzController
 
     #+++ is it required to start a listener thread?
     PusherChannels.instance.start_private_channel(aid)
-    # this is a 1-way channel - from app to wyjyt - so no need to bind listeners
-    PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", {launchChannel:aid, scope:'private', wid:wid})
-    # open a channel for this app(aid) so we can send messages on it to everyone listening
 
-		# send a direct message(wid) to open the app
-    PusherChannels.instance.trigger_private_channel_event(wid, "open-app", {display:app_display})
-		# send a direct message(wid) to launch a new listener for the app(aid)
+    # send a direct message(wid) to launch a new listener for the app(aid)
+    # so we can send messages on it to ever widget listening
+    # this is a 1-way channel - from app to wyjyt
+    # no need to bind listeners on the client side
+    event = {
+      launchChannel:aid,
+      scope:'private',
+      wid:wid
+    }
+   PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", event)
+
+		# send a direct message(wid) to open this app
+    ctx = {
+      appName: app_name
+    }
+    event ={
+      context: ctx,
+      display:app_display
+    }
+    PusherChannels.instance.trigger_private_channel_event(wid, "open-app", event)
   end
 
 end

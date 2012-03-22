@@ -17,11 +17,10 @@
 
   window.Rylyz.activeApp = null;
 
-
   window.Rylyz.sendForm = function(domElement) {
     jQuery(domElement).closest('form').submit();
   }
-  
+
   window.Rylyz.materializeUID = function (pattern) {
     pattern = pattern ||  'rylyz-xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx';
     var unique = pattern.replace(/[xy]/g, function(c) {
@@ -56,7 +55,7 @@
 
 
 
-  window.Rylyz.lookupProperty = function(info, propertyName) {
+  window.Rylyz.lookupProperty = function(propertyName, info) {
     console.log(info);
     if(!info) throw "can not look up "+propertyName+": info given is null!";
 
@@ -72,7 +71,7 @@
   }
 
   Rylyz.lookupApp = function(info) {
-    var appName = Rylyz.lookupProperty(info, 'appName');
+    var appName = Rylyz.lookupProperty('appName', info);
     if (!appName) throw "Did not find appName for info: " + toString(info);
     return Rylyz.appReferenceTable.lookupApp(appName);
   }
@@ -85,7 +84,7 @@
       console.log ('appname=' + toString(info['context']['appName']));
       throw "Can not look up Screen: No app found for info: " + toString(info);
     } 
-    var screenName = Rylyz.lookupProperty(info, 'screenName');
+    var screenName = Rylyz.lookupProperty('screenName', info);
     if (!screenName) throw "Did not find screenName for info: " + toString(info);
     return app.lookupScreen(screenName);
   }
@@ -94,7 +93,7 @@
     var screen= Rylyz.lookupScreen(info);
     if(!screen) throw "Can not look up Display: No screen found for info: " + toString(info);
 
-    var displayName =  Rylyz.lookupProperty(info, 'displayName');
+    var displayName =  Rylyz.lookupProperty('displayName', info);
     if (undefined == displayName) return screen;
     return screen.displayTable[displayName];
   }

@@ -14,6 +14,7 @@ var jQueryScriptURL = 'https://ajax.googleapis.com/ajax/libs/jquery/' +jQueryVer
 var pusherVersion = '1.11';
 var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
+
 var uniqueCounter = 0;
 Rylyz.Wyjyt = {
   //channelName: 'private-rylyz',
@@ -29,6 +30,8 @@ Rylyz.Wyjyt = {
   },
   setup: function() {
     jQuery(document).ready(function($) {
+      var html = Rylyz.Wyjyt.buttonHTML("star", "Loading...", "jQuery(this).html('Loading...!')");
+      jQuery("#rylyz-widget").html(html);
       Rylyz.PlayerHost = jQuery("#rylyz-widget").attr("data-hostname");
       Rylyz.Wyjyt.fetchCSS(wyjytCSS);
 
@@ -137,10 +140,17 @@ Rylyz.Wyjyt = {
     Rylyz[socketService].triggerPresenceChannelEvent(channelName, action, tokens);
   },
 
-
-
 }
+Rylyz.Wyjyt.buttonHTML = function(style, text, onclick, width) {
+  var w = width || 100;
+  var html = '<div class="button ' +style+ '" style="width:' +w+ 'px" onclick="'+onclick+'">'+text+
+             '</div>';
+  return html;
+}
+
+
 Rylyz.wid = function() { return Rylyz.Wyjyt.wyjytSource.wid; }
+
 
 window.Rylyz.Pusher = {
   singleton: null,
@@ -168,13 +178,16 @@ window.Rylyz.Pusher = {
     Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      Rylyz.Wyjyt.start({app:startApp});
+      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", "Rylyz.Wyjyt.start({app:'"+startApp+"'})");
+      jQuery("#rylyz-widget").html(html);
+      //Rylyz.Wyjyt.start({app:startApp});
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
+      var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
-      jQuery("#rylyz-widget").append(display);
+      jQuery("#rylyz-widget").html(display);
       Rylyz.loadAppDisplays();
-      Rylyz.showApp(startApp, "#rylyz-widget");
+      Rylyz.showApp(appName, "#rylyz-widget");
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {
@@ -370,7 +383,7 @@ window.Rylyz.Pusher = {
 
 // ========= Bootstrap utilities =========
 function bootstrap(){
-  localizeJQuery(); //load jquery first, then calls Rylyz.Wyjyt.load().
+  localizeJQuery(); //load jquery first, then calls Rylyz.Wyjyt.setup().
 };
 
 function localizeJQuery() {
