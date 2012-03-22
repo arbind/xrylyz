@@ -158,14 +158,14 @@ class PusherChannels
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "-----  Runtime Exception! #{e}"
-        puts "Ehen handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
         puts e.backtrace
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)
       rescue Exception => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "----- Exception! #{e}"
-        puts "Ehen handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
         puts e.backtrace
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)

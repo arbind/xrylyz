@@ -2,25 +2,102 @@
 // Make changes to SCSS file - then compile into css styesheets 
 
 .chat-app {
-	top:0;
-	left:0;
-	border: 8px solid black;
-	background-color:#333333;
-	padding:20px;
-	h1 {
-		color:#000055;
+	color: #FFFFCC;
+  background-color: #1C1D1B;
+  padding: 10px 8px; 
+	width: 850px;
+	min-height: 470px;
+	border: 20px solid rgba(8,8,8,0.8);
+  border-radius: 18px;
+	-o-border-radius: 18px;
+	-moz-border-radius: 18px;
+	-webkit-border-radius: 18px;
+
+	background-clip: padding-box;
+	-o-background-clip: padding;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding;
+
+
+	form {
+		.field {
+	    width: 400px;
+			margin: 20px auto;
+			input.text {
+				background-color:#FFFFCC;
+				color: #010101;
+				font-weight: bold;
+			  border: 1px solid yellow;
+				width: 200px;
+		    margin: 10px 40px;
+		    padding: 5px;
+		    font-size: 14px;
+		    text-shadow: 0px 1px 0px #fff;
+		    outline: none;
+			}
+			a.button {
+				margin: 0px 38px;
+				width: 165px;
+			}
+			input.text:focus {
+		    -webkit-box-shadow: 0px 0px 5px yellow;
+		    -moz-box-shadow: 0px 0px 5px yellow;
+		    box-shadow: 0px 0px 5px yellow;
+			}
+		};
 	}
-	.screen {
-		h1 {
-			color:#005500;
+
+
+	.input-nickname-screen {
+		form.nickname {
+	    width: 400px;
+	    height: 200px;
+	    margin: 50px auto; 
+  		background-color: #2C2D2B;
+	    border: 3px solid #101010;  		
+		  border-radius: 8px;
+		};
+	}
+
+	.lobby-screen {
+		.rooms-collection {
+			width: 300px;
+			height: 200px;
+			overflow: scroll;
+			margin: 20px auto;
+			padding: 8px 20px;
+  		background-color: #2C2D2B;
+	    border: 3px solid #101010;  		
+		  border-radius: 8px;
+			-o-border-radius: 8px;
+			-moz-border-radius: 8px;
+			-webkit-border-radius: 8px;
+			ul {
+				list-style: none;
+				margin-top: 0px;
+				margin-left: 10px;
+				padding-left: 1em;
+				text-indent: -2em;
+				li {
+					padding: 4px 0px;
+				}
+			}
 		}
-		h2 {
-			color:#550055;
-		}
+  	form {
+  		clear: both;
+  		width: 300px;
+  		margin: 20px auto;
+  		.button {
+  			margin-left: 40px;
+  		}
+  	};
 	}
 }
 
+
 .chat-room-screen {
+	position: relative;
+	height: 450px;
 	color: white;
 	top:0;
 	left:0;
@@ -28,12 +105,53 @@
 	background-color:#333355;
 	padding:20px;
 
+	.people{
+		position: absolute;
+		top: 88px;
+		left:0;
+		width: 200px;
+		height: 380px;
+		overflow: auto;
+		padding: 0px 20px;
+		.person {
+				margin: 0px 5px 5px 5px;
+				padding: 3px 5px;
+	  		background-color: #2C2D2B;
+		    border: 1px solid #101010;  		
+			  border-radius: 4px;
+				-o-border-radius: 4px;
+				-moz-border-radius: 4px;
+				-webkit-border-radius: 4px;
+			.name {
+				text-align: center;
+				color: #FFFFCC;
+				padding: 4px;
+			}
+			.source-url {
+				text-align: center;
+				padding: 4px;
+				a, a:visited, a:active {
+					color: yellow;
+					text-decoration: none;
+					&:hover { color: orange; }
+				}
+			}
+		}
+	}
 	.messages {
-		border: 1px solid blue;
+		position: absolute;
+		top: 88px;
+		left:240px;
+		width: 540px;
+		height: 380px;
+		overflow: hidden;
+		padding: 0px 20px;
+		border: 1px dotted blue;
 		background-color:#555588;
-		padding:20px;
 		.messages-collection {
-		border: 1px solid red;
+			height: 300px;
+			overflow: auto;
+	 		border-bottom: 1px solid blue;
 			ul {
 				li {
 					padding: 0;
@@ -41,22 +159,24 @@
 					border: 0;
 					line-height: 2em;
 					border-top: 1px solid #666677;
-					color:#999955;
+					color:#000028;
 					list-style-image:none;
 					list-style-type:none;
 				}				
 			}
 		}
-		form {
-			fieldset {
-				ul {
-					li {
-						input.text {
-							color:#CCCCFF;
-							border: 4px dotted blue;
-						}
-					}
-				}
+	}
+	form {
+		margin: 10px 0px;
+		.field {
+			margin: 4px 0px;
+			input.text {
+				float: left;
+				margin: 0px;
+			}
+			a.button {
+			  color: blue;
+				margin: 0px;
 			}
 		}
 	}

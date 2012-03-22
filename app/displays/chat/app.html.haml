@@ -1,40 +1,30 @@
 %rylyz{:name=>"chat"}
 
-	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "splash"}
+	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "input-nickname"}
 		%h1 [[title]]
-		%screen{:name=>"splash"}
-		%screen{:name=>"nickname"}
-		%screen{:name=>"room-list"}
+		%screen{:name=>"input-nickname"}
+		%screen{:name=>"lobby"}
 		%screen{:name=>"chat-room"}
 
-	%screen{:name=>"nickname"}
-		%h2 Enter Your Nickname:
-		%form{:id=>"registration-form", :target=>"", :action => "", :method => "", :name=>"nickname"}
+	%screen{:name=>"input-nickname"}
+		%form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
+			%h3 Enter Your Nickname For Chat:
 			.field
 				%input.text{:type => "text", :name => "nickname"}
-				%input{:type => "submit", :value => "Ok", :class => "button"}
+			.field
+				%a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start
 
-	%screen{:name=>"splash", "data-defaults"=>"{message: '', name:''}" }
-		%h1{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'nickname'}"}
-			I am a Splash page!
-		%h2 
-			[[message]]
-			%h3
-				[[name]]
-		%h2{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'room-list'}"}
-			View Rooms
-
-	%screen{:name=>"room-list", "data-defaults"=>"{num_rooms: 0}"} 
+	%screen{:name=>"lobby", "data-defaults"=>"{num_rooms: 0}"} 
 		%h2
-			Chat Room List ([[num_rooms]])
+			Chat Rooms ([[num_rooms]])
+		.rooms
+			%collection{:name=>"rooms"}	
 		%form{:id=>"new-room-form", :target=>"", :action => "", :method => "", :name=>"new-room"}
 			.field
 				%input.text{:type => "text", :name => "newRoomName"}
-				%input{:type => "submit", :value => "New Room", :class => "button"}
-		.rooms
-			%collection{:name=>"rooms"}	
+				%a.button.like{:onclick=>"Rylyz.sendForm(this)"} New Room
 
-	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[{id:1, name:'room1', num_visitors:3}, {id:10, name:'room10', num_visitors:3},{id:100, name:'room100', num_visitors:3},]"}
+	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[]"}
 		%ul
 			%collection
 
@@ -42,42 +32,33 @@
 		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room', select:'[[id]]'}" }
 			[[name]] (has [[num_visitors]] visitors)
 
-	%screen{:name=>"chat-room", "data-defaults"=>"{name:'noname'}" }
+	%screen{:name=>"chat-room", "data-defaults"=>"{name:''}" }
 		%h2 Chat Room [[name]]
 		.people
 			%collection{:name=>"people"}
 		.messages
 			%collection{:name=>"messages"}
-		%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}
-			%ul
-				%li
+			%form{:id=>"shout", :target=>"here", :action => "", :method => "", :name=>"n"}
+				.field
 					%input.text{:type => "text", :name => "message"}
-					%input{:type => "submit", :value => "OK", :class => "button"}
-
-	%collection{:name=>"messages", :item=>"message-item", "data-defaults"=>"[{message:'player2b'}, {message:'player33b'}]"}
+					%a.button{:onclick=>"Rylyz.sendForm(this);setTimeout(function(){jQuery('.messages-collection').scrollTop(10000)}, 888);"} chat
+		.clear-both &nbsp;
+	
+	%collection{:name=>"messages", :item=>"message-item", "data-defaults"=>"[]"}
 		%ul
 			%collection
-		%ol
-			%li game object model
-			%li connection object model (like clubs and rooms)
-			%li approach for apps to send messages to its visitor(s)
-			%li way to submit forms to the app controller
-			%li update the widget to use the sockets, instead of making ajax calls..
 
 	%item{:name=>"message-item"}
-		%li [[message]]
+		%li.next &nbsp;&nbsp;[[message]]
 
-
-	%collection{:name=>"people", :item=>"person", "data-defaults"=>"[{nickname:'p1', source_url:'http://google.com'}, {nickname:'ppp1', source_url:'http://google.com'}]"}
-		%ul
-			%collection
+	%collection{:name=>"people", :item=>"person", "data-defaults"=>"[]"}
+		%collection
 
 	%item{:name=>"person"}
-		%li 
-			[[nickname]]
-			(from
-			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=200, width=200');", :href=>"#"}
-				[[source_url]]
-			)
-
+		.person
+			.name.ellipsis [[nickname]]
+			.source-url.ellipsis
+				! [! var url = hostnameOfURL(source_url) !]
+				%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650');", :href=>"#"}
+					[[ url ]]
 

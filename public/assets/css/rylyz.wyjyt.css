@@ -6,6 +6,9 @@ h1, h2, h3, h4, h5, h6, h7 {
   padding-left: 1em;
   padding-right: 1em; }
 
+.clear-both {
+  clear: both; }
+
 .app {
   border: 2px solid blue;
   margin: 18px;
