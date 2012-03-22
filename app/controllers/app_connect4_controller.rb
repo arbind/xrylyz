@@ -13,30 +13,20 @@ class AppConnect4Controller < AppRylyzController
       select = tokens["select"]
       game = Connect4Game.find(select)
 
-	    game.player2_visitor = visitor
+      unless (visitor==game.player1_visitor )
+		    game.player2_visitor = visitor
 
-	    game.game_is_in_progress = true
-  	  game.player_to_act = 1
-      if game.save
-	      ctx = {appName: app_name}
-	     	settings = { select: game.id.to_s }
-	      event  = {queue:'screen', type:'navigation', nextScreen:'play-game', context:ctx, settings:settings }
+		    game.game_is_in_progress = true
+	  	  game.player_to_act = 1
+	  	  game.save
+	  	end
+      ctx = {appName: app_name}
+     	settings = { select: game.id.to_s }
+      event  = {queue:'screen', type:'navigation', nextScreen:'play-game', context:ctx, settings:settings }
 
-	      # set context for player num
-        # session[:player_num] = 2
-        # Pusher["connect4-#{@connect4_game.id}"].trigger('refresh', '{started!}')
-        # format.html { redirect_to @connect4_game, notice: 'Game has started!.' }
-
-        #+++ navigate both players to the game?
-
-	      PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
-	      PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event)
-
-      else
-      	#+++ todo if save fails
-      end
+      PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
+      PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event) unless game.player2_visitor.nil?
     end
-
 
 
   class ScreenInputNicknameController < AppRylyzScreenController

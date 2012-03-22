@@ -30,7 +30,7 @@ Rylyz.Wyjyt = {
   },
   setup: function() {
     jQuery(document).ready(function($) {
-      var html = Rylyz.Wyjyt.buttonHTML("star", "Loading...", "jQuery(this).html('Loading...!')");
+      var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
       jQuery("#rylyz-widget").html(html);
       Rylyz.PlayerHost = jQuery("#rylyz-widget").attr("data-hostname");
       Rylyz.Wyjyt.fetchCSS(wyjytCSS);
