@@ -1,4 +1,4 @@
-class AppRylyzController
+class RylyzAppController
 
   def self.app_name # app_name for AppChatController is 'chat'
     self.name.split("::").first.underscore.split('_')[1...-1].join("_") 

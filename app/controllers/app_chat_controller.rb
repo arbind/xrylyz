@@ -1,4 +1,4 @@
-class AppChatController < AppRylyzController
+class AppChatController < RylyzAppController
 
   # for the app channel: goes to anyone who has the app open
   # +++TOO: define broadcast event names for this app channel
@@ -32,12 +32,12 @@ class AppChatController < AppRylyzController
   #   PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
   # end
 
-  class ScreenSplashController < AppRylyzScreenController
+  class ScreenSplashController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
     end
   end
 
-  class ScreenNicknameController < AppRylyzScreenController
+  class ScreenNicknameController < RylyzScreenController
     # update user on_data_input4nickname
     def self.on_data_input(visitor, tokens)
       wid = tokens['wid']
@@ -65,7 +65,7 @@ class AppChatController < AppRylyzController
     end
   end
 
-  class ScreenChatRoomController < AppRylyzScreenController
+  class ScreenChatRoomController < RylyzScreenController
 
     def self.on_load_data(visitor, tokens)
       wid = tokens['wid'] || tokens['uid']
@@ -135,7 +135,7 @@ class AppChatController < AppRylyzController
 
   end
 
-  class ScreenRoomListController < AppRylyzScreenController
+  class ScreenRoomListController < RylyzScreenController
 
     def self.on_load_data(visitor, tokens)
       ctx = {appName: app_name, screenName:'room-list'}

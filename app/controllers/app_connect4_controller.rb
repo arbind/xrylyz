@@ -1,4 +1,4 @@
-class AppConnect4Controller < AppRylyzController
+class AppConnect4Controller < RylyzAppController
 
 	# +++TODO
 	# Send Message: Its your turn, only to wid
@@ -29,7 +29,7 @@ class AppConnect4Controller < AppRylyzController
     end
 
 
-  class ScreenInputNicknameController < AppRylyzScreenController
+  class ScreenInputNicknameController < RylyzScreenController
 
   	def self.on_data_input(visitor, tokens) 
       wid = tokens['wid']
@@ -53,7 +53,7 @@ class AppConnect4Controller < AppRylyzController
 
   end
 
-  class ScreenLobbyController < AppRylyzScreenController
+  class ScreenLobbyController < RylyzScreenController
 	  def self.on_load_data(visitor, tokens)
 	  	games = Connect4Game.all
 
@@ -106,7 +106,7 @@ class AppConnect4Controller < AppRylyzController
 
 	end
 
-  class ScreenPlayGameController < AppRylyzScreenController
+  class ScreenPlayGameController < RylyzScreenController
 	  def self.on_load_data(visitor, tokens)
       wid = tokens['wid'] || tokens['uid']
 

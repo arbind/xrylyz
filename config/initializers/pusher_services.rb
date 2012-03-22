@@ -345,7 +345,7 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
     end
     begin #safeguard the handler block
 
-      controllers = AppRylyzController::lookup_controller(tokens) 
+      controllers = RylyzAppController::lookup_controller(tokens) 
       action = tokens["action"] || "action_is_unknown"
 
       #for hi events, the event type will specify the handler 
@@ -364,7 +364,7 @@ PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do
       ctrlr = controllers[:app_controller]  #else see if app controller has a handler
       target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
 
-      ctrlr = AppRylyzController   #finally see if rylyz controller has a handler
+      ctrlr = RylyzAppController   #finally see if rylyz controller has a handler
       target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
 
       target_controller.send(action, visitor, tokens) unless target_controller.nil?

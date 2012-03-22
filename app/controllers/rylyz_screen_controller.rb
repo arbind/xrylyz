@@ -1,4 +1,4 @@
-class AppRylyzScreenController
+class RylyzScreenController
 
 
   def self.app_name # app_name for AppChatController is 'chat'
