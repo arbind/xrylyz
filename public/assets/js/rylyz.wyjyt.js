@@ -101,11 +101,6 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
 
   start: function(data) {
-    if (Rylyz.Wyjyt.started) {
-      console.log("Wyjyt is already starting!");
-      return;
-    }
-    Rylyz.Wyjyt.started = true;
     var app_name = Rylyz.lookupProperty("app", data);
     if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
     if (null==app_name) {
@@ -113,6 +108,13 @@ Rylyz.Wyjyt = {
       console.error(data)
       return;
     }
+    if (Rylyz.Wyjyt.started==app_name) {
+      console.log(app_name + " is already starting!");
+      return;
+    }
+    Rylyz.Wyjyt.started = app_name;
+
+
     Rylyz.Wyjyt.fetchCSS("app_" + app_name);
     ev = {
       appName: app_name
