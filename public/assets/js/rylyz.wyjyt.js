@@ -18,6 +18,7 @@ var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 var uniqueCounter = 0;
 Rylyz.Wyjyt = {
   //channelName: 'private-rylyz',
+  started: false,
   wyjytChannelName: 'wyjyt',
   wyjytChannel: null,
   clientChannel: null,
@@ -100,6 +101,11 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
 
   start: function(data) {
+    if (Rylyz.Wyjyt.started) {
+      console.log("Wyjyt is already starting!");
+      return;
+    }
+    Rylyz.Wyjyt.started = true;
     var app_name = Rylyz.lookupProperty("app", data);
     if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
     if (null==app_name) {
@@ -150,9 +156,12 @@ Rylyz.Wyjyt = {
   },
 
 }
-Rylyz.Wyjyt.buttonHTML = function(style, text, onclick, width) {
+Rylyz.Wyjyt.buttonHTML = function(style, text, onclick, width, textAfterClick) {
   var w = width || 100;
-  var html = '<div class="button ' +style+ '" style="width:' +w+ 'px" onclick="'+onclick+'">'+text+
+  var afterClick= "";
+  if (textAfterClick) afterClick = "jQuery(this).html('"+textAfterClick+"');"
+  var callback = afterClick + onclick
+  var html = '<div class="button ' +style+ '" style="width:' +w+ 'px" onclick="'+callback+'">'+text+
              '</div>';
   return html;
 }
@@ -188,7 +197,8 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       //+++ move into wygyt as a function
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", "Rylyz.Wyjyt.start('"+startApp+"')");
+      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
+        "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
       jQuery("#rylyz-widget").html(html);
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {

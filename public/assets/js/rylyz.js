@@ -71,7 +71,6 @@
 
 
   Rylyz.lookupProperty = function(propertyName, info) {
-    console.log(info);
     if(!info) throw "can not look up "+propertyName+": info given is null!";
 
     var value=null;
@@ -94,9 +93,9 @@
   Rylyz.lookupScreen= function(info) {
     var app = Rylyz.lookupApp(info);
     if(!app){
-      console.log ('info=' + toString(info));
-      console.log ('context=' + toString(info['context']));
-      console.log ('appname=' + toString(info['context']['appName']));
+      console.error ('info=' + toString(info));
+      console.error ('context=' + toString(info['context']));
+      console.error ('appname=' + toString(info['context']['appName']));
       throw "Can not look up Screen: No app found for info: " + toString(info);
     } 
     var screenName = Rylyz.lookupProperty('screenName', info);
@@ -125,6 +124,11 @@
   */
 
   Rylyz.loadAppDisplays  = function (appName){  //load (intantiate) all appDisplays
+    if (Rylyz.lookupApp(data)) {
+      console.info(appName + " app is already loaded!");
+      return;
+    }
+
     var appDisplay = null;
     var appTemplates = $(Rylyz.Tag + "[name="+appName+"] > app[name="+appName+"]");
 
