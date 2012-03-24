@@ -1,6 +1,10 @@
 // Do not edit the CSS file directly! (See the README)
 // Make changes to SCSS file - then compile into css styesheets 
 
+$rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
+$appName:	'chat';
+$imageURL: 'http://$rylyzPlayerHost/assets/img/$appName';
+
 .chat-app {
 	color: #FFFFCC;
   background-color: #1C1D1B;

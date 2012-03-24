@@ -1,6 +1,11 @@
 // Do not edit the CSS file directly! (See the README)
 // Make changes to SCSS file - then compile into css styesheets 
 
+$rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
+$appName:	'wyjyt';
+$imageURL: 'http://$rylyzPlayerHost/assets/img/$appName';
+
+
 $piece-size: 50px;
 
 .button {

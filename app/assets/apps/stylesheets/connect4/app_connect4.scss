@@ -1,7 +1,12 @@
 // Do not edit the CSS file directly! (See the README)
 // Make changes to SCSS file - then compile into css styesheets 
 
+$rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
+$appName:	'connect4';
+$imageURL: 'http://$rylyzPlayerHost/assets/img/$appName';
+
 $piece-size: 50px;
+
 
 
 .button-bar {
@@ -206,7 +211,7 @@ $piece-size: 50px;
 				    z-index:3;
 				    width: $piece-size;
 				    height: $piece-size;
-				    background-image:url('http://arbinds-macbook-air.local/assets/img/hole.png');
+				    background-image:url('$imageURL/hole.png');
 				    background-size: cover;
 				  }
 			  }  
@@ -221,7 +226,7 @@ $piece-size: 50px;
     left:0;
     width:100%;
     height:100%;
-    background-image:url('http://arbinds-macbook-air.local/assets/img/sheen.png');
+    background-image:url('$imageURL/sheen.png');
     background-size: cover;
   }
 
@@ -240,13 +245,13 @@ $piece-size: 50px;
       z-index:-1;
   }
   .chip.red {
-    background-image:url('http://arbinds-macbook-air.local/assets/img/red_chip.png');
+    background-image:url('$imageURL/red_chip.png');
   }
   .chip.blue {
-    background-image:url('http://arbinds-macbook-air.local/assets/img/blue_chip.png');
+    background-image:url('$imageURL/blue_chip.png');
   }
   .chip.black {
-    background-image:url('http://arbinds-macbook-air.local/assets/img/black_chip.png');
+    background-image:url('$imageURL/black_chip.png');
   }
 
   .c0 { left: (0 * $piece-size);}

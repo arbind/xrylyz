@@ -5,10 +5,9 @@ gem 'rails', '3.1.1'
 # run thin in production
 group :production do
   gem 'thin'
+	gem 'newrelic_rpm' #Server Monitoring
 end
 
-#Server Monitoring
-gem 'newrelic_rpm'
 
 #MongoDB
 gem 'mongoid'
