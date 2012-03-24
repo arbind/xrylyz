@@ -108,7 +108,15 @@ Rylyz.Wyjyt = {
       console.error(data)
       return;
     }
-    if (Rylyz.Wyjyt.started==app_name) {
+    // see if the app has already been loaded
+    var app = Rylyz.lookupApp(app_name);
+    if (app) {
+      Rylyz.showApp(app_name);
+      return; 
+    }
+    // else app has not yet been loaded, so go get it
+
+    if (Rylyz.Wyjyt.started==app_name) { //debounce - if already being loaded
       console.log(app_name + " is already starting!");
       return;
     }

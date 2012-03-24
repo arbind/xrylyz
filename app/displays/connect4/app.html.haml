@@ -13,6 +13,8 @@
 				%input.text{:type => "text", :name => "nickname"}
 			.field
 				%a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
+		.button-bar
+			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%screen{:name=>"lobby"}
 		%h2 Games
@@ -20,6 +22,7 @@
 		.button-bar
 			.button.star{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
 				Start New Game
+			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%collection{:name=>"games", :item=>"game-item", "data-defaults"=>"[]"}
 		%ul

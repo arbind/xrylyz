@@ -1,7 +1,14 @@
+.button-bar {
+  clear: both;
+  width: 300px;
+  margin: 20px auto; }
+  .button-bar .button {
+    margin-left: 40px; }
+
 .connect4-app {
   background-color: #1C1D1B;
   padding: 10px 8px;
-  width: 838px;
+  width: 850px;
   min-height: 470px;
   border: 20px solid rgba(8, 8, 8, 0.8);
   border-radius: 18px;
@@ -88,20 +95,18 @@
         text-indent: -2em; }
         .connect4-app .lobby-screen .games-collection ul li {
           padding: 4px 0px; }
-    .connect4-app .lobby-screen .button-bar {
-      clear: both;
-      width: 300px;
-      margin: 20px auto; }
-      .connect4-app .lobby-screen .button-bar .button {
-        margin-left: 40px; }
   .connect4-app .main-screen {
-    min-width: 800px;
+    min-width: 850px;
     min-height: 450px;
     background-color: #282828b; }
     .connect4-app .main-screen .button-bar {
       clear: both;
       float: right;
       margin: 10px 20px; }
+    .connect4-app .main-screen .player-panel.player1 {
+      clear: left; }
+    .connect4-app .main-screen .game-board-object {
+      float: left; }
     .connect4-app .main-screen .player-panel {
       float: left;
       width: 200px;
@@ -124,8 +129,6 @@
         text-decoration: none; }
       .connect4-app .main-screen .player-panel a:hover {
         color: #FFFFCC; }
-    .connect4-app .main-screen .player-panel.player1 {
-      clear: left; }
     .connect4-app .main-screen .board_canvas {
       z-index: 0;
       float: left;

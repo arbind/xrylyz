@@ -54,6 +54,7 @@
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px; }
     .chat-app .lobby-screen .rooms-collection ul {
+      overflow: visible;
       list-style: none;
       margin-top: 0px;
       margin-left: 10px;

@@ -44,13 +44,13 @@
   };
 
   Rylyz.showApp = function(appName, appSpotSelector) {
-    var spotSelector = appSpotSelector || "#app-spot"
+    var spotSelector = appSpotSelector || "#rylyz-widget"
     var oldApp = null, newApp = null;
     var newApp = Rylyz.lookupApp(appName);
     if (!newApp) throw "No app named '" +appName+ "' was found. Can not show it!"
 
     if (newApp==Rylyz.currentApp()) return; //already loaded
-    oldApp = Rylyz.popApp();
+    oldApp = Rylyz.currentApp();
     if (oldApp) {
       oldApp.minimize()
     }
@@ -58,6 +58,20 @@
     newApp.renderInto($(spotSelector));
     Rylyz.pushApp(newApp);
     newApp.triggerShowEnd();
+  };
+
+  Rylyz.quitApp = function(appSpotSelector) {
+    var spotSelector = appSpotSelector || "#rylyz-widget";
+    oldApp = Rylyz.popApp();
+    prevApp = Rylyz.currentApp(); // previous app is now at top of stack
+    if (!prevApp) {
+      Rylyz.pushApp(oldApp)
+      return; //do nothing since there is no other app to show
+    }
+    oldApp.minimize();
+    prevApp.triggerShowStart({});
+    prevApp.renderInto($(spotSelector));
+    prevApp.triggerShowEnd({});
   };
 
   Rylyz.currentScreen = function() {

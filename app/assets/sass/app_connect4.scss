@@ -3,13 +3,20 @@
 
 $piece-size: 50px;
 
-.button {
-}
+
+.button-bar {
+	clear: both;
+	width: 300px;
+	margin: 20px auto;
+	.button {
+		margin-left: 40px;
+	}
+};
 
 .connect4-app {
   background-color: #1C1D1B;
   padding: 10px 8px; 
-	width: ($piece-size*16)+38;
+	width: ($piece-size*17);
 	min-height: ($piece-size*9)+20;
 	border: 20px solid rgba(8,8,8,0.8);
   border-radius: 18px;
@@ -132,17 +139,9 @@ $piece-size: 50px;
 				}
 			}
 		}
-  	.button-bar {
-  		clear: both;
-  		width: 300px;
-  		margin: 20px auto;
-  		.button {
-  			margin-left: 40px;
-  		}
-  	};
 	}
   .main-screen {
-  	min-width: $piece-size*16;
+  	min-width: $piece-size*17;
   	min-height: $piece-size*9;
   	background-color:#282828b;
   	.button-bar {
@@ -150,6 +149,12 @@ $piece-size: 50px;
   		float: right;
   		margin: 10px 20px;
   	};
+	  .player-panel.player1 {
+	    clear:left;
+	  }
+	  .game-board-object {
+	  	float:left;
+	  }
   	.player-panel {
 	  	float:left;
 	    width: $piece-size*4;
@@ -171,9 +176,6 @@ $piece-size: 50px;
 	 		a:hover {
 	 			color: #FFFFCC;
 	 		}
-	  }
-	  .player-panel.player1 {
-	    clear:left;
 	  }
 	  .board_canvas {
 	    z-index:0;
@@ -210,7 +212,7 @@ $piece-size: 50px;
 			  }  
 		  }
 	  }
-	}  
+	}
   .board_sheen { /* overlay the board with a nice sheen */
     position:absolute;
     z-index:5;

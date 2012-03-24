@@ -1,3 +1,8 @@
+/* CSS Variables */
+/* ================================================  */
+/* ================================================  */
+/* default styles */
+/* ================================================  */
 rylyz {
   display: none; }
 
@@ -8,6 +13,43 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 .clear-both {
   clear: both; }
+
+* {
+  /*
+  overflow:         hidden;
+  padding:          0px;
+  margin:           0px;
+  color:            $themeColor;
+  background-color: $themeBGcolor;
+  @include          transitionsOnMixin;
+  */
+  text-decoration: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none; }
+
+*::selection {
+  background-color: transparent; }
+
+/* For opera and IE  so user can not see selected text */
+html, ul, li {
+  overflow: visible; }
+
+input, textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  -o-user-select: text;
+  user-select: text; }
+
+a {
+  text-decoration: none; }
+  a:visited {
+    text-decoration: none; }
 
 .app {
   border: 2px solid blue;
@@ -31,10 +73,9 @@ form, fieldset {
   overflow: hidden;
   text-overflow: ellipsis; }
 
-/* 
-    Cool CSS3 Buttons
-    http://www.red-team-design.com/just-another-awesome-css3-buttons 
-*/
+/*  Cool CSS3 Buttons
+    http://www.red-team-design.com/just-another-awesome-css3-buttons  */
+/* ================================================  */
 .button {
   display: inline-block;
   white-space: nowrap;

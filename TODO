@@ -1,5 +1,25 @@
 +++ TODO
 
+CSS
+change image urls to point to heroku
+
+Wyjyt
+framework for app
+quit an app
+adaptive css?
+
+Connect4
+send winner message
+send looser message
+send your turn message
+send waiting for player to move message
+adaptive css?
+
+chat
+leave button
+adaptive css?
+
+Framework
 o Create a  ModelReferenceTable for BackBone Models only.
 Allow displays to reference a model by name in the ModelReferenceTable
 (Instead of creating their own default-empty model)
@@ -20,3 +40,12 @@ o Create a wizard which has many screens bound to the same model set
   + screen set (all the screens in the wizard)
   + rule set - specify screen flow logic
 
+Services:
+o login: username, facebook, twitter, google+
+o social: invite friends, share
+o store: gifts, identity
+o purchase: paypal, credit card, others?
+o subscription: (same options)
+o leader-board
+o achievments
+o persistence: mongoDB
