@@ -145,7 +145,7 @@ class AppConnect4Controller < RylyzAppController
 			client_events << event
 
       PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
-      
+
       # data = chat_room.visitors_for_display
       # ctx = {appName: app_name, screenName:'chat-room', displayName:'people'}
       # event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
@@ -163,8 +163,11 @@ class AppConnect4Controller < RylyzAppController
       wid = tokens['wid'] || tokens['uid']
 
       settings = tokens["settings"]
+      #send exception if !settings and navigate to loby
       select = settings["select"]
+      # send exception if !select and navigate to loby
       game = Connect4Game.find(select)
+      # send exception if !game and navigate to loby
 
 	    move = tokens['column']
       client_events = []

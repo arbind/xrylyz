@@ -4,6 +4,8 @@ window.Rylyz.ScreenDisplay = Rylyz.ObjectDisplay.extend({
   displayTable: null, //holds a flat list of all subdisplays in this screen - even if they are sub displays of another subdisplay
   triggerShowStart: function(newSettings) {
     this.select = null;
+    console.log("{{{{{{{{{{{{{{{{{{{{{{{{{{{");
+    console.log(newSettings)
     if (newSettings) $.extend(this.settings, newSettings);
   },
   triggerShowEnd: function() { },

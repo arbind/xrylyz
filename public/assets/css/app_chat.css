@@ -2,8 +2,8 @@
   color: #FFFFCC;
   background-color: #1C1D1B;
   padding: 10px 8px;
-  width: 850px;
-  min-height: 470px;
+  width: 800px;
+  min-height: 300px;
   border: 20px solid rgba(8, 8, 8, 0.8);
   border-radius: 18px;
   -o-border-radius: 18px;
@@ -110,8 +110,8 @@
     position: absolute;
     top: 88px;
     left: 240px;
-    width: 540px;
     height: 380px;
+    width: 500px;
     overflow: hidden;
     padding: 0px 20px;
     border: 1px dotted blue;

@@ -24,6 +24,23 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     else o = this.name;
     return o;
   },
+  allSettings: function(){
+    var displays = [];
+    var d = this;
+    while (d) {
+      displays.push(d);
+      d = d.parent;
+    }
+    allsettings = {}
+
+    var s=null;
+    for(var idx=0; idx<displays.length; idx++) {
+      d = displays[idx];
+      s = d.settings;
+      if (s) jQuery.extend(allsettings, s);
+    }
+    return allsettings;
+  },
   materializeEvent: function (options) {
     var hash = options || {}
     if (!this.eventBase) {
@@ -45,7 +62,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     };
     jQuery.extend(hash, this.eventBase); //! this modifies hash
     hash.context = this.context.data();
-    hash.settings = this.settings;
+    hash.settings = this.allSettings();
     return hash;
   },
   getTemplateSelector: function() {
@@ -80,7 +97,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
     this.context = new Rylyz.Context();
     this.context.display = this;
-    
+
     this.name = this.name || this.options.name || null;
     this.app = this.app || this.options.app || null;
     this.screen = this.screen || this.options.screen || null;

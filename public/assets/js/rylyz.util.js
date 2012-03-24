@@ -80,7 +80,6 @@ if ('function' != typeof srcElementForDOMEvent) {
     var srcEl = ev.target || ev.srcElement; 
     if (!srcEl) return null;
     if (srcEl.nodeType == 3) srcEl = srcEl.parentNode; // when clicked on a text element, get its parent      
-    console.log("src ele found!");
     return srcEl
   }
 }

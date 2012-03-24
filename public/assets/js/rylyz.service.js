@@ -57,7 +57,6 @@
 		},
 
 		fireHIEvent: function(event) {
-      //+++ TODO make this independent of Pusher!
       Rylyz.Wyjyt.triggerWIDEvent("hi", event);
 		},
 		fireHIEvent4DataInput: function(event) {
@@ -68,7 +67,6 @@
       	settings: event.settings,
       	formData: event.formData
       }
-      //+++ TODO make this independent of Pusher!
       Rylyz.Wyjyt.triggerWIDEvent("data-input", ev);
 
 		},
@@ -80,11 +78,9 @@
       }
       var screen = Rylyz.lookupScreen(nextScreenRoute);
       if (!screen) throw "A screen named '" +ev.nextScreen+ "'' can not be found to handle this navigation event!";
-      var select = event.select || null;
-      if (!select && event.settings) select = event.settings.select;
-      var newSettings = {
-      	select: select
-      };
+      var newSettings = event.settings || {}
+      if (event.select) newSettings.select = event.select;
+
       Rylyz.showScreenWithFadeIn(screen, newSettings);
 		},
 	};
@@ -217,7 +213,6 @@
   var hFireHIEvent = {
 		queue:"hi",
     handleEvent: function(ev) {
-    	console.log(ev);
     	Rylyz.Service.fireHIEvent(ev);
     }
   }
@@ -228,7 +223,6 @@
 		queue:"app-server",
 		type:"add-item",
     handleEvent: function(ev) {
-    	console.log(ev);
     	Rylyz.Service.handleDataEvent4AddCollectionItem(ev);
     }
   }
@@ -238,7 +232,6 @@
 		queue:"app-server",
 		type:"load-data",
     handleEvent: function(ev) {
-    	console.log(ev);
     	Rylyz.Service.handleDataEvent4LoadData(ev);
     }
   }
