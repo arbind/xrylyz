@@ -3,11 +3,9 @@
 
 $rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
 $appName:	'connect4';
-$imageURL: 'http://$rylyzPlayerHost/assets/img/$appName';
+$imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 
 $piece-size: 50px;
-
-
 
 .button-bar {
 	clear: both;
@@ -19,8 +17,8 @@ $piece-size: 50px;
 };
 
 .connect4-app {
-  background-color: #1C1D1B;
-  padding: 10px 8px; 
+	background-color: #1C1D1B;
+	padding: 10px 8px; 
 	width: ($piece-size*17);
 	min-height: ($piece-size*9)+20;
 	border: 20px solid rgba(8,8,8,0.8);
@@ -33,7 +31,6 @@ $piece-size: 50px;
 	-o-background-clip: padding;
 	-moz-background-clip: padding;
 	-webkit-background-clip: padding;
-
 
 	h4.your-turn{
 		color: yellow;
@@ -211,7 +208,7 @@ $piece-size: 50px;
 				    z-index:3;
 				    width: $piece-size;
 				    height: $piece-size;
-				    background-image:url('$imageURL/hole.png');
+				    background-image:url($imageURL+ '/hole.png');
 				    background-size: cover;
 				  }
 			  }  
@@ -226,7 +223,7 @@ $piece-size: 50px;
     left:0;
     width:100%;
     height:100%;
-    background-image:url('$imageURL/sheen.png');
+    background-image:url($imageURL + '/sheen.png');
     background-size: cover;
   }
 
@@ -245,13 +242,13 @@ $piece-size: 50px;
       z-index:-1;
   }
   .chip.red {
-    background-image:url('$imageURL/red_chip.png');
+    background-image:url($imageURL+ '/red_chip.png');
   }
   .chip.blue {
-    background-image:url('$imageURL/blue_chip.png');
+    background-image:url($imageURL+ '/blue_chip.png');
   }
   .chip.black {
-    background-image:url('$imageURL/black_chip.png');
+    background-image:url($imageURL+ '/black_chip.png');
   }
 
   .c0 { left: (0 * $piece-size);}

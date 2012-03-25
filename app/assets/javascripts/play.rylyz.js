@@ -1,2 +1,2 @@
-//= require vendor
-//= require rylyz
+//= require vendor/index 
+//= require rylyz/index

@@ -7,6 +7,8 @@ var $; // Localized jQuery variable
 
 window.Rylyz = window.Rylyz || {};
 Rylyz.PlayerHost = "<%= RYLYZ_PLAYER_HOST %>";
+Rylyz.env =  "<%= Rails.env %>";
+console.log( Rylyz.env+ " mode");
 
 var socketService = "Pusher"; // use this messaging service
 
@@ -26,11 +28,12 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
 
   fetchAppCSS: function(appName) {
-    var css_location = "stylesheets/" +appName+ "/app_" +appName+ ".css";
-    this.fetchCss(css_location);
+    var css_location = "stylesheets/" +appName+ "/app_" +appName;
+    this.fetchCSS(css_location);
   },
   fetchCSS: function(name) {
     var css_href = "http://" + Rylyz.PlayerHost + '/assets/' +name+ ".css?a="+uniqueCounter++;
+    console.log('Loading CSS: ' + css_href);
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },
@@ -54,9 +57,14 @@ Rylyz.Wyjyt = {
     }
 
     $ = jQuery = jQuery;
-    console.info("o-- Cycle: about to load javascripts");
     var src = "http://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
-    jQuery.getScript(src, callbackOnComplete);
+    console.info("o-- Cycle: about to load javascript: " + src);
+    jQuery.getScript(src, function() {
+      // now we can call rylyz framework functions like Rylyz.wid();
+      Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
+      Rylyz.Wyjyt.wyjytSource.url = document.URL;
+      callbackOnComplete(); 
+    });
     /*
     Rylyz.Wyjyt.loadScriptsSerially(, scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
@@ -192,9 +200,18 @@ window.Rylyz.Pusher = {
     apiKeyPusher: 'a9206fc7a3b77a7986c5',
   },
   setup: function() {
-    WEB_SOCKET_DEBUG = true; // Flash fallback logging - don't include this in production
-    Pusher.log = function(message) { if (window.console && window.console.log) window.console.log(message); };    
-
+    if ('production' == Rylyz.env) {
+      // Flash fallback logging - don't include this in production
+      WEB_SOCKET_DEBUG = false;
+      Pusher.log = function(message) {};    
+    }
+    else {
+      WEB_SOCKET_DEBUG = true;
+      Pusher.log = function(message) {
+          if (window.console && window.console.log)
+            window.console.log(message);
+          };
+    }
     // establish a private WID channel
     // once wid channel connects, establish a private wyjyt channel
     // once wyjyt channel connects, let the server know about the wID channel so it can listen
