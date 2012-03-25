@@ -11,7 +11,7 @@ require 'active_support/inflector'
 
 RYLYZ_PLAYER_HOST = ENV["RYLYZ_PLAYER_HOST"] unless ENV["RYLYZ_PLAYER_HOST"].nil?
 RYLYZ_PLAYER_HOST ||= "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HEROKU_APP_NAME"].nil?
-RYLYZ_PLAYER_HOST = Socket::gethostname rescue "localhost"
+RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "localhost"
 
 puts "RYLYZ_PLAYER_HOST = #{RYLYZ_PLAYER_HOST}"
 
