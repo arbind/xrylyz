@@ -1,7 +1,0 @@
----
-images/connect4/black_chip.png: images/connect4/black_chip-70a27b913378eba9970c67b4237fb432.png
-images/connect4/blue_chip.png: images/connect4/blue_chip-de618e3beceda553da7d63ee391a7cf3.png
-images/connect4/hole.png: images/connect4/hole-c115cf48a5017be42685687d6070cbb1.png
-images/connect4/red_chip.png: images/connect4/red_chip-604b9e123b0bd106accb1199eecdb70e.png
-images/connect4/sheen.png: images/connect4/sheen-e36d6c26f5c0f971b49702e42c0e4221.png
-rails.png: rails-e4b51606cd77fda2615e7439907bfc92.png
