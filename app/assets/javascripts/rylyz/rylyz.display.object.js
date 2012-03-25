@@ -102,7 +102,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     this.app = this.app || this.options.app || null;
     this.screen = this.screen || this.options.screen || null;
 
-    console.info("Initializing " +this.dataType+ ": " + this.name);
+    if(DBUG) console.info("Initializing " +this.dataType+ ": " + this.name);
     this.isCollectionItem = this.isCollectionItem || this.options.isCollectionItem || false;
 
     
@@ -127,7 +127,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     this[initializeContext4Type]();
 
     this.triggerInitEnd();
-    console.info("Initializing Complete " +this.dataType+ ": " + this.name);
+    if(DBUG) console.info("Initializing Complete " +this.dataType+ ": " + this.name);
   },
   initializeRootTagCSS: function() {
     var dash = "-";
@@ -160,7 +160,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       return;
     }
     if (1<elTemplate.length) {
-      console.info("Multiple templates found for:\n" + selector + "\n\n")
+      if(DBUG) console.info("Multiple templates found for:\n" + selector + "\n\n")
     }
 
     if (this.isCollection()) {

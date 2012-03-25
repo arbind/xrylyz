@@ -38,6 +38,16 @@ class Connect4Game
       self.player2_visitor_id = visitor.id.to_s
   end
 
+  def player_visitor(num)
+    return player1_visitor if 1==num
+    return player2_visitor
+  end
+
+  def other_player_visitor(player_num)
+    p = (2-player_num) + 1
+    player_visitor(p)
+  end
+
   def is_active?
     return (not player1_visitor.nil?) # true if player1 is a visitor
   end

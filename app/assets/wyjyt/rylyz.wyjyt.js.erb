@@ -1,4 +1,6 @@
 (function() {
+
+window.DBUG = "<%= Rails.env %>" != "production";
 var  wyjytCSS = 'rylyz.wyjyt';
 var startApp = 'wyjyt';
   
@@ -33,7 +35,7 @@ Rylyz.Wyjyt = {
   },
   fetchCSS: function(name) {
     var css_href = "http://" + Rylyz.PlayerHost + '/assets/' +name+ ".css?a="+uniqueCounter++;
-    console.log('Loading CSS: ' + css_href);
+    if(DBUG) console.log('Loading CSS: ' + css_href);
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
   },
@@ -58,7 +60,7 @@ Rylyz.Wyjyt = {
 
     $ = jQuery = jQuery;
     var src = "http://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
-    console.info("o-- Cycle: about to load javascript: " + src);
+    if(DBUG) console.info("o-- Cycle: about to load javascript: " + src);
     jQuery.getScript(src, function() {
       // now we can call rylyz framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
@@ -75,32 +77,32 @@ Rylyz.Wyjyt = {
     */
   },
   setupPusher: function(){
-    console.info("o-- Cycle: about to setup pusher");
+    if(DBUG) console.info("o-- Cycle: about to setup pusher");
     jQuery.getScript(pusherScriptURL, function() { Rylyz.Pusher.setup(); });
   },
   onWyjytChannelConnected: function() {
-      console.info("---------o subscribed to wyjyt channel!!!")
+      if(DBUG) console.info("---------o subscribed to wyjyt channel!!!")
   },
   onWyjytChannelFailed: function(status) {
-    console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
     if(status == 408 || status == 503){
       // retry?
     }
   },
   onWIDChannelConnected: function() {
-      console.info("---------o subscribed to wid channel: " + Rylyz.wid())
+      if(DBUG) console.info("---------o subscribed to wid channel: " + Rylyz.wid())
   },
   onWIDChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
   },
   onChannelConnected: function(chanelName) {
-    console.info("---------o subscribed to custom channel: " + chanelName);
+    if(DBUG) console.info("---------o subscribed to custom channel: " + chanelName);
   },
   onChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -116,7 +118,7 @@ Rylyz.Wyjyt = {
     if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
     if (null==app_name) {
       console.error("No App name was specified for start()!")
-      console.error(data)
+      if(DBUG) console.error(data)
       return;
     }
     // see if the app has already been loaded
@@ -128,7 +130,7 @@ Rylyz.Wyjyt = {
     // else app has not yet been loaded, so go get it
 
     if (Rylyz.Wyjyt.started==app_name) { //debounce - if already being loaded
-      console.log(app_name + " is already starting!");
+      if(DBUG) console.log(app_name + " is already starting!");
       return;
     }
     Rylyz.Wyjyt.started = app_name;
@@ -220,7 +222,7 @@ window.Rylyz.Pusher = {
 
     //create a private client channel then let the widget know about it from the wyjyt channel
     //+++ refactor so it is independent of Pusher or any socketService!
-    console.info("o-- Cycle: about to start wyjyt");
+    if(DBUG) console.info("o-- Cycle: about to start wyjyt");
     var onConnect, onFail;
 
     Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
@@ -278,10 +280,10 @@ window.Rylyz.Pusher = {
   onWyjytChannelConnected: function() {
     Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName,"open-wid-channel")
     Rylyz.Wyjyt.onWyjytChannelConnected();
-    console.info("---------o subscribed to wyjyt channel!!!")
+    if(DBUG) console.info("---------o subscribed to wyjyt channel!!!")
   },
   onWyjytChannelFailed: function(status) {
-    console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -290,10 +292,10 @@ window.Rylyz.Pusher = {
   onWIDChannelConnected: function() {
     Rylyz.Wyjyt.wyjytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.wyjytChannelName, Rylyz.Pusher.onWyjytChannelConnected, Rylyz.Pusher.onWyjytChannelFailed);
     Rylyz.Wyjyt.onWIDChannelConnected();
-      console.info("---------o subscribed to wid channel: " + Rylyz.wid())
+      if(DBUG) console.info("---------o subscribed to wid channel: " + Rylyz.wid())
   },
   onWIDChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -301,10 +303,10 @@ window.Rylyz.Pusher = {
   },
   onChannelConnected: function(chanelName) {
     Rylyz.Wyjyt.onChannelConnected(chanelName);
-    console.info("---------o subscribed to custom channel: " + chanelName);
+    if(DBUG) console.info("---------o subscribed to custom channel: " + chanelName);
   },
   onChannelFailed: function(status) {
-    console.error("---------! Error [" +status+" ]: Could not establish channel")
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish channel")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -337,13 +339,13 @@ window.Rylyz.Pusher = {
     //$ = jQuery; //rebind jQuery!
     var channel = Rylyz.Pusher.channel(scope, channelName);
     h = function(data) {
-        console.info("handling pusher event");
+        if(DBUG) console.info("handling pusher event");
       try {
         handler(data);
       }
       catch (e) {
-        console.error("Error handling pusher event: " + eventName + " channel: " + channel.name)
-        console.error("Error: " + e)
+       if(DBUG)  console.error("Error handling pusher event: " + eventName + " channel: " + channel.name)
+        if(DBUG) console.error("Error: " + e)
       }
     }
     return channel.bind(eventName, h);

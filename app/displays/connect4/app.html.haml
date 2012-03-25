@@ -39,8 +39,13 @@
 			%object{:name=>"game-board"}
 			.player-panel.player2
 				%object{:name=>"player2"}
+			%object{:name=>"game-status"}
 			.button-bar
 				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
+
+
+	%object{:name=>"game-status", "data-defaults"=>"{status:'Waiting for another player...'}"}
+		.game-status [[status]]
 
 	%object{:name=>"player1", "data-defaults"=>"{player_num:1, name:'Waiting for Player1', is_turn_to_act:true, color:'blue', source_url:'http://google.com'}"}
 		%h2{:class=>"[[color]] ellipsis"}

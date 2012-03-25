@@ -26,6 +26,15 @@ class AppConnect4Controller < RylyzAppController
 
       PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
       PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event) unless game.player2_visitor.nil?
+
+
+			ctx = {appName: app_name, screenName:'play-game', displayName:'game-status'}
+			data = {status:"Game has started! Its your turn."}
+			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
+			data = {status:"Game has started! Waiting for #{game.player1_visitor.nickname} to move."}
+			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event)
     end
 
 
@@ -159,7 +168,7 @@ class AppConnect4Controller < RylyzAppController
 
 	  end
 
-	  def self.on_move(visitor, tokens)
+		def self.on_move(visitor, tokens)
       wid = tokens['wid'] || tokens['uid']
 
       settings = tokens["settings"]
@@ -169,16 +178,17 @@ class AppConnect4Controller < RylyzAppController
       game = Connect4Game.find(select)
       # send exception if !game and navigate to loby
 
-	    move = tokens['column']
+			move = tokens['column']
       client_events = []
 
-	    data = game.move(visitor, move.to_i)
-	    return if data.nil?  #invalid move - send message to visitor
+			data = game.move(visitor, move.to_i)
+			return if data.nil?  #invalid move - send message to visitor
+      
       ctx = {appName: app_name, screenName:'play-game', displayName:'game-pieces'}
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
       client_events << event
 
-			ctx = {appName: app_name, screenName:'play-game', displayName:'player1'}
+      ctx = {appName: app_name, screenName:'play-game', displayName:'player1'}
 			data = game.player1_for_display
 			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
 			client_events << event
@@ -187,6 +197,45 @@ class AppConnect4Controller < RylyzAppController
 			event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
 			client_events << event
       PusherChannels.instance.trigger_private_channel_event(game.channel_id, "fire-event", client_events)
+
+      if(game.game_is_in_progress)
+	    	puts "----game in progress!"	    	
+      	visitor_to_act = game.player_visitor(game.player_to_act)
+	    	puts "----to act: #{visitor_to_act.nickname}!"	    	
+				ctx = {appName: app_name, screenName:'play-game', displayName:'game-status'}
+				data = {status:"It's your turn!"}
+				event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+	      PusherChannels.instance.trigger_private_channel_event(visitor_to_act.wid, "fire-event", event)
+
+      	other_visitor = game.other_player_visitor(game.player_to_act)
+	    	puts "----other to act: #{other_visitor.nickname}!"	    	
+				data = {status:"Waiting for #{visitor_to_act.nickname} to move..."}
+				event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+	      PusherChannels.instance.trigger_private_channel_event(other_visitor.wid, "fire-event", event)
+	    else
+	    	puts "----No game in progress!"	    	
+      end
+
+
+      if (game.winner>0)
+	    	puts "----Winner is #{game.winner}!"
+      	winning_visitor = game.player_visitor(game.winner)
+	    	puts "----winner: #{winning_visitor.nickname}!"	    	
+				ctx = {appName: app_name, screenName:'play-game', displayName:'game-status'}
+				data = {status:"You Won!"}
+				event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+	      PusherChannels.instance.trigger_private_channel_event(winning_visitor.wid, "fire-event", event)
+
+      	other_visitor = game.other_player_visitor(game.winner)
+	    	puts "----looser: #{other_visitor.nickname}!"	    	
+				data = {status:"#{winning_visitor.nickname} has won!"}
+				event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+	      PusherChannels.instance.trigger_private_channel_event(other_visitor.wid, "fire-event", event)
+	    else
+	    	puts "----No Winner Yet!"
+      end
+
+
 	  end
 
 

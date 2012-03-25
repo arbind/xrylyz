@@ -19,7 +19,11 @@ chat
 leave button
 adaptive css?
 
-Framework
+UI Framework
+o modal modal prompt
+
+o animation framework
+
 o Create a  ModelReferenceTable for BackBone Models only.
 Allow displays to reference a model by name in the ModelReferenceTable
 (Instead of creating their own default-empty model)
@@ -42,9 +46,10 @@ o Create a wizard which has many screens bound to the same model set
 
 Services:
 o login: username, facebook, twitter, google+
-o social: invite friends, share
+o invite friends to a game
+o share post
 o store: gifts, identity
-o purchase: paypal, credit card, others?
+o purchase: mobile payment, paypal, credit card, others?
 o subscription: (same options)
 o leader-board
 o achievments
