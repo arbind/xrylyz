@@ -32,9 +32,14 @@ o add client-side retry for lost messages
 
 
 UI Framework
-o modal modal prompt
+o modal prompt
 
 o animation framework
+
+o reset each display on first render
+  When playing a game and leaving, then starting a new game.
+  the displays show the end of the last game played.
+  when showing a display, be have a reset data function prior to rendering
 
 o Create a  ModelReferenceTable for BackBone Models only.
 Allow displays to reference a model by name in the ModelReferenceTable

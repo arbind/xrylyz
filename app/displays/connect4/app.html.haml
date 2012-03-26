@@ -33,7 +33,7 @@
 
 	%item{:name=>"game-item"}
 		%li.star{"fire-onClick"=>"{queue:'hi', type:'join_game', select:'[[id]]'}" }
-			Start a game with [[player1]]
+			Play with [[player1]]
 
 	%screen{:name=>"play-game"}
 		%h1 Connect 4
@@ -60,8 +60,6 @@
 				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]
-		%h4{:class=>"your-turn turn-[[is_turn_to_act]]"}
-			Its Your Turn!
 		%div{:class=>"turn-indicator"}
 			%div{:class=>"chip [[color]] turn-[[is_turn_to_act]]"}
 
@@ -74,8 +72,6 @@
 				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]
-		%h4{:class=>"your-turn turn-[[is_turn_to_act]]"}
-			Its Your Turn!
 		%div{:class=>"turn-indicator"}
 			%div{:class=>"chip [[color]] turn-[[is_turn_to_act]]"}
 
