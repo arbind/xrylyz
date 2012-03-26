@@ -1,6 +1,6 @@
 /*
- *= require rylyz/rylyz.util.js
  *= require rylyz/rylyz.debugger.js
+ *= require rylyz/rylyz.util.js
  *= require rylyz/rylyz.util.string.js
 
  *= require rylyz/rylyz.context.js
