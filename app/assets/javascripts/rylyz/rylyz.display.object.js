@@ -92,7 +92,6 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
 
     this.settings = {};
-    this.dataDefaults = {};
     this.referenceTable = new Rylyz.ReferenceTable();
 
     this.context = new Rylyz.Context();
@@ -125,6 +124,8 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     var initializeContext4Type = "initialize" + this.dataType.capitalize() + "Context";
     this.initializeContext();
     this[initializeContext4Type]();
+
+    this.dataDefaults = this.dataDefaults || {};
 
     this.triggerInitEnd();
     if(DBUG) console.info("Initializing Complete " +this.dataType+ ": " + this.name);

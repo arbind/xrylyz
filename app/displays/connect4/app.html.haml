@@ -45,7 +45,7 @@
 				%object{:name=>"player2"}
 			%object{:name=>"game-status"}
 			.button-bar.exit
-				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
+				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Back
 
 
 	%object{:name=>"game-status", "data-defaults"=>"{status:'Waiting for another player...'}"}
@@ -68,7 +68,7 @@
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
-			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650');", :href=>"#"}
+			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650'); return false;"}
 				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]

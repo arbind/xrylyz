@@ -8,7 +8,7 @@
 		//Exception reporting
 		reportServerSideException: function(channel, data) {
       var exception = data["exception"];
-      console.error("Server Side Exception received on channel: "+channel+" !\n Message: " + exception);
+      console.error("Service Exception received on ch: "+channel+" !\n Message: " + exception);
     },
     
 		//Data Events

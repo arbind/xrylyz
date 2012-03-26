@@ -91,28 +91,28 @@ Rylyz.Wyjyt = {
     jQuery.getScript(pusherScriptURL, function() { Rylyz.Pusher.setup(); });
   },
   onWyjytChannelConnected: function() {
-      if(DBUG) console.info("---------o subscribed to wyjyt channel!!!")
+      if(DBUG) console.info("---------o wyjyt connected !!!")
   },
   onWyjytChannelFailed: function(status) {
-    if(DBUG) console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect wyjyt!")
     if(status == 408 || status == 503){
       // retry?
     }
   },
   onWIDChannelConnected: function() {
-      if(DBUG) console.info("---------o subscribed to wid channel: " + Rylyz.wid())
+      if(DBUG) console.info("---------o connected to wid: " + Rylyz.wid())
   },
   onWIDChannelFailed: function(status) {
-    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not connect to wid: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
   },
   onChannelConnected: function(chanelName) {
-    if(DBUG) console.info("---------o subscribed to custom channel: " + chanelName);
+    if(DBUG) console.info("---------o connected to custom id: " + chanelName);
   },
   onChannelFailed: function(status) {
-    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not connecto to custom id: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -308,7 +308,7 @@ window.Rylyz.Pusher = {
       Rylyz.Pusher.channels[launchChannel] = channel;
       ///+++TODO: save channel based on context so it can be unloaded
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
-        console.log("firing event for channel: " + launchChannel);
+        console.log("firing event for ch: " + launchChannel);
         Rylyz.event.fireEvent(ev);
       });      
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "server-side-exception", function(data) {
@@ -322,10 +322,10 @@ window.Rylyz.Pusher = {
   onWyjytChannelConnected: function() {
     Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName,"open-wid-channel")
     Rylyz.Wyjyt.onWyjytChannelConnected();
-    if(DBUG) console.info("---------o subscribed to wyjyt channel!!!")
+    if(DBUG) console.info("---------o connect to wyjyt!!!")
   },
   onWyjytChannelFailed: function(status) {
-    if(DBUG) console.error("----------! Error [" +status+" ]: Could not establish wyjyt channel!")
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect to wyjyt!")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -334,10 +334,10 @@ window.Rylyz.Pusher = {
   onWIDChannelConnected: function() {
     Rylyz.Wyjyt.wyjytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.wyjytChannelName, Rylyz.Pusher.onWyjytChannelConnected, Rylyz.Pusher.onWyjytChannelFailed);
     Rylyz.Wyjyt.onWIDChannelConnected();
-      if(DBUG) console.info("---------o subscribed to wid channel: " + Rylyz.wid())
+      if(DBUG) console.info("---------o connected to wid: " + Rylyz.wid())
   },
   onWIDChannelFailed: function(status) {
-    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish wid channel: "+ Rylyz.wid())
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not connect to wid: "+ Rylyz.wid())
     if(status == 408 || status == 503){
       // retry?
     }
@@ -345,10 +345,10 @@ window.Rylyz.Pusher = {
   },
   onChannelConnected: function(chanelName) {
     Rylyz.Wyjyt.onChannelConnected(chanelName);
-    if(DBUG) console.info("---------o subscribed to custom channel: " + chanelName);
+    if(DBUG) console.info("---------o connected to custom id: " + chanelName);
   },
   onChannelFailed: function(status) {
-    if(DBUG) console.error("---------! Error [" +status+" ]: Could not establish channel")
+    if(DBUG) console.error("---------! Error [" +status+" ]: Could not connecto to custom id")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -386,7 +386,7 @@ window.Rylyz.Pusher = {
         handler(data);
       }
       catch (e) {
-       if(DBUG)  console.error("Error handling pusher event: " + eventName + " channel: " + channel.name)
+       if(DBUG)  console.error("Error handling P event: " + eventName + " ch: " + channel.name)
         if(DBUG) console.error("Error: " + e)
       }
     }
@@ -433,7 +433,7 @@ window.Rylyz.Pusher = {
     var p = Rylyz.Pusher.singleton;
     if (!p) {
       p = Rylyz.Pusher.authenticateConnection();
-      if (!p) throw "Could not establish connection with pusher!";
+      if (!p) throw "Could not establish connection with P!";
     };
     //convert all channels to private so they are bi-directional (required by Pusher Trigge API)
     var scopedChannelName = Rylyz.Pusher.materializeChannelName(scope, channelName);
