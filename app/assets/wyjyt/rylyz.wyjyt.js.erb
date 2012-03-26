@@ -290,7 +290,7 @@ window.Rylyz.Pusher = {
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "fire-event", function(data) {
-        console.log("firing event for wid channel: " + Rylyz.wid());
+        if (DBUG) console.log("firing event for wid channel: " + Rylyz.wid());
       Rylyz.event.fireEvent(data);
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "server-side-exception", function(data) {
@@ -308,7 +308,7 @@ window.Rylyz.Pusher = {
       Rylyz.Pusher.channels[launchChannel] = channel;
       ///+++TODO: save channel based on context so it can be unloaded
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
-        console.log("firing event for ch: " + launchChannel);
+        if (DBUG) console.log("firing event for ch: " + launchChannel);
         Rylyz.event.fireEvent(ev);
       });      
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "server-side-exception", function(data) {
