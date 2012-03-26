@@ -43,7 +43,8 @@ Rylyz.Wyjyt = {
   setup: function() {
     jQuery(document).ready(function($) {
       var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
-      jQuery("#rylyz-widget").html(html);
+      jQuery("#rylyz-widget .button").remove();    
+      jQuery("#rylyz-widget").append(html);
       Rylyz.Wyjyt.fetchCSS(wyjytCSS);
 
       //setup socket service and register socket event handlers
@@ -150,7 +151,8 @@ Rylyz.Wyjyt = {
     canvas.fadeOut(888);
     var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
         "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
-    jQuery("#rylyz-widget").html(html);
+    jQuery("#rylyz-widget .button").remove();    
+    jQuery("#rylyz-widget").append(html);
   },
   start: function(data) {
     Rylyz.Wyjyt.showOverlay();
@@ -272,7 +274,8 @@ window.Rylyz.Pusher = {
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
       var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
         "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
-      jQuery("#rylyz-widget").html(html);
+      jQuery("#rylyz-widget .button").remove();    
+      jQuery("#rylyz-widget").append(html);
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);

@@ -108,7 +108,7 @@ class Connect4Game
   def hPlayer(player_num)
     visitor = (1==player_num) ? player1_visitor : player2_visitor
     source_url = visitor.nil? ? "" : visitor.source_url
-    name = player(player_num) || "Wating ..."
+    name = player(player_num) || "Waiting ..."
     {
       :player_num=>player_num,
       :name => name,
