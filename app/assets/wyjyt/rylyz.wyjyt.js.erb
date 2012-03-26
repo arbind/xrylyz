@@ -273,6 +273,7 @@ window.Rylyz.Pusher = {
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "fire-event", function(data) {
+        console.log("firing event for wid channel: " + Rylyz.wid());
       Rylyz.event.fireEvent(data);
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "server-side-exception", function(data) {
@@ -289,11 +290,8 @@ window.Rylyz.Pusher = {
       channel = Rylyz.Pusher.channel(scope, launchChannel, onConnect, Rylyz.Pusher.onChannelFailed);
       Rylyz.Pusher.channels[launchChannel] = channel;
       ///+++TODO: save channel based on context so it can be unloaded
-      Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "chat", function(data) {
-        //++TODO: get eventNames to listen to from the launchChannel event, and add a listener to each one.
-        alert("whohoo got a chat event: " + data)
-      });
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
+        console.log("firing event for channel: " + launchChannel);
         Rylyz.event.fireEvent(ev);
       });      
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "server-side-exception", function(data) {

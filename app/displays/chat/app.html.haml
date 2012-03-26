@@ -1,7 +1,6 @@
 %rylyz{:name=>"chat"}
 
 	%app{:name=>"chat", "data-defaults"=>"{title:'Chat'}", :"start-screen" => "input-nickname"}
-		%h1 [[title]]
 		%screen{:name=>"input-nickname"}
 		%screen{:name=>"lobby"}
 		%screen{:name=>"chat-room"}
@@ -37,7 +36,9 @@
 			[[name]] (has [[num_visitors]] visitors)
 
 	%screen{:name=>"chat-room", "data-defaults"=>"{name:''}" }
-		%h2 Chat Room [[name]]
+		%h1 Chat Room [[name]]
+		.button-bar
+			.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
 		.people
 			%collection{:name=>"people"}
 		.messages
@@ -47,8 +48,6 @@
 					%input.text{:type => "text", :name => "message"}
 					%a.button{:onclick=>"Rylyz.sendForm(this);setTimeout(function(){jQuery('.messages-collection').scrollTop(10000)}, 888);"} chat
 		.clear-both &nbsp;
-		.button-bar
-			.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
 	
 	%collection{:name=>"messages", :item=>"message-item", "data-defaults"=>"[]"}
 		%ul

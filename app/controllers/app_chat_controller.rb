@@ -59,9 +59,6 @@ class AppChatController < RylyzAppController
     end
 
     def self.on_load_data(visitor, tokens)
-      puts "--------- Load Data"
-      puts tokens
-      puts "--------- Load Data"
     end
   end
 
@@ -73,9 +70,6 @@ class AppChatController < RylyzAppController
       settings = tokens["settings"]
       select = settings["select"]
       chat_room = ChatRoom.find(select)
-      puts "%%%%%%%%%%%%%%%%%"
-      puts "found #{chat_room.name} with #{chat_room.num_visitors} visitors"
-      puts "%%%%%%%%%%%%%%%%%"
       ctx = {appName: app_name, screenName:'chat-room'}
       event  = {queue:'app-server', type:'load-data', context:ctx, data: ''}
       PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
@@ -96,13 +90,7 @@ class AppChatController < RylyzAppController
       event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
       PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
 
-      puts "%%%%%%%%%%%%%%%%%"
-      puts "Before room #{chat_room.name} has #{chat_room.num_visitors} visitors"
-      puts "%%%%%%%%%%%%%%%%%"
       chat_room.add_visitor visitor
-      puts "%%%%%%%%%%%%%%%%%"
-      puts "After room #{chat_room.name} has #{chat_room.num_visitors} visitors"
-      puts "%%%%%%%%%%%%%%%%%"
 
       data = visitor.for_display
       ctx = {appName: app_name, screenName:'chat-room', displayName:'people'}
@@ -111,9 +99,6 @@ class AppChatController < RylyzAppController
     end
 
     def self.on_data_input(visitor, tokens)
-      puts "============="
-      puts tokens
-      puts "============="
       wid = tokens['wid'] || tokens['uid']
       # lookup the chat room:
       settings = tokens['settings']
@@ -129,7 +114,6 @@ class AppChatController < RylyzAppController
       ctx = {appName: app_name, screenName:'chat-room', displayName:'messages'}
       data = { message:message }
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
-      puts "Screen::App uid: #{app_uid}"
       PusherChannels.instance.trigger_private_channel_event(chat_room.channel_id, "fire-event", event)
     end
 
@@ -146,7 +130,6 @@ class AppChatController < RylyzAppController
       ctx = {appName: app_name, screenName:'lobby', displayName:'rooms'}
       data = ChatRoom.all.collect{|chat_room| chat_room.for_display }
       event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      puts "Screen::App uid: #{app_uid}"
       PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
     end
 
@@ -163,6 +146,10 @@ class AppChatController < RylyzAppController
       data = newRoom.for_display
       event  = {queue:'app-server', type:'add-item', context:ctx, data: data}
       PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", event)
+
+      settings = {select: newRoom.id.to_s}
+      event  = {queue:'screen', type:'navigation', nextScreen:'chat-room', context:ctx, settings: settings }
+      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", event)
     end
 
   end

@@ -24,6 +24,11 @@ a.button {
 	}
 }
 
+.button-bar {
+	position: absolute;
+	top: 20px;
+	right: 10px;
+}
 
 .chat-app {
 	color: $textColor;
@@ -112,13 +117,12 @@ a.button {
 
 
 .chat-room-screen {
-	height: 350px;
-	color: white;
 	top:0;
 	left:0;
-	border: 2px solid blue;
-	background-color:#333355;
-	padding:20px;
+	height: 100%;
+	width: 100%;
+	color: $textColor;
+	background-color:$bgColor;
 
 	.people{
 		position: absolute;
@@ -129,9 +133,11 @@ a.button {
 		overflow: auto;
 		padding: 0px 20px;
 		.person {
+				position: relative;
 				margin: 0px 5px 5px 5px;
 				padding: 3px 5px;
-	  		background-color: #2C2D2B;
+	  		color: $textColorBox;
+	  		background-color: $bgColorBox;
 		    border: 1px solid #101010;  		
 			  border-radius: 4px;
 				-o-border-radius: 4px;
@@ -139,16 +145,15 @@ a.button {
 				-webkit-border-radius: 4px;
 			.name {
 				text-align: center;
-				color: #FFFFCC;
 				padding: 4px;
 			}
 			.source-url {
 				text-align: center;
 				padding: 4px;
 				a, a:visited, a:active {
-					color: yellow;
+					color: $textColorLink;
 					text-decoration: none;
-					&:hover { color: orange; }
+					&:hover { color: $textColorLinkHover; }
 				}
 			}
 		}
@@ -162,11 +167,11 @@ a.button {
 		overflow: hidden;
 		padding: 0px 20px;
 		border: 1px dotted blue;
-		background-color:#555588;
+		background-color:$bgColorBox;
 		.messages-collection {
 			height: 300px;
 			overflow: auto;
-	 		border-bottom: 1px solid blue;
+	 		border-bottom: 1px solid #0000FF;
 			ul {
 				li {
 					padding: 0;
@@ -174,7 +179,7 @@ a.button {
 					border: 0;
 					line-height: 2em;
 					border-top: 1px solid #666677;
-					color:#000028;
+					color:#88FF88;
 					list-style-image:none;
 					list-style-type:none;
 				}				
@@ -186,10 +191,17 @@ a.button {
 		.field {
 			margin: 4px 0px;
 			input.text {
-				float: left;
+				line-height: 1.8em;
+				width: 490px;
 				margin: 0px;
 			}
 			a.button {
+				position: relative;
+				top: -32px;
+				left: 400px;
+				text-align:center;
+				line-height: 1.5em;
+				width: 40px;
 			  color: blue;
 				margin: 0px;
 			}
