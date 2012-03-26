@@ -2,7 +2,7 @@ window.Rylyz.AppData = Rylyz.ObjectData.extend({});
 window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   dataType: 'app',
   screenStack:null,
-  startScreen: null,
+  startScreen:null,
   triggerDataLoadStart: function(settings) {
     var ev = {
       context: { appName:this.name }
@@ -11,7 +11,7 @@ window.Rylyz.AppDisplay = Rylyz.ScreenDisplay.extend({
   },
   getTemplateSelector: function() {
     if (!this.name) { throw "No app template found for <app name='" +this.name+ "'>\n"; }
-    return "rylyz > app[name='"+ this.name + "']";
+    return "rylyz[name='" +this.name+ "'] > app[name='"+ this.name + "']";
   },
   initializeParent: function() { this.parent = null; },
   initializeData: function() {

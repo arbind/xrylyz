@@ -13,7 +13,7 @@
 				%input.text{:type => "text", :name => "nickname"}
 			.field
 				%a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
-		.button-bar
+		.button-bar.exit
 			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%screen{:name=>"lobby"}
@@ -24,9 +24,8 @@
 					Start A New Game
 		%h2 Or Join A Game:
 		%collection{:name=>"games"}
-		.button-bar
-			.button-canvas
-				.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
+		.button-bar.exit
+			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%collection{:name=>"games", :item=>"game-item", "data-defaults"=>"[]"}
 		%ul
@@ -45,7 +44,7 @@
 			.player-panel.player2
 				%object{:name=>"player2"}
 			%object{:name=>"game-status"}
-			.button-bar
+			.button-bar.exit
 				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
 
 

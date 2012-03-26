@@ -19,6 +19,18 @@ chat
 leave button
 adaptive css?
 
+
+RELIABILITY
+o add client-side retry for lost messages
+  add unique message id that increments with every send
+  add a try# field to every message that defaults to 1
+  add a timeout for the expected response
+  return the unique message id on responses to wid's
+  if a message response times out, increment the try# and resend.
+  when a message is received, cancel the timeout
+  notify user of connectivity issues (use indicator in status bar)
+
+
 UI Framework
 o modal modal prompt
 

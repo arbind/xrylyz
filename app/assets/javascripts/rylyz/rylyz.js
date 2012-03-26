@@ -144,8 +144,8 @@
     }
 
     var appDisplay = null;
-    var appTemplates = $(Rylyz.Tag + "[name="+appName+"] > app[name="+appName+"]");
-
+    var selector = Rylyz.Tag + "[name='"+appName+"'] > app[name='"+appName+"']";
+    var appTemplates = $(selector);
     $.each(appTemplates, function(idx, template) {
       appTemplateName = template.getAttribute('name');
       //+++TODO check see if app is already loaded, else create new AppDisplay

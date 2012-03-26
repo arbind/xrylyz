@@ -263,7 +263,7 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
-      jQuery("#rylyz-widget").html(display);  
+      jQuery("#rylyz-widget").append(display);  
       Rylyz.loadAppDisplays(appName);
       Rylyz.showApp(appName);
     });

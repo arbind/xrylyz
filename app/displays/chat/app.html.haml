@@ -12,7 +12,7 @@
 				%input.text{:type => "text", :name => "nickname"}
 			.field
 				%a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start
-		.button-bar
+		.button-bar.exit
 			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%screen{:name=>"lobby", "data-defaults"=>"{num_rooms: 0}"} 
@@ -24,7 +24,7 @@
 			.field
 				%input.text{:type => "text", :name => "newRoomName"}
 				%a.button.like{:onclick=>"Rylyz.sendForm(this)"} New Room
-		.button-bar
+		.button-bar.exit
 			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 	
 	%collection{:name=>"rooms", :item=>"room-item", "data-defaults"=>"[]"}
@@ -37,7 +37,7 @@
 
 	%screen{:name=>"chat-room", "data-defaults"=>"{name:''}" }
 		%h1 Chat Room [[name]]
-		.button-bar
+		.button-bar.exit
 			.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Quit
 		.people
 			%collection{:name=>"people"}

@@ -21,7 +21,9 @@ window.Rylyz.ScreenDisplay = Rylyz.ObjectDisplay.extend({
   },
   getTemplateSelector: function() {
     if (!this.name) { throw "No screen template found for <screen name='" +this.name+ "'> \n"; }
-    return "rylyz > screen[name='"+ this.name + "']";
+    var appName = this.app.name;
+    var selector = "rylyz[name='" +appName+ "']  > screen[name='"+ this.name + "']";
+    return selector
   },
 
   initializeData: function() {

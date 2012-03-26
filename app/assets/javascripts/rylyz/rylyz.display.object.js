@@ -67,17 +67,17 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   },
   getTemplateSelector: function() {
     var templateSelector = null;
+    var appName = this.app.name;
     if (this.isCollectionItem) {
       if (!this.templateName) { throw "No object template found for <item name='" +this.templateName+ "'>\n"; }
-      templateSelector = "rylyz > item[name='" +this.templateName+ "']"
+      templateSelector = "rylyz[name='" +appName+ "'] > item[name='" +this.templateName+ "']"
     }
     else {
       if (!this.templateName) { throw "No object template found for <object name='" +this.templateName+ "'>\n"; }
-      templateSelector = "rylyz > object[name='" +this.templateName+ "']";
+      templateSelector = "rylyz[name='" +appName+ "'] > object[name='" +this.templateName+ "']";
     }
     return templateSelector;
   },
-
   triggerInitStart: function(newSettings) { },
   triggerInitEnd: function() { },
   triggerRenderStart: function(newSettings) { },

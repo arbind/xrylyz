@@ -34,7 +34,8 @@ window.Rylyz.CollectionDisplay = Rylyz.ObjectDisplay.extend({
 
   getTemplateSelector: function() {
     if (!this.name) { throw "No collection template found for <collection name='" +this.name+ "'>\n"; }
-    return "rylyz > collection[name='"+ this.name + "']";
+    var appName = this.app.name;
+    return "rylyz[name='" +appName+ "']  > collection[name='"+ this.name + "']";
   },
   renderCollectionObjects: function() {
     this.objectDisplayClass = this.objectDisplayClass || Rylyz.ObjectDisplay
