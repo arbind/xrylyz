@@ -61,11 +61,20 @@ Rylyz.Wyjyt = {
     $ = jQuery = jQuery;
     var src = "http://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
     if(DBUG) console.info("o-- Cycle: about to load javascript: " + src);
-    jQuery.getScript(src, function() {
+    jQuery.getScript(src)
+    .done(function(script, textStatus) {
+      if(DBUG) console.info("o-- Cycle: loaded javascript status: " + textStatus);
       // now we can call rylyz framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
       callbackOnComplete(); 
+    })
+    .fail(function(jqxhr, settings, exception) {
+      console.error("o-- Cycle:Failed to load javascript!");
+      console.error("o-- jqxhr: " + jqxhr);
+      console.error("o-- settings: "+ settings);
+      console.error("o-- exception: "+ exception);
+      alert(' Something went wrong! Please refresh the page and continue.');
     });
     /*
     Rylyz.Wyjyt.loadScriptsSerially(, scriptNames, function() {
@@ -119,10 +128,12 @@ Rylyz.Wyjyt = {
     if (!o) {
       o = Rylyz.Wyjyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
       canvas = Rylyz.Wyjyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
+      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wyjyt.hideOverlay()'>x</div>");
       var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
       var appSpot = jQuery("<div id='rylyz-app-spot'/>");
       appSpot.appendTo(frame);
       frame.appendTo(canvas);
+      closeButton.appendTo(canvas);
       canvas.appendTo("body");
       o.appendTo("body");
     }
@@ -137,6 +148,9 @@ Rylyz.Wyjyt = {
     if (!o) return;
     o.fadeOut(1888);
     canvas.fadeOut(888);
+    var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
+        "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
+    jQuery("#rylyz-widget").html(html);
   },
   start: function(data) {
     Rylyz.Wyjyt.showOverlay();
