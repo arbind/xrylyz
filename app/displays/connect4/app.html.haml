@@ -56,7 +56,7 @@
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
-			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650');", :href=>"#"}
+			%a{:onClick=>"window.open('[[source_url]]', 'visitor_source', 'height=600, width=650'); return false;"}
 				[[ url ]]&nbsp;
 		%h3{:class=>"[[color]]"}
 			Player [[player_num]]
