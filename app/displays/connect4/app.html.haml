@@ -52,7 +52,7 @@
 		.game-status [[status]]
 
 	%object{:name=>"player1", "data-defaults"=>"{player_num:1, name:'Waiting for Player1', is_turn_to_act:true, color:'blue', source_url:'http://google.com'}"}
-		%h2{:class=>"[[color]] ellipsis"}
+		%h3{:class=>"[[color]] ellipsis"}
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
@@ -66,7 +66,7 @@
 			%div{:class=>"chip [[color]] turn-[[is_turn_to_act]]"}
 
 	%object{:name=>"player2", "data-defaults"=>"{player_num:2, name:'Waiting for Player 2', is_turn_to_act:false, color:'red', source_url:'http://google.com'}"}
-		%h2{:class=>"[[color]] ellipsis"}
+		%h3{:class=>"[[color]] ellipsis"}
 			[[name]]&nbsp;
 		%h5{:class=>"yellow ellipsis"}
 			! [! var url = hostnameOfURL(source_url) !]
