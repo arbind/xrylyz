@@ -117,26 +117,14 @@ Rylyz.Wyjyt = {
     var o = Rylyz.Wyjyt.transparentOverlayDiv;
     var canvas = Rylyz.Wyjyt.appOverlayDiv;
     if (!o) {
-
-      //find any really high z-index divs
-      var index_highest = 0;
-      var element_on_top = $("body");
-      $('div').each(function(){
-        var index_current = parseInt($(this).css("z-index"), 10);
-        if(index_current > index_highest) {
-          index_highest = index_current;
-          element_on_top = this;
-        }
-      }
-
       o = Rylyz.Wyjyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
       canvas = Rylyz.Wyjyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
       var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
       var appSpot = jQuery("<div id='rylyz-app-spot'/>");
       appSpot.appendTo(frame);
       frame.appendTo(canvas);
-      canvas.appendTo(element_on_top);
-      o.appendTo(element_on_top);
+      canvas.appendTo("body");
+      o.appendTo("body");
     }
     if ('none' != o.css('display')) return;
     o.show(888);
