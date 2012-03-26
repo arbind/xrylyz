@@ -19,7 +19,6 @@ var jQueryScriptURL = 'https://ajax.googleapis.com/ajax/libs/jquery/' +jQueryVer
 var pusherVersion = '1.11';
 var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
-
 var uniqueCounter = 0;
 Rylyz.Wyjyt = {
   //channelName: 'private-rylyz',
@@ -28,6 +27,8 @@ Rylyz.Wyjyt = {
   wyjytChannel: null,
   clientChannel: null,
   wyjytSource: {},
+  transparentOverlayDiv: null,
+  appOverlayDiv: null,
 
   fetchAppCSS: function(appName) {
     var css_location = "stylesheets/" +appName+ "/app_" +appName;
@@ -56,8 +57,7 @@ Rylyz.Wyjyt = {
     if (Rylyz.Service) {
       callbackOnComplete();
       return;
-    }
-
+    };
     $ = jQuery = jQuery;
     var src = "http://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
     if(DBUG) console.info("o-- Cycle: about to load javascript: " + src);
@@ -112,8 +112,35 @@ Rylyz.Wyjyt = {
   onSuspendApp: function(appName) {},
   onResumeApp: function(appName) {},
   onCloseApp: function(appName) {},
-
+  showOverlay: function() {
+    jQuery("body").css("overflow","hidden");
+    var o = Rylyz.Wyjyt.transparentOverlayDiv;
+    var canvas = Rylyz.Wyjyt.appOverlayDiv;
+    if (!o) {
+      o = Rylyz.Wyjyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
+      canvas = Rylyz.Wyjyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
+      var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
+      var appSpot = jQuery("<div id='rylyz-app-spot'/>");
+      appSpot.appendTo(frame);
+      frame.appendTo(canvas);
+      canvas.appendTo("body");
+      o.appendTo("body");
+    }
+    if ('none' != o.css('display')) return;
+    o.show(888);
+    canvas.show(1888);
+  },
+  hideOverlay: function() {
+    jQuery("body").css("overflow","auto");
+    var o = Rylyz.Wyjyt.transparentOverlayDiv;
+    var canvas = Rylyz.Wyjyt.appOverlayDiv;
+    if (!o) return;
+    o.fadeOut(1888);
+    canvas.fadeOut(888);
+  },
   start: function(data) {
+    Rylyz.Wyjyt.showOverlay();
+
     var app_name = Rylyz.lookupProperty("app", data);
     if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
     if (null==app_name) {
@@ -238,7 +265,7 @@ window.Rylyz.Pusher = {
       var display = data["display"];
       jQuery("#rylyz-widget").html(display);  
       Rylyz.loadAppDisplays(appName);
-      Rylyz.showApp(appName, "#rylyz-widget");
+      Rylyz.showApp(appName);
     });
 
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {

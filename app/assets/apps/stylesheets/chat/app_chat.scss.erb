@@ -5,33 +5,36 @@ $rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
 $appName:	'chat';
 $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 
+$textColor:#173B0B;
+$bgColor: white;
+
+$textColorLink: #FFFFCC;
+$textColorLinkHover: #AAFF88;
+
+$textColorField: #FFFFCC;
+$bgColorField: #298A08;
+$borderColorField: yellow;
+
+$textColorBox: #FFFFCC;
+$bgColorBox: $textColor;
+
+
 .chat-app {
-	color: #FFFFCC;
-  background-color: #1C1D1B;
+	color: $textColor;
+  background-color: transparent;
   padding: 10px 8px; 
-	width: 800px;
-	min-height: 300px;
-	border: 20px solid rgba(8,8,8,0.8);
-  border-radius: 18px;
-	-o-border-radius: 18px;
-	-moz-border-radius: 18px;
-	-webkit-border-radius: 18px;
-
-	background-clip: padding-box;
-	-o-background-clip: padding;
-	-moz-background-clip: padding;
-	-webkit-background-clip: padding;
-
+	width: 100%;
+	min-height: 250px;
 
 	form {
 		.field {
 	    width: 400px;
 			margin: 20px auto;
 			input.text {
-				background-color:#FFFFCC;
-				color: #010101;
+				color: $textColorField;
+				background-color:$bgColorField;
 				font-weight: bold;
-			  border: 1px solid yellow;
+			  border: 1px solid $borderColorField;
 				width: 200px;
 		    margin: 10px 40px;
 		    padding: 5px;
@@ -39,14 +42,14 @@ $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 		    text-shadow: 0px 1px 0px #fff;
 		    outline: none;
 			}
-			a.button {
-				margin: 0px 38px;
-				width: 165px;
-			}
 			input.text:focus {
 		    -webkit-box-shadow: 0px 0px 5px yellow;
 		    -moz-box-shadow: 0px 0px 5px yellow;
 		    box-shadow: 0px 0px 5px yellow;
+			}
+			a.button {
+				margin: 0px 38px;
+				width: 165px;
 			}
 		};
 	}
@@ -57,7 +60,8 @@ $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 	    width: 400px;
 	    height: 200px;
 	    margin: 50px auto; 
-  		background-color: #2C2D2B;
+			color: $textColorBox;
+  		background-color: $bgColorBox;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;
 		};
@@ -67,10 +71,11 @@ $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 		.rooms-collection {
 			width: 300px;
 			height: 200px;
-			overflow: scroll;
+			overflow: auto;
 			margin: 20px auto;
 			padding: 8px 20px;
-  		background-color: #2C2D2B;
+			color: $textColorBox;
+  		background-color: $bgColorBox;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;
 			-o-border-radius: 8px;
@@ -101,8 +106,7 @@ $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 
 
 .chat-room-screen {
-	position: relative;
-	height: 450px;
+	height: 350px;
 	color: white;
 	top:0;
 	left:0;

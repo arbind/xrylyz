@@ -5,38 +5,95 @@ $rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
 $appName:	'connect4';
 $imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
 
+
+$textColor:#173B0B;
+$bgColor: white;
+
+$textColorLink: #FFFFCC;
+$textColorLinkHover: #AAFF88;
+
+$textColorField: #FFFFCC;
+$bgColorField: #298A08;
+$borderColorField: yellow;
+
+
+$textColorBox: #FFFFCC;
+$bgColorBox: $textColor;
+
 $piece-size: 50px;
 
 .button-bar {
 	clear: both;
 	width: 300px;
-	margin: 20px auto;
+	margin: 8px auto;
 	.button {
-		margin-left: 40px;
+		margin-left: auto;
 	}
 };
 
+.button-canvas{
+	margin: 0px auto;
+};
+
+form {
+	.field {
+    width: $piece-size*8;
+		margin: 20px auto;
+		input.text {
+			color: $textColorField;
+			background-color:$bgColorField;
+			font-weight: bold;
+		  border: 1px solid $borderColorField;
+			width: 200px;
+	    margin: 10px 40px;
+	    padding: 5px;
+	    font-size: 14px;
+	    text-shadow: 0px 1px 0px #fff;
+	    outline: none;
+		}
+		input.text:focus {
+	    -webkit-box-shadow: 0px 0px 5px yellow;
+	    -moz-box-shadow: 0px 0px 5px yellow;
+	    box-shadow: 0px 0px 5px yellow;
+		}
+		a.button {
+			margin: 0px 38px;
+			width: 165px;
+		}
+	}
+}
+
+a, a:visited, a:active {
+	color:$textColorLink;
+	cursor: pointer;
+	text-decoration: none;
+	&:hover {
+		color: $textColorLinkHover;
+	}
+}
+
+li {
+	color:$textColorLink;
+	cursor: pointer;
+	&:hover {
+		color: $textColorLinkHover;
+	}	
+}
+
 .game-status {
-	color: #FFFFCC;
+	color: $textColor;
+	background-color: $bgColor;
 	clear:both;
 	text-align: center;
 	font:normal bold 22px/28px Georgia, serif; 
 }
 .connect4-app {
-	background-color: #1C1D1B;
+	color: $textColor;
+	background-color: transparent;
 	padding: 10px 8px; 
-	width: ($piece-size*17);
+	width: 100%;
+	min-width: ($piece-size*12);
 	min-height: ($piece-size*9)+20;
-	border: 20px solid rgba(8,8,8,0.8);
-  border-radius: 18px;
-	-o-border-radius: 18px;
-	-moz-border-radius: 18px;
-	-webkit-border-radius: 18px;
-
-	background-clip: padding-box;
-	-o-background-clip: padding;
-	-moz-background-clip: padding;
-	-webkit-background-clip: padding;
 
 	h4.your-turn{
 		color: yellow;
@@ -84,53 +141,26 @@ $piece-size: 50px;
  	}
 
 	.input-nickname-screen {
-		color: yellow;
 		form.nickname {
 	    width: $piece-size*8;
 	    height: $piece-size*4;
 	    margin: $piece-size auto; 
-  		background-color: #2C2D2B;
+			color: $textColorBox;
+  		background-color: $bgColorBox;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;
 		};
-		form {
-			.field {
-		    width: $piece-size*8;
-				margin: 20px auto;
-				input.text {
-					background-color:#FFFFCC;
-					color: #010101;
-					font-weight: bold;
-				  border: 1px solid yellow;
-					width: 200px;
-			    margin: 10px 40px;
-			    padding: 5px;
-			    font-size: 14px;
-			    text-shadow: 0px 1px 0px #fff;
-			    outline: none;
-				}
-				a.button {
-					margin: 0px 38px;
-					width: 165px;
-				}
-				input.text:focus {
-			    -webkit-box-shadow: 0px 0px 5px yellow;
-			    -moz-box-shadow: 0px 0px 5px yellow;
-			    box-shadow: 0px 0px 5px yellow;
-				}
-			};
-		}
 	}
 
 	.lobby-screen {
-		color: yellow;
 		.games-collection {
 			width: 300px;
 			height: 200px;
-			overflow: scroll;
+			overflow: auto;
 			margin: 20px auto;
 			padding: 8px 20px;
-  		background-color: #2C2D2B;
+			color: $textColorBox;
+  		background-color: $bgColorBox;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;
 			-o-border-radius: 8px;
@@ -148,10 +178,10 @@ $piece-size: 50px;
 			}
 		}
 	}
+
   .main-screen {
   	min-width: $piece-size*17;
   	min-height: $piece-size*9;
-  	background-color:#282828b;
   	.button-bar {
   		clear: both;
   		float: right;
@@ -165,10 +195,11 @@ $piece-size: 50px;
 	  }
   	.player-panel {
 	  	float:left;
-	    width: $piece-size*4;
+	    width: $piece-size*3;
 	    height: $piece-size*6;
-	    margin: $piece-size*1 18px;
-  		background-color: #2C2D2B;
+	    margin: $piece-size 30px 8px 30px;
+	    color: $textColorBox;
+  		background-color: $bgColorBox;
 	    border: 3px solid #101010;  		
 		  border-radius: 8px;
 			-o-border-radius: 8px;
@@ -177,13 +208,6 @@ $piece-size: 50px;
 	 		h2.blue, h3.blue, h4.blue, h5.blue { color: blue; }
 	 		h2.red, h3.red, h4.red, h5.red { color: red; }
 	 		h2.yellow, h3.yellow, h4.yellow, h5.yellow { color: yellow; }
-	 		a, a:visited, a:active {
-	 			color:yellow;
-	 			text-decoration: none;
-	 		}
-	 		a:hover {
-	 			color: #FFFFCC;
-	 		}
 	  }
 	  .board_canvas {
 	    z-index:0;
@@ -205,8 +229,9 @@ $piece-size: 50px;
 		    min-height: $piece-size*6;
 			  .column {
 			  	&:hover {
-		  	 		opacity: 0.88;
-				 		filter:Alpha(opacity=88);
+		  	 		opacity: 0.58;
+		  	 		-moz-opacity: 0.58;
+				 		filter:Alpha(opacity=58);
 			  	}
 			    float:left;
   		    background-color: transparent;

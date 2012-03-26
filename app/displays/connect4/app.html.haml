@@ -17,12 +17,16 @@
 			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%screen{:name=>"lobby"}
-		%h2 Games
+		%h1 Connect 4
+		.button-bar
+			.button-canvas
+				.button.star{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
+					Start A New Game
+		%h2 Or Join A Game:
 		%collection{:name=>"games"}
 		.button-bar
-			.button.star{"fire-onClick"=>"{queue:'hi', type:'start-new-game'}" }
-				Start New Game
-			.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
+			.button-canvas
+				.button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
 	%collection{:name=>"games", :item=>"game-item", "data-defaults"=>"[]"}
 		%ul
@@ -30,9 +34,10 @@
 
 	%item{:name=>"game-item"}
 		%li.star{"fire-onClick"=>"{queue:'hi', type:'join_game', select:'[[id]]'}" }
-			Play vs [[player1]]
+			Start a game with [[player1]]
 
 	%screen{:name=>"play-game"}
+		%h1 Connect 4
 		.main-screen
 			.player-panel.player1
 				%object{:name=>"player1"}
@@ -75,7 +80,7 @@
 		%div{:class=>"turn-indicator"}
 			%div{:class=>"chip [[color]] turn-[[is_turn_to_act]]"}
 
-	%item{:name=>"chip"}
+	%item{:name=>"chip", "data-defaults"=>"{color:'black', col:0, row:0}"}
 		%div{:class=>"chip inplay [[color]] c[[col]] r[[row]]"}
 
 	%collection{:name=>"game-pieces", :item=>"chip"}

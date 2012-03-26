@@ -27,6 +27,7 @@ class AppConnect4Controller < RylyzAppController
       PusherChannels.instance.trigger_private_channel_event(game.player1_visitor.wid, "fire-event", event)
       PusherChannels.instance.trigger_private_channel_event(game.player2_visitor.wid, "fire-event", event) unless game.player2_visitor.nil?
 
+      return if game.player2_visitor.nil?
 
 			ctx = {appName: app_name, screenName:'play-game', displayName:'game-status'}
 			data = {status:"Game has started! Its your turn."}
@@ -75,10 +76,10 @@ class AppConnect4Controller < RylyzAppController
 
 	  	client_events = []
 
-      ctx = {appName: app_name, screenName:'lobby', displayName:'overview'}
-      data = {num_games: games.count }
-      event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      client_events << event
+      # ctx = {appName: app_name, screenName:'lobby', displayName:'overview'}
+      # data = {num_games: games.count }
+      # event  = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      # client_events << event
 
       ctx = {appName: app_name, screenName:'lobby', displayName:'games'}
       data = games.collect{|game| game.for_display_as_list_item }
