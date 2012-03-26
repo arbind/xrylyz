@@ -4,6 +4,8 @@
 window.DBUG = window.DBUG || false;
 window.dbugOut = window.dbugOut || function(){ return null };
 
+window.DBUG = true;
+
 window.Rylyz = window.Rylyz || {}
 
 window.refreshCSSUniqueCounter = 0;
