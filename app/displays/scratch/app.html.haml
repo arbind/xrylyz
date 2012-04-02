@@ -1,0 +1,122 @@
+- require 'date'
+- this_year = Date.today.year
+%rylyz{:name=>"scratch"}
+
+  %app{:name=>"scratch", "data-defaults"=>"{title:'Scratch'}", :"start-screen" => "starter"}
+    %screen{:name=>"starter"}
+
+  %screen{:name=>"starter"}
+    - offers = [ |
+      {price: 1, discount:0}, |
+      {price: 2, discount:0}, |
+      {price: 5, discount:0}, |
+      {price: 10, discount:0.05}, |
+      {price: 20, discount:0.05}, |
+      {price: 25, discount:0.05}, |
+      {price: 50, discount:0.05}, |
+      {price: 100, discount:0.10}, |
+      ]
+    #rylyz-purchase-offers
+      - item = 'cash'
+      - offers.each do |offer|
+        - p = offer[:price]
+        - d = offer[:discount]
+        - ammount = ((1+d)*p*100).to_i
+        - discount = (0==d) ? "&nbsp;": "#{(d*100).to_i}% discount!"
+        .offer
+          .caption #{discount}
+          %img.money
+          .ammount-offered #{ammount}
+          .buy.button{"fire-onClick"=>"{item:'#{item}', price:#{p}, ammount:#{ammount} }"}
+            BUY $#{p}
+    %hr
+    %object{:name=>"HowToPay"}
+
+  %object{:name=>"HowToPay"}
+    %object{:name=>"OrderObject"}
+    %object{:name=>"SignInOrRegister"}
+    %object{:name=>"PayWithCreditCard"}
+    %object{:name=>"PayWithMobileNumber"}
+
+  %object{:name=>"PayWithCreditCard"}
+    %collection{:name=>"ExistingCreditCards"}
+    %object{:name=>"EnterNewCreditCardInfo"}
+
+  %collection{:name=>"ExistingCreditCards", "data-defaults"=>"[ |
+    {type:'Visa', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'MasterCard', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'American Express', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'Discover', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'JCB', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'Diners Club', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    {type:'Unknown', fingerprint:'YxrUJAyfQOCCvHsK', last4:'2345', name:'Mr Someone', exp_month:4, exp_year:2012}, |
+    ]"}
+    %collection
+
+  %item{:name=>"ExistingCreditCards-item"}
+    .existing-credit-card
+      %div{:class=>"card-logo [[type]]"}
+      .card-info
+        .spacer &nbsp;
+        .card-name.ellipsis [[name]]vforsdverylongcuttingnametogo heredud
+        .card-number xxxx[[last4]]
+        .expiration Exp: [[exp_month]]/[[exp_year]]
+        .buy.button.float-left{:onclick=>"Rylyz.charge(this)"}
+          BUY $100
+        .purchase.float-right
+          %img.money
+          .ammount-offered 10,000
+
+  %object{:name=>"EnterNewCreditCardInfo"}
+    %form{:id=>"stripe", :target=>"", :action => "", :method => "", :name=>""}
+      .new-credit-card
+        .card-info
+          %h2.new-card Enter Credit Card Info:
+          .position-relative
+            .prompt
+              %label Enter Cardholder Name
+              %input.text.card-name.clear-both{:type => "text", :size=>"20", :autocomplete=>"off"}
+            .prompt
+              %label Enter Card Number
+              %input.text.card-number.clear-both{:type => "text", :size=>"20", :length=>"16", :autocomplete=>"off"}
+            .prompt
+              %label Enter CVC
+              %input.text.card-cvc{:type => "text", :size=>"4", :autocomplete=>"off"}
+            .prompt-selection
+              %label.select.clear-both Expires On:
+              %select.card-expiry-month
+                %option{:value=>"0"} &nbsp;
+                - (1..12).each do |day| 
+                  %option{:value=>"#{day}"}= day
+              %select.card-expiry-year
+                - (this_year..this_year+12).each do |yr|
+                  %option{:value=>"#{yr}"}= yr
+            .buy.button.float-left{:onclick=>"Rylyz.charge(this)"}
+              BUY $100
+            .purchase.float-right
+              %img.money
+              .ammount-offered 10,000
+          .cards-accepted-logos.clear-both &nbsp;
+
+  %object{:name=>"PayWithMobileNumber"}
+    %collection{:name=>"ExistingMobileNumbers"}
+    %div NewMobileNumber
+
+  %object{:name=>"OrderObject"}
+    %h2 OrderObject
+
+  %object{:name=>"SignInOrRegister"}
+    %h2 SignInOrRegister
+
+  %collection{:name=>"ExistingMobileNumbers"}
+    %h2 PayWithExistingMobileNumber
+    %collection
+
+  %item{:name=>"ExistingMobileNumbers-item"}
+    %div ExistingMobileNumber
+
+  %object{:name=>"billing-info"}
+    %hr
+    / %iframe{:src=>"https://rylyz.com"}
+    /   this is an iframe
+

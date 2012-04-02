@@ -166,8 +166,15 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
     if (this.isCollection()) {
       //pick off the template name for the collection items
-      if(!elTemplate[0].getAttribute("item") ) throw "Collection must specify its itemTemplateName: <collection name='" +this.name+ "' item='???'>"
-      this.itemTemplateName = elTemplate[0].getAttribute("item");
+      // if(!elTemplate[0].getAttribute("item") ) throw "Collection must specify its itemTemplateName: <collection name='" +this.name+ "' item='???'>"
+      // this.itemTemplateName = elTemplate[0].getAttribute("item");
+
+      if(elTemplate[0].getAttribute("item") ) {
+        this.itemTemplateName = elTemplate[0].getAttribute("item");
+      }
+      else {
+        this.itemTemplateName = this.name + "-item";        
+      }
 
       if(elTemplate[0].getAttribute("data-defaults")){ // pick off the data-defaults attribute to set any defaults
         var defaults = null;  // should be specified as a collection: data-defaults='[{color:"blue"}, {color:"red"}]'
@@ -257,6 +264,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
     this.triggerDataLoadStart(this.settings);
     elParent.append(this.render().el);
+    this.preparePrompts();
   },
   render: function() {
     if (!this.compiledTemplate) {
@@ -394,6 +402,38 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       }
     })
   },
+
+  preparePrompts: function() {
+    /*
+    <div class="prompt">
+      <label>Enter email</label>
+      <input id="login_id" name="login_id" size="30" type="text">
+    </div>
+
+    for each .field:
+      on click: set focus to input
+      for the field's input:
+        onFocus: hide the label
+        onBlur: show the label if value.nil?
+    */
+    this.$(".prompt").each (function (idx){
+      var label = $(this).find("label");
+      var input = $(this).find("input");
+      if (input.val() != "") label.addClass("invisible")
+      $(this).click(function(srcc){
+        input.focus();
+      })
+      input.focus(function (srcc){
+        label.removeClass("invisible") //remove the style so we do not add it 2x
+        label.addClass("invisible")    
+      })
+      input.blur(function (srcc){
+        if ($(this).val() == "") label.removeClass("invisible")
+      })
+    })
+  },
+
+
   /*
   renderObjectDisplay: function(setup) {
     return this.renderData(setup, false);

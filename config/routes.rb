@@ -3,6 +3,7 @@ RylyzPlayer::Application.routes.draw do
 
 
   get "blogger/blog"
+  get "blogger/games"
 
 
   # The priority is based upon order of creation:

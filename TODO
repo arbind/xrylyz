@@ -1,22 +1,155 @@
 +++ TODO
 
-CSS
-change image urls to point to heroku
+Purchase Flows
+1. flow: Purchase when loggedin
+  a. with existing card
+  b. with new card
+  c. with existing mobile phone
+  d. with mobile phone
+
+2. flow: Purchase when not logged in
+  a. with existing card
+  b. with new card
+  c. with existing mobile phone
+  d. with mobile phone
+
+3. flow: Purchase when not registered
+  a. with new card
+  b. with new mobile phone
+
+1a. [GetGameCash]:{select amount}(create an OrderObject)
+    -> [How2Pay]:{select existing card}
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+1b. [GetGameCash]:{select amount}(create an OrderObject)
+    -> [How2Pay]:{choose to add new card}
+    -> [AddCard]:{enter details} (save to CustomerObject)
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+2a. [GetGameCash]:{select amount}(create an OrderObject)
+    -> [SignIn]:{authenticate}
+    -> [How2Pay]:{select existing card}
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+2b. [GetGameCash]:{select amount}(create an OrderObject)
+    -> [SignIn]:{authenticate}
+    -> [How2Pay]:{choose to add new card}
+    -> [AddCard]:{enter details} (save to an OrderObject)
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+3a. [GetGameCash]:{select amount}(create an OrderObject)
+    -> [SignIn]:{choose to register}
+    -> [Register]:{confirm}
+    -> [How2Pay]:{select existing card}
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+3b. [GetGameCash]:{select amount}(create PurchaseObject)
+    -> [SignIn]:{authenticate}
+    -> [Register]:{confirm}
+    -> [How2Pay]:{choose to add new card}
+    -> [AddCard]:{enter details} (save to CustomerObject)
+    -> [ConfirmCardPurchase]:{ok}
+    -> [AuthorizingCard]
+    -> [PurchaseComplete]
+
+1 GetGameCash
+  User selects game ammount
+  Create purchase token
+  if logged in -> nav to How2Pay
+  else -> nav to sign in
+
+2 How2Pay
+  Display Purchase token
+  prompt: would you like to pay?
+  show:
+    make credit card payment:
+      existing cards -> nav to ConfirmCardPurchase
+      add a card -> nav to AddCard
+    make mobile payment
+      existing phone -> nav to EnterCode
+      add a phone -> nav EnterMobilePhone 
+  back -> GetGameCash 
+
+3 ConfirmCardPurchase
+  Display Purchase token
+  nav to -> AuthorizingCard
+
+4 AuthorizingCard
+  Display Purchase token
+  if authorized -> nav to PurchaseComplete
+  else -> nav to CouldNotAuthorize
+
+5 PurchaseComplete
+
+-------
+6 AddCard 
+  Display Purchase token
+  nav to -> ConfirmCardPurchase
+
+
+9 CouldNotAuthorize
+  Display Purchase token
+  display reason
+  ok -> nav to How2Pay
+
+2 SignIn
+  Display Purchase token
+  Prompt: Sign in with:
+  email
+    If email exists -> nav to EnterPassword
+    else -> nav to RegisterAccount
+  facebook
+  twitter
+  google+
+  tumblr
+  nav to -> How2Pay
+
+3 EnterPassword
+  Display Purchase token
+  if login ok -> nav to How2Pay
+  else prompt try again (2x) then nav to SignIn
+  cancel -> nav to SignIn
+
+4 RegisterAccount
+  Display Purchase token
+  Display email
+  prompt for password + confirmation
+  if registration ok -> nav to How2Pay
+  else display reason
+  cancel -> nav to SignIn
+
+
+----
+7 AddPhone
+  Display Purchase token
+  nav to -> EnterCode
+
+9 EnterCode
+  Display Purchase token
+  prompt to enter code (or send via sms)
+    if code is correct -> nav to PurchaseComplete
+    else -> display invalid code, please re-enter
+  cancel -> nav to How2Pay
+
 
 Wyjyt
 framework for app
-quit an app
 adaptive css?
 
 Connect4
-send winner message
-send looser message
-send your turn message
-send waiting for player to move message
 adaptive css?
 
 chat
-leave button
 adaptive css?
 
 

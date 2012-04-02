@@ -3,7 +3,9 @@
 
 $rylyzPlayerHost: '<%= RYLYZ_PLAYER_HOST %>';
 $appName:	'connect4';
-$imageURL: 'http://' +$rylyzPlayerHost+ '/assets/images/' +$appName;
+$assetsURL: 'http://' +$rylyzPlayerHost+ '/assets/';
+$imagesURL: $assetsURL;
+$appImagesURL: $imagesURL + 'images/' +$appName+ '/';
 
 
 $textColor:#173B0B;
@@ -255,7 +257,7 @@ li {
 				    z-index:3;
 				    width: $piece-size;
 				    height: $piece-size;
-				    background-image:url($imageURL+ '/hole.png');
+				    background-image:url($appImagesURL+ 'hole.png');
 				    background-size: cover;
 				  }
 			  }  
@@ -270,7 +272,7 @@ li {
     left:0;
     width:100%;
     height:100%;
-    background-image:url($imageURL + '/sheen.png');
+    background-image:url($appImagesURL + 'sheen.png');
     background-size: cover;
   }
 
@@ -289,13 +291,13 @@ li {
       z-index:-1;
   }
   .chip.red {
-    background-image:url($imageURL+ '/red_chip.png');
+    background-image:url($appImagesURL+ 'red_chip.png');
   }
   .chip.blue {
-    background-image:url($imageURL+ '/blue_chip.png');
+    background-image:url($appImagesURL+ 'blue_chip.png');
   }
   .chip.black {
-    background-image:url($imageURL+ '/black_chip.png');
+    background-image:url($appImagesURL+ 'black_chip.png');
   }
 
   .c0 { left: (0 * $piece-size);}

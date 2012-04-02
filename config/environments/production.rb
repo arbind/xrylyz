@@ -6,6 +6,15 @@ RylyzPlayer::Application.configure do
   config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
   config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
 
+
+  #stripe config TEST
+  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
+  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+
+  #stripe config LIVE PRODUCTION
+  # config.stripe_secret  = 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG'
+  # config.stripe_publish = 'pk_QS5y9D5NgMZBHtEBVzfmeyN6xATEd'
+
   # Code is not reloaded between requests
   config.cache_classes = true
 

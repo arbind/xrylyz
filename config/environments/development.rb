@@ -6,6 +6,10 @@ RylyzPlayer::Application.configure do
   config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
   config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
 
+  #stripe config
+  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
+  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
