@@ -2,8 +2,17 @@
 - this_year = Date.today.year
 %rylyz{:name=>"scratch"}
 
-  %app{:name=>"scratch", "data-defaults"=>"{title:'Scratch'}", :"start-screen" => "starter"}
+  %app{:name=>"scratch", "data-defaults"=>"{title:'Scratch'}", :"start-screen" => "tictactoe"}
+    %screen{:name=>"tictactoe"}
     %screen{:name=>"starter"}
+
+  %screen{:name=>"tictactoe", "data-defaults"=> "{player1:'jim'}"}
+    %h1 
+      I am tic tac toe!
+      %h2{"intent-onClick"=>"login", "nav-onClick"=>"starter"}
+        [[player1]]
+
+
 
   %screen{:name=>"starter"}
     - offers = [ |

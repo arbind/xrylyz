@@ -83,6 +83,10 @@
 
       Rylyz.showScreenWithFadeIn(screen, newSettings);
 		},
+		fireHIEvent4Intent: function(event) {
+      if (!ev.intent) throw "Intent event must specify an intent! " + ev;
+      Rylyz.Intent.open(ev.intent);
+		},
 	};
 
 		/*
@@ -237,12 +241,35 @@
   }
   Rylyz.event.registerEventHandler(hLoadData);
 
-  var hScreenNavigation = {
+ 
+var hScreenNavigation = {
     queue: "screen",
     type: "navigation",
     handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
   }
   Rylyz.event.registerEventHandler(hScreenNavigation);
+
+  var hNavOnClick = {
+    queue: "nav",
+    type: "nav-onClick", 
+    handleEvent: function(ev) {
+    	ev.nextScreen = ev["nextScreen"] || ev["nav-onClick"]; //
+    	Rylyz.Service.fireHIEvent4Navigation(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hNavOnClick);
+
+
+  var hIntentOnClick = {
+    queue: "intent",
+    type: "intent-onClick", 
+    handleEvent: function(ev) {
+    	ev.intent = ev["intent-onClick"]; //
+    	Rylyz.Service.fireHIEvent4Intent(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hIntentOnClick);
+
 
   // var hLoadApp = {
   //   queue: "screen",

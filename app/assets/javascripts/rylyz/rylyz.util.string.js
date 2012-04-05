@@ -20,3 +20,24 @@ if ('function' != typeof String.prototype.endsWith) {
     return this.slice(-str.length) == str;
   };
 }
+
+//String.trim()
+if ('function' != typeof String.prototype.trim) {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g,"");
+  }
+}
+
+//String.ltrim()
+if ('function' != typeof String.prototype.ltrim) {
+  String.prototype.ltrim = function() {
+    return this.replace(/^\s+/,"");
+  }
+}
+
+//String.rtrim()
+if ('function' != typeof String.prototype.rtrim) {
+  String.prototype.rtrim = function() {
+    return this.replace(/\s+$/,"");
+  }
+}

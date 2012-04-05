@@ -1,0 +1,31 @@
+window.Rylyz = window.Rylyz || {}
+
+Rylyz.Intent = {
+  intentWindow: null,
+  intentWindowName: 'intent',
+  intentWindowConfig: {top:88, left:88, width:550, height:420},
+  intentURL: "http://<%= RYLYZ_PLAYER_HOST %>/intent/",
+  openNewWindow: function(url){
+    var s = "";
+    var config = this.intentWindowConfig;
+    if ("string"==typeof config) s = config;
+    else if ("object"==typeof config) {
+      var first=true;
+      for(var key in config) {
+        if (!first) s = s + ","
+        s = s + " " + key + "="+config[key]
+        first = false;
+      }
+    }
+    if(this.intentWindow && this.intentWindow.close) this.intentWindow.close()
+    this.intentWindow = null;
+    this.intentWindow = window.open(url, this.intentWindowName, s);
+    if (this.intentWindow.focus) this.intentWindow.focus();
+  },
+
+  open: function(intent, options) {
+    var opts = options || {};
+    url = this.intentURL + intent;
+    this.openNewWindow(url);
+  }
+}

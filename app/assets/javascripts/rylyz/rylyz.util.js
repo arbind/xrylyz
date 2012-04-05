@@ -19,6 +19,29 @@ Rylyz.refreshCSS = function() {
 };
 
 
+
+// window.openNewWindow(url, name, config)
+if ('function' != typeof window.openNewWindow) {
+  window.openNewWindow = function(url, name, config){
+    var s = "";
+    if (config) {
+      if ("string"==typeof config) s = config;
+      else if ("object"==typeof config) {
+        var first=true;
+        for(var key in config) {
+          if (!first) s = s + ","
+          s = s + " " + key + "="+config[key]
+          first = false;
+        }
+      }
+    }
+    alert(s);
+    var w = window.open(url, name, s);
+    if (w.focus) w.focus();
+  }
+}
+
+
 // add peek to array
 if ('function' != typeof Array.prototype.peek) {
   Array.prototype.peek = function(){ return this.length? (this[this.length-1]) : (null) ; }

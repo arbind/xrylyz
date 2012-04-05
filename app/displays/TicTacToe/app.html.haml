@@ -1,0 +1,41 @@
+%rylyz{:name=>"TicTacToe"}
+
+	%app{:name=>"TicTacToe", "start-screen"=>"splash"}
+		%screen{:name=>"splash"}
+		%screen{:name=>"game-room"}
+
+
+	%screen{:name=>"splash"}
+		%h1 splash
+		.button.start{"nav-onClick"=>"game-room" }
+			start
+		%collection{:name=>"game-list"}
+
+
+	%collection{:name=>"game-list", "data-defaults"=>"[{},{},{}]"}
+		%h1 list of games
+		%ul
+			%collection
+
+	%item{:name=>"game-list-item"}
+		%li item
+
+
+	%screen{:name=>"game-room"}
+		%object{:name=>"player2"}
+		%object{:name=>"game-board"}		
+		%object{:name=>"player1"}
+
+	%object{:name=>"player2", "data-defaults"=>"{name:'Jim'}"}
+		.player2
+			Player 2
+			.name [[name]]
+
+	%object{:name=>"player1", "data-defaults"=>"{name:'Sally'}"}
+		.player1
+			Player 1
+			.name{"fire-onClick"=>"{queue:'hi', type:'change-me' }"}
+				[[name]]
+
+	%object{:name=>"game-board"}		
+		.game-board Game Board

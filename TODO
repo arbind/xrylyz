@@ -1,5 +1,18 @@
 +++ TODO
 
+
+x change directory path for 
+  display/TicTacToe => display/tic_tac_toe
+  (underscore app name when loading its html)
+  Also for stylesheets and images
+  
+
+BattleShip:
+http://en.wikipedia.org/wiki/Battleship_(game)
+http://sparring.rubyforge.org/battleship/index.html
+https://github.com/hallgren/BattleShip
+
+
 Purchase Flows
 1. flow: Purchase when loggedin
   a. with existing card

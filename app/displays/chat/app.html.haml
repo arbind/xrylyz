@@ -32,13 +32,13 @@
 			%collection
 
 	%item{:name=>"room-item"}
-		%li{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'chat-room', select:'[[id]]'}" }
+		%li{"nav-onClick"=>"chat-room", :select=>"[[id]]" }
 			[[name]] (has [[num_visitors]] visitors)
 
 	%screen{:name=>"chat-room", "data-defaults"=>"{name:''}" }
 		%h1 Chat Room [[name]]
 		.button-bar.exit
-			.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Back
+			.button.quit{"nav-onClick"=>"lobby"} Back
 		.people
 			%collection{:name=>"people"}
 		.messages

@@ -45,7 +45,7 @@
 				%object{:name=>"player2"}
 			%object{:name=>"game-status"}
 			.button-bar.exit
-				.button.quit{"fire-onClick"=>"{queue:'screen', type:'navigation', nextScreen:'lobby'}"} Back
+				.button.quit{"nav-onClick"=>"lobby"} Back
 
 
 	%object{:name=>"game-status", "data-defaults"=>"{status:'Waiting for another player...'}"}

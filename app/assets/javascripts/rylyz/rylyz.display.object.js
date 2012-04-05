@@ -289,8 +289,10 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     this.$el.html(htmlContent);
 
     //re-bind handlers for this display
-    this.fireOn("click"); // bind all click events
-    this.fireOn("hover"); // bind all hover events
+    this.fireOn("click"); // bind all fire-onClick events
+    this.fireOn("hover"); // bind all fire-onHover events
+    this.eventOn("nav", "click"); // bind all nav-onClick events
+    this.eventOn("intent", "click"); // bind all intent-onClick events
 
     var thisDisplay = this;
     this.$("form").unbind('submit'); //rebind forms
@@ -403,6 +405,27 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     })
   },
 
+  eventOn: function(rylyzEventType, domEventType) {
+    var uiEventType = $.trim(domEventType.toLowerCase()); //name of the dom event in lower case
+    var eventOnDomEvent = rylyzEventType + "-on" + uiEventType.capitalize(); //name of the data attribute
+
+    var eventBase = this.materializeEvent();
+    eventBase.queue = rylyzEventType; //nav
+    eventBase.type = eventOnDomEvent; //nav-onClick
+
+    this.$("[" + eventOnDomEvent + "]").bind(uiEventType, function(domEvent) {
+      var element = srcElementForDOMEvent(domEvent);
+      var ev = eventBase;
+      ev[eventOnDomEvent] = element.getAttribute(eventOnDomEvent);
+      var settings = element.getAttribute('settings') || {};
+      var select = element.getAttribute('select') || null;
+      var data = element.getAttribute('data') || {};
+      settings.select = settings.select || select;
+      ev.settings = settings;
+      ev.data = data;
+      Rylyz.event.fireEvent(ev);
+    });
+  },
   preparePrompts: function() {
     /*
     <div class="prompt">

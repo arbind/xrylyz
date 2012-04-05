@@ -13,5 +13,8 @@
 
  *= require rylyz/rylyz.js
  *= require rylyz/rylyz.event.js
+ *= require rylyz/rylyz.intent.js
+ 
  *= require rylyz/rylyz.service.js
+
  */
