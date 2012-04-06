@@ -5,7 +5,7 @@ class WyjytController < ApplicationController
   	puts "+++++++++++++++++++++++++++++++++++++++++++++++"
   	puts params
   	puts "+++++++++++++++++++++++++++++++++++++++++++++++"
-    if should_deny_access?
+    if pusher_should_deny_access?
       render :json => "bad_robot".to_json
     else
       enable_CORS_access
@@ -19,9 +19,35 @@ class WyjytController < ApplicationController
     end
   end
 
+  def omniauth_login
+    s = "<hr>"
+    s << "<a href='/auth/twitter'>twitter</a>"
+    s << "<hr>"
+    s << "<a href='/auth/facebook'>facebook</a>" 
+    render :text => s.html_safe
+  end
+
+  def omniauth_login_callback
+    # @user = User.find_or_create_from_auth_hash(omniauth_hash)
+    # self.current_user = @user
+    # redirect_to '/'
+    render :text => omniauth_hash.to_yaml
+  end
+
+  def omniauth_login_failure_callback
+    # twitter callback for "Cancel, and return to app"
+    # e.g: http://ondeck.local/auth/failure?message=invalid_credentials
+    # log this cancelation, send game event to wid 
+    # redirect_to :login
+    render :text => params.to_yaml
+  end
+
+  def omniauth_logout
+  end
+
   private
 
-  def should_deny_access?
+  def pusher_should_deny_access?
   	#lookup request referrer to see if website domain is registered for rylyz
   	false
   end
@@ -32,6 +58,10 @@ class WyjytController < ApplicationController
     headers['Access-Control-Allow-Methods']     = 'GET, POST, OPTIONS'
     headers['Access-Control-Allow-Headers']     = 'Content-Type, *'
     headers['Access-Control-Allow-Origin']      = '*'
+  end
+
+  def omniauth_hash
+    request.env['omniauth.auth']
   end
 
 end

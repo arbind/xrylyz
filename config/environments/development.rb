@@ -1,12 +1,20 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  #social public key and secret
+  config.twitter_consumer_key = 'y0jHav3TZX2XEKZoB8VgvA'
+  config.twitter_consumer_secret = 'P32UGc2eWcMmcTg5w4TFjkH5pY34GJ2SbwBWlmbs'
+  config.facebook_app_id = '370553076322295'
+  config.facebook_app_secret = '2c85411d97742ac7eaa5ccd2038945dc'
+  config.linked_in_consumer_key = ''
+  config.linked_in_consumer_secret = ''
+
   #Pusher config
   config.pusher_app_id = '16344'                # Christian's Beta account
   config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
   config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
 
-  #stripe config
+  #stripe config test
   config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
   config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
 

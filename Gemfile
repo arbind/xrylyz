@@ -13,6 +13,27 @@ end
 gem 'mongoid'
 gem 'bson_ext'
 
+#oauth
+gem 'omniauth'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+# gem 'omniauth-linkedin'
+# gem 'omniauth-tumblr'
+# gem 'omniauth-yahoo'
+# gem 'omniauth-windowslive'
+# gem 'omniauth-soundcloud'
+# gem 'omniauth-shopify'
+# gem 'omniauth-runkeeper'
+# gem 'omniauth-netflix'
+# gem 'omniauth-meetup'
+# gem 'omniauth-google-oauth2'
+# gem 'omniauth-github'
+# gem 'omniauth-foursquare'
+# gem 'omniauth-flickr'
+# gem 'omniauth-eventbrite'
+
+
+
 gem 'json'
 gem 'haml'
 gem 'jquery-rails'

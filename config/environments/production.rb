@@ -1,19 +1,78 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+if ENV["RYLYZ_HOST"]
+  #stripe config LIVE PRODUCTION
+  # config.stripe_secret  = 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG'
+  # config.stripe_publish = 'pk_QS5y9D5NgMZBHtEBVzfmeyN6xATEd'
+
   #Pusher config
   config.pusher_app_id = '16344'                # Christian's Beta account
   config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
   config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
 
+  #social public key and secret
+  config.twitter_consumer_key = ''
+  config.twitter_consumer_secret = ''
+  config.facebook_app_id = ''
+  config.facebook_app_secret = ''
+  config.linked_in_consumer_key = ''
+  config.linked_in_consumer_secret = ''
 
+elsif ENV["RYLYZ_ONDECK_HOST"]
   #stripe config TEST
   config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
   config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
 
-  #stripe config LIVE PRODUCTION
-  # config.stripe_secret  = 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG'
-  # config.stripe_publish = 'pk_QS5y9D5NgMZBHtEBVzfmeyN6xATEd'
+  #Pusher config
+  config.pusher_app_id = '16344'                # Christian's Beta account
+  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
+  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+
+  #social public key and secret
+  config.twitter_consumer_key = ''
+  config.twitter_consumer_secret = ''
+  config.facebook_app_id = ''
+  config.facebook_app_secret = ''
+  config.linked_in_consumer_key = ''
+  config.linked_in_consumer_secret = ''
+
+elsif ENV["RYLYZ_DEMO_HOST"]
+  #stripe config TEST
+  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
+  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+
+  #Pusher config
+  config.pusher_app_id = '16344'                # Christian's Beta account
+  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
+  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+
+  #social public key and secret
+  config.twitter_consumer_key = ''
+  config.twitter_consumer_secret = ''
+  config.facebook_app_id = ''
+  config.facebook_app_secret = ''
+  config.linked_in_consumer_key = ''
+  config.linked_in_consumer_secret = ''
+
+elsif ENV["RYLYZ_PLAYER_HOST"]
+  #stripe config TEST
+  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
+  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+
+  #Pusher config
+  config.pusher_app_id = '16344'                # Christian's Beta account
+  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
+  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+
+  #social public key and secret
+  config.twitter_consumer_key = ''
+  config.twitter_consumer_secret = ''
+  config.facebook_app_id = ''
+  config.facebook_app_secret = ''
+  config.linked_in_consumer_key = ''
+  config.linked_in_consumer_secret = ''
+end
 
   # Code is not reloaded between requests
   config.cache_classes = true

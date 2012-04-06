@@ -1,6 +1,10 @@
 RylyzPlayer::Application.routes.draw do
   post "wyjyt/pusher_auth"
+  match '/auth/login', :to => 'wyjyt#omniauth_login', :as => :login
+  match '/auth/:provider/logout', :to => 'wyjyt#omniauth_logout' , :as => :logout
+  match '/auth/:provider/callback', :to => 'wyjyt#omniauth_login_callback'
 
+  match '/auth/failure', :to => 'wyjyt#omniauth_login_failure_callback'  # twitter callback for "Cancel, and return to app"
 
   get "blogger/blog"
   get "blogger/games"
