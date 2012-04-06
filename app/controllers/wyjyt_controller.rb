@@ -34,8 +34,12 @@ class WyjytController < ApplicationController
     # @user = User.find_or_create_from_auth_hash(omniauth_hash)
     # self.current_user = @user
     # redirect_to '/'
-    # render :text => omniauth_hash.to_yaml
-    raise omniauth_hash.to_yaml
+    s = "<![CDATA["
+    s << "\n"
+    s << omniauth_hash.to_yaml.to_yaml
+    s << "\n"
+    s << "]]>"
+    render :text => s
   end
 
   def omniauth_login_failure_callback
@@ -43,8 +47,10 @@ class WyjytController < ApplicationController
     # e.g: http://ondeck.local/auth/failure?message=invalid_credentials
     # log this cancelation, send game event to wid 
     # redirect_to :login
-    # render :text => params.to_yaml
-    raise params.to_yaml
+    s = "<![CDATA["
+    s << params.to_yaml
+    s << "]]>"
+    render :text => s
   end
 
   def omniauth_logout
