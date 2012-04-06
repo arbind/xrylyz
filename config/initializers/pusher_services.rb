@@ -9,10 +9,6 @@ require 'active_support/inflector'
 # 3. if wid does not pong by the time the timer comes back, that thread may be disconnected
 # Alternatively: Use a presence channel with the callbacks for Unsubscribe
 
-RYLYZ_PLAYER_HOST = ENV["RYLYZ_PLAYER_HOST"] unless ENV["RYLYZ_PLAYER_HOST"].nil?
-RYLYZ_PLAYER_HOST ||= "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HEROKU_APP_NAME"].nil?
-RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "localhost"
-
 puts "RYLYZ_PLAYER_HOST = #{RYLYZ_PLAYER_HOST}"
 
 NoOBJECT = {}

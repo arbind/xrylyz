@@ -1,11 +1,25 @@
 RylyzPlayer::Application.configure do
+
+RYLYZ_PLAYER_HOST = "rylyz-local.com"
+RYLYZ_PLAYER_HOST.downcase!
+
+
   # Settings specified here will take precedence over those in config/application.rb
 
-  #social public key and secret
+  #rylyz-local.com API Keys
+
+  # @rylyz: https://dev.twitter.com/apps/1897749/settings 
   config.twitter_consumer_key = 'y0jHav3TZX2XEKZoB8VgvA'
   config.twitter_consumer_secret = 'P32UGc2eWcMmcTg5w4TFjkH5pY34GJ2SbwBWlmbs'
+
+  # arbind.thakur: https://developers.facebook.com/apps/370553076322295/
   config.facebook_app_id = '370553076322295'
   config.facebook_app_secret = '2c85411d97742ac7eaa5ccd2038945dc'
+
+  # play@rylyz.com: https://code.google.com/apis/console/#project:340081981310
+  config.google_oauth2_client_id = '340081981310.apps.googleusercontent.com'
+  config.google_oauth2_client_secret = 'KcYXzcgAhiodofS_nRctF6a5'
+
   config.linked_in_consumer_key = ''
   config.linked_in_consumer_secret = ''
 

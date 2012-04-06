@@ -24,6 +24,9 @@ class WyjytController < ApplicationController
     s << "<a href='/auth/twitter'>twitter</a>"
     s << "<hr>"
     s << "<a href='/auth/facebook'>facebook</a>" 
+    s << "<hr>"
+    s << "<a href='/auth/google_oauth2'>Google</a>"
+    s << "<hr>"
     render :text => s.html_safe
   end
 
@@ -31,7 +34,8 @@ class WyjytController < ApplicationController
     # @user = User.find_or_create_from_auth_hash(omniauth_hash)
     # self.current_user = @user
     # redirect_to '/'
-    render :text => omniauth_hash.to_yaml
+    # render :text => omniauth_hash.to_yaml
+    raise omniauth_hash.to_yaml
   end
 
   def omniauth_login_failure_callback
@@ -39,7 +43,8 @@ class WyjytController < ApplicationController
     # e.g: http://ondeck.local/auth/failure?message=invalid_credentials
     # log this cancelation, send game event to wid 
     # redirect_to :login
-    render :text => params.to_yaml
+    # render :text => params.to_yaml
+    raise params.to_yaml
   end
 
   def omniauth_logout
