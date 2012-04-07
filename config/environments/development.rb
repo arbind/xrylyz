@@ -42,7 +42,10 @@ RYLYZ_PLAYER_HOST.downcase!
       :CLIENT_ID => "00000000400A7659",
       :SECRET => "es0zIJdOUFjiyKzaG6srV39uSjZXUSDB"
     },
-    
+    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+      :CONSUMER_KEY => "dj0yJmk9MzhjSFdRVUl5bWw3JmQ9WVdrOWNIUlpNV2RQTXpRbWNHbzlNakEwTlRZMU5qRTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1hOQ--",
+      :CONSUMER_SECRET => "a079790127b9ff3bb0bf8da597668af610263437"
+    },    
 
   }
   # @rylyz: https://dev.twitter.com/apps/1897749/settings 

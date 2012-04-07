@@ -1,6 +1,8 @@
 +++ TODO
 
 o ADD more Omni Auth Strategies: https://github.com/intridea/omniauth/wiki/List-of-Strategies
+  rdio, netflix, meetup, etc..
+
 
 x change directory path for 
   display/TicTacToe => display/tic_tac_toe

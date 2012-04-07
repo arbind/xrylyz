@@ -43,6 +43,10 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
       :CLIENT_ID => "00000000400A7976",
       :SECRET => "PW6mhzSi-W8ST3NfGV9RgJg1rPiFp-g6"
     },
+    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+      :CONSUMER_KEY => "dj0yJmk9ZTBGdGVPUHljb2dKJmQ9WVdrOVNXRmxORTFOTm1zbWNHbzlNVEUxTmpBME1qYzJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--",
+      :CONSUMER_SECRET => "0161f8ad2a8ae45387bc7d6c039a1367354784f1"
+    },    
 
   }
 
@@ -82,6 +86,10 @@ elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.co
       :CLIENT_ID => "00000000480A479F",
       :SECRET => "KvP0k0VcpodnMw-l7eXD5F2ZH0jZKtab"
     },
+    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+      :CONSUMER_KEY => "dj0yJmk9ajhHOUU1YnN2SEc2JmQ9WVdrOVNrTldjREo0TkRRbWNHbzlPRFF3TURNeU5EWXkmcz1jb25zdW1lcnNlY3JldCZ4PWIx",
+      :CONSUMER_SECRET => "37cac6cf8ec22cc1c9c6189e495413144191cb4b"
+    },    
 
   }
 
@@ -121,6 +129,10 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
       :CLIENT_ID => "00000000400A7975",
       :SECRET => "cAcoYNKu7sfORSXck9meEhBTiqqMD44j"
     },
+    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+      :CONSUMER_KEY => "dj0yJmk9YnE3eTZob0hOM1k1JmQ9WVdrOWJUUlhNRzVSTXpRbWNHbzlNVGcxTXpFM09UUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1iOA--",
+      :CONSUMER_SECRET => "e21be564a9bd79139d3d76a8141f4ab01b618327"
+    },    
 
   }
   
@@ -160,6 +172,10 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
       :CLIENT_ID => "00000000400A7974",
       :SECRET => "E-fJxbmAUbH0iT02nxE160KLvlmIX3z3"
     },
+    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+      :CONSUMER_KEY => "dj0yJmk9T05FdUd0Y3A3cjNMJmQ9WVdrOU1teHRZWGh1TjJFbWNHbzlOamN6Tmpjd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PTVh",
+      :CONSUMER_SECRET => "a47047cab30858cb859851f03fa1ea06c98771ec"
+    },    
 
   }
 

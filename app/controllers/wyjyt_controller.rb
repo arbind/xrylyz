@@ -27,6 +27,8 @@ class WyjytController < ApplicationController
     s << "<hr>"
     s << "<a href='/auth/google_oauth2'>Google Oauth2</a>"
     s << "<hr>"
+    s << "<a href='/auth/yahoo'>Yahoo</a>"
+    s << "<hr>"
     s << "<a href='/auth/tumblr'>Tumblr</a>"
     s << "<hr>"
     s << "<a href='/auth/runkeeper'>RunKeeper</a>"
