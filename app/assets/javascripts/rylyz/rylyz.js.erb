@@ -12,8 +12,7 @@
     interpolate : /\[\[([\s\S]+?)\]\]/g  
   };
 
-  var stripePubKey = "<%= RylyzPlayer::Application.config.stripe_publish %>";
-  Stripe.setPublishableKey(stripePubKey);
+  Stripe.setPublishableKey("<%= SECRETS[:STRIPE][:PUBLISH] %>");
 
   window.Rylyz = window.Rylyz || {}
   Rylyz.Tag = "rylyz";

@@ -8,29 +8,66 @@ RYLYZ_PLAYER_HOST.downcase!
 
   #rylyz-local.com API Keys
 
+  SECRETS = {
+    :STRIPE => { #stripe Test Account
+      :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
+      :PUBLISH => 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => {   # @rylyz: https://dev.twitter.com/apps/1897749/settings 
+      :CONSUMER_KEY => 'y0jHav3TZX2XEKZoB8VgvA',
+      :CONSUMER_SECRET => 'P32UGc2eWcMmcTg5w4TFjkH5pY34GJ2SbwBWlmbs'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/370553076322295/
+      :APP_ID => '370553076322295',
+      :APP_SECRET => '2c85411d97742ac7eaa5ccd2038945dc'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:340081981310
+      :CLIENT_ID => '340081981310.apps.googleusercontent.com',
+      :CLIENT_SECRET => 'KcYXzcgAhiodofS_nRctF6a5'
+    },
+    :TUMBLR => { # play@rylyz.com: http://www.tumblr.com/oauth/apps
+      :CONSUMER_KEY => "IOLe2YbJoPY6oapdUQH502bcHkoQcLma2Z4C4WEI6p2D9Mxwi9",
+      :SECRET => "4xv1dPr7zAqio3reYkvBGmTmYgK3R5MEf9wFWnHfEZseabY77D"
+    },
+    :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
+      :CLIENT_ID => "aca3a807d9d74a51b25ef9ffdda2f217",
+      :CLIENT_SECRET => "6ecd58ebae1d4b7abe0481e77d91b31b"
+    },
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+      :CLIENT_ID => "00000000400A7659",
+      :SECRET => "es0zIJdOUFjiyKzaG6srV39uSjZXUSDB"
+    },
+    
+
+  }
   # @rylyz: https://dev.twitter.com/apps/1897749/settings 
-  config.twitter_consumer_key = 'y0jHav3TZX2XEKZoB8VgvA'
-  config.twitter_consumer_secret = 'P32UGc2eWcMmcTg5w4TFjkH5pY34GJ2SbwBWlmbs'
+  # config.twitter_consumer_key = 'y0jHav3TZX2XEKZoB8VgvA'
+  # config.twitter_consumer_secret = 'P32UGc2eWcMmcTg5w4TFjkH5pY34GJ2SbwBWlmbs'
 
   # arbind.thakur: https://developers.facebook.com/apps/370553076322295/
-  config.facebook_app_id = '370553076322295'
-  config.facebook_app_secret = '2c85411d97742ac7eaa5ccd2038945dc'
+  # config.facebook_app_id = '370553076322295'
+  # config.facebook_app_secret = '2c85411d97742ac7eaa5ccd2038945dc'
 
   # play@rylyz.com: https://code.google.com/apis/console/#project:340081981310
-  config.google_oauth2_client_id = '340081981310.apps.googleusercontent.com'
-  config.google_oauth2_client_secret = 'KcYXzcgAhiodofS_nRctF6a5'
+  # config.google_oauth2_client_id = '340081981310.apps.googleusercontent.com'
+  # config.google_oauth2_client_secret = 'KcYXzcgAhiodofS_nRctF6a5'
 
-  config.linked_in_consumer_key = ''
-  config.linked_in_consumer_secret = ''
+  # config.linked_in_consumer_key = ''
+  # config.linked_in_consumer_secret = ''
 
   #Pusher config
-  config.pusher_app_id = '16344'                # Christian's Beta account
-  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
-  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+  # config.pusher_app_id = '16344'                # Christian's Beta account
+  # config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
+  # config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
 
   #stripe config test
-  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
-  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+  # config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
+  # config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
 
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development

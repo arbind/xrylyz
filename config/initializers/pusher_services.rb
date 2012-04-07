@@ -67,9 +67,9 @@ end
 # end
 
 
-Pusher.app_id = RylyzPlayer::Application.config.pusher_app_id
-Pusher.key    = RylyzPlayer::Application.config.pusher_key
-Pusher.secret = RylyzPlayer::Application.config.pusher_secret
+Pusher.app_id = SECRETS[:PUSHER][:APP_ID]
+Pusher.key    = SECRETS[:PUSHER][:KEY]
+Pusher.secret = SECRETS[:PUSHER][:SECRET]
 
 PusherClient.logger = Logger.new(STDOUT)
 
@@ -282,8 +282,8 @@ end
 
 puts "=========================================="
 puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
-puts "Pusher app_id => #{RylyzPlayer::Application.config.pusher_app_id}"
-puts "Pusher key    => #{RylyzPlayer::Application.config.pusher_key}"
+puts "Pusher app_id => #{SECRETS[:PUSHER][:APP_ID]}"
+puts "Pusher key    => #{SECRETS[:PUSHER][:KEY]}"
 puts "=========================================="
 
 # See: http://pusher.com/docs/pusher_protocol

@@ -1,14 +1,38 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  #Pusher config
-  config.pusher_app_id = '11345'                # Arbind's (Doesn't support javascript client-side trigger api)
-  config.pusher_key    = '9e8005254d8e45390324' # Arbind's (Doesn't support javascript client-side trigger api)
-  config.pusher_secret = '5026e00f82749e73e212' # Arbind's (Doesn't support javascript client-side trigger api)
+RYLYZ_PLAYER_HOST = ENV["RYLYZ_PLAYER_HOST"] unless ENV["RYLYZ_PLAYER_HOST"].nil?
+RYLYZ_PLAYER_HOST ||= "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HEROKU_APP_NAME"].nil?
+RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "holodeck.rylyz.ws"
+RYLYZ_PLAYER_HOST.downcase!
 
-  #stripe config
-  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
-  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+
+# holodeck is kind of like our test environment
+if RYLYZ_PLAYER_HOST.include? "holodeck" #http://rylyz-holodeck.herokuapp.com/
+  SECRETS = {
+    :STRIPE => { # TEST CONFIG
+      :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
+      :PUBLISH => 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => { # @rylyz: https://dev.twitter.com/apps/1903425
+      :CONSUMER_KEY => 'cskTNpLHzPa5KDPegk907g',
+      :CONSUMER_SECRET => 'r02Wp8t5fX3pBfH39oh3R8tdwdgugOsAekf4viTZLGg'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/363689243672290
+      :APP_ID => '363689243672290',
+      :APP_SECRET => 'cb4e812249cf3574b87c5be6049d2353'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:204876742071
+      :CLIENT_ID => '204876742071.apps.googleusercontent.com',
+      :CLIENT_SECRET => 'pChiQ9umaWgH59l-_pV-E4-G'
+    }
+  }
+end
 
   # The test environment is used exclusively to run your application's
   # test suite.  You never need to work with it otherwise.  Remember that

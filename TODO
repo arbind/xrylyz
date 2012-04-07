@@ -1,17 +1,16 @@
 +++ TODO
 
+o ADD more Omni Auth Strategies: https://github.com/intridea/omniauth/wiki/List-of-Strategies
 
 x change directory path for 
   display/TicTacToe => display/tic_tac_toe
   (underscore app name when loading its html)
   Also for stylesheets and images
-  
 
 BattleShip:
 http://en.wikipedia.org/wiki/Battleship_(game)
 http://sparring.rubyforge.org/battleship/index.html
 https://github.com/hallgren/BattleShip
-
 
 Purchase Flows
 1. flow: Purchase when loggedin
@@ -217,3 +216,11 @@ o subscription: (same options)
 o leader-board
 o achievments
 o persistence: mongoDB
+
+
+o To Fix Request-URI Too Large:
+  After a successfull login using OPENID to signin with Yahoo, you may get "Request-URI Too Large" error.
+  You can reconfigure the threshhold in your webserver.
+  For webrick: update a config file somewhere in: 
+  ~/.rvm/rubies/ruby-1.9.2-p290/lib/ruby/1.9.1/webrick/httprequest.rb 
+  search for: RequestURITooLarge and change the max value to: 8192 instead of 1024

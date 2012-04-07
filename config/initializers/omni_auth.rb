@@ -1,11 +1,19 @@
+require 'openid/store/filesystem'
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  _cfg = RylyzPlayer::Application.config
-	provider :twitter, _cfg.twitter_consumer_key, _cfg.twitter_consumer_secret
-  provider :facebook, _cfg.facebook_app_id, RylyzPlayer::Application.config.facebook_app_secret
-  # provider :linked_in, RylyzPlayer::Application.config.linked_in_consumer_key, RylyzPlayer::Application.config.linked_in_consumer_secret
-  provider :google_oauth2, _cfg.google_oauth2_client_id, _cfg.google_oauth2_client_secret, {access_type: 'online', approval_prompt: ''}
+	provider :twitter, SECRETS[:TWITTER][:CONSUMER_KEY], SECRETS[:TWITTER][:CONSUMER_SECRET]
+  provider :facebook, SECRETS[:FACEBOOK][:APP_ID], SECRETS[:FACEBOOK][:APP_SECRET]
+  provider :google_oauth2, SECRETS[:GOOGLE_OAUTH2][:CLIENT_ID], SECRETS[:GOOGLE_OAUTH2][:CLIENT_SECRET], {access_type: 'online', approval_prompt: ''}
+  provider :tumblr, SECRETS[:TUMBLR][:CONSUMER_KEY], SECRETS[:TUMBLR][:SECRET]
+  provider :runkeeper, SECRETS[:RUNKEEPER][:CLIENT_ID], SECRETS[:RUNKEEPER][:CLIENT_SECRET]
+  provider :windowslive, SECRETS[:WINDOWSLIVE][:CLIENT_ID], SECRETS[:WINDOWSLIVE][:SECRET], :scope => 'wl.basic'
+  # provider :linked_in, OAUTH_API[:LINKEDIN][:CONSUMER_KEY], OAUTH_API[:LINKEDIN][:CONSUMER_SECRET]
 
+  # these are are not setup properly
+  provider :openid, :store => OpenID::Store::Filesystem.new('/tmp'), :name => "google_openid", :identifier => "https://www.google.com/accounts/o8/id"
+	provider :openid, :store => OpenID::Store::Filesystem.new('/tmp'), :name => "yahoo_openid", :identifier => "https://me.yahoo.com"
+
+  # provider :openid, :store => OpenID::Store::Filesystem.new('/tmp'), :name => 'openid'
 end
 
 

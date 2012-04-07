@@ -9,113 +9,144 @@ RYLYZ_PLAYER_HOST.downcase!
 # Host specific configurations
 if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
 
-  #stripe config LIVE PRODUCTION
-  config.stripe_secret  = 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG'
-  config.stripe_publish = 'pk_QS5y9D5NgMZBHtEBVzfmeyN6xATEd'
+  SECRETS = {
+    :STRIPE => { # LIVE CONFIG - MAKES REAL CREDIT CARD CHARGES
+      :SECRET => 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG',
+      :PUBLISH => 'pk_QS5y9D5NgMZBHtEBVzfmeyN6xATEd'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => { # @rylyz: https://dev.twitter.com/apps/1903455
+      :CONSUMER_KEY => 'ZyqnPpyUBueTUuqtzH1Ng',
+      :CONSUMER_SECRET => 'CdguYoywcIwd3HVazs46Xf9q6fOF9wb3c3gpoWiLk'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/146598735467471 
+      :APP_ID => '146598735467471',
+      :APP_SECRET => 'ce53141accc2db68dad6c08de77186ac'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:553342390312
+      :CLIENT_ID => '553342390312.apps.googleusercontent.com',
+      :CLIENT_SECRET => 'IQrrG9SkDMJ-ROhmGeXYd2b0'
+    },
+    :TUMBLR => { # play@rylyz.com: http://www.tumblr.com/oauth/apps
+      :CONSUMER_KEY => "bcCJUK169arqDEzvteyM7AvMjXN4H7gSCg4lpA0umcyfIlNFZl",
+      :SECRET => "Nu98zdpQdGkQs7MGsmtuZROvkIwKY48m1CQa4AwR5VVn9tjDFD"
+    },
+    :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
+      :CLIENT_ID => "14513bcfd678454098a165495e076299",
+      :CLIENT_SECRET => "af61d47fcc8d440da01f120c2889de95"
+    },
 
-  #Pusher config
-  config.pusher_app_id = '16344'                # Christian's Beta account
-  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
-  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
-
-  #social public key and secret
-  # @rylyz: https://dev.twitter.com/apps/1903455
-  config.twitter_consumer_key = 'ZyqnPpyUBueTUuqtzH1Ng'
-  config.twitter_consumer_secret = 'CdguYoywcIwd3HVazs46Xf9q6fOF9wb3c3gpoWiLk'
-
-  # arbind.thakur: https://developers.facebook.com/apps/146598735467471
-  config.facebook_app_id = '146598735467471'
-  config.facebook_app_secret = 'ce53141accc2db68dad6c08de77186ac'
-
-  # play@rylyz.com: https://code.google.com/apis/console/#project:553342390312
-  config.google_oauth2_client_id = '553342390312.apps.googleusercontent.com'
-  config.google_oauth2_client_secret = 'IQrrG9SkDMJ-ROhmGeXYd2b0'
-
-  config.linked_in_consumer_key = ''
-  config.linked_in_consumer_secret = ''
+  }
 
 elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
-  #stripe config TEST
-  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
-  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
 
-  #Pusher config
-  config.pusher_app_id = '16344'                # Christian's Beta account
-  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
-  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+  SECRETS = {
+    :STRIPE => { # TEST CONFIG
+      :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
+      :PUBLISH => 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => { # @rylyz: https://dev.twitter.com/apps/1903425
+      :CONSUMER_KEY => 'cskTNpLHzPa5KDPegk907g',
+      :CONSUMER_SECRET => 'r02Wp8t5fX3pBfH39oh3R8tdwdgugOsAekf4viTZLGg'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/363689243672290
+      :APP_ID => '363689243672290',
+      :APP_SECRET => 'cb4e812249cf3574b87c5be6049d2353'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:204876742071
+      :CLIENT_ID => '204876742071.apps.googleusercontent.com',
+      :CLIENT_SECRET => 'pChiQ9umaWgH59l-_pV-E4-G'
+    },
+    :TUMBLR => { # play@rylyz.com: http://www.tumblr.com/oauth/apps
+      :CONSUMER_KEY => "IhdxmKfTFyGTgyhvM9WBdB0HQ50F5NQmMNH4rVwDoUEEarDLz2",
+      :SECRET => "onl5R0etXY0rPY6PhpR3UfpwvcJMu4SybIn0qFKUkWzlBtoYlv"
+    },
+    :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
+      :CLIENT_ID => "56bd013451804c1fab8429ba8389c6bf",
+      :CLIENT_SECRET => "967a6922613f48668f06cb2b46d298ab"
+    },
 
-  #social public key and secret
-
-  # @rylyz: https://dev.twitter.com/apps/1903425
-  config.twitter_consumer_key = 'cskTNpLHzPa5KDPegk907g'
-  config.twitter_consumer_secret = 'r02Wp8t5fX3pBfH39oh3R8tdwdgugOsAekf4viTZLGg'
-
-  # arbind.thakur: https://developers.facebook.com/apps/363689243672290
-  config.facebook_app_id = '363689243672290'
-  config.facebook_app_secret = 'cb4e812249cf3574b87c5be6049d2353'
-
-  # play@rylyz.com: https://code.google.com/apis/console/#project:204876742071
-  config.google_oauth2_client_id = '204876742071.apps.googleusercontent.com'
-  config.google_oauth2_client_secret = 'pChiQ9umaWgH59l-_pV-E4-G'
-
-  config.linked_in_consumer_key = ''
-  config.linked_in_consumer_secret = ''
+  }
 
 elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
-  #stripe config TEST
-  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
-  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
 
-  #Pusher config
-  config.pusher_app_id = '16344'                # Christian's Beta account
-  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
-  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+  SECRETS = {
+    :STRIPE => { #TEST CONFIG
+      :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
+      :PUBLISH => 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => { # @rylyz: https://dev.twitter.com/apps/1903425
+      :CONSUMER_KEY => 'MaFYEJ9MvChVNqmvIi54A',
+      :CONSUMER_SECRET => 'LSAf6bxngl85oxUJUnMh9e4HcpazntvmyWbKo5VPA'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/404547726222115
+      :APP_ID => '404547726222115',
+      :APP_SECRET => '263f5ff89d5229e37c0fae1e6c950373'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:1064365249820
+      :CLIENT_ID => '1064365249820.apps.googleusercontent.com',
+      :CLIENT_SECRET => '1jzm3VKIdCY9HpAbJ2H7AmJl-ixP'
+    },
+    :TUMBLR => { # play@rylyz.com: http://www.tumblr.com/oauth/apps
+      :CONSUMER_KEY => "Gl2PYBU5WJ4zi218zf7cVyKKgWEaPHZTzaVUai5dR31NmI7vK7",
+      :SECRET => "Cq0I5AnRYhsfTuXAhq7ekRsz0wrZRfBixVYxdwZhrBxFs0CPnf"
+    },
+    :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
+      :CLIENT_ID => "07d8f29888a740f1960f1bb938ee1f4a",
+      :CLIENT_SECRET => "15769a85840640e5854cdfd84ae1a62e"
+    },
 
-  #social public key and secret
-
-  # @rylyz: https://dev.twitter.com/apps/1903425
-  config.twitter_consumer_key = 'MaFYEJ9MvChVNqmvIi54A'
-  config.twitter_consumer_secret = 'LSAf6bxngl85oxUJUnMh9e4HcpazntvmyWbKo5VPA'
-
-  # arbind.thakur: https://developers.facebook.com/apps/404547726222115
-  config.facebook_app_id = '404547726222115'
-  config.facebook_app_secret = '263f5ff89d5229e37c0fae1e6c950373'
-
-  # play@rylyz.com: https://code.google.com/apis/console/#project:1064365249820
-  config.google_oauth2_client_id = '1064365249820.apps.googleusercontent.com'
-  config.google_oauth2_client_secret = '1jzm3VKIdCY9HpAbJ2H7AmJl-ixP'
-
-  config.linked_in_consumer_key = ''
-  config.linked_in_consumer_secret = ''
-
+  }
+  
 elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
 
-  #stripe config TEST
-  config.stripe_secret  = '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG'
-  config.stripe_publish = 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+  SECRETS = {
+    :STRIPE => { # TEST CONFIG
+      :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
+      :PUBLISH => 'pk_fA9y8hjM5PLXy9Ubdh7VcZyvNH0dH'
+    },
+    :PUSHER => { # Christian's Beta account
+      :APP_ID => '16344', # Christian's Beta account
+      :KEY => 'a9206fc7a3b77a7986c5', # Christian's Beta account
+      :SECRET => '46bf19dc91f45ca2d1b0', # Christian's Beta account
+    },
+    :TWITTER => { # @rylyz: https://dev.twitter.com/apps/1903407
+      :CONSUMER_KEY => 'zriy4eI2tWcJSBpHvv9qPw',
+      :CONSUMER_SECRET => 'YJJqFOtMJB6V3TlvQTblE7KjdO6YyIgy34gBNKJ80'
+    },
+    :FACEBOOK => { # arbind.thakur: https://developers.facebook.com/apps/328234480563622
+      :APP_ID => '328234480563622',
+      :APP_SECRET => '52d9c4ceaa844c5dfe5adb9e047d9a0c'
+    },
+    :GOOGLE_OAUTH2 => { # play@rylyz.com: https://code.google.com/apis/console/#project:373759919659
+      :CLIENT_ID => '373759919659.apps.googleusercontent.com',
+      :CLIENT_SECRET => 'wekXJJPeFZLSdcpumai4-ixP'
+    },
+    :TUMBLR => { # play@rylyz.com: http://www.tumblr.com/oauth/apps
+      :CONSUMER_KEY => "NKD6KWoP6LAjtMACVPy6SAoUsKwPzE4moN71dQH5S8Y93MjP3t",
+      :SECRET => "MItmz5vfnccbimSNInABEkabTLw2t5ClVHuye5CgPuEQSkXSlF"
+    },
+    :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
+      :CLIENT_ID => "bb93f338539b471195c06f2085daae56",
+      :CLIENT_SECRET => "c89dfece7ae149469876f6146ab654f1"
+    },
 
-  #Pusher config
-  config.pusher_app_id = '16344'                # Christian's Beta account
-  config.pusher_key    = 'a9206fc7a3b77a7986c5' # Christian's Beta account
-  config.pusher_secret = '46bf19dc91f45ca2d1b0' # Christian's Beta account
+  }
 
-
-  #social public key and secret
-
-  # @rylyz: https://dev.twitter.com/apps/1903407
-  config.twitter_consumer_key = 'zriy4eI2tWcJSBpHvv9qPw'
-  config.twitter_consumer_secret = 'YJJqFOtMJB6V3TlvQTblE7KjdO6YyIgy34gBNKJ80'
-
-  # arbind.thakur: https://developers.facebook.com/apps/328234480563622
-  config.facebook_app_id = '328234480563622'
-  config.facebook_app_secret = '52d9c4ceaa844c5dfe5adb9e047d9a0c'
-
-  # play@rylyz.com: https://code.google.com/apis/console/#project:373759919659
-  config.google_oauth2_client_id = '373759919659.apps.googleusercontent.com'
-  config.google_oauth2_client_secret = 'wekXJJPeFZLSdcpumai4-ixP'
-
-  config.linked_in_consumer_key = ''
-  config.linked_in_consumer_secret = ''
 end
 
   # Code is not reloaded between requests

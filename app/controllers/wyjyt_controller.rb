@@ -25,7 +25,17 @@ class WyjytController < ApplicationController
     s << "<hr>"
     s << "<a href='/auth/facebook'>facebook</a>" 
     s << "<hr>"
-    s << "<a href='/auth/google_oauth2'>Google</a>"
+    s << "<a href='/auth/google_oauth2'>Google Oauth2</a>"
+    s << "<hr>"
+    s << "<a href='/auth/tumblr'>Tumblr</a>"
+    s << "<hr>"
+    s << "<a href='/auth/runkeeper'>RunKeeper</a>"
+    s << "<hr>"
+    s << "<a href='/auth/windowslive'>Windows Live</a>"
+    s << "<hr>"
+    s << "<a href='/auth/google_openid'>Google OpenID</a>"
+    s << "<hr>"
+    s << "<a href='/auth/yahoo_openid'>Yahoo OpenID</a>"
     s << "<hr>"
     render :text => s.html_safe
   end
@@ -34,7 +44,8 @@ class WyjytController < ApplicationController
     # @user = User.find_or_create_from_auth_hash(omniauth_hash)
     # self.current_user = @user
     # redirect_to '/'
-    s = "<![CDATA["
+    s = "You have Singed in with your #{params[:provider]} ID!<hr>"
+    s << "<![CDATA["
     s << "\n"
     s << omniauth_hash.to_yaml.to_yaml
     s << "\n"
@@ -64,7 +75,7 @@ class WyjytController < ApplicationController
   end
 
   def enable_CORS_access
-    return if should_deny_access?
+    return if pusher_should_deny_access?
     headers['Access-Control-Allow-Credentials'] = 'true'
     headers['Access-Control-Allow-Methods']     = 'GET, POST, OPTIONS'
     headers['Access-Control-Allow-Headers']     = 'Content-Type, *'
