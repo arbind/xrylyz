@@ -39,6 +39,10 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
       :CLIENT_ID => "14513bcfd678454098a165495e076299",
       :CLIENT_SECRET => "af61d47fcc8d440da01f120c2889de95"
     },
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+      :CLIENT_ID => "00000000400A7976",
+      :SECRET => "PW6mhzSi-W8ST3NfGV9RgJg1rPiFp-g6"
+    },
 
   }
 
@@ -73,6 +77,10 @@ elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.co
     :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
       :CLIENT_ID => "56bd013451804c1fab8429ba8389c6bf",
       :CLIENT_SECRET => "967a6922613f48668f06cb2b46d298ab"
+    },
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+      :CLIENT_ID => "00000000480A479F",
+      :SECRET => "KvP0k0VcpodnMw-l7eXD5F2ZH0jZKtab"
     },
 
   }
@@ -109,6 +117,10 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
       :CLIENT_ID => "07d8f29888a740f1960f1bb938ee1f4a",
       :CLIENT_SECRET => "15769a85840640e5854cdfd84ae1a62e"
     },
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+      :CLIENT_ID => "00000000400A7975",
+      :SECRET => "cAcoYNKu7sfORSXck9meEhBTiqqMD44j"
+    },
 
   }
   
@@ -143,6 +155,10 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
     :RUNKEEPER => { # play@rylyz.com: http://runkeeper.com/partner/applications
       :CLIENT_ID => "bb93f338539b471195c06f2085daae56",
       :CLIENT_SECRET => "c89dfece7ae149469876f6146ab654f1"
+    },
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+      :CLIENT_ID => "00000000400A7974",
+      :SECRET => "E-fJxbmAUbH0iT02nxE160KLvlmIX3z3"
     },
 
   }
