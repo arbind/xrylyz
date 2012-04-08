@@ -26,11 +26,11 @@ class RylyzSocialPresence
 
 	def self.materialize_from_omniauth(omniauth)
 		presence = RylyzSocialPresense.new
-		provider = 
-		uid = 
-		case provider
+		# provider = 
+		# uid = 
+		# case provider
 
-		return presence
+		# return presence
 	end
 
   def populate_omniath(omniauth)
