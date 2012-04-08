@@ -46,6 +46,10 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
     :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
       :CONSUMER_KEY => "dj0yJmk9ZTBGdGVPUHljb2dKJmQ9WVdrOVNXRmxORTFOTm1zbWNHbzlNVEUxTmpBME1qYzJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--",
       :CONSUMER_SECRET => "0161f8ad2a8ae45387bc7d6c039a1367354784f1"
+    },
+    :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
+      :API_KEY => "mptdgs5bqv5h",
+      :SECRET_KEY => "Dm5aJ8T2XScNmFIa"
     },    
 
   }
@@ -89,6 +93,10 @@ elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.co
     :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
       :CONSUMER_KEY => "dj0yJmk9ajhHOUU1YnN2SEc2JmQ9WVdrOVNrTldjREo0TkRRbWNHbzlPRFF3TURNeU5EWXkmcz1jb25zdW1lcnNlY3JldCZ4PWIx",
       :CONSUMER_SECRET => "37cac6cf8ec22cc1c9c6189e495413144191cb4b"
+    },
+    :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
+      :API_KEY => "5yu4urvu0p0l",
+      :SECRET_KEY => "bIfkgiOsZfS05Fmg"
     },    
 
   }
@@ -133,6 +141,10 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
       :CONSUMER_KEY => "dj0yJmk9YnE3eTZob0hOM1k1JmQ9WVdrOWJUUlhNRzVSTXpRbWNHbzlNVGcxTXpFM09UUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1iOA--",
       :CONSUMER_SECRET => "e21be564a9bd79139d3d76a8141f4ab01b618327"
     },    
+    :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
+      :API_KEY => "ra9iwn3dwrt7",
+      :SECRET_KEY => "0XAILiDaxucguoDE"
+    },    
 
   }
   
@@ -175,6 +187,10 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
     :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
       :CONSUMER_KEY => "dj0yJmk9T05FdUd0Y3A3cjNMJmQ9WVdrOU1teHRZWGh1TjJFbWNHbzlOamN6Tmpjd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PTVh",
       :CONSUMER_SECRET => "a47047cab30858cb859851f03fa1ea06c98771ec"
+    },    
+    :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
+      :API_KEY => "yfjif2yr1rju",
+      :SECRET_KEY => "fc96JcgAENamiSxP"
     },    
 
   }

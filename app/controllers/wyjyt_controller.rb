@@ -20,30 +20,41 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_login
-    s = "<hr>"
-    s << "<a href='/auth/twitter'>twitter</a>"
-    s << "<hr>"
-    s << "<a href='/auth/facebook'>facebook</a>" 
-    s << "<hr>"
-    s << "<a href='/auth/google_oauth2'>Google Oauth2</a>"
-    s << "<hr>"
-    s << "<a href='/auth/yahoo'>Yahoo</a>"
-    s << "<hr>"
-    s << "<a href='/auth/tumblr'>Tumblr</a>"
-    s << "<hr>"
-    s << "<a href='/auth/runkeeper'>RunKeeper</a>"
-    s << "<hr>"
-    s << "<a href='/auth/windowslive'>Windows Live</a>"
-    s << "<hr>"
-    s << "<a href='/auth/google_openid'>Google OpenID</a>"
-    s << "<hr>"
-    s << "<a href='/auth/yahoo_openid'>Yahoo OpenID</a>"
-    s << "<hr>"
-    render :text => s.html_safe
+    # @authentications = current_user.authentications if current_user
   end
 
   def omniauth_login_callback
-    # @user = User.find_or_create_from_auth_hash(omniauth_hash)
+   # omniauth = request.env["omniauth.auth"]  
+   #  authentication = Authentication.where(:provider => omniauth['provider'], :uid => omniauth['uid']).first
+   #  if authentication  
+   #    # Just sign in an existing user with omniauth
+   #    # The user have already used this external account
+   #    flash[:notice] = t(:signed_in)
+   #    sign_in_and_redirect(:user, authentication.user)
+   #  elsif current_user
+   #    # Add authentication to signed in user
+   #    # User is logged in
+   #    current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+   #    flash[:notice] = t(:success)
+   #    redirect_to authentications_url
+   #  elsif omniauth['provider'] != 'twitter' && omniauth['provider'] != 'linked_in' && user = create_new_omniauth_user(omniauth)
+   #    user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+   #    # Create a new User through omniauth
+   #    # Register the new user + create new authentication
+   #    flash[:notice] = t(:welcome)
+   #    sign_in_and_redirect(:user, user)
+   #  elsif (omniauth['provider'] == 'twitter' || omniauth['provider'] == 'linked_in') && 
+   #    omniauth['uid'] && (omniauth['user_info']['name'] || omniauth['user_info']['nickname'] || 
+   #    (omniauth['user_info']['first_name'] && omniauth['user_info']['last_name']))
+   #    session[:omniauth] = omniauth.except('extra');
+   #    redirect_to(:controller => 'registrations', :action => 'email')
+   #  else
+   #    # New user data not valid, try again
+   #    flash[:alert] = t(:fail)
+   #    redirect_to new_user_registration_url
+   #  end
+
+        # @user = User.find_or_create_from_auth_hash(omniauth_hash)
     # self.current_user = @user
     # redirect_to '/'
     s = "You have Singed in with your #{params[:provider]} ID!<hr>"
@@ -57,7 +68,7 @@ class WyjytController < ApplicationController
 
   def omniauth_login_failure_callback
     # twitter callback for "Cancel, and return to app"
-    # e.g: http://ondeck.local/auth/failure?message=invalid_credentials
+    # e.g: https://ondeck.local/auth/failure?message=invalid_credentials
     # log this cancelation, send game event to wid 
     # redirect_to :login
     s = "<![CDATA["
@@ -68,6 +79,25 @@ class WyjytController < ApplicationController
 
   def omniauth_logout
   end
+
+
+  # def destroy
+  #   @authentication = current_user.authentications.find(params[:id])
+  #   @authentication.destroy
+  #   flash[:notice] = t(:successfully_destroyed_authentication)
+  #   redirect_to authentications_url
+  # end
+  
+  # def create_new_omniauth_user(omniauth)
+  #   user = User.new
+  #   user.apply_omniauth(omniauth, true)
+  #   if user.save
+  #     user
+  #   else
+  #     nil
+  #   end
+  # end
+
 
   private
 

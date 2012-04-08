@@ -1,6 +1,6 @@
 RylyzPlayer::Application.routes.draw do
   post "wyjyt/pusher_auth"
-  match '/login', :to => 'wyjyt#omniauth_login', :as => :login
+  match '/intent/login', :to => 'wyjyt#omniauth_login', :as => :login
   match '/auth/:provider/logout', :to => 'wyjyt#omniauth_logout' , :as => :logout
   match '/auth/:provider/callback', :to => 'wyjyt#omniauth_login_callback', :via => [:get, :post]
 

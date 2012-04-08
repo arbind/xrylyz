@@ -1,5 +1,11 @@
 +++ TODO
 
+* SSL
+  Configure Webrick to use SSL:
+  http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
+  Create Self-Signed Certificate:
+  https://devcenter.heroku.com/articles/ssl-certificate-self
+
 o ADD more Omni Auth Strategies: https://github.com/intridea/omniauth/wiki/List-of-Strategies
   rdio, netflix, meetup, etc..
 

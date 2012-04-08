@@ -8,7 +8,7 @@ if ('production' != rylyz_env) {
 	  if (!dbugWindow || dbugWindow.closed){
 	  	var port = window.location.port;
 	  	if ("" == port) port = "80";
-	  	var debugEndpoint = "http://" + window.location.hostname + ":" + port + "/debugger/dbug";
+	  	var debugEndpoint = "https://" + window.location.hostname + ":" + port + "/debugger/dbug";
 			dbugWindow = window.open(debugEndpoint, 'dbugWindow', 'width=400,height=800,left=0,resizable=1,scrollbars=0,location=0,menubar=0, toolbar=0, titlebar=0, status=0');
 			if (undefined == debugWindow) return; // could not open window.
 			dbugWindow.postMessage(".", "*");

@@ -8,6 +8,8 @@ var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
 
 window.Rylyz = window.Rylyz || {};
+
+Rylyz.httpProtocol = 'http';
 Rylyz.PlayerHost = "<%= RYLYZ_PLAYER_HOST %>";
 Rylyz.env =  "<%= Rails.env %>";
 console.log( Rylyz.env+ " mode");
@@ -16,8 +18,8 @@ var socketService = "Pusher"; // use this messaging service
 
 var jQueryVersion = '1.7.1';
 var jQueryScriptURL = 'https://ajax.googleapis.com/ajax/libs/jquery/' +jQueryVersion+ '/jquery.min.js';
-var pusherVersion = '1.11';
-var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
+// var pusherVersion = '1.11';
+// var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
 var uniqueCounter = 0;
 Rylyz.Wyjyt = {
@@ -35,7 +37,7 @@ Rylyz.Wyjyt = {
     this.fetchCSS(css_location);
   },
   fetchCSS: function(name) {
-    var css_href = "http://" + Rylyz.PlayerHost + '/assets/' +name+ ".css?a="+uniqueCounter++;
+    var css_href = Rylyz.httpProtocol + "://" + Rylyz.PlayerHost + '/assets/' +name+ ".css?a="+uniqueCounter++;
     if(DBUG) console.log('Loading CSS: ' + css_href);
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
@@ -60,23 +62,26 @@ Rylyz.Wyjyt = {
       return;
     };
     $ = jQuery = jQuery;
-    var src = "http://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
+    var src = Rylyz.httpProtocol + "://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
     if(DBUG) console.info("o-- Cycle: about to load javascript: " + src);
-    jQuery.getScript(src)
-    .done(function(script, textStatus) {
+
+    var onDone = function(script, textStatus) {
       if(DBUG) console.info("o-- Cycle: loaded javascript status: " + textStatus);
       // now we can call rylyz framework functions like Rylyz.wid();
       Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
       Rylyz.Wyjyt.wyjytSource.url = document.URL;
       callbackOnComplete(); 
-    })
-    .fail(function(jqxhr, settings, exception) {
+    };
+    var onFail = function(jqxhr, settings, exception) {
       console.error("o-- Cycle:Failed to load javascript!");
       console.error("o-- jqxhr: " + jqxhr);
       console.error("o-- settings: "+ settings);
       console.error("o-- exception: "+ exception);
-      alert(' Something went wrong! Please refresh the page and continue.');
-    });
+      console.error(' Something went wrong! Please refresh the page and continue.');
+    };
+
+    jQuery.getScript(src).done(onDone).fail(onFail);
+
     /*
     Rylyz.Wyjyt.loadScriptsSerially(, scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
@@ -88,7 +93,8 @@ Rylyz.Wyjyt = {
   },
   setupPusher: function(){
     if(DBUG) console.info("o-- Cycle: about to setup pusher");
-    jQuery.getScript(pusherScriptURL, function() { Rylyz.Pusher.setup(); });
+    // jQuery.getScript(pusherScriptURL, function() { Rylyz.Pusher.setup(); });
+    Rylyz.Pusher.setup();;
   },
   onWyjytChannelConnected: function() {
       if(DBUG) console.info("---------o wyjyt connected !!!")
@@ -356,7 +362,7 @@ window.Rylyz.Pusher = {
   },
   authenticateConnection: function() {
     if (this.singleton) return this.singleton;
-    Pusher.channel_auth_endpoint = "http://" + Rylyz.PlayerHost + Rylyz.Pusher.config.authEndpointPath;
+    Pusher.channel_auth_endpoint = Rylyz.httpProtocol + "://" + Rylyz.PlayerHost + Rylyz.Pusher.config.authEndpointPath;
     this.singleton = new Pusher(Rylyz.Pusher.config.apiKeyPusher);
     this.singleton.connection.bind('connected', function() {
       var p = Rylyz.Pusher.singleton;

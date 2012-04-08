@@ -46,6 +46,14 @@ RYLYZ_PLAYER_HOST.downcase!
       :CONSUMER_KEY => "dj0yJmk9MzhjSFdRVUl5bWw3JmQ9WVdrOWNIUlpNV2RQTXpRbWNHbzlNakEwTlRZMU5qRTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1hOQ--",
       :CONSUMER_SECRET => "a079790127b9ff3bb0bf8da597668af610263437"
     },    
+    :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
+      :API_KEY => "l8e76o1yotu4",
+      :SECRET_KEY => "fQB13I8qODYofEqw"
+    },
+    :MEETUP => { # play@rylyz.com: http://www.meetup.com/meetup_api/oauth_consumers/
+      :KEY => "efm9lnb0l0osn9k5t56dmts7rh",
+      :SECRET => "efm9lnb0l0osn9k5t56dmts7rh"
+    },    
 
   }
   # @rylyz: https://dev.twitter.com/apps/1897749/settings 
