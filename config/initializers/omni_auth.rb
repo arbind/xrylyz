@@ -1,5 +1,3 @@
-require 'openid/store/filesystem'
-
 Rails.application.config.middleware.use OmniAuth::Builder do
 	provider :twitter, SECRETS[:TWITTER][:CONSUMER_KEY], SECRETS[:TWITTER][:CONSUMER_SECRET]
   provider :facebook, SECRETS[:FACEBOOK][:APP_ID], SECRETS[:FACEBOOK][:APP_SECRET]

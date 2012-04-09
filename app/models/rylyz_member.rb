@@ -9,25 +9,51 @@ class RylyzMember
   include Mongoid::Timestamps
   field :nickname, :type => String, :default=>nil
   field :email, :type => String, :default=>nil
-  field :sign_in_count, :type => Integer, :default=>1
+  field :sign_in_count, :type => Integer, :default=>0
   field :last_signed_in_at, :type => DateTime, :default => DateTime.now
-  field :isVerified, :type => Boolean, :default => false
-  field :isActive, :type => Boolean, :default => true
-  references_many :rylyz_social_presences, :dependent => :delete
+  field :is_verified, :type => Boolean, :default => false
+  field :is_active, :type => Boolean, :default => true
+  has_many :rylyz_member_presences, :dependent => :delete
 
   validates_presence_of :nickname
   # validates_uniqueness_of :email, :case_sensitive => false    
 
-  def self.materialize(nickname, email, isVerified=false)
-    member = RylyzMember.new
-    member.email = email
-    member.nickname = nickname
-    member.verify(isVerified)
-    member
+  def self.materialize(email, nickname, is_verified=false)
+    member = RylyzMember.where(:email => email).first
+    if member
+      # no need to override nickname
+      member.verify(member.is_verified || is_verified)
+    else
+      member = RylyzMember.new
+      member.email = email
+      member.nickname = nickname
+      member.verify(is_verified)
+    end
+
+    if member.save then member else nil end
   end
 
-  def verify(isVerified=true)
-    self.isVerified = isVerified
+  def social_presences
+    self.rylyz_member_presences
+  end
+
+  def add_social_presence(social_presence)
+    p = social_presences.where(:provider => social_presence.provider, :uid => social_presence.uid).first
+    if p.nil?
+      social_presences << social_presence
+    end
+  end
+
+  def verify(is_verified=true)
+    self.is_verified = is_verified
+  end
+
+  def inactivate()
+    self.is_active = false
+  end
+
+  def reactivate()
+    self.is_active = true
   end
 
 end

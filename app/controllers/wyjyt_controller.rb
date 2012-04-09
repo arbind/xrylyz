@@ -20,66 +20,57 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_login
-    # @authentications = current_user.authentications if current_user
   end
 
   def omniauth_login_callback
-   # omniauth = request.env["omniauth.auth"]  
-   #  authentication = Authentication.where(:provider => omniauth['provider'], :uid => omniauth['uid']).first
-   #  if authentication  
-   #    # Just sign in an existing user with omniauth
-   #    # The user have already used this external account
-   #    flash[:notice] = t(:signed_in)
-   #    sign_in_and_redirect(:user, authentication.user)
-   #  elsif current_user
-   #    # Add authentication to signed in user
-   #    # User is logged in
-   #    current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
-   #    flash[:notice] = t(:success)
-   #    redirect_to authentications_url
-   #  elsif omniauth['provider'] != 'twitter' && omniauth['provider'] != 'linked_in' && user = create_new_omniauth_user(omniauth)
-   #    user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
-   #    # Create a new User through omniauth
-   #    # Register the new user + create new authentication
-   #    flash[:notice] = t(:welcome)
-   #    sign_in_and_redirect(:user, user)
-   #  elsif (omniauth['provider'] == 'twitter' || omniauth['provider'] == 'linked_in') && 
-   #    omniauth['uid'] && (omniauth['user_info']['name'] || omniauth['user_info']['nickname'] || 
-   #    (omniauth['user_info']['first_name'] && omniauth['user_info']['last_name']))
-   #    session[:omniauth] = omniauth.except('extra');
-   #    redirect_to(:controller => 'registrations', :action => 'email')
-   #  else
-   #    # New user data not valid, try again
-   #    flash[:alert] = t(:fail)
-   #    redirect_to new_user_registration_url
-   #  end
+    # if a current_member is signed in already, add this provider as another presence to the current_member
+    # if a current_member is not signed in but this presence has signed in before, just sign them in again
+    # if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
+    omni_auth = request.env["omniauth.auth"]
+    begin
+      #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
+      presence = RylyzMemberPresence.materialize_from_omni_auth(omni_auth)
 
-        # @user = User.find_or_create_from_auth_hash(omniauth_hash)
-    # self.current_user = @user
-    # redirect_to '/'
-    s = "You have Singed in with your #{params[:provider]} ID!<hr>"
-    s << "<![CDATA["
-    s << "\n"
-    s << omniauth_hash.to_yaml.to_yaml
-    s << "\n"
-    s << "]]>"
-    render :text => s
+      if current_member # already signed in, just add this provider presence
+          current_member.add_social_presence presence     
+      else # not signed in
+        if presence.member # this presence has signed in from this provider before, just sign them in again
+          current_member = presence.member
+        else # this presence is signing in for the first time from this provider
+          # create a new member (or find one matching the same email as this presence)
+          current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
+          current_member.add_social_presence presence unless current_member.nil? # add this presence to the new member
+        end
+      end
+      render :text => current_member.email
+    rescue Exception => e 
+      redirect_to_login_page
+      puts e.message
+      s = "exception: #{e.message}<br>"
+      s << e.backtrace.join("<br>")
+      render :text => s
+    ensure
+      redirect_to_login_page if current_member.nil?
+    end
   end
 
   def omniauth_login_failure_callback
-    # twitter callback for "Cancel, and return to app"
-    # e.g: https://ondeck.local/auth/failure?message=invalid_credentials
-    # log this cancelation, send game event to wid 
-    # redirect_to :login
-    s = "<![CDATA["
-    s << params.to_yaml
-    s << "]]>"
-    render :text => s
+    #User may have canceled
+    # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
+    # log this cancelation
+    # send game event to wid if not blogger member
+    # take them back to sign in page they came from 
+    redirect_to_login_page
   end
 
   def omniauth_logout
+    current_member = nil
   end
 
+  def redirect_to_login_page
+    # redirect_to :blogger_login
+    # redirect_to :login
+  end
 
   # def destroy
   #   @authentication = current_user.authentications.find(params[:id])
