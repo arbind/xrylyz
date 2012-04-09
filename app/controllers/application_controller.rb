@@ -8,10 +8,6 @@ class ApplicationController < ActionController::Base
     @current_member ||= RylyzMember.find(member_id) unless member_id.nil?
   end
 
-  def signed_in?
-    !!current_member
-  end
-
   def current_member=(member)
   	member_id = nil
   	member_id = member.id.to_s unless member.nil?
@@ -20,8 +16,11 @@ class ApplicationController < ActionController::Base
     session[:member_id] = member_id
   end
 
+  def signed_in?
+    !!current_member
+  end
 
   def current_member_presences  	
-		@member_presences = current_member.member_presences if current_member and @member_presences.nil?
+		@member_presences ||= current_member.member_presences if current_member
 	end
 end
