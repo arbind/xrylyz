@@ -31,18 +31,28 @@ class WyjytController < ApplicationController
     begin
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
       presence = RylyzMemberPresence.materialize_from_omni_auth(omni_auth)
+      presence.mark_sign_in
 
-      if signed_in? # already signed in, just add this provider presence
-          current_member.add_social_presence presence     
-      else # not signed in
-        if presence.signed_in_before? # this presence has signed in from this provider before, just sign them in again
-          current_member = presence.member
-        else # this presence is signing in for the first time from this provider
+      if presence.signed_in_before? # this presence has signed in from this provider before, just sign them in again
+        if signed_in? # member already signed in
+          unless self.current_member.id == presence.member.id
+            #swich user: already signed in as another member
+            # +++ bump up sign_in_count for current_member and set last_signed_in_at
+            self.current_member = presence.member
+          end
+        else # not signed in
+          self.current_member = presence.member
+        end
+      else # signing in with this social presence for the first time from this provider
+        if signed_in? # member already signed in, just add to this members list of social presences
+            self.current_member.add_social_presence presence     
+        else # not signed in
           # create a new member (or find one matching the same email as this presence)
-          current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
-          current_member.add_social_presence presence unless current_member.nil? # add this presence to the new member
+          self.current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
+          self.current_member.add_social_presence presence unless current_member.nil? # add this presence to the new member
         end
       end
+
       render :text => current_member.email
     rescue Exception => e 
       redirect_to_login_page
@@ -65,7 +75,7 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_logout
-    current_member = nil
+    self.current_member = nil
   end
 
   def redirect_to_login_page

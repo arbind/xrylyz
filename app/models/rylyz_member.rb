@@ -44,6 +44,11 @@ class RylyzMember
     end
   end
 
+  def mark_sign_in
+    # +++
+    # self.update({sign_in_count, last_signed_in_at})
+  end
+
   def verify(is_verified=true)
     self.is_verified = is_verified
   end

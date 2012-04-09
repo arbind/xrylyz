@@ -47,7 +47,12 @@ class RylyzMemberPresence
   end
 
   def never_signed_in_before?
-  	!signed_in_before
+  	!signed_in_before?
+  end
+
+  def mark_sign_in
+    # +++
+    # self.update({sign_in_count, last_signed_in_at})
   end
 
 	def self.materialize_from_omni_auth(omniauth)

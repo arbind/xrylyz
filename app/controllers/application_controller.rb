@@ -5,7 +5,10 @@ class ApplicationController < ActionController::Base
 
   def current_member
   	member_id = session[:member_id]
-    @current_member ||= RylyzMember.find(member_id) unless member_id.nil?
+    if member_id
+    	@current_member ||= RylyzMember.find(member_id) 
+    end
+		@current_member
   end
 
   def current_member=(member)
@@ -14,6 +17,7 @@ class ApplicationController < ActionController::Base
 
     @current_member = member
     session[:member_id] = member_id
+    @current_member.mark_sign_in unless @current_member.nil?
   end
 
   def signed_in?
