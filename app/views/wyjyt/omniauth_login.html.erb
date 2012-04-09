@@ -39,11 +39,15 @@
 <body>
 <h1></h1>
 
+<% if @blogger %>
+  <%= render partial: 'with_invite_code', locals: {blogger: @blogger} %>
+<% end %>
+
 <div onclick="document.location.href='/auth/facebook'" class="social button clear">
   <%= image_tag("social/facebook.jpeg") %>
   <label>Facebook</label>
 </div>
-  
+
 <div onclick="document.location.href='/auth/twitter'" class="social button">
   <%= image_tag("social/twitter.jpeg") %>
   <label>Twitter</label>

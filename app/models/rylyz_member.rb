@@ -14,9 +14,10 @@ class RylyzMember
   field :is_verified, :type => Boolean, :default => false
   field :is_active, :type => Boolean, :default => true
   has_many :rylyz_member_presences, :dependent => :delete
+  belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :member
 
   validates_presence_of :nickname
-  # validates_uniqueness_of :email, :case_sensitive => false    
+  # validates_uniqueness_of :email, :case_sensitive => false
 
   def self.materialize(email, nickname, is_verified=false)
     member = RylyzMember.where(:email => email).first

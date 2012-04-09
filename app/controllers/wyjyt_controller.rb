@@ -20,6 +20,7 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_login
+    @blogger = RylyzBlogger.where(invite_code: params[:invite_code]).first
   end
 
   def omniauth_login_callback
@@ -45,7 +46,7 @@ class WyjytController < ApplicationController
         end
       else # signing in with this social presence for the first time from this provider
         if signed_in? # member already signed in, just add to this members list of social presences
-            self.current_member.add_social_presence presence     
+            self.current_member.add_social_presence presence
         else # not signed in
           # create a new member (or find one matching the same email as this presence)
           self.current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
@@ -54,7 +55,7 @@ class WyjytController < ApplicationController
       end
 
       render :text => current_member.email
-    rescue Exception => e 
+    rescue Exception => e
       redirect_to_login_page
       puts e.message
       s = "exception: #{e.message}<br>"
@@ -70,7 +71,7 @@ class WyjytController < ApplicationController
     # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
     # log this cancelation
     # send game event to wid if not blogger member
-    # take them back to sign in page they came from 
+    # take them back to sign in page they came from
     redirect_to_login_page
   end
 
@@ -89,7 +90,7 @@ class WyjytController < ApplicationController
   #   flash[:notice] = t(:successfully_destroyed_authentication)
   #   redirect_to authentications_url
   # end
-  
+
   # def create_new_omniauth_user(omniauth)
   #   user = User.new
   #   user.apply_omniauth(omniauth, true)
