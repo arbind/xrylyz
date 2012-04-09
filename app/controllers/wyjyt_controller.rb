@@ -23,6 +23,7 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_login_callback
+    # +++ up the sign_in_count and last_signed_in_at times for both the member and the presence
     # if a current_member is signed in already, add this provider as another presence to the current_member
     # if a current_member is not signed in but this presence has signed in before, just sign them in again
     # if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
@@ -31,10 +32,10 @@ class WyjytController < ApplicationController
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
       presence = RylyzMemberPresence.materialize_from_omni_auth(omni_auth)
 
-      if current_member # already signed in, just add this provider presence
+      if signed_in? # already signed in, just add this provider presence
           current_member.add_social_presence presence     
       else # not signed in
-        if presence.member # this presence has signed in from this provider before, just sign them in again
+        if presence.signed_in_before? # this presence has signed in from this provider before, just sign them in again
           current_member = presence.member
         else # this presence is signing in for the first time from this provider
           # create a new member (or find one matching the same email as this presence)

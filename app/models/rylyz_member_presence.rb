@@ -42,6 +42,14 @@ class RylyzMemberPresence
     self.rylyz_member
   end
 
+  def signed_in_before?
+  	!!member
+  end
+
+  def never_signed_in_before?
+  	!signed_in_before
+  end
+
 	def self.materialize_from_omni_auth(omniauth)
     provider = omniauth['provider']
     uid = omniauth['uid']
