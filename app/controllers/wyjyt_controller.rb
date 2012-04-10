@@ -24,9 +24,11 @@ class WyjytController < ApplicationController
 
   def omniauth_login_callback
     # +++ up the sign_in_count and last_signed_in_at times for both the member and the presence
-    # if a current_member is signed in already, add this provider as another presence to the current_member
-    # if a current_member is not signed in but this presence has signed in before, just sign them in again
-    # if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
+    # if a member has signed in with this social presence before, just sign them in again (switch user if necessary)
+    # otherwise
+    #   if a current_member is signed in already, add this provider as another presence to the current_member
+    #     double check that this provider is not already in the list as another uid, if so, create a new member and switch user 
+    #   if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
     omni_auth = request.env["omniauth.auth"]
     begin
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
@@ -44,7 +46,10 @@ class WyjytController < ApplicationController
           self.current_member = presence.member
         end
       else # signing in with this social presence for the first time from this provider
-        if signed_in? # member already signed in, just add to this members list of social presences
+        if signed_in? and self.current_member.social_presences.where({:provider => presence.provider}).empty? # <-- need to test why this doesnt work
+            # member already signed in, just add to this members list of social presences
+            # double check that this provider is not already one of the social presences as a different uid
+            # if provider is already in the list, then, create a new user and sign them in (switch user)
             self.current_member.add_social_presence presence     
         else # not signed in
           # create a new member (or find one matching the same email as this presence)
@@ -53,7 +58,8 @@ class WyjytController < ApplicationController
         end
       end
 
-      render :text => current_member.email
+      redirect_to_login_page
+
     rescue Exception => e 
       redirect_to_login_page
       puts e.message
@@ -80,7 +86,7 @@ class WyjytController < ApplicationController
 
   def redirect_to_login_page
     # redirect_to :blogger_login
-    # redirect_to :login
+    redirect_to :login
   end
 
   # def destroy

@@ -39,6 +39,13 @@
 <body>
 <h1></h1>
 
+<% social_presences.each do |presence| %>
+  <div class="social-presence">
+    <%= image_tag(presence.image) if presence.image  %>
+    <label><%=presence.nickname%> from <%=presence.provider%></label>
+  </div>  
+<% end %>
+
 <div onclick="document.location.href='/auth/facebook'" class="social button clear">
   <%= image_tag("social/facebook.jpeg") %>
   <label>Facebook</label>

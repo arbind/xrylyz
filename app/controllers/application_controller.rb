@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_member, :signed_in?
+  helper_method :current_member, :signed_in?, :social_presences
 
  protected
 
@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
     !!current_member
   end
 
-  def current_member_presences  	
-		@member_presences ||= current_member.member_presences if current_member
+  def social_presences  	
+		@social_presences ||= current_member.social_presences if current_member
+		@social_presences ||= []
 	end
 end
