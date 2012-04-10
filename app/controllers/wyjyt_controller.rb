@@ -51,7 +51,7 @@ class WyjytController < ApplicationController
             # member already signed in, just add to this members list of social presences
             # double check that this provider is not already one of the social presences as a different uid
             # if provider is already in the list, then, create a new user and sign them in (switch user)
-            self.current_member.add_social_presence presence     
+            self.current_member.add_social_presence presence
         else # not signed in
           # create a new member (or find one matching the same email as this presence)
           self.current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
@@ -59,7 +59,7 @@ class WyjytController < ApplicationController
         end
       end
 
-    rescue Exception => e 
+    rescue Exception => e
       puts e.message
       s = "exception: #{e.message}<br>"
       s << e.backtrace.join("<br>")
