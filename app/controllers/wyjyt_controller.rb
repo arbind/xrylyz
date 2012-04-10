@@ -20,6 +20,7 @@ class WyjytController < ApplicationController
   end
 
   def omniauth_login
+    @blogger = RylyzBlogger.where(invite_code: params[:invite_code]).first
   end
 
   def omniauth_login_callback
@@ -58,16 +59,13 @@ class WyjytController < ApplicationController
         end
       end
 
-      redirect_to_login_page
-
     rescue Exception => e 
-      redirect_to_login_page
       puts e.message
       s = "exception: #{e.message}<br>"
       s << e.backtrace.join("<br>")
       render :text => s
     ensure
-      redirect_to_login_page if current_member.nil?
+      redirect_to_login_page
     end
   end
 
@@ -76,7 +74,7 @@ class WyjytController < ApplicationController
     # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
     # log this cancelation
     # send game event to wid if not blogger member
-    # take them back to sign in page they came from 
+    # take them back to sign in page they came from
     redirect_to_login_page
   end
 
@@ -95,7 +93,7 @@ class WyjytController < ApplicationController
   #   flash[:notice] = t(:successfully_destroyed_authentication)
   #   redirect_to authentications_url
   # end
-  
+
   # def create_new_omniauth_user(omniauth)
   #   user = User.new
   #   user.apply_omniauth(omniauth, true)

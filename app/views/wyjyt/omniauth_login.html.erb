@@ -39,6 +39,10 @@
 <body>
 <h1></h1>
 
+<% if @blogger %>
+  <%= render partial: 'with_invite_code', locals: {blogger: @blogger} %>
+<% end %>
+
 <% social_presences.each do |presence| %>
   <div class="social-presence">
     <%= image_tag(presence.image) if presence.image  %>
@@ -50,7 +54,7 @@
   <%= image_tag("social/facebook.jpeg") %>
   <label>Facebook</label>
 </div>
-  
+
 <div onclick="document.location.href='/auth/twitter'" class="social button">
   <%= image_tag("social/twitter.jpeg") %>
   <label>Twitter</label>
