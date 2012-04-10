@@ -9,17 +9,22 @@
       = image_tag(presence.image) 
     %label= "#{presence.nickname} from #{presence.provider}"
 %hr
+/ Social Network Providers
 = render partial: 'social_sign_in_button', locals: { provider: "Facebook",   image: "facebook.jpeg" }
 = render partial: 'social_sign_in_button', locals: { provider: "Twitter",    image: "twitter.jpeg" }
-= render partial: 'social_sign_in_button', locals: { provider: "Meetup",     image: "meetup.png" }
+= render partial: 'social_sign_in_button', locals: { provider: "Google Plus",image: "googleplus.png", path: "google_oauth2" }
+/ = render partial: 'social_sign_in_button', locals: { provider: "Meetup",     image: "meetup.png" }
 %br
+/ Email Providers
 = render partial: 'social_sign_in_button', locals: { provider: "Gmail",      image: "gmail.jpeg",      path: "google_oauth2" }
 = render partial: 'social_sign_in_button', locals: { provider: "Yahoo Mail", image: "yahoomail.jpeg",  path: "yahoo" }
 = render partial: 'social_sign_in_button', locals: { provider: "Hotmail",    image: "hotmail.jpeg",    path: "windowslive" }
 %br
+/ Blog Host Providers
 = render partial: 'social_sign_in_button', locals: { provider: "Tumblr",     image: "tumblr.jpeg" }
 = render partial: 'social_sign_in_button', locals: { provider: "Blogger",    image: "blogger.jpeg",    path: "google_oauth2" }
 %br
+/ Other Service Providers
 = render partial: 'social_sign_in_button', locals: { provider: "RunKeeper",  image: "runkeeper.jpeg" }
 = render partial: 'social_sign_in_button', locals: { provider: "LinkedIn",   image: "linkedin.jpeg" }
 = render partial: 'social_sign_in_button', locals: { provider: "Netflix",    image: "netflix.jpeg" }
