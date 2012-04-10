@@ -19,6 +19,8 @@ class RylyzMember
   validates_presence_of :nickname
   # validates_uniqueness_of :email, :case_sensitive => false
 
+  alias :social_presences :rylyz_member_presences
+
   def self.materialize(email, nickname, is_verified=false)
     member = RylyzMember.where(:email => email).first
     if member
@@ -34,10 +36,6 @@ class RylyzMember
     if member.save then member else nil end
   end
 
-  def social_presences
-    self.rylyz_member_presences
-  end
-
   def add_social_presence(social_presence)
     p = social_presences.where(:provider => social_presence.provider, :uid => social_presence.uid).first
     if p.nil?
@@ -50,16 +48,8 @@ class RylyzMember
     # self.update({sign_in_count, last_signed_in_at})
   end
 
-  def verify(is_verified=true)
-    self.is_verified = is_verified
-  end
-
-  def inactivate()
-    self.is_active = false
-  end
-
-  def reactivate()
-    self.is_active = true
-  end
+  def verify(is_verified=true) self.is_verified = is_verified end
+  def inactivate() self.is_active = false end
+  def reactivate() self.is_active = true end
 
 end

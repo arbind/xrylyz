@@ -38,18 +38,10 @@ class RylyzMemberPresence
 
 	field :extra_info, :type => Hash
 
-  def member
-    self.rylyz_member
-  end
-
-  def signed_in_before?
-  	!!member
-  end
-
-  def never_signed_in_before?
-  	!signed_in_before?
-  end
-
+  def member() self.rylyz_member end
+  def signed_in_before?()  !!member end
+  def never_signed_in_before?() !signed_in_before? end
+  	
   def mark_sign_in
     # +++
     # self.update({sign_in_count, last_signed_in_at})
