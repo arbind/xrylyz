@@ -1,4 +1,4 @@
-- path = :path || provider.underscore
+- path = path || provider.downcase.underscore
 - auth_endpoint = "/auth/#{path}"
 - img_name = image || "#{provider.underscore}.jpeg"
 - img_url = "social/#{img_name}"

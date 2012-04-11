@@ -1,55 +1,4 @@
 RylyzPlayer::Application.routes.draw do
-  post "wyjyt/pusher_auth"
-  match '/intent/login', :to => 'wyjyt#omniauth_login', :as => :login
-  match '/auth/:provider/logout', :to => 'wyjyt#omniauth_logout' , :as => :logout
-  match '/auth/:provider/callback', :to => 'wyjyt#omniauth_login_callback', :via => [:get, :post]
-
-  match '/auth/failure', :to => 'wyjyt#omniauth_login_failure_callback'  # twitter callback for "Cancel, and return to app"
-
-  get "blogger/blog"
-  get "blogger/games"
-
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
-
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
@@ -61,9 +10,51 @@ RylyzPlayer::Application.routes.draw do
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
 
-  # See how all your routes lay out with "rake routes"
+  namespace :blogger do
+    #Dashboard (blogger must be logged in to view these)
+    get '/dashboard',       :to => 'dashboard#index', :as => :blogger_dashboard
+    get '/dashboard/index'
 
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
+    #+++ add resources for a blogger's sites, keys, referrals, analytics, etc.
+
+    #blogger intents
+    get '/intent/login',    :as => :blogger_intent_to_login
+    get '/intent/share',    :as => :blogger_intent_to_share
+    get '/intent/invite',   :as => :blogger_intent_to_invite
+
+    # showcase examples
+    get "/showcase/blog"
+    get "/showcase/games"
+    get "/showcase/scratch"
+
+  end
+
+
+  scope '/auth', :module => :member  do
+    #human authentication
+    get '/login',               :to => 'auth#login',  :as => :login
+    get '/logout',              :to => 'auth#logout', :as => :logout
+    delete '/destroy_presence', :to => 'auth#destroy_presence', :as => :destroy_presence # delete social presence from account
+
+    # omni-auth callback for successfull login 
+    match '/:provider/callback',  :to => 'auth#omniauth_login_callback',  :via => [:get, :post]
+     # omni-auth callback for failed login: User Canceled, or returned to app or entered invalid credentials
+    match '/failure',             :to => 'auth#omniauth_failure_callback',  :via => [:get, :post]
+  end
+
+  namespace :sudo do
+    # +++
+  end
+
+  namespace :wyjyt do
+    #pusher authentication: post "auth/pusher_auth"
+    match "/auth/pusher",      :via => [:post]
+
+    #wyjyt intents    
+    match '/intent/login',    :as => :wyjyt_intent_to_login
+    match '/intent/purchase', :as => :wyjyt_intent_to_purchase
+    match '/intent/share',    :as => :wyjyt_intent_to_share
+    match '/intent/invite',   :as => :wyjyt_intent_to_invite
+  end
+
 end

@@ -1,4 +1,5 @@
-class BloggerController < ApplicationController
+class Blogger::ShowcaseController < ApplicationController
+	
   def blog
   end
 
