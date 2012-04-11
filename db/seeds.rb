@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+blogger = RylyzBlogger.create!({ email: 'mike@test.com', invite_code: '1234'})
+blogger.create_plan({description: 'Basic Plan 100'})
+blogger.sites.create!({url: 'http://myblog.com'})
