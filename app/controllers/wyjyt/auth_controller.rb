@@ -2,7 +2,7 @@ class Wyjyt::AuthController < ApplicationController
   include ApplicationHelper
   protect_from_forgery :except => :pusher_auth
 
-  def pusher
+  def pusher_access
     puts "+++++++++++++++++++++++++++++++++++++++++++++++"
     puts params
     puts "+++++++++++++++++++++++++++++++++++++++++++++++"
