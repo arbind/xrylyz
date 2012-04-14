@@ -1,0 +1,79 @@
+- social_presences.each do |presence|
+  .social-presence
+    - if presence.image
+      = image_tag(presence.image) 
+    %label= "#{presence.nickname} from #{presence.provider}"
+%hr
+/ Social Network Providers
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Facebook",   image: "facebook.jpeg" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Twitter",    image: "twitter.jpeg" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Google Plus",image: "googleplus.png", path: "google_oauth2" }
+/ = render partial: 'member/auth/social_sign_in_button', locals: { provider: "Meetup",     image: "meetup.png" }
+%br
+/ Email Providers
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Gmail",      image: "gmail.jpeg",      path: "google_oauth2" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Yahoo Mail", image: "yahoomail.jpeg",  path: "yahoo" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Hotmail",    image: "hotmail.jpeg",    path: "windowslive" }
+%br
+/ Blog Host Providers
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Tumblr",     image: "tumblr.jpeg" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Blogger",    image: "blogger.jpeg",    path: "google_oauth2" }
+%br
+/ Other Service Providers
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "RunKeeper",  image: "runkeeper.jpeg"}
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "LinkedIn",   image: "linkedin.jpeg" }
+= render partial: 'member/auth/social_sign_in_button', locals: { provider: "Netflix",    image: "netflix.jpeg" }
+
+
+%form#payment-form{:action=>"", :method=>"POST"}
+  .form-row
+    %label Card Number
+    %input.card-number{:type=>"text", :size=>"20", :autocomplete=>"off"}
+    .form-row
+      %label CVC
+      %input.card-cvc{:type=>"text", :size=>"4", :autocomplete=>"off"}
+    .form-row
+      %label Expiration (MM/YYYY)
+      = select_month nil, {add_month_numbers:true}, {name: nil, class: "card-expiry-month"}
+      = select_year nil, {start_year: Date.today.year, end_year: Date.today.year + 15}, {name: nil, class: "card-expiry-year"}
+    #payment-errors
+      %noscript Javascript is not enabled. First enable it in your browser settings in order to submit this form.
+    %button.submit-button{:type=>"submit"} Submit Payment
+
+%script(type="text/javascript" src="https://js.stripe.com/v1/")
+:javascript
+  Stripe.setPublishableKey('#{SECRETS[:STRIPE][:PUBLISH]}');
+  $(document).ready(function() {
+  console.log("1")
+    $("#payment-form").submit(function(event) {
+  alert("2")
+      // disable the submit button to prevent repeated clicks
+      $('.submit-button').attr("disabled", "disabled");
+
+      Stripe.createToken({
+          number: $('.card-number').val(),
+          cvc: $('.card-cvc').val(),
+          exp_month: $('.card-expiry-month').val(),
+          exp_year: $('.card-expiry-year').val()
+      }, stripeResponseHandler);
+
+      // prevent the form from submitting with the default action
+      return false;
+    });
+  });
+
+  function stripeResponseHandler(status, response) {
+      if (response.error) {
+        $("#payment-errors").html(response.error.message);
+      } else {
+          var form$ = $("#payment-form");
+          // +++* SWITCH TO HTTPS
+          form$.attr("action", "http://#{RYLYZ_PLAYER_HOST}/payment/stripe/authorize_charge")
+          // token contains id, last4, and card type
+          var token = response['id'];
+          // insert the token into the form so it gets submitted to the server
+          form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+          // and submit
+          form$.get(0).submit();
+      }
+  }

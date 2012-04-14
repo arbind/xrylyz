@@ -8,6 +8,8 @@ group :production do
 	gem 'newrelic_rpm' #Server Monitoring
 end
 
+# Stripe
+gem 'stripe'
 
 #MongoDB
 gem 'mongoid'

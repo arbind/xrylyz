@@ -1,0 +1,24 @@
+!!! 5
+%html{ :lang => "en"}
+  %head
+    %title= "Chat Plays"
+    = stylesheet_link_tag    "base", :media => "all"
+    = stylesheet_link_tag    "website/chat_plays/application", :media => "all"
+    = javascript_include_tag "website/chat_plays/application"
+    = csrf_meta_tags
+  %body.chat-plays
+    %header
+      #site-menu
+        %ul
+          %li= link_to  "Home", :chat_plays_index
+          %li= link_to  "Pricing", :chat_plays_pricing
+          %li= link_to  "Profiting", :chat_plays_profiting
+          %li= link_to  "Installing", :chat_plays_installing
+          %li= link_to  "Sign Up", :chat_plays_sign_up
+
+  = yield
+
+  %footer
+    %p
+      Copyright 2011 My Name
+    %li= link_to  "Contact Us", :chat_plays_contact_us

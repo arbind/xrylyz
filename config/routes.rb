@@ -1,4 +1,16 @@
 RylyzPlayer::Application.routes.draw do
+
+  scope '/website' do
+    scope '/chat_plays', :controller=> "Website::ChatPlays" do #The ChatPlays websites
+      get "index",      :as => :chat_plays_index
+      get "pricing",    :as => :chat_plays_pricing
+      get "profiting",  :as => :chat_plays_profiting
+      get "installing", :as => :chat_plays_installing
+      get "contact_us", :as => :chat_plays_contact_us
+      get "sign_up",    :as => :chat_plays_sign_up
+    end
+  end
+
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
@@ -42,6 +54,16 @@ RylyzPlayer::Application.routes.draw do
     match '/failure',             :to => 'auth#omniauth_failure_callback',  :via => [:get, :post]
   end
 
+
+  scope '/purchase', :module => :member  do
+    get '/coins',               :to => 'purchase#coins',  :as => :purchase_coins
+  end
+
+
+  namespace :payment do
+    post 'stripe/authorize_charge'
+  end
+
   namespace :sudo do
     # +++ add super user functionality - make sure to include super secure authentication
 
@@ -54,9 +76,9 @@ RylyzPlayer::Application.routes.draw do
 
     # wyjyt intents    
     get '/intent/login',    :as => :wyjyt_intent_to_login
-    get '/intent/purchase', :as => :wyjyt_intent_to_purchase
     get '/intent/share',    :as => :wyjyt_intent_to_share
     get '/intent/invite',   :as => :wyjyt_intent_to_invite
+    get '/intent/purchase', :as => :wyjyt_intent_to_purchase
   end
 
 end

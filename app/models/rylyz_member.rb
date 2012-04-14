@@ -13,7 +13,10 @@ class RylyzMember
   field :last_signed_in_at, :type => DateTime, :default => DateTime.now
   field :is_verified, :type => Boolean, :default => false
   field :is_active, :type => Boolean, :default => true
+
   has_many :rylyz_member_presences, :dependent => :delete
+  has_many :credit_cards, :class_name => "StripeCreditCard", :inverse_of => :member
+
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :member
 
   validates_presence_of :nickname
