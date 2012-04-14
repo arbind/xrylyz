@@ -37,3 +37,6 @@ class StripeCreditCard # mirrors a Stripe::Customer - each card has 1 Stripe::Cu
       self.last_4_digits = last_4_digits_was
     end
   end
+
+
+end

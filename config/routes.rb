@@ -1,27 +1,16 @@
 RylyzPlayer::Application.routes.draw do
 
-  scope '/website' do
-    scope '/chat_plays', :controller=> "Website::ChatPlays" do #The ChatPlays websites
-      get "index",      :as => :chat_plays_index
-      get "pricing",    :as => :chat_plays_pricing
-      get "profiting",  :as => :chat_plays_profiting
-      get "installing", :as => :chat_plays_installing
-      get "contact_us", :as => :chat_plays_contact_us
-      get "sign_up",    :as => :chat_plays_sign_up
-    end
+  root :to => 'website/chat_plays#index'
+
+  scope '/', :module => :website, :controller=> "ChatPlays" do #The ChatPlays websites
+    get "index",      :as => :chat_plays_index
+    get "pricing",    :as => :chat_plays_pricing
+    get "profiting",  :as => :chat_plays_profiting
+    get "installing", :as => :chat_plays_installing
+    get "contact_us", :as => :chat_plays_contact_us
+    get "sign_up",    :as => :chat_plays_sign_up
   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with 'root'
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
+  
   namespace :blogger do 
     # Dashboard (blogger must be authenticated in to view these)
     get '/dashboard',       :to => 'dashboard#index', :as => :blogger_dashboard
