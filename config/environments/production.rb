@@ -198,8 +198,23 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
 
   }
 
-end
+else # default empty since heroku rake tasks do not alwyas load environment variables: RYLYZ_PLAYER_HOST will be nil
 
+  SECRETS = {
+    :STRIPE => {},
+    :PUSHER => {},
+    :TWITTER => {},
+    :FACEBOOK => {},
+    :GOOGLE_OAUTH2 => {},
+    :TUMBLR => {},
+    :RUNKEEPER => {},
+    :WINDOWSLIVE => {},
+    :YAHOO => {},
+    :LINKEDIN => {},
+  }
+
+end
+  
   # Code is not reloaded between requests
   config.cache_classes = true
 
