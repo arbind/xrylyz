@@ -6,6 +6,8 @@ RYLYZ_PLAYER_HOST ||= "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HERO
 RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "rylyz-local.com"
 RYLYZ_PLAYER_HOST.downcase!
 
+puts ""
+
 # Host specific configurations
 if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
 
@@ -55,6 +57,7 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
   }
 
 elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
+puts "DEFINING SECRETS FOR HOLODECK"
 
   SECRETS = {
     :STRIPE => { # TEST CONFIG
