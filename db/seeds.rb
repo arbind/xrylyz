@@ -6,6 +6,17 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# Clean RylyzBlogger
+RylyzBlogger.all.destroy
+RylyzBloggerSite.all.destroy
+RylyzBloggerPlan.all.destroy
+
+puts "Cleaning success..."
+
+# Populate
 blogger = RylyzBlogger.create!({ email: 'mike@test.com', invite_code: '1234'})
 blogger.create_plan({description: 'Basic Plan 100'})
 blogger.sites.create!({url: 'http://myblog.com'})
+blogger.sites.create!({url: 'http://myblog.com'})
+
+puts "Seeding success..."
