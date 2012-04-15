@@ -1,8 +1,9 @@
 class Blogger::DashboardController < ApplicationController	
-
-	def index
-
-	end
+	layout 'dashboard'
+	def login()	end
+	def index() end
+	def sites() end
+	def plan()	end
 
 end
 

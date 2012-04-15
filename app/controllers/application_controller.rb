@@ -3,6 +3,23 @@ class ApplicationController < ActionController::Base
 
  protected
 
+  def current_blogger
+    blogger_id = session[:blogger_id]
+    if blogger_id
+      @current_blogger ||= RylyzBlogger.find(member_id) 
+    end
+    @current_blogger
+  end
+
+  def current_blogger=(blogger)
+    blogger_id = nil
+    blogger_id = blogger.id.to_s unless blogger.nil?
+
+    @current_blogger = blogger
+    session[:blogger_id] = blogger_id
+    @current_blogger.mark_sign_in unless @current_blogger.nil?
+  end
+
   def current_member
   	member_id = session[:member_id]
     if member_id

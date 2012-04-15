@@ -8,14 +8,14 @@
     = csrf_meta_tags
   %body.chat-plays
     %header
-      %h1 Website
+      %h1 Dashboard
       #site-menu
         %ul
-          %li= link_to  "Home", :home
-          %li= link_to  "Pricing", :pricing
-          %li= link_to  "Profiting", :profiting
-          %li= link_to  "Installing", :installing
-          %li= link_to  "Sign Up", :sign_up
+          %li= link_to  "Home", :dashboard
+          %li= link_to  "Sites", :dashboard_sites
+          %li= link_to  "Referrals", :dashboard_referrals
+          %li= link_to  "Analytics", :dashboard_analytics
+          %li= link_to  "Plan", :dashboard_plan
 
   = yield
 

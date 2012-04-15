@@ -1,4 +1,5 @@
-class Payment::StripeController < ApplicationController
+# +++ turn this into a module
+class PaymentGateway::StripeController < ApplicationController
   include ApplicationHelper
   require 'stripe'
 
@@ -20,4 +21,7 @@ class Payment::StripeController < ApplicationController
 		)
   end
 
+
+  def authorize_subscription
+	end
 end

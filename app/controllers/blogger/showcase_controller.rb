@@ -1,7 +1,7 @@
 class Blogger::ShowcaseController < ApplicationController
 	
-  def blog
-  end
+  def chat() end
+  def blog() end
 
   def games
 		games = Connect4Game.all
@@ -21,5 +21,7 @@ class Blogger::ShowcaseController < ApplicationController
 			} 
 		end
   end
+
+  def scratch() end
 
 end

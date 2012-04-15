@@ -1,73 +1,61 @@
 RylyzPlayer::Application.routes.draw do
 
-  root :to => 'website/chat_plays#index'
+  root :controller => :root, :action => :index
 
-  scope '/', :module => :website, :controller=> "ChatPlays" do #The ChatPlays websites
-    get "index",      :as => :chat_plays_index
-    get "pricing",    :as => :chat_plays_pricing
-    get "profiting",  :as => :chat_plays_profiting
-    get "installing", :as => :chat_plays_installing
-    get "contact_us", :as => :chat_plays_contact_us
-    get "sign_up",    :as => :chat_plays_sign_up
+  # Public Website Routes (no current_member required)
+  scope :module => :website, :controller=> "ChatPlays" do #The ChatPlays websites
+    get "index",      :as => :home
+    get "pricing",    :as => :pricing
+    get "profiting",  :as => :profiting
+    get "installing", :as => :installing
+    get "contact_us", :as => :contact_us
+    get "sign_up",    :as => :sign_up
   end
   
-  namespace :blogger do 
-    # Dashboard (blogger must be authenticated in to view these)
-    get '/dashboard',       :to => 'dashboard#index', :as => :blogger_dashboard
-    get '/dashboard/index'
-
+  # Dashboard Routes for bloggers
+  scope :module => :blogger, :controller => "Dashboard" do 
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
-
-    # blogger intents (must be an authenticated blogger)
-    get '/intent/login',    :as => :blogger_intent_to_login
-    get '/intent/share',    :as => :blogger_intent_to_share
-    get '/intent/invite',   :as => :blogger_intent_to_invite
-
-    # showcase examples
-    get '/showcase/blog'
-    get '/showcase/games'
-    get '/showcase/scratch'
-
+    get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
+    get 'login',            :as => :dashboard_login
+    get 'sites',            :as => :dashboard_sites
+    get 'plan',             :as => :dashboard_plan
+    get 'referrals',        :as => :dashboard_referrals
+    get 'analytics',        :as => :dashboard_analytics
   end
 
-
-  scope '/auth', :module => :member  do
-    # authentication for humans
-    get '/login',               :to => 'auth#login',  :as => :login
-    get '/logout',              :to => 'auth#logout', :as => :logout
-    delete '/destroy_presence', :to => 'auth#destroy_presence', :as => :destroy_presence # delete social presence from account
-
-    # omni-auth callback for successfull login 
-    match '/:provider/callback',  :to => 'auth#omniauth_login_callback',  :via => [:get, :post]
-    # omni-auth callback for failed login: User Canceled, or returned to app or entered invalid credentials
-    match '/failure',             :to => 'auth#omniauth_failure_callback',  :via => [:get, :post]
+  # Public Showcase
+  scope '/showcase', :module => :blogger, :controller => "Showcase" do 
+    get 'chat',     :as => :showcase_chat
+    get 'games',    :as => :showcase_games
+    get 'blog',     :as => :showcase_blog
+    get 'scratch',  :as => :showcase_scratch
   end
 
+  # Authentication for Humans
+  scope '/auth', :module => :member, :controller => 'Auth'  do
+    get 'login',                  :as => :login
+    get 'logout',                 :as => :logout
+    match '/:provider/callback',  :to => 'auth#omniauth_login_callback',    :via => [:get, :post] # omni auth callback
+    match '/failure',             :to => 'auth#omniauth_failure_callback',  :via => [:get, :post] # omni auth callback
+    delete 'destroy_presence',    :as => :destroy_presence # remove a member's social presence
+  end
 
-  scope '/purchase', :module => :member  do
+  scope '/purchase', :module => :member do
     get '/coins',               :to => 'purchase#coins',  :as => :purchase_coins
   end
 
+  namespace :wyjyt do
+    post '/auth/pusher_access' # Grant access to wygyts using pusher
 
-  namespace :payment do
-    post 'stripe/authorize_charge'
+    # Wyjyt Intents (launched in a new window)
+    get '/intent/login',    :as => :intent_to_login
+    get '/intent/share',    :as => :intent_to_share
+    get '/intent/invite',   :as => :intent_to_invite
+    get '/intent/purchase', :as => :intent_to_purchase
   end
 
   namespace :sudo do
     # +++ add super user functionality - make sure to include super secure authentication
-
-  end
-
-  namespace :wyjyt do
-
-    # Grant access to wygyts using pusher
-    post '/auth/pusher_access'
-
-    # wyjyt intents    
-    get '/intent/login',    :as => :wyjyt_intent_to_login
-    get '/intent/share',    :as => :wyjyt_intent_to_share
-    get '/intent/invite',   :as => :wyjyt_intent_to_invite
-    get '/intent/purchase', :as => :wyjyt_intent_to_purchase
   end
 
 end
