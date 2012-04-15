@@ -3,18 +3,23 @@
   %head
     %title= "Dashboard"
     = stylesheet_link_tag    "base", :media => "all"
-    = javascript_include_tag ""
+    = stylesheet_link_tag    "website/chat_plays/application", :media => "all"
+    = javascript_include_tag "website/chat_plays/application"
     = csrf_meta_tags
   %body.chat-plays
     %header
+      %h1 Dashboard
       #site-menu
         %ul
-          %li= link_to  "Sites", ""
-          %li= link_to  "Plan", ""
+          %li= link_to  "Home", :dashboard
+          %li= link_to  "Sites", :dashboard_sites
+          %li= link_to  "Referrals", :dashboard_referrals
+          %li= link_to  "Analytics", :dashboard_analytics
+          %li= link_to  "Plan", :dashboard_plan
 
   = yield
 
   %footer
     %p
       Copyright 2011 My Name
-    %li= link_to  "Contact Us", ""
+    %li= link_to  "Contact Us", :contact_us

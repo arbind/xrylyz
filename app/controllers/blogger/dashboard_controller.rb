@@ -8,6 +8,11 @@ class Blogger::DashboardController < ApplicationController
     @sites = RylyzBloggerSite.all
 	end
 
+	def login()	end
+	def index() end
+	def sites() end
+	def plan()	end
+
   private
 
   def stub_blogger

@@ -8,17 +8,18 @@
     = csrf_meta_tags
   %body.chat-plays
     %header
+      %h1 Website
       #site-menu
         %ul
-          %li= link_to  "Home", :chat_plays_index
-          %li= link_to  "Pricing", :chat_plays_pricing
-          %li= link_to  "Profiting", :chat_plays_profiting
-          %li= link_to  "Installing", :chat_plays_installing
-          %li= link_to  "Sign Up", :chat_plays_sign_up
+          %li= link_to  "Home", :home
+          %li= link_to  "Pricing", :pricing
+          %li= link_to  "Profiting", :profiting
+          %li= link_to  "Installing", :installing
+          %li= link_to  "Sign Up", :sign_up
 
   = yield
 
   %footer
     %p
       Copyright 2011 My Name
-    %li= link_to  "Contact Us", :chat_plays_contact_us
+    %li= link_to  "Contact Us", :contact_us
