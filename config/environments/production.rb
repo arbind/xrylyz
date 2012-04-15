@@ -1,12 +1,15 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-RYLYZ_PLAYER_HOST = ENV["RYLYZ_PLAYER_HOST"] unless ENV["RYLYZ_PLAYER_HOST"].nil?
-RYLYZ_PLAYER_HOST ||= "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com" unless ENV["HEROKU_APP_NAME"].nil?
+RYLYZ_PLAYER_HOST = ENV['RYLYZ_PLAYER_HOST'] unless ENV['RYLYZ_PLAYER_HOST'].nil?
+RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HEROKU_APP_NAME'].nil?
 RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "rylyz-local.com"
 RYLYZ_PLAYER_HOST.downcase!
 
-puts ""
+
+puts "Loading production environment"
+puts "ENV['HEROKU_APP_NAME'] set to #{ENV['HEROKU_APP_NAME']}"
+puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
 # Host specific configurations
 if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
