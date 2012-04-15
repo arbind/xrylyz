@@ -5,26 +5,27 @@ class Blogger::DashboardController < ApplicationController
   layout "dashboard"
 
 	def index
-    @sites = RylyzBloggerSite.all
+    @sites = @current_blogger.sites
 	end
 
 	def login()	end
-	def index() end
 	def sites() end
 	def plan()	end
 
   private
 
   def stub_blogger
+    @current_blogger = RylyzBlogger.find_or_create_by(email:'mike@test.com', invite_code:'1234')
   end
 
   require 'resolv'
 
   def validate_hostname(hostname)
     begin
-      Resolv.getaddress("www.google.com")
+      Resolv.getaddress(hostname)
     rescue Resolv::ResolvError => e
-      return nil
+      logger.info "#{e.message}"
+      nil
     end
   end
 
