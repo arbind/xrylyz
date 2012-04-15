@@ -6,8 +6,6 @@ RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HERO
 RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "rylyz-local.com"
 RYLYZ_PLAYER_HOST.downcase!
 
-
-puts "Loading production environment"
 puts "ENV['HEROKU_APP_NAME'] set to #{ENV['HEROKU_APP_NAME']}"
 puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
@@ -55,7 +53,8 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "mptdgs5bqv5h",
       :SECRET_KEY => "Dm5aJ8T2XScNmFIa"
-    },    
+    },
+    :MEETUP => {}, #+++ add meetup
 
   }
 
@@ -103,7 +102,8 @@ puts "DEFINING SECRETS FOR HOLODECK"
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "5yu4urvu0p0l",
       :SECRET_KEY => "bIfkgiOsZfS05Fmg"
-    },    
+    },
+    :MEETUP => {}, #+++ add meetup
 
   }
 
@@ -150,7 +150,8 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "ra9iwn3dwrt7",
       :SECRET_KEY => "0XAILiDaxucguoDE"
-    },    
+    },
+    :MEETUP => {}, #+++ add meetup
 
   }
   
@@ -193,11 +194,12 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
     :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
       :CONSUMER_KEY => "dj0yJmk9T05FdUd0Y3A3cjNMJmQ9WVdrOU1teHRZWGh1TjJFbWNHbzlOamN6Tmpjd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PTVh",
       :CONSUMER_SECRET => "a47047cab30858cb859851f03fa1ea06c98771ec"
-    },    
+    },
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "yfjif2yr1rju",
       :SECRET_KEY => "fc96JcgAENamiSxP"
     },    
+    :MEETUP => {}, #+++ add meetup
 
   }
 
@@ -214,6 +216,7 @@ else # default empty since heroku rake tasks do not alwyas load environment vari
     :WINDOWSLIVE => {},
     :YAHOO => {},
     :LINKEDIN => {},
+    :MEETUP => {},
   }
 
 end
