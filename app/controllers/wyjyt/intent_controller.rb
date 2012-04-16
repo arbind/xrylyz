@@ -1,6 +1,6 @@
 class Wyjyt::IntentController < ApplicationController
-  layout "wyjyt"
   include ApplicationHelper
+  layout "wyjyt"
 
   def wyjyt
   end

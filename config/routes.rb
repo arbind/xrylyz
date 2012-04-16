@@ -16,11 +16,12 @@ RylyzPlayer::Application.routes.draw do
   scope :module => :blogger, :controller => "Dashboard" do 
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
-    get 'login',            :as => :dashboard_login
     get 'sites',            :as => :dashboard_sites
     get 'plan',             :as => :dashboard_plan
     get 'referrals',        :as => :dashboard_referrals
     get 'analytics',        :as => :dashboard_analytics
+    get 'login',            :as => :dashboard_login
+    get 'logout',           :as => :dashboard_logout
   end
 
   # Public Showcase
@@ -50,6 +51,7 @@ RylyzPlayer::Application.routes.draw do
     # Wyjyt Intents (launched in a new window)
     get '/intent/wyjyt',    :as => :intent_to_wyjyt
     get '/intent/login',    :as => :intent_to_login
+    get '/intent/logout',   :as => :intent_to_logout
     get '/intent/share',    :as => :intent_to_share
     get '/intent/invite',   :as => :intent_to_invite
     get '/intent/purchase', :as => :intent_to_purchase

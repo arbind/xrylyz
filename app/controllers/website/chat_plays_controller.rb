@@ -1,4 +1,5 @@
 class Website::ChatPlaysController < ApplicationController
+  include ApplicationHelper
   layout "chat_plays"
   
   def index
@@ -17,7 +18,9 @@ class Website::ChatPlaysController < ApplicationController
   end
 
   def sign_up
-    send_to_next_page = :chat_plays_signup # come back here after a login
+    self.next_page_on_success = :dashboard
+    self.next_page_on_failure = :signup
+    redirect_to dashboard_url if not current_blogger.nil?
   end
 
 end

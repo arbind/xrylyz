@@ -1,4 +1,5 @@
 class Blogger::DashboardController < ApplicationController
+  include ApplicationHelper
 
   before_filter :stub_blogger
 
@@ -8,9 +9,18 @@ class Blogger::DashboardController < ApplicationController
     @sites = @current_blogger.sites
 	end
 
-	def login()	end
 	def sites() end
 	def plan()	end
+
+  def login
+    self.next_page_on_success = dashboard_url
+    self.next_page_on_failure = dashboard_login_url
+  end
+
+  def logout
+    self.next_page_on_success = dashboard_login_url
+    redirect_to logout_url
+  end
 
   private
 

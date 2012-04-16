@@ -1,4 +1,5 @@
 class Blogger::ShowcaseController < ApplicationController
+  include ApplicationHelper
 	
   def chat() end
   def blog() end
