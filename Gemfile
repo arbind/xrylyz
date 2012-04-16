@@ -33,8 +33,6 @@ gem 'omniauth-meetup'
 # gem 'omniauth-flickr'
 # gem 'omniauth-eventbrite'
 
-
-
 gem 'json'
 gem 'haml'
 gem 'jquery-rails'
@@ -64,10 +62,10 @@ end
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger
-#gem 'ruby-debug19', :require => 'ruby-debug'
+group :development do
+	gem 'ruby-debug19', :require => 'ruby-debug'
+end
 
 group :test do
-  # Pretty printed test output
-  gem 'turn', :require => false
+  gem 'turn', :require => false # Pretty printed test output
 end

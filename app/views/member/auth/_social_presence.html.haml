@@ -1,0 +1,9 @@
+- if not social_presences.empty?
+	%div You are already logged in!
+	.button= link_to "logout", :logout
+
+	- social_presences.each do |presence|
+		.social-presence
+			- if presence.image
+				= image_tag(presence.image) 
+			%label= "#{presence.nickname} from #{presence.provider}"

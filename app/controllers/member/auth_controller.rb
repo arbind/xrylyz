@@ -2,11 +2,16 @@ class Member::AuthController < ApplicationController
   include ApplicationHelper
 
   def login
+    # Before showing this login endpoint:
+    #   be sure to set next_page_on_success, next_page_on_failure and layout_on_render
     @blogger = RylyzBlogger.where(invite_code: params[:invite_code]).first
+    render :layout => layout_on_render!
   end
 
   def logout
     self.current_member = nil
+    next_page = next_page_on_success!
+    redirect_to next_page
   end
 
   # method=DELETE
@@ -25,6 +30,7 @@ class Member::AuthController < ApplicationController
     #   if a current_member is signed in already, add this provider as another presence to the current_member
     #     double check that this provider is not already in the list as another uid, if so, create a new member and switch user 
     #   if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
+    next_page = nil
     begin
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
       presence = RylyzMemberPresence.materialize_from_omni_auth(omniauth_hash)
@@ -58,8 +64,9 @@ class Member::AuthController < ApplicationController
       s = "exception: #{e.message}<br>"
       s << e.backtrace.join("<br>")
       render :text => s
+      next_page = next_page_on_failure!
     ensure
-      next_page = send_to_next_page || :login
+      next_page ||= next_page_on_success!
       redirect_to next_page
     end
   end
@@ -67,12 +74,10 @@ class Member::AuthController < ApplicationController
   def omniauth_failure_callback
     #User may have canceled
     # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
-    # log this cancelation
-    # send game event to wid if not blogger member
-    # take them back to sign in page they came from
-      prev_page = send_to_prev_page || :login
-      # redirect_to prev_page
-      render :text => "omniauth failure"
+    # +++ log this cancelation
+    # +++ send game event to wid if not blogger member
+    next_page = next_page_on_failure
+    # redirect_to prev_page
   end
 
   private

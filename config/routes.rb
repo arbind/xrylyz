@@ -48,6 +48,7 @@ RylyzPlayer::Application.routes.draw do
     post '/auth/pusher_access' # Grant access to wygyts using pusher
 
     # Wyjyt Intents (launched in a new window)
+    get '/intent/wyjyt',    :as => :intent_to_wyjyt
     get '/intent/login',    :as => :intent_to_login
     get '/intent/share',    :as => :intent_to_share
     get '/intent/invite',   :as => :intent_to_invite
