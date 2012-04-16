@@ -17,6 +17,7 @@ class Blogger::DashboardController < ApplicationController
 	def plan()	end
 
   def login
+    # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end

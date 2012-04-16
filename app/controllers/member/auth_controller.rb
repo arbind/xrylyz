@@ -76,8 +76,7 @@ class Member::AuthController < ApplicationController
     # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
     # +++ log this cancelation
     # +++ send game event to wid if not blogger member
-    next_page = next_page_on_failure
-    # redirect_to prev_page
+    redirect_to next_page_on_failure!
   end
 
   private
