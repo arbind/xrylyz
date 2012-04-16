@@ -58,6 +58,8 @@ RylyzPlayer::Application.routes.draw do
   end
 
   namespace :sudo do
+    get 'control_panel/signups',        :as => :sudo_signups
+    post 'control_panel/load_signups',  :as => :sudo_load_signups
     # +++ add super user functionality - make sure to include super secure authentication
   end
 

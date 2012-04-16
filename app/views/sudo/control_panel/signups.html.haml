@@ -1,0 +1,7 @@
+%h2= "#{@signups.count} Bloggers"
+
+%form{:action=>"load_signups", :method=>"POST"}
+	%button.submit-button{:type=>"submit"} Load Signups
+
+- @signups.each do |blogger|
+	%div= blogger.nickname

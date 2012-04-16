@@ -44,7 +44,6 @@ class Blogger::DashboardController < ApplicationController
     end
   end
 
-
   private
 
   def register_blogger

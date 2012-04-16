@@ -213,48 +213,52 @@ class PusherChannels
   def listener_thread_for_channel(scope, channel_name)
     return @channels[scope][channel_name] if @channels[scope][channel_name]
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    listener_thread = Thread.new do
-          puts "-------o #{scoped_channel_name} Thread Starting"
-          Thread.current[:connected] = false
-          Thread.current[scope] = true
-          Thread.current[:name] = scoped_channel_name
-          Thread.current[:start_time] = Time.now()
-          Thread.current[:last_heartbeat] = nil
+    begin
+      listener_thread = Thread.new do
+        puts "-------o #{scoped_channel_name} Thread Starting"
+        Thread.current[:connected] = false
+        Thread.current[scope] = true
+        Thread.current[:name] = scoped_channel_name
+        Thread.current[:start_time] = Time.now()
+        Thread.current[:last_heartbeat] = nil
 
-          options = {:secret => Pusher.secret}
-          socket = PusherClient::Socket.new(Pusher.key, options)
+        options = {:secret => Pusher.secret}
+        socket = PusherClient::Socket.new(Pusher.key, options)
 
-          socket.subscribe(scoped_channel_name, "USER_ID")
-          s = scope
-          c = channel_name
-          socket.bind('pusher:connection_established') do |data|
-            Thread.current[:connected] = true
-            PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
-          end
-
-        # socket.bind('pusher_internal:member_removed') do |data|
-        #   puts "-------x Unsubscribed! #{data}"
-            # can add another listener to stop this listener if needed on this event
-            # just check it if it was a single private channel, or if there are no more users, or etc...
-            # {
-            #   "event": "pusher_internal:member_removed",
-            #   "channel": "presence-example-channel",
-            #   "data": {
-            #     "user_id": String,
-            #   }
-            # }
-        # end
-
-          socket.bind('pusher:heartbeat') do |data|
-            Thread.current[:last_heartbeat] = Time.now()
-          end
-          Thread.current[:socket] = socket
-
-          socket.connect # thread goes to sleep and waits for channel events
+        socket.subscribe(scoped_channel_name, "USER_ID")
+        s = scope
+        c = channel_name
+        socket.bind('pusher:connection_established') do |data|
+          Thread.current[:connected] = true
+          PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
         end
-    @channels[scope][channel_name] = listener_thread        
-    sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
-    puts "-------x #{scoped_channel_name} Thread Launched"
+
+      # socket.bind('pusher_internal:member_removed') do |data|
+      #   puts "-------x Unsubscribed! #{data}"
+          # can add another listener to stop this listener if needed on this event
+          # just check it if it was a single private channel, or if there are no more users, or etc...
+          # {
+          #   "event": "pusher_internal:member_removed",
+          #   "channel": "presence-example-channel",
+          #   "data": {
+          #     "user_id": String,
+          #   }
+          # }
+      # end
+
+        socket.bind('pusher:heartbeat') do |data|
+          Thread.current[:last_heartbeat] = Time.now()
+        end
+        Thread.current[:socket] = socket
+
+        socket.connect # thread goes to sleep and waits for channel events
+      end
+      @channels[scope][channel_name] = listener_thread        
+      sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
+      puts "-------x #{scoped_channel_name} Thread Launched"
+    rescue
+      puts "!!! Could not launch listener thread."
+    end
     listener_thread
   end
 
@@ -297,111 +301,114 @@ puts "=========================================="
 #    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
 # end
 
-PusherChannels.instance.start_private_channel("wyjyt")
-PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do |data|
-  tokens = JSON.parse(data)
+begin
+  PusherChannels.instance.start_private_channel("wyjyt")
+  PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do |data|
+    tokens = JSON.parse(data)
 
-  wid = tokens["wid"]
-  url = tokens["url"]
-  socket_id = tokens["pusher_socket_id"]
+    wid = tokens["wid"]
+    url = tokens["url"]
+    socket_id = tokens["pusher_socket_id"]
 
-  visitor = VISITOR_SOCKETS[socket_id]
-  visitor.wid = wid
-  visitor.source_url = url
-  VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
-  PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+    visitor = VISITOR_SOCKETS[socket_id]
+    visitor.wid = wid
+    visitor.source_url = url
+    VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
+    PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
 
-  PusherChannels.instance.start_private_channel(wid)
-  PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
-    visitor = VISITOR_WIDS[wid]
-    tokens = nil
-    begin
-      # lookup the TargetController 
-      tokens = JSON.parse(data)
-      # context = tokens["context"] || NoOBJECT
-      # appName = context["appName"] || "rylyz"
-      # appController = "App#{appName.underscore.camelize}Controller"
+    PusherChannels.instance.start_private_channel(wid)
+    PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
+      visitor = VISITOR_WIDS[wid]
+      tokens = nil
+      begin
+        # lookup the TargetController 
+        tokens = JSON.parse(data)
+        # context = tokens["context"] || NoOBJECT
+        # appName = context["appName"] || "rylyz"
+        # appController = "App#{appName.underscore.camelize}Controller"
 
-      # screenName = context["screenName"] || nil
-      # screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
+        # screenName = context["screenName"] || nil
+        # screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
 
-      #lookup the method to call
-    rescue Exception => e
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      puts "WID Channel Exception for #{target_controller}.#{action}"
-      puts "Could not read data in to json"
-      puts "data: #{data}"
-      puts "Exception: #{e}"
-      puts e.backtrace
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      ev = {
-        exception: e.to_s
-      }
-      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-    ensure
-      tokens = tokens || {}
-    end
-    begin #safeguard the handler block
-
-      controllers = RylyzAppController::lookup_controller(tokens) 
-      action = tokens["action"] || "action_is_unknown"
-
-      #for hi events, the event type will specify the handler 
-      if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
-
-      action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
-
-      target_controller = nil
-
-      ctrlr = controllers[:display_controller] #see if display controller has a handler
-      target_controller = ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-      ctrlr = controllers[:screen_controller]  #else see if scereen controllerhas a handler
-      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-      ctrlr = controllers[:app_controller]  #else see if app controller has a handler
-      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-      ctrlr = RylyzAppController   #finally see if rylyz controller has a handler
-      target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-      target_controller.send(action, visitor, tokens) unless target_controller.nil?
-      if target_controller.nil?
-        msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!" 
+        #lookup the method to call
+      rescue Exception => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        puts msg
-        puts "tokens: #{tokens}"
+        puts "WID Channel Exception for #{target_controller}.#{action}"
+        puts "Could not read data in to json"
+        puts "data: #{data}"
+        puts "Exception: #{e}"
+        puts e.backtrace
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        ev = { exception: msg }
+        ev = {
+          exception: e.to_s
+        }
         PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+      ensure
+        tokens = tokens || {}
       end
-    rescue RuntimeError => e
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"
-      puts "tokens: #{tokens}"
-      puts "Exception: #{e}"
-      puts e.backtrace
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      #+++TODO make this a convenience function: to trigger exceptions back 
-      ev = { exception: e.to_s }
-      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-    rescue Exception => e
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      puts "WID Channel Exception invoking #{target_controller}.#{action}"
-      puts "tokens: #{tokens}"
-      puts "Exception: #{e}"
-      puts e.backtrace
-      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-      ev = { exception: e.to_s }
-      PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-    else
-      # Do this if no exception was raised
-    ensure
-      # Do this whether or not an exception was raised    
+      begin #safeguard the handler block
+
+        controllers = RylyzAppController::lookup_controller(tokens) 
+        action = tokens["action"] || "action_is_unknown"
+
+        #for hi events, the event type will specify the handler 
+        if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
+
+        action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
+
+        target_controller = nil
+
+        ctrlr = controllers[:display_controller] #see if display controller has a handler
+        target_controller = ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+        ctrlr = controllers[:screen_controller]  #else see if scereen controllerhas a handler
+        target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+        ctrlr = controllers[:app_controller]  #else see if app controller has a handler
+        target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+        ctrlr = RylyzAppController   #finally see if rylyz controller has a handler
+        target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
+
+        target_controller.send(action, visitor, tokens) unless target_controller.nil?
+        if target_controller.nil?
+          msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!" 
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          puts msg
+          puts "tokens: #{tokens}"
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          ev = { exception: msg }
+          PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+        end
+      rescue RuntimeError => e
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"
+        puts "tokens: #{tokens}"
+        puts "Exception: #{e}"
+        puts e.backtrace
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        #+++TODO make this a convenience function: to trigger exceptions back 
+        ev = { exception: e.to_s }
+        PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+      rescue Exception => e
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        puts "WID Channel Exception invoking #{target_controller}.#{action}"
+        puts "tokens: #{tokens}"
+        puts "Exception: #{e}"
+        puts e.backtrace
+        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+        ev = { exception: e.to_s }
+        PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+      else
+        # Do this if no exception was raised
+      ensure
+        # Do this whether or not an exception was raised    
+      end
     end
   end
+rescue
+  puts "!!! Pusher can not Connect "
 end
-
 
 # PusherChannels.instance.start_private_channel("app-service")
 # PusherChannels.instance.on_private_channel_event("app-service", "start-app") do |data|
