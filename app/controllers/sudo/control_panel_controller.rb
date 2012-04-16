@@ -43,7 +43,7 @@ class Sudo::ControlPanelController < ApplicationController
 		end
 
 		@signups = RylyzBlogger.all
-		render :signups
+		redirect_to [:sudo, :sudo_signups]
 	end
 
 end
