@@ -1,5 +1,7 @@
 %h1 Dashboard
 
+%h2= "Welcome, #{@current_blogger.email}"
+
 %ul
   - @sites.each do |site|
     %li= site.url

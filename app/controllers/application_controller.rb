@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_member, :signed_in?, :social_presences
+  helper_method :current_member, :signed_in?, :social_presences, :current_blogger
 
  protected
 
   def current_blogger
     blogger_id = session[:blogger_id]
     if blogger_id
-      @current_blogger ||= RylyzBlogger.find(member_id) 
+      @current_blogger ||= RylyzBlogger.find(blogger_id)
     end
     @current_blogger
   end
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   def current_member
   	member_id = session[:member_id]
     if member_id
-    	@current_member ||= RylyzMember.find(member_id) 
+    	@current_member ||= RylyzMember.find(member_id)
     end
 		@current_member
   end
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     !!current_member
   end
 
-  def social_presences  	
+  def social_presences
 		@social_presences ||= current_member.social_presences if current_member
 		@social_presences ||= []
 	end
