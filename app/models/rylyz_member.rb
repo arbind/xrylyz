@@ -18,6 +18,7 @@ class RylyzMember
   has_many :credit_cards, :class_name => "StripeCreditCard", :inverse_of => :member
 
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :member
+  belongs_to :super_user, :class_name => "RylyzSuperUser", :inverse_of => :member
 
   validates_presence_of :nickname
   # validates_uniqueness_of :email, :case_sensitive => false

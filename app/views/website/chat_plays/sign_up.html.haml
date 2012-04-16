@@ -4,7 +4,7 @@
 / move this into head
 %script(type="text/javascript" src="/assets/vendor/js.stripe.com-v1.js")
 
-- if not signed_in?
+- if not member_signed_in?
   = "" # render social login
 
 %form#payment-form{:action=>"", :method=>"POST"}

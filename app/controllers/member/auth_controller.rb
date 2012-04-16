@@ -37,7 +37,7 @@ class Member::AuthController < ApplicationController
       presence.mark_sign_in
 
       if presence.signed_in_before? # this presence has signed in from this provider before, just sign them in again
-        if signed_in? # member already signed in
+        if member_signed_in? # member already signed in
           unless self.current_member.id == presence.member.id
             #swich user: already signed in as another member
             # +++ bump up sign_in_count for current_member and set last_signed_in_at
@@ -47,7 +47,7 @@ class Member::AuthController < ApplicationController
           self.current_member = presence.member
         end
       else # signing in with this social presence for the first time from this provider
-        if signed_in? and self.current_member.social_presences.where({:provider => presence.provider}).empty? # <-- need to test why this doesnt work
+        if member_signed_in? and self.current_member.social_presences.where({:provider => presence.provider}).empty? # <-- need to test why this doesnt work
             # member already signed in, just add to this members list of social presences
             # double check that this provider is not already one of the social presences as a different uid
             # if provider is already in the list, then, create a new user and sign them in (switch user)

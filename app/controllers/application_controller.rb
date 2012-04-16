@@ -1,23 +1,19 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_member, :signed_in?, :social_presences, :current_blogger
+  helper_method :current_member, :member_signed_in?, :social_presences
+  helper_method :current_blogger, :member_signed_in?
+  helper_method :current_super_user, :super_user_signed_in?
 
  protected
 
-  def current_blogger
-    blogger_id = session[:blogger_id]
-    if blogger_id
-      @current_blogger ||= RylyzBlogger.find(blogger_id)
-    end
-    @current_blogger
+
+  def require_member_to_be_signed_in
+    redirect_to :dashboard_login if not member_signed_in?
   end
-
-  def current_blogger=(blogger)
-    blogger_id = nil
-    blogger_id = blogger.id.to_s unless blogger.nil?
-
-    @current_blogger = blogger
-    session[:blogger_id] = blogger_id
-    @current_blogger.mark_sign_in unless @current_blogger.nil?
+  def require_blogger_to_be_signed_in
+    redirect_to :dashboard_logout if not blogger_signed_in?
+  end
+  def require_super_user_to_be_signed_in
+    redirect_to :dashboard_logout if not super_user_signed_in?
   end
 
   def current_member
@@ -37,12 +33,20 @@ class ApplicationController < ActionController::Base
     @current_member.mark_sign_in unless @current_member.nil?
   end
 
-  def signed_in?
+  def member_signed_in?
     !!current_member
   end
 
   def social_presences
-		@social_presences ||= current_member.social_presences if current_member
+		@social_presences ||= current_member.social_presences if member_signed_in?
 		@social_presences ||= []
 	end
+
+  def current_blogger()       current_member.blogger if member_signed_in?     end
+  def blogger_signed_in?()    !!current_blogger                               end
+
+  def current_super_user()    current_member.super_user if member_signed_in?  end
+  def super_user_signed_in?() !!current_super_user                            end
+
+
 end

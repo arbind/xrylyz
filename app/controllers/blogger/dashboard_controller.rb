@@ -1,12 +1,16 @@
 class Blogger::DashboardController < ApplicationController
   include ApplicationHelper
+  before_filter :require_member_to_be_signed_in,  :except => [:login, :logout]
+  before_filter :require_blogger_to_be_signed_in, :except => [:login, :logout, :index]
+  before_filter :register_blogger, :only => [:index]
 
-  before_filter :stub_blogger
+  # before_filter :stub_blogger
 
   layout "dashboard"
 
 	def index
-    @sites = @current_blogger.sites
+    # @sites = @current_blogger.sites
+    @sites = current_blogger.sites
 	end
 
 	def sites() end
@@ -24,9 +28,9 @@ class Blogger::DashboardController < ApplicationController
 
   private
 
-  def stub_blogger
-    @current_blogger = RylyzBlogger.find_or_create_by(email:'mike@test.com', invite_code:'1234')
-  end
+  # def stub_blogger
+  #   @current_blogger = RylyzBlogger.find_or_create_by(email:'mike@test.com', invite_code:'1234')
+  # end
 
   require 'resolv'
 
@@ -36,6 +40,17 @@ class Blogger::DashboardController < ApplicationController
     rescue Resolv::ResolvError => e
       logger.info "#{e.message}"
       nil
+    end
+  end
+
+
+  private
+
+  def register_blogger
+    if current_member.blogger.nil? # auto create a blogger
+      blogger = RylyzBlogger.create
+      current_member.blogger = blogger
+      current_member.save!
     end
   end
 
