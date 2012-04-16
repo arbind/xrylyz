@@ -4,4 +4,8 @@
 	%button.submit-button{:type=>"submit"} Load Signups
 
 - @signups.each do |blogger|
-	%div= blogger.nickname
+	%div 
+		= "#{blogger.nickname}"
+		= "[share code: #{blogger.share_url}]" if blogger.share_url
+		= "<B>#{blogger.share_conversions}</B> / #{blogger.share_clicks} (conversions/clicks)".html_safe if blogger.share_conversions>0 or blogger.share_clicks>0
+		= "<b>{referred by:#{blogger.referred_by}}</b>".html_safe if blogger.referred_by
