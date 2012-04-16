@@ -19,6 +19,8 @@ class RylyzBlogger
   has_many :sites, :class_name => "RylyzBloggerSite", :inverse_of => :blogger
 
   def nickname 
-  	if self.member; then self.member.nickname else self.email end
+  	nick = self.email.split('@').first if self.email
+  	nick ||= self.member.nickname if self.member
+  	nick ||= 'blogger'
   end
 end
