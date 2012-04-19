@@ -1,1 +1,68 @@
-billing.html.haml
+/ move this into head
+%script(type="text/javascript" src="/assets/vendor/js.stripe.com-v1.js")
+
+
+%div You have #{current_member.credit_cards.count} Credit Cards
+
+%form#payment-form{:action=>"", :method=>"POST"}
+  #payment-errors
+    %noscript Javascript is not enabled. First enable it in your browser settings in order to submit this form.
+  .form-row
+    %label Card Number
+    %input.card-number{:type=>"text", :size=>"20", :autocomplete=>"off"}
+  .form-row
+    %label CVC
+    %input.card-cvc{:type=>"text", :size=>"4", :autocomplete=>"off"}
+  .form-row
+    %label Expiration (MM/YYYY)
+    = select_month nil, {add_month_numbers:true}, {name: nil, class: "card-expiry-month"}
+    = select_year nil, {start_year: Date.today.year, end_year: Date.today.year + 15}, {name: nil, class: "card-expiry-year"}
+  %button.submit-button{:type=>"submit"} Submit Payment
+
+:javascript
+  window.Subscription = function(subscriptionModule){
+    var subscription = subscriptionModule;
+
+    subscription.setupForm = function(form_action) {
+      var form$ = $("#payment-form");
+      // +++* SWITCH TO HTTPS
+      form$.attr("action", form_action)
+      //form$.attr("action", "http://#{RYLYZ_PLAYER_HOST}/payment/stripe/authorize_charge")
+      form$.submit(function(event) {
+        $('.submit-button').attr("disabled", true); // prevent repeated clicks
+        subscription.processCard();
+        return false;
+      });
+    }
+
+    subscription.processCard = function() {
+      var card = {
+        number: $('.card-number').val(),
+        cvc: $('.card-cvc').val(),
+        exp_month: $('.card-expiry-month').val(),
+        exp_year: $('.card-expiry-year').val()
+      };
+      Stripe.createToken(card, subscription.handleStripeResponse);
+    }
+
+    subscription.handleStripeResponse = function stripeResponseHandler(status, response) {
+      if (200==status) {
+          var form$ = $("#payment-form");
+          var token = response['id']; 	// token contains id, last4, and card type
+
+          // insert the token into the form and submit to the server without any credit private card info
+          form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+          form$.get(0).submit();
+      } else {
+        $("#payment-errors").html(response.error.message);
+        $('.submit-button').attr("disabled", false); // re-enable to submit corrections
+      }
+    }
+
+    return subscription;
+  }(window.Subscription || {} )
+
+  $(function() {
+      Stripe.setPublishableKey('#{SECRETS[:STRIPE][:PUBLISH]}');
+      Subscription.setupForm('add_credit_card');
+  });

@@ -18,6 +18,11 @@ class Blogger::DashboardController < ApplicationController
   def billing()  end
   def profile()  end
 
+  def add_credit_card
+    current_member.save_stripe_credit_card(params[:stripeToken])
+    redirect_to :dashboard_billing
+  end
+
   def login
     # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'
     self.next_page_on_success = dashboard_url

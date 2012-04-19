@@ -20,6 +20,7 @@ RylyzPlayer::Application.routes.draw do
     get 'referrals',        :as => :dashboard_referrals
     get 'analytics',        :as => :dashboard_analytics
     get 'billing',          :as => :dashboard_billing
+    post 'add_credit_card', :as => :dashboard_add_credit_card
     get 'plan',             :as => :dashboard_plan
     get 'profile',          :as => :dashboard_profile
     get 'login',            :as => :dashboard_login

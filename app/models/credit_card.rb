@@ -2,11 +2,12 @@ class CreditCard
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  Stripe.api_key = SECRETS[:STRIPE][:SECRET]
+
   #Stripe Customer
   field :stripe_customer_id, :type => String, :default=>nil
 
   #Stripe CreditCard
-  field :stripe_card_id, :type => String, :default=>nil
   field :stripe_card_fingerprint, :type => String, :default=>nil
   field :stripe_card_type, :type => String, :default=>nil
   field :stripe_card_last4, :type => String, :default=>nil
@@ -17,9 +18,9 @@ class CreditCard
   #Stripe Plan
   field :stripe_plan_id, :type => String, :default=>nil
 
-  validates_presence_of :last_4_digits, :stripe_customer_id, :stripe_card_fingerprint
+  validates_presence_of :stripe_customer_id, :stripe_card_fingerprint, :stripe_card_type, :stripe_card_last4, :stripe_card_expiration_month, :stripe_card_expiration_year
 
-  belongs_to :member
+  belongs_to :rylyz_member
 
 
   # +++ on before create callback, verify that this fingerprint is not already being used by another member - or at lest notify the original member
@@ -49,10 +50,9 @@ class CreditCard
   def invoice_items() stripe_customer.invoice_items end
   def add_invoice_item(params) stripe_customer.add_invoice_item(params) end
 
-private:
+private
   def stripe_customer
   	@customer ||= Stripe::Customer.retrieve(stripe_customer_id)
   end
-
 
 end

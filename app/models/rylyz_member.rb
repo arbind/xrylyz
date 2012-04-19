@@ -63,10 +63,9 @@ class RylyzMember
       :email => email,
       :description => "[#{id.to_s}] #{nickname} (#{email})"
     )
-    unless customer.nil?
+    if not customer.nil? and not customer.active_card.nil?
       card_info = {
         :stripe_customer_id=> customer.id,
-        :stripe_card_id => customer.active_card.id,
         :stripe_card_fingerprint => customer.active_card.fingerprint,
         :stripe_card_type => customer.active_card.type,
         :stripe_card_last4 => customer.active_card.last4,
@@ -74,7 +73,7 @@ class RylyzMember
         :stripe_card_expiration_month => customer.active_card.exp_month,
         :stripe_card_expiration_year => customer.active_card.exp_year
       }
-      self.credit_cards.create!(card_info)
+      credit_cards.create!(card_info)
     end
   end
 
