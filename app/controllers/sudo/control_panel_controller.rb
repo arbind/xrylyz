@@ -27,7 +27,7 @@ class Sudo::ControlPanelController < ApplicationController
 			  blogger.is_alpha_tester = r['alpha']
 				blogger.hi_email_sent ||= r['hi']
 				blogger.referred_by = r['referredby']
-				blogger.share_url ||= r['uniqueUrl']
+				blogger.share_key ||= r['uniqueUrl']
 				blogger.share_clicks = r['clicks'].to_i if r['clicks']
 				blogger.share_conversions = r['conversions'].to_i if r['conversions']
 				blogger.signup_ip = r['orig_ip']

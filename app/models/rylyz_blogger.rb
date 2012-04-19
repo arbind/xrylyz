@@ -8,7 +8,7 @@ class RylyzBlogger
   field :is_alpha_tester, :type => Boolean, :default => false
 	field :hi_email_sent, :type => Boolean, :default => false
 	field :referred_by, :type => String, :default => nil
-	field :share_url, :type => String, :default => nil
+	field :share_key, :type => String, :default => nil
 	field :share_clicks, :type => Integer, :default => 0
 	field :share_conversions, :type => Integer, :default => 0
 	field :signup_ip, :type => String, :default => nil
