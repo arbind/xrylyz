@@ -23,6 +23,13 @@ class Blogger::DashboardController < ApplicationController
     redirect_to :dashboard_billing
   end
 
+  def test_purchase
+    amount = params[:amount]      
+    item = params[:item]      
+    current_member.credit_cards.all.first.charge(amount);
+    redirect_to :dashboard_billing
+  end
+
   def login
     # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'
     self.next_page_on_success = dashboard_url

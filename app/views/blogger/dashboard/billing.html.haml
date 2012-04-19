@@ -3,6 +3,13 @@
 
 
 %div You have #{current_member.credit_cards.count} Credit Cards
+- current_member.credit_cards.each do |credit_card|
+  %div
+    %div{:style=>"border:1px solid black"}
+      %div #{credit_card.stripe_card_type}
+      %div number xxxx xxxx xxxx #{credit_card.stripe_card_last4}
+      %div #{credit_card.stripe_card_holder_name}
+      %div expires: #{credit_card.stripe_card_expiration_month} / #{credit_card.stripe_card_expiration_year}
 
 %form#payment-form{:action=>"", :method=>"POST"}
   #payment-errors
@@ -18,6 +25,22 @@
     = select_month nil, {add_month_numbers:true}, {name: nil, class: "card-expiry-month"}
     = select_year nil, {start_year: Date.today.year, end_year: Date.today.year + 15}, {name: nil, class: "card-expiry-year"}
   %button.submit-button{:type=>"submit"} Submit Payment
+
+%hr
+%h2 Charges
+- current_member.credit_cards.all.first.charges.data.each do |charge|
+  %div
+    = "$#{charge.amount.to_f / 100}"
+%hr
+
+%ul
+  %li 
+    %form#payment-form{:action=>"test_purchase", :method=>"POST"}
+      %label Amount:
+      %input{:type=>"text", :name=>"amount", :size=>"4", :autocomplete=>"off"}
+      %label description:
+      %input{:type=>"text", :name=>"item", :size=>"14", :autocomplete=>"off"}
+      %button.submit-button{:type=>"submit"} Purchase
 
 :javascript
   window.Subscription = function(subscriptionModule){

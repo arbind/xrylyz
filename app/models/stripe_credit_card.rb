@@ -1,4 +1,6 @@
 class StripeCreditCard # mirrors a Stripe::Customer - each card has 1 Stripe::Customer id
+ #+++ delete me
+
   include Mongoid::Document
   include Mongoid::Timestamps
 
