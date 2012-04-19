@@ -17,9 +17,11 @@ RylyzPlayer::Application.routes.draw do
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
     get 'sites',            :as => :dashboard_sites
-    get 'plan',             :as => :dashboard_plan
     get 'referrals',        :as => :dashboard_referrals
     get 'analytics',        :as => :dashboard_analytics
+    get 'billing',          :as => :dashboard_billing
+    get 'plan',             :as => :dashboard_plan
+    get 'profile',          :as => :dashboard_profile
     get 'login',            :as => :dashboard_login
     get 'logout',           :as => :dashboard_logout
   end

@@ -15,6 +15,8 @@ class Blogger::DashboardController < ApplicationController
 
 	def sites() end
 	def plan()	end
+  def billing()  end
+  def profile()  end
 
   def login
     # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'

@@ -1,4 +1,5 @@
 class Sudo::ControlPanelController < ApplicationController
+	layout "sudo"
 
 	def signups
 		@signups = RylyzBlogger.all

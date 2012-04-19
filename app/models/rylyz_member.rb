@@ -14,8 +14,8 @@ class RylyzMember
   field :is_verified, :type => Boolean, :default => false
   field :is_active, :type => Boolean, :default => true
 
-  has_many :rylyz_member_presences, :dependent => :delete
-  has_many :credit_cards, :class_name => "StripeCreditCard", :inverse_of => :member
+  has_many :rylyz_member_presences, :dependent => :destroy
+  has_many :credit_cards, :dependent => :destroy
 
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :member
   belongs_to :super_user, :class_name => "RylyzSuperUser", :inverse_of => :member
@@ -55,5 +55,27 @@ class RylyzMember
   def verify(is_verified=true) self.is_verified = is_verified end
   def inactivate() self.is_active = false end
   def reactivate() self.is_active = true end
+
+  def save_stripe_credit_card(stripe_token, stripe_plan_id=nil)
+    customer = Stripe::Customer.create(
+      :card => stripe_token,
+      :plan => stripe_plan_id,
+      :email => email,
+      :description => "[#{id.to_s}] #{nickname} (#{email})"
+    )
+    unless customer.nil?
+      card_info = {
+        :stripe_customer_id=> customer.id,
+        :stripe_card_id => customer.active_card.id,
+        :stripe_card_fingerprint => customer.active_card.fingerprint,
+        :stripe_card_type => customer.active_card.type,
+        :stripe_card_last4 => customer.active_card.last4,
+        :stripe_card_holder_name => customer.active_card.name,
+        :stripe_card_expiration_month => customer.active_card.exp_month,
+        :stripe_card_expiration_year => customer.active_card.exp_year
+      }
+      self.credit_cards.create!(card_info)
+    end
+  end
 
 end
