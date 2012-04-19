@@ -6,3 +6,20 @@
 %div enter brief description about the site
 %div add+
 %div add another+
+
+.registered-sites
+  /= render already registered sites
+
+%form{ :action => dashboard_add_site_path, :method => "post"}
+  %fieldset
+    %ol
+      %li
+        %label{:for => "url"} Site Url:
+        %input{:type => "text", :name => "url", :class => "text"}
+      %li
+        %label{:for => "title"} Site Title:
+        %input{:type => "text", :name => "title", :class => "text"}
+      %li
+        %label{:for => "description"} Brief description about your site:
+        %textarea{:name => "description"}
+    %input{:type => "submit", :value => "Add Site", :class => "button"}
