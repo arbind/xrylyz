@@ -4,16 +4,18 @@ class Blogger::DashboardController < ApplicationController
   before_filter :require_blogger_to_be_signed_in, :except => [:login, :logout, :index]
   before_filter :register_blogger, :only => [:index]
 
-  # before_filter :stub_blogger
-
   layout "dashboard"
 
 	def index
-    # @sites = @current_blogger.sites
     @sites = current_blogger.sites
 	end
 
 	def sites() end
+
+  def add_site
+
+  end
+
 	def plan()	end
   def billing()  end
   def profile()  end
@@ -36,10 +38,6 @@ class Blogger::DashboardController < ApplicationController
 
   private
 
-  # def stub_blogger
-  #   @current_blogger = RylyzBlogger.find_or_create_by(email:'mike@test.com', invite_code:'1234')
-  # end
-
   require 'resolv'
 
   def validate_hostname(hostname)
@@ -50,8 +48,6 @@ class Blogger::DashboardController < ApplicationController
       nil
     end
   end
-
-  private
 
   def register_blogger
     if current_member.blogger.nil? # auto create a blogger

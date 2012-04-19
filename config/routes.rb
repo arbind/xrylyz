@@ -11,24 +11,25 @@ RylyzPlayer::Application.routes.draw do
     get "contact_us", :as => :contact_us
     get "sign_up",    :as => :sign_up
   end
-  
+
   # Dashboard Routes for bloggers
-  scope :module => :blogger, :controller => "Dashboard" do 
+  scope :module => :blogger, :controller => "Dashboard" do
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
-    get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
-    get 'sites',            :as => :dashboard_sites
-    get 'referrals',        :as => :dashboard_referrals
-    get 'analytics',        :as => :dashboard_analytics
-    get 'billing',          :as => :dashboard_billing
-    post 'add_credit_card', :as => :dashboard_add_credit_card
-    get 'plan',             :as => :dashboard_plan
-    get 'profile',          :as => :dashboard_profile
-    get 'login',            :as => :dashboard_login
-    get 'logout',           :as => :dashboard_logout
+    get  'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
+    get  'sites',            :as => :dashboard_sites
+    post 'add_site',         :as => :dashboard_add_site
+    get  'referrals',        :as => :dashboard_referrals
+    get  'analytics',        :as => :dashboard_analytics
+    get  'billing',          :as => :dashboard_billing
+    post 'add_credit_card',  :as => :dashboard_add_credit_card
+    get  'plan',             :as => :dashboard_plan
+    get  'profile',          :as => :dashboard_profile
+    get  'login',            :as => :dashboard_login
+    get  'logout',           :as => :dashboard_logout
   end
 
   # Public Showcase
-  scope '/showcase', :module => :blogger, :controller => "Showcase" do 
+  scope '/showcase', :module => :blogger, :controller => "Showcase" do
     get 'chat',     :as => :showcase_chat
     get 'games',    :as => :showcase_games
     get 'blog',     :as => :showcase_blog
