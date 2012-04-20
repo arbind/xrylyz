@@ -1,17 +1,22 @@
 !!! 5
 %html{ :lang => "en"}
   %head
-    %title= "Chat Plays"
+    %title= "rylyz Chat Plays"
     = stylesheet_link_tag    "base", :media => "all"
+    = stylesheet_link_tag    "website/base", :media => "all"
     = stylesheet_link_tag    "website/chat_plays/application", :media => "all"
+
+    = javascript_include_tag "base"
+    = javascript_include_tag "website/base"
     = javascript_include_tag "website/chat_plays/application"
+
     = csrf_meta_tags
-  %body.chat-plays
-    %header
+  %body.rylyz.chat-plays
+    #site-header
       %h1 Website
       #site-menu
         %ul
-          %li= link_to  "Home", :home
+          %li= link_to  "Home", :home_page
           %li= link_to  "Pricing", :pricing
           %li= link_to  "Profiting", :profiting
           %li= link_to  "Installing", :installing
@@ -22,4 +27,4 @@
   %footer
     %p
       Copyright 2011 My Name
-    %li= link_to  "Contact Us", :contact_us
+    %li= link_to "Contact Us", :contact_us

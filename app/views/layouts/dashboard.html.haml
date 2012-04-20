@@ -1,14 +1,19 @@
 !!! 5
 %html{ :lang => "en"}
   %head
-    %title= "Dashboard"
+    %title= "rylyz dashboard"
     = stylesheet_link_tag    "base", :media => "all"
-    = stylesheet_link_tag    "website/chat_plays/application", :media => "all"
-    = javascript_include_tag "website/chat_plays/application"
+    = stylesheet_link_tag    "website/base", :media => "all"
+    = stylesheet_link_tag    "website/dashboard/application", :media => "all"
+
+    = javascript_include_tag "base"
+    = javascript_include_tag "website/base"
+    = javascript_include_tag "website/dashboard/application"
+
     = csrf_meta_tags
-  %body.chat-plays
-    %header
-      %h1 Dashboard
+  %body.rylyz.dashboard
+    #site-header
+      %h1 rylyz dashboard
       #site-menu
         %ul
           %li= link_to  "Home", :dashboard

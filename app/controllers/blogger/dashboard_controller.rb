@@ -7,7 +7,7 @@ class Blogger::DashboardController < ApplicationController
   layout "dashboard"
 
 	def index
-    @sites = current_blogger.sites
+    @sites = current_blogger.sites || []
 	end
 
 	def sites() end

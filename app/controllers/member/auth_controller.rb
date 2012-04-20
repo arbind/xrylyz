@@ -4,7 +4,6 @@ class Member::AuthController < ApplicationController
   def login
     # Before showing this login endpoint:
     #   be sure to set next_page_on_success, next_page_on_failure and layout_on_render
-    @blogger = RylyzBlogger.where(invite_code: params[:invite_code]).first
     render :layout => layout_on_render!
   end
 
