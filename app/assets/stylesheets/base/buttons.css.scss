@@ -1,4 +1,4 @@
-@import 'mixins/mixin-buttons';
+@import 'mixins/mixin-buttons.css.scss';
 
 button .button, input .button, a .button {
   @include btnMixin;
