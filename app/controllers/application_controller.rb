@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
 
   def require_member_to_be_signed_in
-    redirect_to :dashboard_login if not member_signed_in?
+    redirect_to :dashboard_login, :notice=>"Please sign in first" if not member_signed_in?
   end
   def require_blogger_to_be_signed_in
     redirect_to :dashboard_logout if not blogger_signed_in?

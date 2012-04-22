@@ -9,8 +9,8 @@
     = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Ubuntu", :media => "all"
     = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Vollkorn", :media => "all"
 
-    = stylesheet_link_tag    "base", :media => "all"
-    = stylesheet_link_tag    "website/base", :media => "all"
+    = stylesheet_link_tag    "base/index", :media => "all"
+    = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/dashboard/application", :media => "all"
 
     = javascript_include_tag "base"
@@ -20,25 +20,41 @@
     = csrf_meta_tags
   %body.rylyz.dashboard
     #site-header
-      .site-name
-        .site-logo=image_tag "rylyz/rylyz-logo-green.png"
+      #site-name
+        #site-logo=image_tag "rylyz/rylyz-logo-green.png"
         = "dashboard" if @html_page_title.nil?
         = "dashboard: #{@html_page_title}" unless @html_page_title.nil?
-        %span#notice= notice
       #site-menu
         %ul
-          %li= link_to  "Home", :dashboard
-          %li= link_to  "Sites", :dashboard_sites
-          %li= link_to  "Referrals", :dashboard_referrals
-          %li= link_to  "Analytics", :dashboard_analytics
-          %li= link_to  "Billing", :dashboard_billing
-          %li= link_to  "Plan", :dashboard_plan
-          %li= link_to  "Profile", :dashboard_profile
-          %li= link_to  "login", :dashboard_login
-          %li= link_to  "logout", :dashboard_logout
-  = yield
+          %li.menu-item= link_to_unless_current  "Home", :dashboard
+          %li.menu-item= link_to_unless_current  "Sites", :dashboard_sites
+          %li.menu-item= link_to_unless_current  "Referrals", :dashboard_referrals
+          %li.menu-item= link_to_unless_current  "Analytics", :dashboard_analytics
+          %li.menu-item= link_to_unless_current  "Billing", :dashboard_billing
+          %li.menu-item= link_to_unless_current  "Plan", :dashboard_plan
+          %li.menu-item= link_to_unless_current  "login", :dashboard_login
+          - unless current_member.nil?
+            %li.menu-item= link_to  current_member.email || current_member.nickname, :dashboard_profile
+            %li.menu-item= link_to "logout", :dashboard_logout
+          / %li#profile.button.rightmost
+          /   %a{:href=>dashboard_profile_url}
+          /     .button= current_member.email || current_member.nickname
+          / %li#logout.button.rightmost
+          /   %a{:href=>dashboard_logout_url}
+          /     .button logout
 
-  %footer
-    %p
-      Copyright 2011 My Name
-    %li= link_to  "Contact Us", :contact_us
+    #messages
+      - flash.each do |key, msg|
+        .flash{:id=>key}
+          %p.rightmost= link_to_function 'X', "Effect.Fade('#{key}')"
+          %p= msg
+      - if flash.empty?
+        #noflash
+          %p &nbsp;
+    #content
+      = yield
+
+    %footer
+      %p
+        Copyright 2011 My Name
+      %li= link_to  "Contact Us", :contact_us

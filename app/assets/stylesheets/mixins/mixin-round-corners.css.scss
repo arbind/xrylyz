@@ -1,0 +1,73 @@
+$defaultCornderRadius: 8px;
+
+@mixin roundCornersMixin {
+  -webkit-border-radius: $defaultCornderRadius;
+     -moz-border-radius: $defaultCornderRadius;
+      -ms-border-radius: $defaultCornderRadius;
+       -o-border-radius: $defaultCornderRadius;
+          border-radius: $defaultCornderRadius;
+}
+
+@mixin roundTopCornersMixin {
+  -webkit-border-top-left-radius: $defaultCornderRadius;
+     -moz-border-top-left-radius: $defaultCornderRadius;
+      -ms-border-top-left-radius: $defaultCornderRadius;
+       -o-border-top-left-radius: $defaultCornderRadius;
+          border-top-left-radius: $defaultCornderRadius;
+
+  -webkit-border-top-right-radius: $defaultCornderRadius;
+     -moz-border-top-right-radius: $defaultCornderRadius;
+      -ms-border-top-right-radius: $defaultCornderRadius;
+       -o-border-top-right-radius: $defaultCornderRadius;
+          border-top-right-radius: $defaultCornderRadius;
+}
+
+@mixin roundCorners8Mixin {
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+      -ms-border-radius: 8px;
+       -o-border-radius: 8px;
+          border-radius: 8px;
+}
+@mixin roundCorners10Mixin {
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+       -o-border-radius: 10px;
+          border-radius: 10px;
+}
+@mixin roundCorners12Mixin {
+  -webkit-border-radius: 12px;
+     -moz-border-radius: 12px;
+      -ms-border-radius: 12px;
+       -o-border-radius: 12px;
+          border-radius: 12px;
+}
+@mixin roundCorners15Mixin {
+  -webkit-border-radius: 15px;
+     -moz-border-radius: 15px;
+      -ms-border-radius: 15px;
+       -o-border-radius: 15px;
+          border-radius: 15px;
+}
+@mixin roundCorners20Mixin {
+  -webkit-border-radius: 20px;
+     -moz-border-radius: 20px;
+      -ms-border-radius: 20px;
+       -o-border-radius: 20px;
+          border-radius: 20px;
+}
+@mixin roundCorners25Mixin {
+  -webkit-border-radius: 25px;
+     -moz-border-radius: 25px;
+      -ms-border-radius: 25px;
+       -o-border-radius: 25px;
+          border-radius: 25px;
+}
+@mixin roundCorners50Mixin {
+  -webkit-border-radius: 50px;
+     -moz-border-radius: 50px;
+      -ms-border-radius: 50px;
+       -o-border-radius: 50px;
+          border-radius: 50px;
+}

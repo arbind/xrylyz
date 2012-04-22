@@ -1,0 +1,42 @@
+@import 'mixins/mixin-buttons';
+
+button .button, input .button, a .button {
+  @include btnMixin;
+  @include  transitionsFastMixin;
+}
+
+button:active .button, input:active .button, a:active .button {
+  @include btnActiveMixin;
+  @include  transitionsFastMixin;
+}
+
+button:hover .button, input:hover .button, a:hover .button {
+  @include btnHoverMixin;
+  @include  transitionsFastMixin;
+}
+
+button .button, input .button{
+  cursor:           $btnCursor;
+  background-color: green;
+}
+
+button, input.button {
+  cursor:           $btnCursor;
+}
+  
+
+/*
+  Button structure is consistent for both link buttons and form submit buttons
+  (all buttons will be wrapped by ether a link <a> or a form submit button tag)
+  
+  button wrapped in a form submit: (works even if js is disabled)
+  <button type="submit">
+    <div class="button">log In</div>
+  </button>
+
+  button wrapped in a link tag:
+  <a href="/signup">
+    <div class="button">register</div>
+  </a>
+
+*/

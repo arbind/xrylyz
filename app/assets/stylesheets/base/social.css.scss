@@ -1,3 +1,7 @@
+@import 'mixins/mixin-round-corners';
+
+.rightmost { float:right; }
+.leftmost { float:left; }
 
 .social-presence {
   position:relative;

@@ -10,7 +10,8 @@ class Blogger::DashboardController < ApplicationController
     @sites = current_blogger.sites || []
 	end
 
-	def sites() end
+	def sites
+  end
 
   def add_site
 
@@ -34,14 +35,17 @@ class Blogger::DashboardController < ApplicationController
 
   def login
     # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'
+    # flash.now[:status] = "You did it, yeaa!"
+    # flash.now[:notice] = "Please go an ahead and log your self in"
+    # flash.now[:error] = "That is absolutely not allowed"
+    flash.now[:status] = "You are already signed in, but you can add another provider:" if member_signed_in?
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end
 
   def logout
-    flash[:notice] = "You have been logged out!"
     self.next_page_on_success = dashboard_login_url
-    redirect_to logout_url
+    redirect_to logout_url, :notice =>"You have been logged out!"
   end
 
   private

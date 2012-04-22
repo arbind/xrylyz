@@ -1,0 +1,36 @@
+@import 'mixins/mixin-round-corners';
+@import 'mixins/mixin-transitions';
+
+$btnHeight:    48px;
+$btnColor:     #CCCC88;
+$btnBGcolor:   #333333;
+$btnBorder:    1px solid lighten($btnBGcolor, 30%); 
+$btnFont:      normal normal 18px/#{$btnHeight} Georgia, serif;
+$btnMargin:    8pxx 8px 8px 0px;
+$btnPadding:   8px 28px;
+$btnCursor:    pointer;
+$btnActiveBorderColor:  lighten($btnBGcolor, 20%);
+$btnActiveBGcolor:      lighten($btnBGcolor, 3%);
+
+@mixin btnMixin {
+  display:            inline;
+  cursor:             $btnCursor;
+  font:               $btnFont;
+  color:              $btnColor;
+  background-color:   $btnBGcolor;
+  margin:             $btnMargin;
+  padding:            $btnPadding;
+  border:             $btnBorder;
+  text-align:         center;
+  text-decoration:    none;
+  @include            roundCornersMixin;
+}
+
+@mixin btnActiveMixin {
+  border-color: $btnActiveBorderColor;
+  background-color:   $btnActiveBGcolor
+}
+
+@mixin btnHoverMixin {
+  color:                darken($btnColor, 8%);
+}
