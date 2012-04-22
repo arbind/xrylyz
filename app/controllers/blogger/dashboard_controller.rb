@@ -39,6 +39,7 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def logout
+    flash[:notice] = "You have been logged out!"
     self.next_page_on_success = dashboard_login_url
     redirect_to logout_url
   end

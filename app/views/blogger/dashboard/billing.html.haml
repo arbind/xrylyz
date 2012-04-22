@@ -1,6 +1,7 @@
 / move this into head
 %script(type="text/javascript" src="/assets/vendor/js.stripe.com-v1.js")
 
+- @html_page_title = "billing"
 
 %div You have #{current_member.credit_cards.count} Credit Cards
 - current_member.credit_cards.each do |credit_card|

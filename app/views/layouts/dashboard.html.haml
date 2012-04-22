@@ -2,6 +2,13 @@
 %html{ :lang => "en"}
   %head
     %title= "rylyz dashboard"
+
+    = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Istok+Web", :media => "all"
+    = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Lora", :media => "all"
+    
+    = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Ubuntu", :media => "all"
+    = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Vollkorn", :media => "all"
+
     = stylesheet_link_tag    "base", :media => "all"
     = stylesheet_link_tag    "website/base", :media => "all"
     = stylesheet_link_tag    "website/dashboard/application", :media => "all"
@@ -13,7 +20,11 @@
     = csrf_meta_tags
   %body.rylyz.dashboard
     #site-header
-      %h1 rylyz dashboard
+      .site-name
+        .site-logo=image_tag "rylyz/green-logo.png"
+        = "dashboard" if @html_page_title.nil?
+        = "dashboard: #{@html_page_title}" unless @html_page_title.nil?
+        %span#notice= notice
       #site-menu
         %ul
           %li= link_to  "Home", :dashboard
