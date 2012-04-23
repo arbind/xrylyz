@@ -44,11 +44,12 @@
 
     #content
       - unless flash.empty?
-        #messages
+        #flash-messages
           - flash.each do |key, msg|
-            .flash{:id=>key}
-              %p.right-most= link_to_function 'X', "Effect.Fade('#{key}')"
-              %p= msg
+            %div{:class=>key}
+              %p.close(onclick="Effect.Fade('#{key}')")
+                = '&nbsp;X&nbsp;'.html_safe
+              %p.message= msg
       = yield
 
     %footer

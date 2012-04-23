@@ -51,7 +51,9 @@ class Blogger::DashboardController < ApplicationController
     # flash.now[:status] = "You did it, yeaa!"
     # flash.now[:notice] = "Please go an ahead and log your self in"
     # flash.now[:error] = "That is absolutely not allowed"
-    flash.now[:status] = "You are already signed in, but you can add another provider:" if member_signed_in?
+    flash.now[:status] = "You are already signed in, fee free to add another provider though." if member_signed_in?
+    flash.now[:error] = "You are already signed in, but you can add"    
+    flash.now[:notice] = "You are already signed in, but you can add"    
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end

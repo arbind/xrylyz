@@ -1,28 +1,41 @@
 @import 'mixins/mixin-round-corners.css.scss';
 
-#messages {
+#flash-messages {
 	position: relative;
 	clear: both;
-	min-height: 20px;
+	min-height: 30px;
 	font-size: 18px;	
-	line-height: 20px;
+	line-height: 30px;
 	margin: 10px 0px;
+	.status, .notice, .error {
+		width: 100%;
+		margin:0;
+	  @include roundCornersMixin;
+	}
+
+	.status  { background-color:#283848; border: 1px solid #182838; color: #8898A8; }
+	.notice  { background-color: #284838; border: 1px solid #183828; color: #88C898; }
+	.error   { background-color: #482838; border: 1px solid #381828; color: #C88898;}
+
+	p.message { margin: 0px; padding: 0px 20px 0px 8px;}
+	p.close { 
+		border: 2px solid transparent;
+		float: right;
+		margin: 4px 8px;
+		padding: 1px;
+		font-size: 12px;
+		line-height: 18px;
+		background-color: transparent;
+    color: #687888;
+    &:hover {
+      color: #8CBF40;
+      border-color:#8CBF40;
+    }
+		@include roundCircleMixin;
+	}
+
+	.status a:hover.close, .notice a:hover.close, .error a:hover.close { color: #333; border: 1px solid #333; }
 }
-#status, #notice, #error {
-	width: 100%;
-	margin:0;
-  @include roundCornersMixin;
-}
 
-#status  { background-color: transparent; border: 1px solid #203038; }
-#notice  { background-color: #A4E7A0; border: 1px solid #26722D; }
-#error   { background-color: #F0A8A8; border: 1px solid #900; }
 
-#status p, #notice p, #error p { margin: 0px; padding: 4px 20px; color: #000;}
 
-#status a.close, #notice a.close, #error a.close { text-decoration: none; padding: 0 3px; }
-#notice a.close { border: 1px solid #26722D; color: #26722D; }
-#error a.close { border: 1px solid #900; color: #900; }
-#status a.close { border: 1px solid #900; color: #900; }
-
-#status a:hover.close, #notice a:hover.close, #error a:hover.close { color: #333; border: 1px solid #333; }
