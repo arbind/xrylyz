@@ -6,9 +6,9 @@
 	min-height: 20px;
 	font-size: 18px;	
 	line-height: 20px;
-	margin: 10px 50px;
+	margin: 10px 0px;
 }
-#status, #notice, #error, #noflash {
+#status, #notice, #error {
 	width: 100%;
 	margin:0;
   @include roundCornersMixin;
@@ -17,9 +17,8 @@
 #status  { background-color: transparent; border: 1px solid #203038; }
 #notice  { background-color: #A4E7A0; border: 1px solid #26722D; }
 #error   { background-color: #F0A8A8; border: 1px solid #900; }
-#noflash { background-color: transparent; border: 1px solid transparent; }
 
-#status p, #notice p, #error p, #noflash p { margin: 0px; padding: 4px 20px; color: #000;}
+#status p, #notice p, #error p { margin: 0px; padding: 4px 20px; color: #000;}
 
 #status a.close, #notice a.close, #error a.close { text-decoration: none; padding: 0 3px; }
 #notice a.close { border: 1px solid #26722D; color: #26722D; }

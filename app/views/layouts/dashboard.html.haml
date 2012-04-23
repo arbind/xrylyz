@@ -13,8 +13,8 @@
     = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/dashboard/application", :media => "all"
 
-    = javascript_include_tag "base"
-    = javascript_include_tag "website/base"
+    = javascript_include_tag "base/index", :media => "all"
+    = javascript_include_tag "website/base/index", :media => "all"
     = javascript_include_tag "website/dashboard/application"
 
     = csrf_meta_tags
@@ -22,20 +22,19 @@
     #site-header
       #site-name
         #site-logo=image_tag "rylyz/rylyz-logo-green.png"
-        = "dashboard" if @html_page_title.nil?
-        = "dashboard: #{@html_page_title}" unless @html_page_title.nil?
+        = @html_page_title
       #site-menu
         %ul
-          %li.menu-item= link_to_unless_current  "Home", :dashboard
-          %li.menu-item= link_to_unless_current  "Sites", :dashboard_sites
-          %li.menu-item= link_to_unless_current  "Referrals", :dashboard_referrals
-          %li.menu-item= link_to_unless_current  "Analytics", :dashboard_analytics
-          %li.menu-item= link_to_unless_current  "Billing", :dashboard_billing
-          %li.menu-item= link_to_unless_current  "Plan", :dashboard_plan
-          %li.menu-item= link_to_unless_current  "login", :dashboard_login
+          %li.menu-item= link_to_unless_current "dashboard", :dashboard
+          %li.menu-item= link_to_unless_current "sites", :dashboard_sites, :title => "your websites"
+          %li.menu-item= link_to_unless_current "referrals", :dashboard_referrals, :title => "your referrals"
+          %li.menu-item= link_to_unless_current "analytics", :dashboard_analytics, :title => "your insights"
+          %li.menu-item= link_to_unless_current "billing", :dashboard_billing, :title => "your credit card info"
+          %li.menu-item= link_to_unless_current "plan", :dashboard_plan, :title => "your subscription"
+          %li.menu-item= link_to_unless_current "login", :dashboard_login
           - unless current_member.nil?
-            %li.menu-item= link_to  current_member.email || current_member.nickname, :dashboard_profile
-            %li.menu-item= link_to "logout", :dashboard_logout
+            %li.menu-item= link_to "me", :dashboard_profile, :title => "account profile"
+            %li.menu-item.logout= link_to "X", :dashboard_logout, :title => "logout"
           / %li#profile.button.rightmost
           /   %a{:href=>dashboard_profile_url}
           /     .button= current_member.email || current_member.nickname
@@ -43,15 +42,13 @@
           /   %a{:href=>dashboard_logout_url}
           /     .button logout
 
-    #messages
-      - flash.each do |key, msg|
-        .flash{:id=>key}
-          %p.rightmost= link_to_function 'X', "Effect.Fade('#{key}')"
-          %p= msg
-      - if flash.empty?
-        #noflash
-          %p &nbsp;
     #content
+      - unless flash.empty?
+        #messages
+          - flash.each do |key, msg|
+            .flash{:id=>key}
+              %p.right-most= link_to_function 'X', "Effect.Fade('#{key}')"
+              %p= msg
       = yield
 
     %footer

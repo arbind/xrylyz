@@ -38,8 +38,9 @@
 %ul
   %li 
     %form#payment-form{:action=>"test_purchase", :method=>"POST"}
-      %label Amount:
-      %input{:type=>"text", :name=>"amount", :size=>"4", :autocomplete=>"off"}
+      .prompt
+        %label Amount:
+        %input{:type=>"text", :name=>"amount", :size=>"4", :autocomplete=>"off"}
       %label description:
       %input{:type=>"text", :name=>"item", :size=>"14", :autocomplete=>"off"}
       %button.submit-button{:type=>"submit"} Purchase

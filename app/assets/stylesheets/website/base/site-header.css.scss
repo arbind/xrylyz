@@ -15,22 +15,26 @@
 }
 #site-header {
 	position: relative;
-	margin: 8px 50px;
-
+	margin: 0px 50px;
+  padding: 0;
+  height: 78px;
+  min-width:900px;
   #site-name {
   	float:left;
-		font-size: 35px;
+		font-size: 36px;
 		font-weight: 500;
-		line-height: 65px;
+		line-height: 78px;
 		letter-spacing: 0.1em;
 	  color: #8CBF40;
 	  text-shadow: 1px 1px 1px #47626B;	
   	#site-logo {
 			float:left;
-			height: 50px;
+			height: 78px;
 			width: 50px;
-			padding: 8px;
+			padding: 0px;
+      margin: 0px 8px 0px 0px;
 			img {
+        margin: 12px 0px;
 				length: 50px;
 				width: 50px;
 			}
@@ -41,16 +45,10 @@
   	float:right;
     background-color: transparent;
     overflow:hidden;
-    border:0px solid #203038;
-    border-top:0;
-    border-right:0;
-
-	  -webkit-border-bottom-left-radius: 50px;
-	     -moz-border-bottom-left-radius: 20px;
-	      -ms-border-bottom-left-radius: 12px;
-	       -o-border-bottom-left-radius: 12px;
-	          border-bottom-left-radius: 30px;
-
+    border:1px solid #203038;
+    height: 50px;
+    margin: 12px 0px;
+    @include roundLeftCorners15Mixin;
     ul {
       clear:left;
       float:left;
@@ -67,10 +65,10 @@
         position:relative;
         right:50%;
         font-size: 16px;
-        line-height: 38px;
+        line-height: 50px;
 				font-weight: bold;
         margin:0 0 0 1px;
-        padding:8px 12px;
+        padding:0px 12px;
         color:#000;
         a {
           text-decoration:none;
@@ -83,6 +81,18 @@
             font-weight:bold;
           }
         }
+      }
+      li.menu-item.logout{
+        line-height: 24px;
+        font-weight: bold;
+        margin: 13px 8px 13px 20px;
+        background-color: #482838;
+        border: 2px solid #382030;
+        @include roundCircleMixin;
+        &hover {
+          background-color: #886878
+        }
+
       }
     }
   }

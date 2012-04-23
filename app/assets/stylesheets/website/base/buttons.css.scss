@@ -1,0 +1,9 @@
+.button a, a {
+  text-decoration: none;
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+   text-decoration: none;
+  }  
+}

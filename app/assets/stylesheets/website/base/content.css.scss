@@ -1,18 +1,22 @@
 @import 'mixins/mixin-round-corners.css.scss';
-@import 'mixins/mixin-transitions.css.scss';
+
+$bgcolor-content-gradient-from: #203036;
+$bgcolor-content-gradient-to: #283842;
 
 #content {
+  min-width:900px;
+  min-height:400px;
 	margin: 4px 50px;
 	padding: 15px 20px 20px 20px;
 
   @include            roundCorners15Mixin;
 
-  background-color: #203038;  /* fallback */
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#203038), to(#283842)); /* Safari 4-5, Chrome 1-9 */
-  background: -webkit-linear-gradient(top, #203038, #283842);  /* Safari 5.1, Chrome 10+ */
-  background:    -moz-linear-gradient(top, #203038, #283842);  /* Firefox 3.6+ */
-  background:     -ms-linear-gradient(top, #203038, #283842);  /* IE 10 */
-  background:      -o-linear-gradient(top, #203038, #283842);  /* Opera 11.10+ */
-  background:         linear-gradient(top, #203038, #283842);  /* not yet supported! */
+  background-color: $bgcolor-content-gradient-from;  /* fallback */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($bgcolor-content-gradient-from), to($bgcolor-content-gradient-to)); /* Safari 4-5, Chrome 1-9 */
+  background: -webkit-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Safari 5.1, Chrome 10+ */
+  background:    -moz-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Firefox 3.6+ */
+  background:     -ms-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* IE 10 */
+  background:      -o-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Opera 11.10+ */
+  background:         linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* not yet supported in 2012! */
 
 }

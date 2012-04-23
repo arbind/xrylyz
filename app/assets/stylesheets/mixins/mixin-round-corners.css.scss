@@ -1,5 +1,14 @@
 $defaultCornderRadius: 8px;
 
+
+@mixin roundCircleMixin {
+  -webkit-border-radius: 50%;
+     -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+       -o-border-radius: 50%;
+          border-radius: 50%;
+}
+
 @mixin roundCornersMixin {
   -webkit-border-radius: $defaultCornderRadius;
      -moz-border-radius: $defaultCornderRadius;
@@ -20,6 +29,34 @@ $defaultCornderRadius: 8px;
       -ms-border-top-right-radius: $defaultCornderRadius;
        -o-border-top-right-radius: $defaultCornderRadius;
           border-top-right-radius: $defaultCornderRadius;
+}
+
+@mixin roundLeftCornersMixin {
+  -webkit-border-top-left-radius: $defaultCornderRadius;
+     -moz-border-top-left-radius: $defaultCornderRadius;
+      -ms-border-top-left-radius: $defaultCornderRadius;
+       -o-border-top-left-radius: $defaultCornderRadius;
+          border-top-left-radius: $defaultCornderRadius;
+
+  -webkit-border-bottom-left-radius: $defaultCornderRadius;
+     -moz-border-bottom-left-radius: $defaultCornderRadius;
+      -ms-border-bottom-left-radius: $defaultCornderRadius;
+       -o-border-bottom-left-radius: $defaultCornderRadius;
+          border-bottom-left-radius: $defaultCornderRadius;
+}
+
+@mixin roundLeftCorners15Mixin {
+  -webkit-border-top-left-radius: 15px;
+     -moz-border-top-left-radius: 15px;
+      -ms-border-top-left-radius: 15px;
+       -o-border-top-left-radius: 15px;
+          border-top-left-radius: 15px;
+
+  -webkit-border-bottom-left-radius: 15px;
+     -moz-border-bottom-left-radius: 15px;
+      -ms-border-bottom-left-radius: 15px;
+       -o-border-bottom-left-radius: 15px;
+          border-bottom-left-radius: 15px;
 }
 
 @mixin roundCorners8Mixin {

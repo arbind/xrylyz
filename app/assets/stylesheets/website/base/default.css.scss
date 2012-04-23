@@ -1,0 +1,28 @@
+@import 'mixins/mixin-transitions.css.scss';
+
+* {
+  padding:          0px;
+  margin:           0px;
+  text-decoration:  none;
+  
+  @include          transitionsOnMixin;
+  -webkit-user-select: none;    -khtml-user-select: none;     -moz-user-select: none; 
+  -ms-user-select: none;        -o-user-select: none;
+  user-select: none;
+}
+
+*::selection {background-color:transparent} /* For opera and IE  so user can not see selected text */
+
+html { overflow: visible; }
+
+a {
+  text-decoration: none;
+  &:visited {
+    text-decoration: none; }
+  &:hover { }  
+}
+
+button {
+  float: left;
+  border: 0;
+}

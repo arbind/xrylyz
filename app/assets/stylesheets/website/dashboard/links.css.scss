@@ -1,12 +1,9 @@
 a {
-	text-decoration: none;
 	color: #8CBF40;
 	&:hover {
 	  color:#C8FB40;
-		text-decoration: underline;
 	}
 	&:active, &:active:hover {
 	  color:#FBC840;
-		text-decoration: underline;
 	}
 }
