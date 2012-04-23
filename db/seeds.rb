@@ -17,6 +17,6 @@ puts "Cleaning success..."
 blogger = RylyzBlogger.create!({ email: 'mike@test.com', invite_code: '1234'})
 blogger.create_plan({description: 'Basic Plan 100'})
 blogger.sites.create!({url: 'http://myblog.com'})
-blogger.sites.create!({url: 'http://myblog.com'})
+blogger.sites.create!({url: 'http://myblog2.com'})
 
 puts "Seeding success..."

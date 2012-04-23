@@ -11,10 +11,23 @@ class Blogger::DashboardController < ApplicationController
 	end
 
 	def sites
+    @sites = current_blogger.sites || []
   end
 
   def add_site
+    site = current_blogger.sites.find_or_create_by(:url => params[:site][:url])
 
+    if validate_hostname(params[:site][:url])
+      site.status = "valid_url"
+      notice = "Thanks for registering your site."
+    else
+      site.status = "invalid_url"
+      notice = "We couldn't validate your site."
+    end
+
+    site.update_attributes(params[:site])
+
+    redirect_to :action => :sites, :notice => notice
   end
 
 	def plan()	end
@@ -27,8 +40,8 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def test_purchase
-    amount = params[:amount]      
-    item = params[:item]      
+    amount = params[:amount]
+    item = params[:item]
     current_member.credit_cards.all.first.charge(amount);
     redirect_to :dashboard_billing
   end

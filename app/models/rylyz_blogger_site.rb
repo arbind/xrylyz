@@ -2,7 +2,17 @@ class RylyzBloggerSite
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :url, :type => String, :default => nil
+  validates_uniqueness_of :url
+
+  # Site details
+  field :url,         :type => String, :default => nil
+  field :title,       :type => String, :default => nil
+  field :description, :type => String, :default => nil
+
+  # Site status
+  field :status,          :type => String, :default => "invalid_url"
+  field :active_status,   :type => String, :default => "inactive"
+  field :approval_status, :type => String, :default => nil
 
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :sites
 end
