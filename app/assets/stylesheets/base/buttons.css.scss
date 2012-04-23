@@ -1,4 +1,6 @@
-@import 'mixins/mixin-buttons.css.scss';
+@import 'mixins/mixin-buttons';
+@import 'mixins/mixin-transitions';
+@import 'mixins/mixin-round-corners';
 
 button .button, input .button, a .button {
   @include btnMixin;
@@ -12,7 +14,8 @@ button:active .button, input:active .button, a:active .button {
 
 button:hover .button, input:hover .button, a:hover .button {
   @include btnHoverMixin;
-  @include  transitionsFastMixin;
+  @include roundCornersMixin;
+  @include transitionsFastMixin;
 }
 
 button .button, input .button{

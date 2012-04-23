@@ -8,8 +8,16 @@ group :production do
 	gem 'newrelic_rpm' #Server Monitoring
 end
 
-# Stripe
+gem 'json'
+gem 'haml'
+gem 'jquery-rails'
+
+gem 'addressable'
+gem 'httparty'
+
 gem 'stripe'
+gem 'pusher'
+gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
 
 #MongoDB
 gem 'mongoid'
@@ -33,15 +41,6 @@ gem 'omniauth-meetup'
 # gem 'omniauth-flickr'
 # gem 'omniauth-eventbrite'
 
-gem 'json'
-gem 'haml'
-gem 'jquery-rails'
-
-gem 'addressable'
-gem 'httparty'
-
-gem 'pusher'
-gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -51,9 +50,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#gem 'jquery-rails'
-
-# To use ActiveModel has_secure_password
+# To use ActiveModel: has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the web server

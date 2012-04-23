@@ -1,6 +1,3 @@
-@import 'mixins/mixin-round-corners';
-@import 'mixins/mixin-transitions';
-
 $btnHeight:    48px;
 $btnColor:     #CCCC88;
 $btnBGcolor:   #333333;
@@ -23,7 +20,6 @@ $btnActiveBGcolor:      lighten($btnBGcolor, 3%);
   border:             $btnBorder;
   text-align:         center;
   text-decoration:    none;
-  @include            roundCornersMixin;
 }
 
 @mixin btnActiveMixin {
