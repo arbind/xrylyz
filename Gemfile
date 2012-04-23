@@ -60,7 +60,9 @@ end
 # gem 'capistrano'
 
 group :development do
-	gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'ruby-debug19', :require => 'ruby-debug'
+  gem "guard-livereload"
+  gem "yajl-ruby"
 end
 
 group :test do

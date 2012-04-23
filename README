@@ -1,8 +1,8 @@
-== This rylyz-player service provides:
-o The rylyz wyjyt.js  [http://rylyz-player.herokuapp.com/assets/rylyz.wyjyt.js]
+== This rylyz-holodeck service provides:
+o The rylyz wyjyt.js  [http://rylyz-holodeck.herokuapp.com/assets/rylyz.wyjyt.js]
 o The Socket Services (Pusher) that the wyjyt uses
 o The rylyz openApp javascript framework
-o An example blog page showing a usage of wyjyt.js [http://rylyz-player.herokuapp.com/blogger/blog]
+o An example blog page showing a usage of wyjyt.js [http://rylyz-holodeck.herokuapp.com/blogger/blog]
 
 == To Build
 make sure to manually compile the styesheets:
@@ -17,12 +17,21 @@ When running locally, turn off your default webserver.
 
 == Update /etc/hosts for Dev
 When running locally, add the following to your /etc/hosts file
-127.0.0.1       rylyz-player.herokuapp.com
+127.0.0.1       rylyz-local.herokuapp.com
 
+== Start MongoDB
+mongod run --config /usr/local/Cellar/mongodb/2.0.3-x86_64/mongod.conf
+
+== LiveReload (Optional)
+In dev environment, LiveReload will reload automatically the browser when any view file changes.
+It is very useful for css, javascript and haml.
+A browser extension is required (http://help.livereload.com/kb/general-use/browser-extensions)
+--> $ bundle exec guard
+--> Activate the browser extension and it will connect to guard
 
 == Pusher APP ID
 configure pushher app ids in config/environments/xxx.rb
-Keep in mind that this server will launch listeners - 
+Keep in mind that this server will launch listeners -
 If you start a server in heroku, one in EC2, and one on your local box,
 then all 3 servers will be listenting and responding to the same pusher events.
 
