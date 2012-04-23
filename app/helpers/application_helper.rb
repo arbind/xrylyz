@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+	def member_has_valid_credit_card?
+		cards = current_member.credit_cards
+		card = cards.first unless cards.nil?
+		# +++ check if card is valid and hasn't expired
+	end
+
 	# page flow navigation helpers
 	def clear_next_page_from_session() # clears next_page vars from the session
 		session.delete :next_page_on_success

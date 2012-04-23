@@ -29,9 +29,10 @@
 
 %hr
 %h2 Charges
-- current_member.credit_cards.all.first.charges.data.each do |charge|
-  %div
-    = "$#{charge.amount.to_f / 100}"
+- if member_has_valid_credit_card?
+  - current_member.credit_cards.all.first.charges.data.each do |charge|
+    %div
+      = "$#{charge.amount.to_f / 100}"
 %hr
 
 %ul
