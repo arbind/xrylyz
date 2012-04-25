@@ -31,6 +31,21 @@ $defaultCornderRadius: 8px;
           border-top-right-radius: $defaultCornderRadius;
 }
 
+
+@mixin roundBottomCornersMixin {
+  -webkit-border-bottom-left-radius: $defaultCornderRadius;
+     -moz-border-bottom-left-radius: $defaultCornderRadius;
+      -ms-border-bottom-left-radius: $defaultCornderRadius;
+       -o-border-bottom-left-radius: $defaultCornderRadius;
+          border-bottom-left-radius: $defaultCornderRadius;
+
+  -webkit-border-bottom-right-radius: $defaultCornderRadius;
+     -moz-border-bottom-right-radius: $defaultCornderRadius;
+      -ms-border-bottom-right-radius: $defaultCornderRadius;
+       -o-border-bottom-right-radius: $defaultCornderRadius;
+          border-bottom-right-radius: $defaultCornderRadius;
+}
+
 @mixin roundLeftCornersMixin {
   -webkit-border-top-left-radius: $defaultCornderRadius;
      -moz-border-top-left-radius: $defaultCornderRadius;
@@ -57,6 +72,34 @@ $defaultCornderRadius: 8px;
       -ms-border-bottom-left-radius: 15px;
        -o-border-bottom-left-radius: 15px;
           border-bottom-left-radius: 15px;
+}
+
+@mixin roundRightCornersMixin {
+  -webkit-border-top-right-radius: $defaultCornderRadius;
+     -moz-border-top-right-radius: $defaultCornderRadius;
+      -ms-border-top-right-radius: $defaultCornderRadius;
+       -o-border-top-right-radius: $defaultCornderRadius;
+          border-top-left-radius: $defaultCornderRadius;
+
+  -webkit-border-bottom-right-radius: $defaultCornderRadius;
+     -moz-border-bottom-right-radius: $defaultCornderRadius;
+      -ms-border-bottom-right-radius: $defaultCornderRadius;
+       -o-border-bottom-right-radius: $defaultCornderRadius;
+          border-bottom-right-radius: $defaultCornderRadius;
+}
+
+@mixin roundRightCorners15Mixin {
+  -webkit-border-top-right-radius: 15px;
+     -moz-border-top-right-radius: 15px;
+      -ms-border-top-right-radius: 15px;
+       -o-border-top-right-radius: 15px;
+          border-top-right-radius: 15px;
+
+  -webkit-border-bottom-right-radius: 15px;
+     -moz-border-bottom-right-radius: 15px;
+      -ms-border-bottom-right-radius: 15px;
+       -o-border-bottom-right-radius: 15px;
+          border-bottom-right-radius: 15px;
 }
 
 @mixin roundCorners8Mixin {

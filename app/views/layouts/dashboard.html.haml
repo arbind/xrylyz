@@ -24,23 +24,16 @@
         #site-logo=image_tag "rylyz/rylyz-logo-green.png"
         = @html_page_title
       #site-menu
-        %ul
-          %li.menu-item= link_to_unless_current "dashboard", :dashboard
-          %li.menu-item= link_to_unless_current "sites", :dashboard_sites, :title => "your websites"
-          %li.menu-item= link_to_unless_current "referrals", :dashboard_referrals, :title => "your referrals"
-          %li.menu-item= link_to_unless_current "analytics", :dashboard_analytics, :title => "your insights"
-          %li.menu-item= link_to_unless_current "billing", :dashboard_billing, :title => "your credit card info"
-          %li.menu-item= link_to_unless_current "plan", :dashboard_plan, :title => "your subscription"
-          %li.menu-item= link_to_unless_current "login", :dashboard_login
-          - unless current_member.nil?
-            %li.menu-item= link_to "me", :dashboard_profile, :title => "account profile"
-            %li.menu-item.logout= link_to "X", :dashboard_logout, :title => "logout"
-          / %li#profile.button.rightmost
-          /   %a{:href=>dashboard_profile_url}
-          /     .button= current_member.email || current_member.nickname
-          / %li#logout.button.rightmost
-          /   %a{:href=>dashboard_logout_url}
-          /     .button logout
+        .account.toolbar
+          %a.button{:href=>profile_me_url, :title=>"account profile"}
+            .button me
+          %a.logout.button{:href=>dashboard_logout_url, :title=>"logout"}
+            .button x
+        .primary.toolbar
+          %a.button{:href=>dashboard_url}
+            .button dashboard
+          %a.button{:href=>dashboard_dollar_url}
+            .button dollar
 
     #content
       - unless flash.empty?
@@ -50,9 +43,19 @@
               %p.close(onclick="Effect.Fade('#{key}')")
                 = '&nbsp;X&nbsp;'.html_safe
               %p.message= msg
-      = yield
+      .right-column
+        #submenu
+          - unless @html_submenu_buttons.nil?
+            .secondary.toolbar
+              - @html_submenu_buttons.each do |button|
+                %a.button{:href=>button[:href]}
+                  .button{:title=>button[:title]}
+                    = button[:name]
 
-    %footer
+      .left-column
+        = yield
+
+    #site-footer
       %p
         Copyright 2011 My Name
       %li= link_to  "Contact Us", :contact_us

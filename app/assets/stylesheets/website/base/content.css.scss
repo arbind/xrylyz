@@ -4,13 +4,13 @@ $bgcolor-content-gradient-from: #203036;
 $bgcolor-content-gradient-to: #283842;
 
 #content {
+
   min-width:900px;
   min-height:400px;
-	margin: 4px 50px;
-	padding: 15px 20px 20px 20px;
-
-  @include            roundCorners15Mixin;
-
+  margin: 4px 50px;
+  padding: 15px 20px 20px 20px;
+  overflow: hidden;
+  @include roundCorners15Mixin;
   background-color: $bgcolor-content-gradient-from;  /* fallback */
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($bgcolor-content-gradient-from), to($bgcolor-content-gradient-to)); /* Safari 4-5, Chrome 1-9 */
   background: -webkit-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Safari 5.1, Chrome 10+ */
@@ -18,5 +18,24 @@ $bgcolor-content-gradient-to: #283842;
   background:     -ms-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* IE 10 */
   background:      -o-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Opera 11.10+ */
   background:         linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* not yet supported in 2012! */
+
+  .left-column {
+    float: left;
+    width:600px;
+    min-height:400px;
+    margin-right: 40px;
+    padding: 15px 20px 20px 20px;
+    color: green;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    @include roundCornersMixin;
+  }
+
+  .right-column {
+    height: 400px;
+    float: right;
+    border: 1px solid transparent;
+    width: 215px;
+  }
 
 }

@@ -7,10 +7,12 @@ class Blogger::DashboardController < ApplicationController
   layout "dashboard"
 
 	def index
+    @html_submenu_buttons =  dashboard_submenu
     @sites = current_blogger.sites || []
 	end
 
 	def sites
+    @html_submenu_buttons =  dashboard_submenu
     @sites = current_blogger.sites || []
   end
 
@@ -30,11 +32,32 @@ class Blogger::DashboardController < ApplicationController
     redirect_to :action => :sites, :notice => notice
   end
 
-	def plan()	end
-  def billing()  end
-  def profile()  end
+  def referrals
+    @html_submenu_buttons =  dashboard_submenu
+  end
 
-  def add_credit_card
+  def activity
+    @html_submenu_buttons =  dashboard_submenu
+  end
+
+
+
+
+	def dollar()
+    @html_submenu_buttons = dollar_submenu
+  end
+
+  def revenues()
+    @html_submenu_buttons = dollar_submenu
+  end
+  def costs()
+    @html_submenu_buttons = dollar_submenu
+  end
+  def creditcards()
+    @html_submenu_buttons = dollar_submenu
+  end
+
+  def add_creditcard
     current_member.save_stripe_credit_card(params[:stripeToken])
     redirect_to :dashboard_billing
   end
@@ -44,6 +67,13 @@ class Blogger::DashboardController < ApplicationController
     item = params[:item]
     current_member.credit_cards.all.first.charge(amount);
     redirect_to :dashboard_billing
+  end
+
+
+
+
+  def profile()
+    @html_submenu_buttons = profile_submenu
   end
 
   def login
@@ -82,6 +112,30 @@ class Blogger::DashboardController < ApplicationController
       current_member.blogger = blogger
       current_member.save!
     end
+  end
+
+  def dashboard_submenu
+    [
+      {name: 'wyjyt', href: dashboard_sites_url},
+      {name: 'sites', href: dashboard_sites_url},
+      {name: 'referrals', href: dashboard_referrals_url},
+      {name: 'activity', href: dashboard_activity_url}
+    ]
+  end
+
+  def dollar_submenu
+    [
+      {name: 'revenues', href: dollar_revenues_url},
+      {name: 'costs', href: dollar_costs_url}
+    ]
+  end
+
+  def profile_submenu
+    [
+      {name: 'social accounts', href: dashboard_login_url },
+      {name: 'credit cards', href: profile_creditcards_url}
+    ]
+
   end
 
 end

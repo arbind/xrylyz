@@ -2,29 +2,44 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
-button .button, input .button, a .button {
-  @include btnMixin;
-  @include  transitionsFastMixin;
+.toolbar {
+  display:inline-block;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
 }
 
-button:active .button, input:active .button, a:active .button {
+button, a.button {
+  float:left;
+  text-decoration: none;
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+   text-decoration: none;
+  }  
+}
+
+button, input.button, a.button {
+  @include btnMixin;
+  @include  transitionsFastMixin;
+  background-color: green;
+  .button {
+    color: inherit;
+    background-color: inherit;
+  }
+}
+
+button:active, input:active.button, a:active.button {
   @include btnActiveMixin;
   @include  transitionsFastMixin;
 }
 
-button:hover .button, input:hover .button, a:hover .button {
+button:hover, input:hover.button, a:hover.button {
   @include btnHoverMixin;
-  @include roundCornersMixin;
   @include transitionsFastMixin;
-}
-
-button .button, input .button{
-  cursor:           $btnCursor;
-  background-color: green;
-}
-
-button, input.button {
-  cursor:           $btnCursor;
 }
   
 
@@ -38,7 +53,7 @@ button, input.button {
   </button>
 
   button wrapped in a link tag:
-  <a href="/signup">
+  <a class="button" href="/signup">
     <div class="button">register</div>
   </a>
 

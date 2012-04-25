@@ -1,8 +1,4 @@
 /*
  *= require_self
- *= require website/base/default
- *= require website/base/flash
- *= require website/base/site-header
- *= require website/base/content
- *= require website/base/form-fields
+ *= require_tree .
 */

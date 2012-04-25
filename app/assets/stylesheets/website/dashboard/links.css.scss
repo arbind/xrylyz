@@ -1,9 +1,7 @@
 a {
-	color: #8CBF40;
-	&:hover {
-	  color:#C8FB40;
-	}
-	&:active, &:active:hover {
-	  color:#FBC840;
-	}
+  color: #8CBF40;
+  &:hover {
+    color:#C8FB40; }
+  &:active, &:active:hover {
+    color:#FBC840; }
 }

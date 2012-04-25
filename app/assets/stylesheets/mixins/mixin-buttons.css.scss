@@ -1,10 +1,10 @@
-$btnHeight:    48px;
+$btnHeight:    42px;
 $btnColor:     #CCCC88;
 $btnBGcolor:   #333333;
 $btnBorder:    1px solid lighten($btnBGcolor, 30%); 
-$btnFont:      normal normal 18px/#{$btnHeight} Georgia, serif;
-$btnMargin:    8pxx 8px 8px 0px;
-$btnPadding:   8px 28px;
+$btnFont:      normal normal 16px/#{$btnHeight} Georgia, serif;
+$btnMargin:    0px;
+$btnPadding:   0px 8px;
 $btnCursor:    pointer;
 $btnActiveBorderColor:  lighten($btnBGcolor, 20%);
 $btnActiveBGcolor:      lighten($btnBGcolor, 3%);

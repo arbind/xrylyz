@@ -1,0 +1,56 @@
+@import 'mixins/mixin-round-corners.css.scss';
+@import 'mixins/mixin-transitions.css.scss';
+
+#site-menu {
+  .primary.toolbar, .account.toolbar {
+    float:right;
+    background-color: transparent;
+    background-color: #283848;
+    margin: 16px 0px;
+    a.button {
+      margin:0 0 0 12px;
+      padding:0px 4px;
+      color:#8CBF40;
+      color: #687888;
+      border: 0px;
+      background-color:transparent;
+      &:hover {
+        color: #8CBF40;
+      }
+      &:active, &:active:hover {
+        color:#888888;
+      }
+      .button{
+        text-align: center;
+        border: 0;
+        color: inherit;
+        background-color: transparent;    
+      }
+    }
+  }
+  .primary.toolbar {
+    @include roundLeftCorners15Mixin;
+    border:1px solid #203038;
+    padding-right: 12px;
+  }
+  .account.toolbar {
+    border:1px solid transparent;
+    background-color: transparent;
+    a.logout.button {
+      @include roundCircleMixin;
+      border: 2px solid transparent;
+      line-height: 22px;
+      margin: 8px 0px 8px 20px;
+      &:hover {
+        color: red;
+        border-color:red;
+        background:#FFFFCC;
+      }
+      &.active, &.active:hover {
+        color: white;
+        border-color: white;
+        background:#000;
+      }
+    }
+  }
+}
