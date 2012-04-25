@@ -1,8 +1,24 @@
+@import 'mixins/mixin-transitions.css.scss';
+
 #site-footer {
   position: relative;
   clear:both;
   margin: 2px 50px;
-  border-top: 1px solid black;
-  padding: 20px;
+  border-top: 1px solid #485868;
+  padding: 8px 20px;
   min-width:900px;
+  text-align: left;
+  font-size: 11px;
+  color: #8890A8;
+  strong {
+    font-weight: bold;
+  }
+  a {
+    text-decoration: none;
+    margin-left: 18px;
+    color: #8890A8;
+    &:hover, &:active {
+      text-decoration: underline;
+    }
+  }
 }
