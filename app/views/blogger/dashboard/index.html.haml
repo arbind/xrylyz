@@ -1,6 +1,26 @@
 - @html_page_title = "dashboard"
-%h2= "Welcome, #{current_member.nickname}"
+.section
+  %h2= "Welcome, #{current_member.nickname}"
+  %ul
+    - @sites.each do |site|
+      %li= site.url
 
-%ul
-  - @sites.each do |site|
-    %li= site.url
+
+  %form{ :action => "", :method => "post"}
+    .prompt
+      %label Site Url http://
+      %input{:type => "text", :name => "site[url]", :placeholder => "url"}
+    .prompt
+      %label Site Title
+      %input{:type => "text", :name => "site[title]", :placeholder => "title"}
+    .r.newline
+      %label Site Url http://
+      %input{:type => "text", :name => "site[url]", :placeholder => "url"}
+    .r
+      %label Site Title
+      %input{:type => "text", :name => "site[title]", :placeholder => "title"}
+    .prompt.newline
+      %label Brief description about your site
+      %textarea{:name => "site[description]", :placeholder => "description"}
+    .submit-button.newline
+      %input{:type => "submit", :value => "Add Site", :class => "button"}

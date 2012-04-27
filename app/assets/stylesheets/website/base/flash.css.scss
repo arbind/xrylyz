@@ -6,10 +6,10 @@
 	min-height: 30px;
 	font-size: 18px;	
 	line-height: 30px;
-	margin: 10px 0px;
+	margin: 0px;
 	.status, .notice, .error {
 		width: 100%;
-		margin:0;
+		margin:0px 0px 6px 0px;
 	  @include roundCornersMixin;
 	}
 

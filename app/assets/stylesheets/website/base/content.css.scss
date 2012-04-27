@@ -24,18 +24,23 @@ $bgcolor-content-gradient-to: #283842;
     width:600px;
     min-height:400px;
     margin-right: 40px;
-    padding: 15px 20px 20px 20px;
-    color: green;
-    background-color: white;
-    border: 1px solid #CCCCCC;
-    @include roundCornersMixin;
   }
 
   .right-column {
-    height: 400px;
+    min-height: 400px;
     float: right;
     border: 1px solid transparent;
     width: 215px;
+  }
+
+  .section {
+    width:100%;
+    color: green;
+    background-color: white;
+    padding: 15px 20px 20px 20px;
+    border: 1px solid #CCCCCC;
+    @include roundCornersMixin;
+    margin: 0px 0px 12px 0px;
   }
 
 }

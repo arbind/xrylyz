@@ -12,35 +12,29 @@ form, fieldset {
 form {
   position:relative;
 }
-.field {
-}
-.value {
-}
 
-.value:hover {
-}
-
-.prompt, .prompt-selection {
+.prompt {
+  float: left;
   position: relative;
   top: 0;
   left: 0;
   height: 24px;
-  border-width: 1;
-  margin:   8px 0px;
   padding:  5px 10px;
+  margin:   8px 8px 8px 0px;
   font-size:20px;
   color:#228822;
   background-color: none;
   border: 2px solid #228822;
 
   cursor: pointer;
+  @include roundCorners6Mixin;
 
   label {
     position: absolute;
     text-align:left;
     top: 0;
     left: 0;
-    width:  100%;
+    x-width:  100%;
     height: 100%;
     margin: 0px 0px 0px 0px;
     padding: 4px 0px 0px 10px;
@@ -74,79 +68,4 @@ form {
     outline:none;
     cursor: pointer;
   }
-}
-
-.prompt-selection {
-  label {
-    position: relative;
-    padding: 4px 0px 0px 0px;
-    &:hover {
-      color: $labelColor;
-    }
-  }
-}
-
-.prompt {
-  float:left;
-  clear:both;
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 40px;
-  border-width: 1;
-  margin:   8px 0px;
-  padding:  5px 10px;
-  -width:349px;
-  font-family:Arial, Helvetica, sans-serif;
-  font-size:20px;
-  color:#228822;
-  background-color: none;
-  border: 2px solid #228822;
-  @include            roundCornersMixin;
-
-  cursor: pointer;
-
-  label {
-    position: absolute;
-    text-align:left;
-    top: 0;
-    left: 0;
-    -width: 176px;
-    width:  100%;
-    height: 100%;
-    margin: 0px 0px 0px 0px;
-    padding: 4px 0px 0px 10px;
-
-    color: $labelColor;
-    background-color:transparent;
-
-    font-size: 20px;
-    font-family: Arial,'Helvetica Neue',Helvetica,sans-serif;
-    line-height: 40px;
-
-    @include transitionsFastMixin;
-
-    &:hover {
-      color: fade_out($labelColor, .6);
-      @include transitionsFastMixin;
-    }
-  }
-  input, textarea {
-    border:none;
-    background:none;
-
-    height:40px;
-
-    font-size:20px;
-    font-family: Arial,'Helvetica Neue',Helvetica,sans-serif;
-    line-height: 40px;
-
-    color:#228822;
-    outline:none;
-  }
-
-}
-
-.prompt {
-  background-color: white;
 }
