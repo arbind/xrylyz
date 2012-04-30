@@ -14,22 +14,42 @@ class Blogger::DashboardController < ApplicationController
 	def sites
     @html_submenu_buttons =  dashboard_submenu
     @sites = current_blogger.sites || []
+    @site = RylyzBloggerSite.new
   end
 
   def add_site
-    site = current_blogger.sites.find_or_create_by(:url => params[:site][:url])
+    @site = current_blogger.sites.find_or_create_by(:url => params[:site][:url])
 
+    # TODO: Move to model
     if validate_hostname(params[:site][:url])
-      site.status = "valid_url"
+      @site.status = "valid_url"
       notice = "Thanks for registering your site."
     else
-      site.status = "invalid_url"
+      @site.status = "invalid_url"
       notice = "We couldn't validate your site."
     end
 
-    site.update_attributes(params[:site])
+    if @site.update_attributes(params[:site])
+      notice = "Thanks for registering your site."
 
-    redirect_to :action => :sites, :notice => notice
+      redirect_to :action => :sites, :notice => notice
+    else
+      notice = "There was a problem registering your site."
+      logger.info @site.errors.inspect
+
+      @sites = []
+      render :sites
+    end
+  end
+
+  def delete_site
+    site = current_blogger.sites.where(:url => params[:url])
+    site.delete
+    redirect_to :action => :sites, :notice => "Your site was deleted."
+  end
+
+  def referrals
+
   end
 
   def referrals

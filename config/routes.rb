@@ -22,6 +22,7 @@ RylyzPlayer::Application.routes.draw do
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
     get 'sites',            :as => :dashboard_sites
     post 'add_site',        :as => :dashboard_add_site
+    post 'delete_site',     :as => :dashboard_delete_site
     get 'referrals',        :as => :dashboard_referrals
     get 'activity',        :as => :dashboard_activity
 

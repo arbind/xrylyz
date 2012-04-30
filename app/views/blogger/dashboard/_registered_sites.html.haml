@@ -6,3 +6,9 @@
       =h site.title
     %span.description
       =h site.description
+    %span.button
+      %form.add-site{ :action => dashboard_delete_site_path, :method => "post"}
+        .entry
+          %input{:type => "hidden", :name => "url", :value => site.url}
+        .submit-button
+          %input{:type => "submit", :value => "Delete Site", :class => "button"}
