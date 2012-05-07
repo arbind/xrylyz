@@ -2,46 +2,35 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
-.toolbar {
-  display:inline-block;
-  margin: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background-color: transparent;
-  border: 0;
-}
-
 button, a.button {
   float:left;
-  text-decoration: none;
-  &:visited {
-    text-decoration: none;
-  }
-  &:hover {
-   text-decoration: none;
-  }  
-}
-
-button, input.button, a.button {
   @include btnMixin;
   @include  transitionsFastMixin;
-  background-color: green;
+  &:hover {
+    @include btnHoverMixin;
+    color: white;
+  }
+  &:active {
+    @include btnActiveMixin;
+  }
+  &:visited {
+    @include btnMixin;
+  }
   .button {
-    color: inherit;
     background-color: inherit;
+    margin:0;
+    padding:0;
+    border:0;
   }
 }
 
-button:active, input:active.button, a:active.button {
-  @include btnActiveMixin;
-  @include  transitionsFastMixin;
+.list-item-toolbar {
+  button {
+    font-size:12px;
+    line-height: 24px;
+  }
 }
 
-button:hover, input:hover.button, a:hover.button {
-  @include btnHoverMixin;
-  @include transitionsFastMixin;
-}
-  
 
 /*
   Button structure is consistent for both link buttons and form submit buttons

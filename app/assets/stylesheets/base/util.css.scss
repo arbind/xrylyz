@@ -1,8 +1,13 @@
+@import 'mixins/mixin-user-select';
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
-.unselectable { user-select: none; }
-.selectable, input, textarea, {  -webkit-user-select: text; -khtml-user-select: text; -moz-user-select: text; -ms-user-select: text; -o-user-select: text; user-select: text; }
+.unselectable {
+  @include unselectableMixin;
+}
+.selectable {
+  @include selectableMixin;
+}
 
 .center-align { text-align: center; }
 .left-align { text-align: left; }
@@ -12,7 +17,12 @@
 
 .left-most  { float: left;  }
 .right-most { float: right; }
-.clear, .newline { clear:both; }
+
+.clear { clear:both; }
+.newline { clear:both; display:block; }
+
+.block, .display-block { display:block; }
+.inline { display: inline-block;}
 
 .display-none { display:none; }
 .invisible { 

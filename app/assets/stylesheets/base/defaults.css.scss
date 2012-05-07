@@ -1,0 +1,25 @@
+@import 'mixins/mixin-user-select.css.scss';
+@import 'mixins/mixin-transitions.css.scss';
+
+* {
+  padding: 0px;
+  margin: 0px;
+  text-decoration: none;
+  
+  @include transitionsOnMixin;
+  @include unselectableMixin;
+}
+
+*::selection {background-color:transparent} /* For opera and IE  so user can not see selected text */
+
+input, textarea {
+  @include selectableMixin;
+}
+
+
+html { overflow: visible; }
+
+a {
+  text-decoration: none;
+  &:hover, &:active, &:visited { text-decoration: none; }
+}

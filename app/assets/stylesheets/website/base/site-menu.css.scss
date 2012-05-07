@@ -17,14 +17,8 @@
       &:hover {
         color: #8CBF40;
       }
-      &:active, &:active:hover {
+      &:active {
         color:#888888;
-      }
-      .button{
-        text-align: center;
-        border: 0;
-        color: inherit;
-        background-color: transparent;    
       }
     }
   }

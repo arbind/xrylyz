@@ -1,0 +1,23 @@
+@import 'mixins/mixin-transitions';
+@import 'mixins/mixin-round-corners';
+
+.toolbar, .form-toolbar, .list-toolbar, .list-item-toolbar  {
+  display:inline-block;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+}
+
+.form-toolbar {
+  margin: 30px 0px 0px 0px;
+}
+
+.list-toolbar {
+  margin: 0px 0px 0px 0px;
+}
+
+.list-item-toolbar {
+  margin: 0px 0px 0px 0px;
+}

@@ -1,8 +1,8 @@
-$btnHeight:    42px;
+$btnHeight:    36px;
 $btnColor:     #CCCC88;
 $btnBGcolor:   #333333;
 $btnBorder:    1px solid lighten($btnBGcolor, 30%); 
-$btnFont:      normal normal 16px/#{$btnHeight} Georgia, serif;
+$btnFont:      normal normal 15px/#{$btnHeight} Helvetica, Arial, sans-serif;
 $btnMargin:    0px;
 $btnPadding:   0px 8px;
 $btnCursor:    pointer;
@@ -24,9 +24,12 @@ $btnActiveBGcolor:      lighten($btnBGcolor, 3%);
 
 @mixin btnActiveMixin {
   border-color: $btnActiveBorderColor;
-  background-color:   $btnActiveBGcolor
+  background-color:   $btnActiveBGcolor;
+  text-decoration: none;
 }
 
 @mixin btnHoverMixin {
-  color:                darken($btnColor, 8%);
+  color:            darken($btnColor, 8%);
+  color:            white;
+  text-decoration:  none;
 }

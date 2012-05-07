@@ -41,6 +41,7 @@ $bgcolor-content-gradient-to: #283842;
     border: 1px solid #CCCCCC;
     @include roundCornersMixin;
     margin: 0px 0px 12px 0px;
+    overflow: hidden;
   }
 
 }

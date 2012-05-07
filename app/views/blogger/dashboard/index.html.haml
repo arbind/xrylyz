@@ -18,19 +18,23 @@
 
   #button-add-content{:hidden => true}
     %form{ :action => dashboard_add_site_path, :method => "post"}
-      .prompt
-        %label www.mysite.com
-        %input{:type => "text", :name => "site[url]"}
-      .prompt
-        %label My Site Title
-        %input{:type => "text", :name => "site[title]"}
-      .prompt
-        %label Brief description about your site
-        %textarea{:name => "site[description]", :placeholder => "description"}
-      .submit-button.newline
-        %input{:type => "submit", :value => "Save", :class => "button"}
 
+      .field
+        %label Site URL
+        %input.long{:type => "text", :name => "site[url]", :placeholder => "www.mysite.com"}
 
+      .field
+        %label Site Title
+        %input.long{:type => "text", :name => "site[title]", :maxlength=>"88", :placeholder => "Has [ content or service or theme ] for [ target audience ]" }
+
+      .field
+        %label Site Description
+        %textarea.long{:name => "site[description]", :maxlength=>"300", :placeholder => "Enter 3-5 lines describing your site"}
+
+      .form-toolbar
+        %button{:type=>"submit"}
+          .button Save
+          
 :javascript
   jQuery(document).ready(function($) {
 
@@ -63,5 +67,5 @@
       });
 
     });
-
   });
+

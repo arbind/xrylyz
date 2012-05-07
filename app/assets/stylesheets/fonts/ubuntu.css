@@ -1,0 +1,6 @@
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Ubuntu'), url('/assets/fonts/ubuntu-v4.woff') format('woff');
+}
