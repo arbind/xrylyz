@@ -11,12 +11,6 @@ class Blogger::DashboardController < ApplicationController
     @sites = current_blogger.sites || []
 	end
 
-	def sites
-    @html_submenu_buttons =  dashboard_submenu
-    @sites = current_blogger.sites || []
-    @site = RylyzBloggerSite.new
-  end
-
   def add_site
     @site = current_blogger.sites.find_or_create_by(:url => params[:site][:url])
 
@@ -137,7 +131,6 @@ class Blogger::DashboardController < ApplicationController
   def dashboard_submenu
     [
       {name: 'wyjyt', href: dashboard_sites_url},
-      {name: 'sites', href: dashboard_sites_url},
       {name: 'referrals', href: dashboard_referrals_url},
       {name: 'activity', href: dashboard_activity_url}
     ]
