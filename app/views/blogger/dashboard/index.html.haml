@@ -14,7 +14,7 @@
     Add site
   .r.newline
 
-  #button-add-content{:hidden => true}
+  %fieldset{:id => "button-add-content", :hidden => true}
     %form{ :action => dashboard_add_site_path, :method => "post"}
       .prompt
         %label www.mysite.com
@@ -25,8 +25,9 @@
       .prompt
         %label Brief description about your site
         %textarea{:name => "site[description]"}
-      %button{:type => "submit"}
-        .button Save
+      .toolbar.fieldset.float-right
+        %button{:type => "submit"}
+          .button Save
 
 
 :javascript
