@@ -1,19 +1,20 @@
 - @html_page_title = "referrals"
 
-%ol
-  %li
-    Share URL
-    = "https://rylyz.com/play/#{current_blogger.share_key}"
-  %li
-    Number of clicks
-    = current_blogger.share_clicks
-  %li
-    Number of conversions
-    = current_blogger.share_conversions
-
-%ol
-  %li for each signup
-  %li email username (not whole address)
-  %li number of sites they have registered
-  %li for each site they have registered:
-  %li url and statuses for the site
+.section
+  %ol
+    %li
+      Share URL
+      = "https://rylyz.com/play/#{current_blogger.share_key}"
+    %li
+      Number of clicks
+      = current_blogger.share_clicks
+    %li
+      Number of conversions
+      = current_blogger.share_conversions
+  %br
+  %ol
+    %li for each signup
+    %li email username (not whole address)
+    %li number of sites they have registered
+    %li for each site they have registered:
+    %li url and statuses for the site

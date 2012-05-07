@@ -12,6 +12,8 @@
 
 *::selection {background-color:transparent} /* For opera and IE  so user can not see selected text */
 
+ul, ol { margin-left: 8px; }
+
 input, textarea {
   @include selectableMixin;
 }
