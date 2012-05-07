@@ -10,25 +10,23 @@
         = render :partial => 'registered_site', :locals => {:site => site}
 
 .section
-  %button{:class => "add", :data => {:fragment => "button-add-content"}}
-    Add site
-  .r.newline
+  .toolbar.list
+    %button{:class => "add", :data => {:fragment => "button-add-content"}}
+      Add site
 
-  %fieldset{:id => "button-add-content", :hidden => true}
-    %form{ :action => dashboard_add_site_path, :method => "post"}
-      .prompt
-        %label www.mysite.com
-        %input{:type => "text", :name => "site[url]"}
-      .prompt
-        %label My Site Title
-        %input{:type => "text", :name => "site[title]"}
-      .prompt
-        %label Brief description about your site
-        %textarea{:name => "site[description]"}
-      .toolbar.fieldset.float-right
-        %button{:type => "submit"}
-          .button Save
-
+  %form{ :action => dashboard_add_site_path, :method => "post"}
+    .field
+      %label Site URL
+      %input.long{:type => "text", :name => "site[url]", :placeholder => "mydomain.com"}
+    .field
+      %label Site Title
+      %input.long{:type => "text", :name => "site[title]", :maxlength=>88, :placeholder => "Site Headline"}
+    .field
+      %label Site Description
+      %textarea.long{:name => "site[description]", :rows=>4, :maxlength=>300, :placeholder => "Enter an overview for your site" }
+    .toolbar.fieldset.float-left
+      %button{:type => "submit"}
+        .button Save
 
 :javascript
   // Adding sites
@@ -117,4 +115,5 @@
       });
 
     };
+
   });
