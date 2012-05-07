@@ -9,8 +9,8 @@
   border:0;
   .secondary.toolbar {
     width: 210px;
-    a.button {
-      width: 200px;
+    a button {
+      width: 210px;
       margin:0 0 0 0;
       padding:0px 4px;
       color: #687888;
@@ -24,12 +24,6 @@
       &:active, &:active:hover {
         color:#888888;
         background-color:#384858;
-      }
-      .button{
-        text-align: center;
-        border: 0;
-        color: inherit;
-        background-color: transparent;    
       }
     }
     &:first-child {

@@ -1,28 +1,65 @@
 - @html_page_title = "sites"
 
 .section
-  %div Register the websites where you will include the widget:
-  %div enter site url:
-  %div enter 1-line site title
-  %div enter brief description about the site
-  %div add+
-  %div add another+
+  %h2 Registered Sites
+  - if @sites.any?
+    .registered-sites
+      = render :partial => 'registered_sites', :locals => {:sites => @sites}
+  .toolbar.list
+    %button{:class => "add", :data => {:fragment => "button-add-content"}}
+      + Add site
 
-.section
-  .registered-sites
-    = render :partial => 'registered_sites', :locals => {:sites => @sites}
+  #button-add-content{:hidden => true}
+    %form{ :action => dashboard_add_site_path, :method => "post"}
 
-%hr
+      .field
+        %label Site URL
+        %input.long{:type => "text", :name => "site[url]", :placeholder => "www.mysite.com"}
 
-%form.add-site{ :action => dashboard_add_site_path, :method => "post"}
-  .entry
-    %label{:for => "url"} Site Url http://
-    %input{:type => "text", :name => "site[url]", :class => "text", :placeholder => "url"}
-  .entry
-    %label{:for => "title"} Site Title
-    %input{:type => "text", :name => "site[title]", :class => "text", :placeholder => "title"}
-  .entry
-    %label{:for => "description"} Brief description about your site
-    %textarea{:name => "site[description]", :placeholder => "description"}
-  .submit-button
-    %input{:type => "submit", :value => "Add Site", :class => "button"}
+      .field
+        %label Site Title
+        %input.long{:type => "text", :name => "site[title]", :maxlength=>"88", :placeholder => "Has [ content or service or theme ] for [ target audience ]" }
+
+      .field
+        %label Site Description
+        %textarea.long{:name => "site[description]", :maxlength=>"300", :rows=>"4", :placeholder => "Enter 3-5 lines describing your site"}
+
+      .toolbar.form.float-left
+        %button{:type=>"submit"} save
+      .toolbar.form.float-right
+        %a{:href=>"javascript:alert('implement cancel')"}
+          %button.cancel cancel
+
+:javascript
+  jQuery(document).ready(function($) {
+
+    // Addition of new sites
+    var $button = $('button.add');
+    var $fragment = $('#' + $button.data('fragment'));
+
+    $button.bind('click', function(e) {
+      $fragment.toggle();
+    });
+
+    var $form = $fragment.find('form');
+    $form.bind('submit', function(e) {
+      e.preventDefault();
+
+      $.ajax({
+        url: $form.attr('action'),
+        type: 'POST',
+        dataType: 'html',
+        data: $form.serialize(),
+        complete: function(xhr, textStatus) {
+          //called when complete
+        },
+        success: function(data, textStatus, xhr) {
+          //called when successful
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          //called when there is an error
+        }
+      });
+
+    });
+  });

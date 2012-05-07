@@ -27,15 +27,15 @@
         = @html_page_title
       #site-menu
         .account.toolbar
-          %a.button{:href=>profile_me_url, :title=>"account profile"}
-            .button me
-          %a.logout.button{:href=>dashboard_logout_url, :title=>"logout"}
-            .button x
+          %a{:href=>profile_me_url, :title=>"account profile"}
+            %button me
+          %a{:href=>dashboard_logout_url, :title=>"logout"}
+            %button.logout x
         .primary.toolbar
-          %a.button{:href=>dashboard_url}
-            .button dashboard
-          %a.button{:href=>dashboard_dollar_url}
-            .button dollar
+          %a{:href=>dashboard_url}
+            %button dashboard
+          %a{:href=>dashboard_dollar_url}
+            %button dollar
 
     #content
       - unless flash.empty?
@@ -48,10 +48,10 @@
       .right-column
         #submenu
           - unless @html_submenu_buttons.nil?
-            .secondary.toolbar
+            .secondary.toolbar.round-corners
               - @html_submenu_buttons.each do |button|
-                %a.button{:href=>button[:href]}
-                  .button{:title=>button[:title]}
+                %a{:href=>button[:href]}
+                  %button{:title=>button[:title]}
                     = button[:name]
 
       .left-column

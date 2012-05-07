@@ -3,7 +3,7 @@
 
 $labelColor: black;
 
-form, fieldset {
+form{
   margin:0;
   padding:0;
   border: 0;
@@ -20,7 +20,6 @@ input, textarea, select {
   background:none;
   width: 288px;
   padding: 7px;
-  height:24px;
   line-height: 24px;
   font-size:16px;
   font-family: 'Istok Web', Helvetica, Verdana, sans-serif;
@@ -29,6 +28,16 @@ input, textarea, select {
   outline:none;
   cursor: pointer;
 }
+
+
+input, select {
+  height:24px;
+}
+
+textarea {
+  resize: none;
+}
+
 
 input.micro, textarea.micro{ width: 28px; }
 input.mini, textarea.mini{ width: 48px; }

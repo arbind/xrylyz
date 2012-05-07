@@ -2,7 +2,7 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
-button, a.button {
+button, a button {
   float:left;
   @include btnMixin;
   @include  transitionsFastMixin;
@@ -16,21 +16,7 @@ button, a.button {
   &:visited {
     @include btnMixin;
   }
-  .button {
-    background-color: inherit;
-    margin:0;
-    padding:0;
-    border:0;
-  }
 }
-
-.list-item-toolbar {
-  button {
-    font-size:12px;
-    line-height: 24px;
-  }
-}
-
 
 /*
   Button structure is consistent for both link buttons and form submit buttons
@@ -38,12 +24,12 @@ button, a.button {
   
   button wrapped in a form submit: (works even if js is disabled)
   <button type="submit">
-    <div class="button">log In</div>
+    log In
   </button>
 
   button wrapped in a link tag:
-  <a class="button" href="/signup">
-    <div class="button">register</div>
+  <a href="/signup">
+    <button>register</button>
   </a>
 
 */

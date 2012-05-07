@@ -3,5 +3,6 @@
  *= require base/util
  *= require base/defaults
  *= require base/buttons
+ *= require base/button-toolbar
  *= require base/social
 */

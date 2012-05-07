@@ -13,6 +13,7 @@ $(document).ready(function() {
 	    onFocus: hide the label
 	    onBlur: show the label if value.nil?
 	*/
+
   $(".x-prompt").each (function (idx){
     var label = $(this).find("label");
     var input = $(this).find("input");

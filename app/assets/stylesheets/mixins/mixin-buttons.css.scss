@@ -2,7 +2,7 @@ $btnHeight:    36px;
 $btnColor:     #CCCC88;
 $btnBGcolor:   #333333;
 $btnBorder:    1px solid lighten($btnBGcolor, 30%); 
-$btnFont:      normal normal 15px/#{$btnHeight} Helvetica, Arial, sans-serif;
+$btnFont:      normal normal 15px/#{$btnHeight} 'Ubuntu', Helvetica, Arial, sans-serif;
 $btnMargin:    0px;
 $btnPadding:   0px 8px;
 $btnCursor:    pointer;
@@ -18,6 +18,7 @@ $btnActiveBGcolor:      lighten($btnBGcolor, 3%);
   margin:             $btnMargin;
   padding:            $btnPadding;
   border:             $btnBorder;
+  x-border: 1px inset buttonface;
   text-align:         center;
   text-decoration:    none;
 }

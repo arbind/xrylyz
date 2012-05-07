@@ -7,7 +7,7 @@
     background-color: transparent;
     background-color: #283848;
     margin: 16px 0px;
-    a.button {
+    a button {
       margin:0 0 0 12px;
       padding:0px 4px;
       color:#8CBF40;
@@ -30,7 +30,7 @@
   .account.toolbar {
     border:1px solid transparent;
     background-color: transparent;
-    a.logout.button {
+    a .button.logout {
       @include roundCircleMixin;
       border: 2px solid transparent;
       line-height: 22px;

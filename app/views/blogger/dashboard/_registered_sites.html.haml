@@ -1,13 +1,13 @@
 - sites.each do |site|
   %form{:action => dashboard_delete_site_path, :method => "post"}
     %input{:type => "hidden", :name => "url", :value => site.url}
-    .field
-      %label
+    %fieldset
+      %legend
         =h site.url
-      %label
+      %h1
         =h site.title
-      %label
+      %p
         =h site.description
-      .list-item-toolbar
+      .toolbar.fieldset.float-right
         %button{:type=>"submit"}
           .button Delete Site

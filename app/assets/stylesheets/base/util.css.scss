@@ -15,8 +15,8 @@
 
 .auto-center { margin-left:auto; margin-right:auto; }
 
-.left-most  { float: left;  }
-.right-most { float: right; }
+.left-most, .float-left { float: left;  }
+.right-most, .float-right { float: right; }
 
 .clear { clear:both; }
 .newline { clear:both; display:block; }
@@ -56,6 +56,9 @@
   text-overflow: ellipsis;
 }
 
+.round-corners {
+  @include roundCornersMixin;
+}
 .round-left {
   @include roundLeftCornersMixin;
 }

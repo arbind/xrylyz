@@ -1,0 +1,31 @@
+@import "mixins/mixin-transitions.css.scss";
+@import "mixins/mixin-round-corners.css.scss";
+
+fieldset {
+  margin:0px 0px 18px 0px;
+  padding:4px 4px 4px 8px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  font-family: 'Istok Web', Helvetica, Verdana, sans-serif;
+  @include  roundCorners4Mixin;
+
+  background-color: #FEFEFE;
+  legend {
+    padding: 0px 6px 0px 0px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  }
+  h1 {
+    font-size: 16px;
+    margin: 0;
+  }
+  h2 {
+    font-size: 14px;
+    margin: 0;
+  }
+  p {
+    font-size: 14px;
+  }
+}
+
