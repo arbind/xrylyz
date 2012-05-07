@@ -1,0 +1,18 @@
+.site{:id => "button-delete-content"}
+  %form{:action => dashboard_delete_site_path, :method => "post"}
+    %input{:type => "hidden", :name => "url", :value => site.url}
+    %fieldset
+      %legend
+        =h site.url
+      %h1
+        =h site.title
+      %p
+        =h site.description
+      .toolbar.fieldset.float-right
+        %button{:class => "delete", :data => {:fragment => "button-delete-content"}, :type=>"submit"}
+          .button Delete Site
+
+  // #button-delete-content{:hidden => true}
+  //   %form{ :action => dashboard_delete_site_path, :method => "post"}
+  //     .prompt
+  //       %input{:type => "hidden", :name => "url", :value => site.url}

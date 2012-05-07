@@ -32,7 +32,7 @@ class Blogger::DashboardController < ApplicationController
     if @site.update_attributes(params[:site])
       notice = "Thanks for registering your site."
 
-      redirect_to :action => :sites, :notice => notice
+      render :partial => 'registered_site', :locals => {:site => @site}
     else
       notice = "There was a problem registering your site."
       logger.info @site.errors.inspect
@@ -45,7 +45,7 @@ class Blogger::DashboardController < ApplicationController
   def delete_site
     site = current_blogger.sites.where(:url => params[:url])
     site.delete
-    redirect_to :action => :sites, :notice => "Your site was deleted."
+    render :nothing => true, :status => 200
   end
 
   def referrals
@@ -102,8 +102,8 @@ class Blogger::DashboardController < ApplicationController
     # flash.now[:notice] = "Please go an ahead and log your self in"
     # flash.now[:error] = "That is absolutely not allowed"
     flash.now[:status] = "You are already signed in, fee free to add another provider though." if member_signed_in?
-    flash.now[:error] = "You are already signed in, but you can add"    
-    flash.now[:notice] = "You are already signed in, but you can add"    
+    flash.now[:error] = "You are already signed in, but you can add"
+    flash.now[:notice] = "You are already signed in, but you can add"
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end

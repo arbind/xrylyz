@@ -1,7 +1,119 @@
 - @html_page_title = "dashboard"
 .section
   %h2= "Welcome, #{current_member.nickname}"
-  %ul
-    - @sites.each do |site|
-      %li= site.url
-      
+
+.section
+  %h2 Registered Sites
+  - if @sites.any?
+    .registered-sites
+      - @sites.each do |site|
+        = render :partial => 'registered_site', :locals => {:site => site}
+
+.section
+  %button{:class => "add", :data => {:fragment => "button-add-content"}}
+    Add site
+  .r.newline
+
+  #button-add-content{:hidden => true}
+    %form{ :action => dashboard_add_site_path, :method => "post"}
+      .prompt
+        %label www.mysite.com
+        %input{:type => "text", :name => "site[url]"}
+      .prompt
+        %label My Site Title
+        %input{:type => "text", :name => "site[title]"}
+      .prompt
+        %label Brief description about your site
+        %textarea{:name => "site[description]"}
+      %button{:type => "submit"}
+        .button Save
+
+
+:javascript
+  // Adding sites
+  jQuery(document).ready(function($) {
+
+    // Addition of new sites
+    var $button = $('button.add');
+    var fragment = $button.data('fragment');
+    var $fragment = $('#' + fragment);
+
+    $button.bind('click', function(e) {
+      $fragment.toggle();
+    });
+
+    // Listen ajax callback
+    $('body').bind(fragment + ':success', function(e, data) {
+      $fragment.hide();
+      $('.registered-sites').append(data);
+    });
+
+    var $form = $fragment.find('form');
+    $form.bind('submit', function(e) {
+      e.preventDefault();
+
+      $.ajax({
+        url: $form.attr('action'),
+        type: 'POST',
+        dataType: 'html',
+        data: $form.serialize(),
+        complete: function(xhr, textStatus) {
+          $('body').trigger(fragment + ':complete');
+        },
+        success: function(data, textStatus, xhr) {
+          $('body').trigger(fragment + ':success', [data]);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          $('body').trigger(fragment + ':error');
+        }
+      });
+    });
+
+  });
+
+:javascript
+  // Removing sites
+  jQuery(document).ready(function($) {
+
+    // Removal of sites
+    var $button = $('button.delete');
+    var fragment = $button.data('fragment');
+    var $fragment = $('#' + fragment);
+
+    $('body').delegate('button.delete', 'click', function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      if (confirmDelete()) {
+        deleteSite($this);
+      }
+    });
+
+    function confirmDelete() {
+      return confirm("Are you sure?");
+    };
+
+    // Listen ajax callback
+    $('body').bind(fragment + ':success', function(e, $elem) {
+      $elem.parents('.site').remove();
+    });
+
+    function deleteSite($elem) {
+      var $form = $fragment.find('form');
+      $.ajax({
+        url: $form.attr('action'),
+        type: 'POST',
+        dataType: 'html',
+        data: $form.serialize(),
+        complete: function(xhr, textStatus) {
+          $('body').trigger(fragment + ':complete');
+        },
+        success: function(data, textStatus, xhr) {
+          $('body').trigger(fragment + ':success', [$elem]);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          $('body').trigger(fragment + ':error');
+        }
+      });
+
+    };
+  });
