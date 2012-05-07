@@ -4,8 +4,8 @@
 
 .section
   %h2 Registered Sites
-  - if @sites.any?
-    .registered-sites
+  .registered-sites
+    - if @sites.any?
       - @sites.each do |site|
         = render :partial => 'registered_site', :locals => {:site => site}
 
