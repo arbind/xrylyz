@@ -2,29 +2,47 @@
 %html{ :lang => "en"}
   %head
     %title= "rylyz sudo"
-    = stylesheet_link_tag    "base", :media => "all"
-    = stylesheet_link_tag    "website/base", :media => "all"
+    / = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Ubuntu", :media => "all"
+    / = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Istok+Web", :media => "all"
+    = stylesheet_link_tag    "fonts/istokweb", :media => "all"
+    = stylesheet_link_tag    "fonts/ubuntu", :media => "all"
+
+    = stylesheet_link_tag    "base/index", :media => "all"
+    = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/sudo/application", :media => "all"
 
-    = javascript_include_tag "base"
-    = javascript_include_tag "website/base"
+    = javascript_include_tag "base/index", :media => "all"
+    = javascript_include_tag "website/base/index", :media => "all"
     = javascript_include_tag "website/sudo/application"
 
     = csrf_meta_tags
   %body.rylyz.sudo
     #site-header
-      %h1 sudo
+      #site-name
+        #site-logo=image_tag "rylyz/rylyz-logo-green.png"
+        sudo 
+        = @html_page_title
       #site-menu
-        %ul
-          %li= link_to  "Home", :home_page
-          %li= link_to  "Pricing", :pricing
-          %li= link_to  "Profiting", :profiting
-          %li= link_to  "Installing", :installing
-          %li= link_to  "Sign Up", :sign_up
+        .primary.toolbar
+          / %a{:href=>sudo_home_url}
+          /   %button home
+          %a{:href=>sudo_signups_url}
+            %button signups
+          %a{:href=>sudo_api_url}
+            %button api
 
-  = yield
+    #content
+      - unless flash.empty?
+        #flash-messages
+          - flash.each do |key, msg|
+            %div{:class=>key}
+              %p.close(onclick="Effect.Fade('#{key}')")
+                = '&nbsp;X&nbsp;'.html_safe
+              %p.message= msg
+      = yield
 
-  %footer
-    %p
-      Copyright 2011 My Name
-    %li= link_to  "Contact Us", :contact_us
+    #site-footer
+      %p
+        %strong &copy; rylyz.com
+        = link_to  "privacy policy", "#"
+        = link_to  "contact us", "#"

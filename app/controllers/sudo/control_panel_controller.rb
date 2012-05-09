@@ -5,6 +5,8 @@ class Sudo::ControlPanelController < ApplicationController
 		@signups = RylyzBlogger.all
 	end
 
+	def api() end
+		
 	def load_signups
 		require 'csv'
 		require 'open-uri'

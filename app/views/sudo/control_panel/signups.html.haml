@@ -1,11 +1,14 @@
 %h2= "#{@signups.count} Bloggers"
 
-%form{:action=>"load_signups", :method=>"POST"}
-	%button.submit-button{:type=>"submit"} Load Signups
+.section
+  %form{:action=>"load_signups", :method=>"POST"}
+    %button.submit-button{:type=>"submit"} Load Signups
 
-- @signups.each do |blogger|
-	%div 
-		= "#{blogger.nickname}"
-		= "[share code: #{blogger.share_key}]" if blogger.share_key
-		= "<B>#{blogger.share_conversions}</B> / #{blogger.share_clicks} (conversions/clicks)".html_safe if blogger.share_conversions>0 or blogger.share_clicks>0
-		= "<b>{referred by:#{blogger.referred_by}}</b>".html_safe if blogger.referred_by
+.section
+  %ol
+    - @signups.each do |blogger|
+      %li
+        = "#{blogger.nickname}"
+        = "[share code: #{blogger.share_key}]" if blogger.share_key
+        = "<B>#{blogger.share_conversions}</B> / #{blogger.share_clicks} (conversions/clicks)".html_safe if blogger.share_conversions>0 or blogger.share_clicks>0
+        = "<b>{referred by:#{blogger.referred_by}}</b>".html_safe if blogger.referred_by

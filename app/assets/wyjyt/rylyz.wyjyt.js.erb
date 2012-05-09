@@ -31,6 +31,7 @@ Rylyz.Wyjyt = {
   wyjytSource: {},
   transparentOverlayDiv: null,
   appOverlayDiv: null,
+  displayFormat: null,
 
   fetchAppCSS: function(appName) {
     var css_location = "stylesheets/" +appName+ "/app_" +appName;
@@ -44,17 +45,53 @@ Rylyz.Wyjyt = {
   },
   setup: function() {
     jQuery(document).ready(function($) {
-      var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
-      jQuery("#rylyz-widget .button").remove();    
-      jQuery("#rylyz-widget").append(html);
-      Rylyz.Wyjyt.fetchCSS(wyjytCSS);
-
-      //setup socket service and register socket event handlers
-      var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
-      var triggerSocketServiceLoading = Rylyz.Wyjyt[socketSvcLoader];
-
-      Rylyz.Wyjyt.loadRylyzCore(triggerSocketServiceLoading);
+      var wyjyt = jQuery("#rylyz-widget")
+      if (!wyjyt || !wyjyt.length) {
+        wyjyt = jQuery("<div id='rylyz-widget' displayFormat='footer'/>");
+        wyjyt.appendTo("body");
+      }
+      Rylyz.Wyjyt.displayFormat = jQuery("#rylyz-widget").attr("displayFormat") || 'button';
+      if ('button' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.setupAsButton();
+      else if ('footer' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.setupAsFooter();
+      else alert('unsupported display format for Wygyt: ' + Rylyz.Wyjyt.displayFormat)
     });
+  },
+  setupAsButton: function() {
+    var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
+    jQuery("#rylyz-widget .button").remove();    
+    jQuery("#rylyz-widget").append(html);
+    Rylyz.Wyjyt.fetchCSS(wyjytCSS);
+
+    //setup socket service and register socket event handlers
+    var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
+    var triggerSocketServiceLoading = Rylyz.Wyjyt[socketSvcLoader];
+
+    Rylyz.Wyjyt.loadRylyzCore(triggerSocketServiceLoading);
+  },
+  setupAsFooter: function () {
+    Rylyz.Wyjyt.fetchCSS(wyjytCSS);
+
+    //setup socket service and register socket event handlers
+    var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
+    var triggerSocketServiceLoading = Rylyz.Wyjyt[socketSvcLoader];
+
+    Rylyz.Wyjyt.loadRylyzCore(triggerSocketServiceLoading);
+  },
+  show: function() {
+    if ('button' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.showAsButton();
+    else if ('footer' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.showAsFooter();
+    else alert('unsupported display format for Wygyt: ' + Rylyz.Wyjyt.displayFormat)
+  },
+  showAsButton: function() {
+    var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
+      "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
+    jQuery("#rylyz-widget .button").remove();    
+    jQuery("#rylyz-widget").append(html);    
+  },
+  showAsFooter: function() {
+    var footerConsole = jQuery("<div class='rylyz-console footer'/>");
+    footerConsole.appendTo("body");
+    jQuery(".rylyz-console.footer").css('height', '36px');
   },
   loadRylyzCore: function(callbackOnComplete) {
     if (Rylyz.Service) {
@@ -278,10 +315,7 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       //+++ move into wygyt as a function
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
-        "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
-      jQuery("#rylyz-widget .button").remove();    
-      jQuery("#rylyz-widget").append(html);
+      Rylyz.Wyjyt.show();
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
@@ -512,6 +546,7 @@ function restoreJQuery() {
   $ = jQuery;
   if (undefined == window.jQuery) window.jQuery = jQuery
   if (undefined == window.$) window.$ = jQuery
+
   // Call our main function
   Rylyz.Wyjyt.setup();
 }
@@ -522,3 +557,4 @@ window.rylyzRefreshCSS = Rylyz.Wyjyt.refreshCSS;
 bootstrap(); //start loading everything
 
 })();
+
