@@ -3,7 +3,7 @@ h1 {
 }
 .pricing-plans {
    margin: 0px 8%;
-   background:#fff;
+   background:#0000;
    border-bottom:4px solid #000;
    overflow:hidden;
    position:relative;
@@ -26,6 +26,7 @@ h1 {
          margin:0;
          padding:0px 20px;
          position:relative;
+         background-color:#000000;
       }
       li.plan {
          text-align: center;
