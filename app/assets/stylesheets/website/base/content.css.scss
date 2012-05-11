@@ -1,3 +1,4 @@
+@import 'mixins/mixin-user-select';
 @import 'mixins/mixin-round-corners.css.scss';
 
 $bgcolor-content-gradient-from: #203036;
@@ -47,8 +48,9 @@ $bgcolor-content-gradient-to: #283842;
 }
 
 .html-code {
-  margin: 10px 20px;
-  padding: 8px 12px;
+  margin: 4px 0px;
+  padding: 8px 8px;
   background-color: #555555;
   color: #CCCCCC;
+  @include selectableMixin;
 }

@@ -5,6 +5,7 @@
   -ms-user-select: text;
   -o-user-select: text;
   user-select: text;
+  &::selection { background-color:#FFFFCC } /* For opera and IE  so user can not see selected text */
 }
 @mixin unselectableMixin {
   -webkit-user-select: none;
