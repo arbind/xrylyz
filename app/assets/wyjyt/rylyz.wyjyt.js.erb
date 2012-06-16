@@ -60,15 +60,12 @@ Rylyz.Wyjyt = {
     var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
     jQuery("#rylyz-widget .button").remove();    
     jQuery("#rylyz-widget").append(html);
-    Rylyz.Wyjyt.fetchCSS(wyjytCSS);
-
-    //setup socket service and register socket event handlers
-    var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
-    var triggerSocketServiceLoading = Rylyz.Wyjyt[socketSvcLoader];
-
-    Rylyz.Wyjyt.loadRylyzCore(triggerSocketServiceLoading);
+    Rylyz.Wyjyt.setupForAll();
   },
   setupAsFooter: function () {
+    Rylyz.Wyjyt.setupForAll();
+  },
+  setupForAll: function () {
     Rylyz.Wyjyt.fetchCSS(wyjytCSS);
 
     //setup socket service and register socket event handlers
@@ -86,12 +83,17 @@ Rylyz.Wyjyt = {
     var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
       "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
     jQuery("#rylyz-widget .button").remove();    
-    jQuery("#rylyz-widget").append(html);    
+    jQuery("#rylyz-widget").append(html);
+    Rylyz.Wyjyt.showForAll();
   },
   showAsFooter: function() {
     var footerConsole = jQuery("<div class='rylyz-console footer'/>");
     footerConsole.appendTo("body");
     jQuery(".rylyz-console.footer").css('height', '36px');
+    Rylyz.Wyjyt.showForAll();
+  },
+  showForAll: function() {
+    //
   },
   loadRylyzCore: function(callbackOnComplete) {
     if (Rylyz.Service) {

@@ -1,5 +1,9 @@
+require "Rack"
+require "URI"
+
 class Sudo::ControlPanelController < ApplicationController
 	layout "sudo"
+	http_basic_authenticate_with :name => "rylyz.games", :password => "play.well" 
 
 	def signups
 		@signups = RylyzBlogger.all
@@ -12,7 +16,7 @@ class Sudo::ControlPanelController < ApplicationController
 		require 'open-uri'
 		blogger = nil
 		plan = nil
-		last_signup_at = nil
+		last_signup_at = DateTime.now 
 
 		signup_csv_url = 'https://docs.google.com/spreadsheet/pub?key=0Art_DhjcEo-FdFFzQUk4dUFabklQX3otbF9ybWx3NkE&output=csv'
 
@@ -25,19 +29,23 @@ class Sudo::ControlPanelController < ApplicationController
 				blogger.plan.profit_sharing_rate ||= r['share'].to_f/100 if r['share']
 				blogger.plan.referral_rate ||= r['ref'].to_f/100 if r['ref']
 				blogger.plan.monthly_subscription_rate ||= r['$/month'].to_f if r['$/month']
+
+				# +++ todo: blogger.is_early_adopter = 
+
 				blogger.plan.save!
 
 			  blogger.is_alpha_tester = r['alpha']
 				blogger.hi_email_sent ||= r['hi']
-				blogger.referred_by = r['referredby']
-				blogger.share_key ||= r['uniqueUrl']
-				blogger.share_clicks = r['clicks'].to_i if r['clicks']
-				blogger.share_conversions = r['conversions'].to_i if r['conversions']
+				blogger.referred_by = r['referred_by']
+				blogger.share_key ||= share_key_for_ref_url(r['ref_url'])
+
+				blogger.share_clicks = r['user_clicks'].to_i if r['user_clicks']
+				blogger.share_conversions = r['user_signups'].to_i if r['user_signups']
 				blogger.signup_ip = r['orig_ip']
 				begin
 					last_signup_at = DateTime.strptime(r['timestamp'], "%m/%d/%Y %H:%M:%S") if r['timestamp']
 				rescue
-					# If DateTime fails to parse, just copy the last_signup_time
+					# If DateTime fails to parse, just use the last_signup_time
 				ensure
 					blogger.signup_at = last_signup_at
 				end
@@ -47,6 +55,12 @@ class Sudo::ControlPanelController < ApplicationController
 
 		@signups = RylyzBlogger.all
 		redirect_to [:sudo, :sudo_signups]
+	end
+
+private
+	def share_key_for_ref_url(uri)
+		params = Rack::Utils.parse_query URI(uri).query
+		params['lrRef']
 	end
 
 end

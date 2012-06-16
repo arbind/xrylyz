@@ -140,6 +140,8 @@ GEM
     omniauth-yahoo (0.0.3)
       omniauth-oauth (~> 1.0)
     polyglot (0.3.3)
+    postageapp (1.0.14)
+      json
     pusher (0.9.2)
       multi_json (~> 1.0)
       ruby-hmac (~> 0.4.0)
@@ -239,6 +241,7 @@ DEPENDENCIES
   omniauth-twitter
   omniauth-windowslive
   omniauth-yahoo
+  postageapp
   pusher
   pusher-client!
   rails (= 3.1.1)

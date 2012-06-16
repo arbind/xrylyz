@@ -19,6 +19,9 @@ gem 'stripe'
 gem 'pusher'
 gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
 
+#mass email service
+gem 'postageapp'
+
 #MongoDB
 gem 'mongoid'
 gem 'bson_ext'
