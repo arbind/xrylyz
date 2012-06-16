@@ -5,6 +5,14 @@ class Sudo::ControlPanelController < ApplicationController
 	layout "sudo"
 	http_basic_authenticate_with :name => "rylyz.games", :password => "play.well" 
 
+	def index
+
+	end
+
+	def new_bloggers
+
+	end
+	
 	def signups
 		@signups = RylyzBlogger.all
 	end
@@ -54,7 +62,7 @@ class Sudo::ControlPanelController < ApplicationController
 		end
 
 		@signups = RylyzBlogger.all
-		redirect_to [:sudo, :sudo_signups]
+		redirect_to :sudo_signups
 	end
 
 private

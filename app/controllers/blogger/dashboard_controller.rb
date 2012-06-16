@@ -130,9 +130,8 @@ class Blogger::DashboardController < ApplicationController
 
   def dashboard_submenu
     [
-      {name: 'wyjyt', href: dashboard_sites_url},
-      {name: 'referrals', href: dashboard_referrals_url},
-      {name: 'activity', href: dashboard_activity_url}
+      {name: 'overview', href: dashboard_url},
+      {name: 'websites', href: dashboard_sites_url},
     ]
   end
 
@@ -146,6 +145,8 @@ class Blogger::DashboardController < ApplicationController
   def profile_submenu
     [
       {name: 'social accounts', href: dashboard_login_url },
+      {name: 'referrals', href: dashboard_referrals_url},
+      {name: 'activity', href: dashboard_activity_url},
       {name: 'credit cards', href: profile_creditcards_url}
     ]
 

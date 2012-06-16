@@ -72,10 +72,13 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get '/intent/purchase', :as => :intent_to_purchase
   end
 
-  scope "/sudo", :module => :sudo do
-    get 'control_panel/signups',        :as => :sudo_signups
-    post 'control_panel/load_signups',  :as => :sudo_load_signups
-    get 'control_panel/api',        :as => :sudo_api
+  scope "/sudo", :module => :sudo, :controller => 'control_panel' do
+    get '',        :to => 'control_panel#index', :as => :sudo_index
+    get 'index'
+    get 'new_bloggers',        :as => :sudo_new_bloggers
+    get 'signups',        :as => :sudo_signups
+    post 'load_signups',  :as => :sudo_load_signups
+    get 'api',        :as => :sudo_api
     # +++ add super user functionality - make sure to include super secure authentication
   end
 
