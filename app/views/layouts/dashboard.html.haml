@@ -2,7 +2,7 @@
 %html{ :lang => "en"}
   %head
     %title= "rylyz dashboard"
-    
+
     / = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Ubuntu", :media => "all"
     / = stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Istok+Web", :media => "all"
     = stylesheet_link_tag    "fonts/istokweb", :media => "all"
@@ -38,10 +38,11 @@
       - unless flash.empty?
         #flash-messages
           - flash.each do |key, msg|
-            %div{:class=>key}
-              %p.close(onclick="Effect.Fade('#{key}')")
-                = '&nbsp;X&nbsp;'.html_safe
-              %p.message= msg
+            - unless msg.blank?
+              %div{:class=>key}
+                %p.close(onclick="Effect.Fade('#{key}')")
+                  = '&nbsp;X&nbsp;'.html_safe
+                %p.message= msg
       .right-column
         #submenu
           - unless @html_submenu_buttons.nil?
