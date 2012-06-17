@@ -80,6 +80,10 @@ class Blogger::DashboardController < ApplicationController
     redirect_to :dashboard_billing
   end
 
+  def social_accounts 
+    
+  end
+
   def profile()
     @html_submenu_buttons = profile_submenu
   end
@@ -147,7 +151,7 @@ class Blogger::DashboardController < ApplicationController
 
   def profile_submenu
     [
-      {name: 'social accounts', href: dashboard_login_url },
+      {name: 'social accounts', href: dashboard_social_accounts_url },
       {name: 'referrals', href: dashboard_referrals_url},
       {name: 'activity', href: dashboard_activity_url},
       {name: 'credit cards', href: profile_creditcards_url}

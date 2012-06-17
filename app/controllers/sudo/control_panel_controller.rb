@@ -12,7 +12,7 @@ class Sudo::ControlPanelController < ApplicationController
 	def new_bloggers
 
 	end
-	
+
 	def signups
 		@signups = RylyzBlogger.all
 	end
@@ -49,7 +49,6 @@ class Sudo::ControlPanelController < ApplicationController
 
 				blogger.share_clicks = r['user_clicks'].to_i if r['user_clicks']
 				blogger.share_conversions = r['user_signups'].to_i if r['user_signups']
-				blogger.signup_ip = r['orig_ip']
 				begin
 					last_signup_at = DateTime.strptime(r['timestamp'], "%m/%d/%Y %H:%M:%S") if r['timestamp']
 				rescue

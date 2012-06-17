@@ -20,6 +20,7 @@ RylyzPlayer::Application.routes.draw do
   scope :module => :blogger, :controller => "dashboard" do
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
+    get 'social_accounts',            :as => :dashboard_social_accounts
     get 'sites',            :as => :dashboard_sites
     post 'add_site',        :as => :dashboard_add_site
     post 'delete_site',     :as => :dashboard_delete_site

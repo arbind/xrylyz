@@ -1,4 +1,24 @@
 +++ TODO
+*** test logout and login with share_key in the url
+then another social account with the same share_key
+then share key but with prior existing login with blogger already there
+
+1. 1st time member, logs in with share code
+2. 1st time member, logs in without share code
+3. 1st time member, logs in with share code:
+    a with facebook using share code
+    b logs out
+    c with twitter using share code
+
+conflict:
+1. 2 fb accounts login with same share code:
+  a login with fb1 and share code
+  b logout
+  c login with fb2 nd share code
+  -> error and
+
+
+
 
 
 * menus
