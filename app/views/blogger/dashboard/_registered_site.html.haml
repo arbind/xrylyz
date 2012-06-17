@@ -1,6 +1,6 @@
 .site{:id => "button-delete-content"}
   %form{:action => dashboard_delete_site_path, :method => "post"}
-    %input{:type => "hidden", :name => "url", :value => site.url}
+    %input{:type => "hidden", :name => "domain", :value => site.domain}
     %fieldset
       %legend
         =h site.url

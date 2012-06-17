@@ -11,35 +11,35 @@ class Blogger::DashboardController < ApplicationController
     @sites = current_blogger.sites || []
 	end
 
+  def sites
+    @html_submenu_buttons =  dashboard_submenu
+    @sites = current_blogger.sites || []
+  end
+
   def add_site
-    @site = current_blogger.sites.find_or_create_by(:url => params[:site][:url])
-
-    # TODO: Move to model
-    if validate_hostname(params[:site][:url])
-      @site.status = "valid_url"
-      notice = "Thanks for registering your site."
+    domain =  params[:site][:domain]
+    if validate_hostname(domain)
+      @site = current_blogger.sites.find_or_create_by(:domain => domain)
+      notice = "Thanks for registering #{domain}."
     else
-      @site.status = "invalid_url"
-      notice = "We couldn't validate your site."
+      error = "We couldn't validate #{domain}. It was not registered."
     end
 
-    if @site.update_attributes(params[:site])
-      notice = "Thanks for registering your site."
-
-      render :partial => 'registered_site', :locals => {:site => @site}
-    else
-      notice = "There was a problem registering your site."
-      logger.info @site.errors.inspect
-
-      @sites = []
-      render :sites
-    end
+    redirect_to :dashboard_sites, :flash => {:notice => notice, :error => error}
   end
 
   def delete_site
-    site = current_blogger.sites.where(:url => params[:url])
-    site.delete
-    render :nothing => true, :status => 200
+    logger.info params
+    domain = params[:domain]
+    site = current_blogger.sites.where(:domain => domain)
+    if site
+      site.delete
+      warn = "#{domain} deleted!"
+    else
+      error = "#{domain} cannot be deleted."
+    end
+
+    redirect_to :dashboard_sites, :flash => {:warn => warn, :error => error}
   end
 
   def referrals
@@ -53,9 +53,6 @@ class Blogger::DashboardController < ApplicationController
   def activity
     @html_submenu_buttons =  dashboard_submenu
   end
-
-
-
 
 	def dollar()
     @html_submenu_buttons = dollar_submenu
@@ -83,21 +80,25 @@ class Blogger::DashboardController < ApplicationController
     redirect_to :dashboard_billing
   end
 
-
-
-
   def profile()
     @html_submenu_buttons = profile_submenu
   end
 
   def login
-    # set the next page after omni auth calls 'auth/:provider/callback' or 'auth/failure'
-    # flash.now[:status] = "You did it, yeaa!"
-    # flash.now[:notice] = "Please go an ahead and log your self in"
-    # flash.now[:error] = "That is absolutely not allowed"
-    flash.now[:status] = "You are already signed in, fee free to add another provider though." if member_signed_in?
-    flash.now[:error] = "You are already signed in, but you can add"
-    flash.now[:notice] = "You are already signed in, but you can add"
+    share_key = params[:share_key]
+    session[:share_key] = share_key
+
+    logger.info share_key
+
+    # person already logged in
+    if blogger_signed_in?
+      if share_key == current_blogger.share_key
+        # redirect_to :dashboard
+      else
+        # TODO: Logout current member and keep share_key
+      end
+    end
+
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end
@@ -121,8 +122,10 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def register_blogger
-    if current_member.blogger.nil? # auto create a blogger
-      blogger = RylyzBlogger.create
+    if current_member.blogger.nil?
+      share_key = session[:share_key]
+      blogger = RylyzBlogger.where(:share_key => share_key).first
+      blogger ||= RylyzBlogger.create
       current_member.blogger = blogger
       current_member.save!
     end
@@ -149,7 +152,6 @@ class Blogger::DashboardController < ApplicationController
       {name: 'activity', href: dashboard_activity_url},
       {name: 'credit cards', href: profile_creditcards_url}
     ]
-
   end
 
 end

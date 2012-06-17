@@ -27,7 +27,7 @@ class Member::AuthController < ApplicationController
     # if a member has signed in with this social presence before, just sign them in again (switch user if necessary)
     # otherwise
     #   if a current_member is signed in already, add this provider as another presence to the current_member
-    #     double check that this provider is not already in the list as another uid, if so, create a new member and switch user 
+    #     double check that this provider is not already in the list as another uid, if so, create a new member and switch user
     #   if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
     next_page = nil
     begin
@@ -59,14 +59,14 @@ class Member::AuthController < ApplicationController
       end
 
     rescue Exception => e
-      puts e.message
+      logger.error "Oauth Error #{e.message}"
       s = "exception: #{e.message}<br>"
       s << e.backtrace.join("<br>")
-      render :text => s
       next_page = next_page_on_failure!
+      error = "Login failed. #{e.message}"
     ensure
       next_page ||= next_page_on_success!
-      redirect_to next_page
+      redirect_to next_page, :flash => {:notice => notice, :error => error}
     end
   end
 

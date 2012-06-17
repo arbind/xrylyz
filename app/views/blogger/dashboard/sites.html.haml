@@ -1,0 +1,23 @@
+- @html_page_title = "websites"
+.section
+  %h2 Add the url of your website
+  %form{ :action => dashboard_add_site_path, :method => "post"}
+    .field
+      %label Site URL
+      %br
+      %label
+        = "http://"
+      %input.long{:type => "text", :name => "site[domain]", :placeholder => "mydomain.com"}
+    .toolbar.fieldset.float-left
+      %button{:type => "submit"}
+        .button Save
+
+
+.section
+  %h2 Registered Sites
+  .registered-sites
+    - if @sites.any?
+      - @sites.each do |site|
+        = render :partial => 'registered_site', :locals => {:site => site}
+    - else
+      %p Add your site above

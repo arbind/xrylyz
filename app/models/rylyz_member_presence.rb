@@ -1,6 +1,6 @@
 # represents a member's social presence on a social providers site (e.g. facebook, twitter, etc)
 
-class RylyzMemberPresence 
+class RylyzMemberPresence
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -41,7 +41,7 @@ class RylyzMemberPresence
   def member() self.rylyz_member end
   def signed_in_before?()  !!member end
   def never_signed_in_before?() !signed_in_before? end
-  	
+
   def mark_sign_in
     # +++
     # self.update({sign_in_count, last_signed_in_at})
@@ -50,11 +50,12 @@ class RylyzMemberPresence
 	def self.materialize_from_omni_auth(omniauth)
     provider = omniauth['provider']
     uid = omniauth['uid']
+    user_info = omniauth['user_info'] || {}
 
 		# see if member already exists, else create one
     presence = RylyzMemberPresence.where(:provider => provider, :uid => uid).first || RylyzMemberPresence.new
 
-    # update 
+    # update
 		presence.provider = omniauth['provider']
 		presence.uid = omniauth['uid']
 		credentials = omniauth['credentials']
@@ -103,7 +104,7 @@ class RylyzMemberPresence
       presence.name ||= user_info['nickname'] unless user_info['nickname'].blank?
       presence.name ||= (user_info['first_name']+" "+user_info['last_name']) unless
         user_info['first_name'].blank? || user_info['last_name'].blank?
-    end   
+    end
 
 		if presence.save then presence else nil end
 	end
@@ -115,7 +116,7 @@ class RylyzMemberPresence
 			utc_offset = extra_info['utc_offset']
 			# +++ set to timezone
 			v = extra_info['screen_name'] || extra_info['nickname']
-			nickname = v unless v.nil?			
+			nickname = v unless v.nil?
 		end
 		self.extra_info = extra['raw_info']
 	end

@@ -5,118 +5,15 @@
   .html-code
     = "<script src='http://#{RYLYZ_PLAYER_HOST}/assets/rylyz.wyjyt.js' type='text/javascript'></script>"
 
-.section
-  %h2 Registered Sites
-  .registered-sites
-    - if @sites.any?
-      - @sites.each do |site|
-        = render :partial => 'registered_site', :locals => {:site => site}
-
-.section
-  .toolbar.list
-    %button{:class => "add", :data => {:fragment => "button-add-content"}}
-      Add site
-
-  %form{ :action => dashboard_add_site_path, :method => "post"}
-    .field
-      %label Site URL
-      %input.long{:type => "text", :name => "site[url]", :placeholder => "mydomain.com"}
-    .field
-      %label Site Title
-      %input.long{:type => "text", :name => "site[title]", :maxlength=>88, :placeholder => "Site Headline"}
-    .field
-      %label Site Description
-      %textarea.long{:name => "site[description]", :rows=>4, :maxlength=>300, :placeholder => "Enter an overview for your site" }
-    .toolbar.fieldset.float-left
-      %button{:type => "submit"}
-        .button Save
-
-:javascript
-  // Adding sites
-  jQuery(document).ready(function($) {
-
-    // Addition of new sites
-    var $button = $('button.add');
-    var fragment = $button.data('fragment');
-    var $fragment = $('#' + fragment);
-
-    $button.bind('click', function(e) {
-      $fragment.toggle();
-    });
-
-    // Listen ajax callback
-    $('body').bind(fragment + ':success', function(e, data) {
-      $fragment.hide();
-      $('.registered-sites').append(data);
-    });
-
-    var $form = $fragment.find('form');
-    $form.bind('submit', function(e) {
-      e.preventDefault();
-
-      $.ajax({
-        url: $form.attr('action'),
-        type: 'POST',
-        dataType: 'html',
-        data: $form.serialize(),
-        complete: function(xhr, textStatus) {
-          $('body').trigger(fragment + ':complete');
-        },
-        success: function(data, textStatus, xhr) {
-          $('body').trigger(fragment + ':success', [data]);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          $('body').trigger(fragment + ':error');
-        }
-      });
-    });
-
-  });
-
-:javascript
-  // Removing sites
-  jQuery(document).ready(function($) {
-
-    // Removal of sites
-    var $button = $('button.delete');
-    var fragment = $button.data('fragment');
-    var $fragment = $('#' + fragment);
-
-    $('body').delegate('button.delete', 'click', function(e) {
-      e.preventDefault();
-      var $this = $(this);
-      if (confirmDelete()) {
-        deleteSite($this);
-      }
-    });
-
-    function confirmDelete() {
-      return confirm("Are you sure?");
-    };
-
-    // Listen ajax callback
-    $('body').bind(fragment + ':success', function(e, $elem) {
-      $elem.parents('.site').remove();
-    });
-
-    function deleteSite($elem) {
-      var $form = $fragment.find('form');
-      $.ajax({
-        url: $form.attr('action'),
-        type: 'POST',
-        dataType: 'html',
-        data: $form.serialize(),
-        complete: function(xhr, textStatus) {
-          $('body').trigger(fragment + ':complete');
-        },
-        success: function(data, textStatus, xhr) {
-          $('body').trigger(fragment + ':success', [$elem]);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          $('body').trigger(fragment + ':error');
-        }
-      });
-
-    };
-
-  });
+- if @sites.empty?
+  .section
+    %form{:action => dashboard_add_site_path, :method => "post"}
+      .field
+        %label Site URL
+        %br
+        %label
+          = "http://"
+        %input.long{:type => "text", :name => "site[domain]", :placeholder => "mydomain.com"}
+      .toolbar.fieldset.float-left
+        %button{:type => "submit"}
+          .button Save

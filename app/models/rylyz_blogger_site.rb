@@ -2,10 +2,9 @@ class RylyzBloggerSite
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  validates_uniqueness_of :url
-
   # Site details
-  field :url,         :type => String, :default => nil
+  field :scheme,      :type => String, :default => 'http'
+  field :domain,      :type => String, :default => nil
   field :title,       :type => String, :default => nil
   field :description, :type => String, :default => nil
 
@@ -15,6 +14,10 @@ class RylyzBloggerSite
   field :approval_status, :type => String, :default => nil
 
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :sites
+
+  def url
+    "#{scheme}://#{domain}"
+  end
 end
 
 # Lets add 3 status variables:
