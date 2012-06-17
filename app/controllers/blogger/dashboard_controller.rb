@@ -30,13 +30,14 @@ class Blogger::DashboardController < ApplicationController
 
   def delete_site
     logger.info params
-    domain = params[:domain]
-    site = current_blogger.sites.where(:domain => domain)
+    oid = params[:oid]
+    site = current_blogger.sites.find(oid)
     if site
+      url = site.url
       site.delete
-      warn = "#{domain} deleted!"
+      warn = "#{url} deleted!"
     else
-      error = "#{domain} cannot be deleted."
+      error = "site id #{oid} cannot be deleted."
     end
 
     redirect_to :dashboard_sites, :flash => {:warn => warn, :error => error}

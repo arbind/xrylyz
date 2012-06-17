@@ -1,6 +1,6 @@
 .site{:id => "button-delete-content"}
   %form{:action => dashboard_delete_site_path, :method => "post"}
-    %input{:type => "hidden", :name => "domain", :value => site.domain}
+    %input{:type => "hidden", :name => "oid", :value => site.id}
     %fieldset
       %legend
         =h site.url
@@ -9,5 +9,5 @@
       %p
         =h site.description
       .toolbar.fieldset.float-right
-        %button{:class => "delete", :data => {:fragment => "button-delete-content"}, :type=>"submit"}
+        %button{:class => "delete", :type=>"submit"}
           .button Delete Site
