@@ -89,27 +89,21 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def login
+    self.current_member = nil #logout current_member immediately if a share key is present
+
     share_key = params[:share_key]
-    session[:share_key] = share_key
-
-    logger.info share_key
-
-    # person already logged in
-    if blogger_signed_in?
-      if share_key == current_blogger.share_key
-        # redirect_to :dashboard
-      else
-        # TODO: Logout current member and keep share_key
-      end
-    end
+    session[:share_key] = share_key unless share_key.nil?
 
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
   end
 
   def logout
-    self.next_page_on_success = dashboard_login_url
-    redirect_to logout_url, :notice =>"You have been logged out!"
+    self.current_member = nil #logout current_member immediately if a share key is present
+    redirect_to dashboard_login_url, :notice =>"You have been logged out!"
+
+    # self.next_page_on_success = dashboard_login_url
+    # redirect_to logout_url, :notice =>"You have been logged out!"
   end
 
   private

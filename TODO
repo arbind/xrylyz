@@ -10,6 +10,10 @@ then share key but with prior existing login with blogger already there
     b logs out
     c with twitter using share code
 
+4. 2 people login with 2 different share keys
+    a. 1st time member, logs in with share code 1
+    b. 1st time member, logs in with share code 2
+
 conflict:
 1. 2 fb accounts login with same share code:
   a login with fb1 and share code

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_member, :member_signed_in?, :social_presences
-  helper_method :current_blogger, :member_signed_in?
+  helper_method :current_blogger, :blogger_signed_in?
   helper_method :current_super_user, :super_user_signed_in?
 
  protected

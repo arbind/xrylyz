@@ -26,8 +26,9 @@
         .account.toolbar
           %a{:href=>profile_me_url, :title=>"account profile"}
             %button me
-          %a{:href=>dashboard_logout_url, :title=>"logout"}
-            %button.logout x
+          - if blogger_signed_in?
+            %a{:href=>dashboard_logout_url, :title=>"logout"}
+              %button.logout x
         .primary.toolbar
           %a{:href=>dashboard_url}
             %button dashboard
