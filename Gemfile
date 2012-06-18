@@ -14,6 +14,7 @@ gem 'jquery-rails'
 
 gem 'addressable'
 gem 'httparty'
+gem 'metainspector'
 
 gem 'stripe'
 gem 'pusher'
