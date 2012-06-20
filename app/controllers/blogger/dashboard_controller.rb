@@ -62,12 +62,12 @@ class Blogger::DashboardController < ApplicationController
     @sites = current_blogger.sites || []
 	end
 
-  def sites
+  def websites
     @html_submenu_buttons =  dashboard_submenu
     @sites = current_blogger.sites || []
   end
 
-  def add_site
+  def register_website
     domain =  params[:site][:domain]
     if validate_hostname(domain)
       @site = current_blogger.sites.find_or_create_by(:domain => domain)
@@ -76,10 +76,10 @@ class Blogger::DashboardController < ApplicationController
       error = "We couldn't validate #{domain}. It was not registered."
     end
 
-    redirect_to :dashboard_sites, :flash => {:notice => notice, :error => error}
+    redirect_to :dashboard_websites, :flash => {:notice => notice, :error => error}
   end
 
-  def delete_site
+  def unregister_website
     logger.info params
     oid = params[:oid]
     site = current_blogger.sites.find(oid)
@@ -91,31 +91,39 @@ class Blogger::DashboardController < ApplicationController
       error = "site id #{oid} cannot be deleted."
     end
 
-    redirect_to :dashboard_sites, :flash => {:warn => warn, :error => error}
+    redirect_to :dashboard_websites, :flash => {:warn => warn, :error => error}
   end
 
-  def referrals
+  def visitors
     @html_submenu_buttons =  dashboard_submenu
   end
 
-  def activity
-    @html_submenu_buttons =  dashboard_submenu
-  end
 
 	def dollar()
     @html_submenu_buttons = dollar_submenu
   end
 
-  def revenues()
+  def referrals
     @html_submenu_buttons = dollar_submenu
   end
 
-  def costs()
-    @html_submenu_buttons = dollar_submenu
+
+  def me
+    @html_submenu_buttons = profile_submenu
+  end
+
+  def social_accounts 
+    @html_submenu_buttons = profile_submenu
+    
+  end
+
+  def subscription_plans
+    @html_submenu_buttons = profile_submenu
+    
   end
 
   def creditcards()
-    @html_submenu_buttons = dollar_submenu
+    @html_submenu_buttons = profile_submenu
   end
 
   def add_creditcard
@@ -128,14 +136,6 @@ class Blogger::DashboardController < ApplicationController
     item = params[:item]
     current_member.credit_cards.all.first.charge(amount);
     redirect_to :dashboard_billing
-  end
-
-  def social_accounts 
-    
-  end
-
-  def profile()
-    @html_submenu_buttons = profile_submenu
   end
 
   private
@@ -172,24 +172,25 @@ class Blogger::DashboardController < ApplicationController
 
   def dashboard_submenu
     [
-      {name: 'overview', href: dashboard_url},
-      {name: 'websites', href: dashboard_sites_url},
+      {name: 'overview',        href: dashboard_url},
+      {name: 'websites',        href: dashboard_websites_url},
+      {name: 'visitors',        href: dashboard_visitors_url},
     ]
   end
 
   def dollar_submenu
     [
-      {name: 'revenues', href: dollar_revenues_url},
-      {name: 'costs', href: dollar_costs_url}
+      {name: 'profit sharing',  href: dashboard_dollar_url},
+      {name: 'referrals',       href: dashboard_referrals_url},
     ]
   end
 
   def profile_submenu
     [
-      {name: 'social accounts', href: dashboard_social_accounts_url },
-      {name: 'referrals', href: dashboard_referrals_url},
-      {name: 'activity', href: dashboard_activity_url},
-      {name: 'credit cards', href: profile_creditcards_url}
+      {name: 'profile',         href: dashboard_me_url},
+      {name: 'plan',            href: dashboard_subscription_plans_url },
+      {name: 'social', href: dashboard_social_accounts_url },
+      {name: 'credit cards',    href: profile_creditcards_url}
     ]
   end
 

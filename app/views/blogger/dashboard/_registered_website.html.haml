@@ -1,5 +1,5 @@
 .site{:id => "button-delete-content"}
-  %form{:action => dashboard_delete_site_path, :method => "post"}
+  %form{:action => dashboard_unregister_website_path, :method => "post"}
     %input{:type => "hidden", :name => "oid", :value => site.id}
     %fieldset
       %legend
@@ -10,4 +10,4 @@
         =h site.description
       .toolbar.fieldset.float-right
         %button{:class => "delete", :type=>"submit"}
-          .button Delete Site
+          .button Unregister Site

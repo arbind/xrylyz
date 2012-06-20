@@ -1,9 +1,9 @@
 - @html_page_title = "websites"
 .section
-  %h2 Add the url of your website
-  %form{ :action => dashboard_add_site_path, :method => "post"}
+  %h2 Register your website
+  %form{ :action => dashboard_register_website_path, :method => "post"}
     .field
-      %label Site URL
+      %label Website URL
       %br
       %label
         = "http://"
@@ -18,6 +18,6 @@
   .registered-sites
     - if @sites.any?
       - @sites.each do |site|
-        = render :partial => 'registered_site', :locals => {:site => site}
+        = render :partial => 'registered_website', :locals => {:site => site}
     - else
       %p Add your site above

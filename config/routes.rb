@@ -20,28 +20,28 @@ RylyzPlayer::Application.routes.draw do
   scope :module => :blogger, :controller => "dashboard" do
     get 'login',            :as => :dashboard_login
     get 'logout',           :as => :dashboard_logout
+    get 'signup',           :as => :dashboard_signup
     get 'this_is_not_me',   :as => :dashboard_this_is_not_me
     get 'confirm_signup/:share_key', :to => 'dashboard#confirm_signup'
-    get 'signup', :as => :dashboard_signup
 
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
-    get 'social_accounts',            :as => :dashboard_social_accounts
-    get 'sites',            :as => :dashboard_sites
-    post 'add_site',        :as => :dashboard_add_site
-    post 'delete_site',     :as => :dashboard_delete_site
-    get 'referrals',        :as => :dashboard_referrals
-    get 'activity',        :as => :dashboard_activity
+    get 'websites',            :as => :dashboard_websites
+    post 'register_website',        :as => :dashboard_register_website
+    post 'unregister_website',     :as => :dashboard_unregister_website
+    get 'visitors',        :as => :dashboard_visitors
 
     get 'dollar',           :as => :dashboard_dollar
-    get 'revenues',         :as => :dollar_revenues
-    get 'costs',            :as => :dollar_costs
-    post 'add_creditcard', :as => :dashboard_add_creditcard
+    get 'profit_sharing',        :as => :dashboard_profit_sharing
+    get 'referrals',        :as => :dashboard_referrals
+
+    get 'me',                 :as => :dashboard_me
+    get 'social_accounts',    :as => :dashboard_social_accounts
+    get 'subscription_plans', :as => :dashboard_subscription_plans
+    get 'creditcards',        :as => :profile_creditcards
+    post 'add_creditcard',    :as => :dashboard_add_creditcard
+
 post 'test_purchase', :as => :dashboard_test_purchase
-
-    get 'profile',          :as => :profile_me
-    get 'creditcards',      :as => :profile_creditcards
-
   end
 
   # Public Showcase

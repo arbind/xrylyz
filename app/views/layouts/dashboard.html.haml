@@ -24,7 +24,7 @@
         = @html_page_title
       #site-menu
         .account.toolbar
-          %a{:href=>profile_me_url, :title=>"account profile"}
+          %a{:href=>dashboard_me_url, :title=>"account profile"}
             %button me
           - if blogger_signed_in?
             %a{:href=>dashboard_logout_url, :title=>"logout"}
