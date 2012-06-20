@@ -1,10 +1,61 @@
 class Blogger::DashboardController < ApplicationController
   include ApplicationHelper
-  before_filter :require_member_to_be_signed_in,  :except => [:login, :logout]
-  before_filter :require_blogger_to_be_signed_in, :except => [:login, :logout, :index]
-  before_filter :register_blogger, :only => [:index]
+  before_filter :require_member_to_be_signed_in,  :except =>         [ :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
+  before_filter :require_blogger_to_be_signed_in, :except => [ :index, :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
+  before_filter :register_blogger, :only => [ :index ]
 
   layout "dashboard"
+
+  #
+  # 
+  #
+  def confirm_signup
+    share_key = params[:share_key]
+    @signup_confirmation_blogger = RylyzBlogger.where(:share_key => share_key).first
+    session[:signup_confirmation_blogger_oid] = @signup_confirmation_blogger.id if not @signup_confirmation_blogger.nil?
+    redirect_to :dashboard_login
+  end
+
+  #
+  # 
+  #
+  def this_is_not_me
+    session[:signup_confirmation_blogger_oid] = nil
+    redirect_to :dashboard_login
+  end
+
+
+  #
+  #
+  #
+  def dashboard_signup
+
+  end
+
+
+  #
+  # 
+  #
+  def login
+    self.current_member = nil #logout current_member immediately
+
+    signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid] # see if blogger is confirming their signup
+    @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+
+    self.next_page_on_success = dashboard_url
+    self.next_page_on_failure = dashboard_login_url
+  end
+
+  # Logout
+  # 
+  #
+  def logout
+    self.current_member = nil #logout current_member immediately if a share key is present
+    session[:signup_confirmation_blogger_oid] = nil
+
+    redirect_to :dashboard_login, :notice =>"You have been logged out!"
+  end
+
 
 	def index
     @html_submenu_buttons =  dashboard_submenu
@@ -44,10 +95,6 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def referrals
-
-  end
-
-  def referrals
     @html_submenu_buttons =  dashboard_submenu
   end
 
@@ -62,9 +109,11 @@ class Blogger::DashboardController < ApplicationController
   def revenues()
     @html_submenu_buttons = dollar_submenu
   end
+
   def costs()
     @html_submenu_buttons = dollar_submenu
   end
+
   def creditcards()
     @html_submenu_buttons = dollar_submenu
   end
@@ -89,24 +138,6 @@ class Blogger::DashboardController < ApplicationController
     @html_submenu_buttons = profile_submenu
   end
 
-  def login
-    self.current_member = nil #logout current_member immediately if a share key is present
-
-    share_key = params[:share_key]
-    session[:share_key] = share_key unless share_key.nil?
-
-    self.next_page_on_success = dashboard_url
-    self.next_page_on_failure = dashboard_login_url
-  end
-
-  def logout
-    self.current_member = nil #logout current_member immediately if a share key is present
-    redirect_to dashboard_login_url, :notice =>"You have been logged out!"
-
-    # self.next_page_on_success = dashboard_login_url
-    # redirect_to logout_url, :notice =>"You have been logged out!"
-  end
-
   private
 
   require 'resolv'
@@ -121,13 +152,22 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def register_blogger
-    if current_member.blogger.nil?
-      share_key = session[:share_key]
-      blogger = RylyzBlogger.where(:share_key => share_key).first
-      blogger ||= RylyzBlogger.create
-      current_member.blogger = blogger
+
+    if current_member.blogger.nil? # 1st login, see if they are confirming their account
+
+      signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid]
+      @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+
+      # redirect to signup page if there was no confirmation
+      redirect_to :dashboard_signup, :notice => "Please signup first. We'll send you a confirmation email so you can login!" if @signup_confirmation_blogger.nil?
+
+      # blogger has logged in for the first time and confirmed their account
+      current_member.blogger = @signup_confirmation_blogger
       current_member.save!
+      flash.now[:notice] = "Thanks for confirming your account! You can now register your websites!"
     end
+
+    session[:signup_confirmation_blogger_oid] = nil
   end
 
   def dashboard_submenu

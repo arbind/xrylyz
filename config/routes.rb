@@ -18,6 +18,12 @@ RylyzPlayer::Application.routes.draw do
 
   # Dashboard Routes for bloggers
   scope :module => :blogger, :controller => "dashboard" do
+    get 'login',            :as => :dashboard_login
+    get 'logout',           :as => :dashboard_logout
+    get 'this_is_not_me',   :as => :dashboard_this_is_not_me
+    get 'confirm_signup/:share_key', :to => 'dashboard#confirm_signup'
+    get 'signup', :as => :dashboard_signup
+
     # +++ add dashboard resources for sites, keys, referrals, analytics, etc. (must be an authenticated blogger)
     get 'dashboard',        :as => :dashboard,            :to => 'dashboard#index'
     get 'social_accounts',            :as => :dashboard_social_accounts
@@ -36,8 +42,6 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get 'profile',          :as => :profile_me
     get 'creditcards',      :as => :profile_creditcards
 
-    get 'login',            :as => :dashboard_login
-    get 'logout',           :as => :dashboard_logout
   end
 
   # Public Showcase

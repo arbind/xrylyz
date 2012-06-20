@@ -20,42 +20,53 @@ class Sudo::ControlPanelController < ApplicationController
 	def api() end
 		
 	def load_signups
+		# ++++todo get this data directly from launchrock: http://developers.launchrock.com/documentation/api/reference#api-insights
+
 		require 'csv'
 		require 'open-uri'
 		blogger = nil
 		plan = nil
-		last_signup_at = DateTime.now 
 
 		signup_csv_url = 'https://docs.google.com/spreadsheet/pub?key=0Art_DhjcEo-FdFFzQUk4dUFabklQX3otbF9ybWx3NkE&output=csv'
 
 		CSV.foreach(open(signup_csv_url), :headers=>true) do |r|
 			email =  r['email']
-			if not email.nil?
-			  blogger = RylyzBlogger.find_or_create_by(email: email)
+			if not email.nil? # each record must have an email address
 
-			  blogger.plan = RylyzBloggerPlan.create if blogger.plan.nil?
-				blogger.plan.profit_sharing_rate ||= r['share'].to_f/100 if r['share']
-				blogger.plan.referral_rate ||= r['ref'].to_f/100 if r['ref']
-				blogger.plan.monthly_subscription_rate ||= r['$/month'].to_f if r['$/month']
+			  blogger = RylyzBlogger.where(email: email).first # +++ why does find_by not work for mongoid? use where in the meantime
+			  if blogger.nil? # create this new blogger
+					begin
+						dt = DateTime.strptime(r['timestamp'], "%m/%d/%Y %H:%M:%S") if not r['timestamp'].nil?
+						last_signup_at = Time.parse(dt.to_s).utc if not dt.nil?
+					rescue
+					end
+					last_signup_at ||= Time.now.utc 
 
-				# +++ todo: blogger.is_early_adopter = 
+				  blogger = RylyzBlogger.new(
+				  	email: email,
+						share_key: share_key_for_ref_url(r['ref_url']),
+						referred_by: r['referred_by'],
+						is_early_adopter: true,  #+++ change this after alpha release!!!
+						signedup_at: last_signup_at
+				  	)
+			  end
 
-				blogger.plan.save!
-
-			  blogger.is_alpha_tester = r['alpha']
-				blogger.hi_email_sent ||= r['hi']
-				blogger.referred_by = r['referred_by']
-				blogger.share_key ||= share_key_for_ref_url(r['ref_url'])
-
-				blogger.share_clicks = r['user_clicks'].to_i if r['user_clicks']
-				blogger.share_conversions = r['user_signups'].to_i if r['user_signups']
-				begin
-					last_signup_at = DateTime.strptime(r['timestamp'], "%m/%d/%Y %H:%M:%S") if r['timestamp']
-				rescue
-					# If DateTime fails to parse, just use the last_signup_time
-				ensure
-					blogger.signup_at = last_signup_at
+			  # bind the blogger's subscription plan
+			  blogger.plan = RylyzBloggerPlan.where(name: r['plan_name']).first if blogger.plan.nil?
+			  if blogger.plan.nil? # create a new plan if needed
+				  blogger.plan = RylyzBloggerPlan.create!(
+				  	name: r['plan_name'],
+						base_profit_sharing_rate: r['share'].to_f/100,
+						referral_rate: r['ref'].to_f/100,
+						affiliate_rate: r['affil8'].to_f/100,
+						monthly_subscription_rate: r['$/month'].to_f
+						)
 				end
+
+				# update latest stats for all bloggers
+				blogger.share_clicks = r['user_clicks'].to_i if not r['user_clicks'].nil?
+				blogger.share_conversions = r['user_signups'].to_i if not r['user_signups'].nil?
+
 				blogger.save!
 			end
 		end

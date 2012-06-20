@@ -7,8 +7,15 @@
 .section
   %ol
     - @signups.each do |blogger|
+      - psr = (100 * (blogger.plan.base_profit_sharing_rate + (blogger.plan.referral_rate * blogger.share_conversions))).to_i
       %li
-        = "#{blogger.nickname}"
-        = "[share code: #{blogger.share_key}]" if blogger.share_key
-        = "<B>#{blogger.share_conversions}</B> / #{blogger.share_clicks} (conversions/clicks)".html_safe if blogger.share_conversions>0 or blogger.share_clicks>0
-        = "<b>{referred by:#{blogger.referred_by}}</b>".html_safe if blogger.referred_by
+        - if 0 < blogger.share_conversions
+          = "<div style='color:blue;'>".html_safe
+        = blogger.plan.name
+        = " (#{psr}%)"
+        = blogger.nickname
+        = "[#{blogger.share_key}]"
+        = "#{blogger.share_conversions} / #{blogger.share_clicks}".html_safe if blogger.share_clicks>0
+        = " {referred by:#{blogger.referred_by}}".html_safe if blogger.referred_by
+        - if 0 < blogger.share_conversions
+          = "</div>".html_safe

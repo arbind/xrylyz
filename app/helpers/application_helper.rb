@@ -25,6 +25,11 @@ module ApplicationHelper
 		page = session[:next_page_on_failure]	# one time access
 		clear_next_page_from_session					# clears next_page vars from the session
 		page
+
+		# +++
+		# do not clear on failure - otherwise back button will no longer find value in the session after a failure
+		# user may likely hit back button after a failure)
+
 	end
 
 	def next_page_on_failure=(page)

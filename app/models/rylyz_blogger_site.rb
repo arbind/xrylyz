@@ -15,15 +15,13 @@ class RylyzBloggerSite
 
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :sites
 
-  before_create :scrap_attributes
+  before_create :scrape_attributes
 
-  def url
-    "#{scheme}://#{domain}"
-  end
+  def url() "#{scheme}://#{domain}" end
 
   private
 
-  def scrap_attributes
+  def scrape_attributes
     page = MetaInspector.new(self.domain)
     self.title = page.title
     self.description = page.description

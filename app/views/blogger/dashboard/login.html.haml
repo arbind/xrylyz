@@ -1,6 +1,13 @@
 - @html_page_title = "login"
 
+- if @signup_confirmation_blogger
+  = @signup_confirmation_blogger.email 
+  = @signup_confirmation_blogger.plan.base_profit_sharing_rate if @signup_confirmation_blogger.plan
+
 .section
+  %p 
+    Simply login with any of these internet service provider below:
+    We are using secure oauth for our sign in, so there's no need to create a new username and password to use your rylyz dashboard.
   = render partial: "member/auth/social_sign_in"
 
   %hr

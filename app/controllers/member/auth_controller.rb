@@ -48,15 +48,22 @@ class Member::AuthController < ApplicationController
       else # signing in with this social presence for the first time from this provider
         if member_signed_in? and self.current_member.social_presences.where({:provider => presence.provider}).empty? # <-- need to test why this doesnt work
             # member already signed in, just add to this members list of social presences
-            # double check that this provider is not already one of the social presences as a different uid
-            # if provider is already in the list, then, create a new user and sign them in (switch user)
             self.current_member.add_social_presence presence
         else # not signed in
-          # create a new member (or find one matching the same email as this presence)
-          self.current_member = RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
+          # see if there is signup confirmation
+          signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid]
+          @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+
+          # see if the blogger has confirmed before using a different provider (just add this as new provider to same member)
+          self.current_member = @signup_confirmation_blogger.member if not @signup_confirmation_blogger.nil?
+
+          # if create a new member (or find one matching the same email as this presence)
+          self.current_member ||= RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
           self.current_member.add_social_presence presence unless current_member.nil? # add this presence to the new member
         end
       end
+
+      #next_page = next_page_on_failure! if self.current_member.nil?
 
     rescue Exception => e
       logger.error "Oauth Error #{e.message}"
@@ -68,6 +75,7 @@ class Member::AuthController < ApplicationController
       next_page ||= next_page_on_success!
       redirect_to next_page, :flash => {:notice => notice, :error => error}
     end
+
   end
 
   def omniauth_failure_callback
