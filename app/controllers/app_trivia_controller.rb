@@ -62,7 +62,7 @@ class AppTriviaController < RylyzAppController
     events << event
 
     ctx = {appName: app_name, screenName:'trivia-room', displayName:'status'}
-    data = {status:'pick your answer'}
+    data = {status:''}
     event = {queue:'app-server', type:'load-data', context:ctx, data: data}
     events << event
 
