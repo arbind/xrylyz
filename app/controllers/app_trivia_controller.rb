@@ -122,7 +122,7 @@ class AppTriviaController < RylyzAppController
       if trivia.correct_answer == choice
         status = "Correct Answer"
         trivia.correct_answers << visitor.for_display
-        placement = trivia.correct_answers.size
+        placement = trivia.correct_answers.size.ordinalize
 
         ctx = {appName:app_name, screenName:'trivia-room', displayName:'placement'}
         data = {placement:placement}

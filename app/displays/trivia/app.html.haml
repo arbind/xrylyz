@@ -8,19 +8,19 @@
     %h1 Nick
 
   %screen{:name=>"trivia-room"}
-    %h1 Trivia
-    %object{:name=>"question"}
-    %object{:name=>"status"}
-    %object{:name=>"placement"}
-    %object{:name=>"winner"}
-    %collection{:name=>"options"}
-
+    #trivia
+      %object{:name=>"question"}
+      #trivia-picks
+        %h2 Yo! Pick your answer
+        %collection{:name=>"options"}
+      #trivia-results
+        %object{:name=>"status"}
+        %object{:name=>"winner"}
+        %object{:name=>"placement"}
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
-    %h2
+    %h1
       [[question]]
-    %h3
-      [[url]]
 
   %collection{:name=>"options", :item=>"option-item", "data-defaults"=>"[]"}
     %ul
@@ -31,13 +31,18 @@
       [[option]]
 
   %object{:name=>"status", "data-defaults" => "{status:'...'}"}
-    %h3
+    %h2
       [[status]]
 
   %object{:name=>"placement", "data-defaults" => "{placement:'-'}"}
-    %h3
-      [[placement]]
+    %p
+      You got [[placement]] place!
 
   %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
-    %h3
-      [[nickname]] - [[source_url]]
+    %p
+      %strong
+        Winner
+      %br
+      [[nickname]]
+      %br
+      [[source_url]]
