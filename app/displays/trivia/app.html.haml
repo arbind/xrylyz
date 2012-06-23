@@ -26,7 +26,7 @@
           %object{:name=>"winner"}
 
   %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
-    %h2 [[nickname]], Choose wisely
+    %h2{:style => "color: black;"} [[nickname]], Choose wisely
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
@@ -52,4 +52,5 @@
       %br
       [[nickname]]
       %br
-      [[source_url]]
+      %a{:href => "[[source_url]]", :target => "_blank"}
+        [[source_url]]

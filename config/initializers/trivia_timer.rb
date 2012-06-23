@@ -9,6 +9,6 @@ def repeat_every(interval)
   end
 end
 
-thread = repeat_every(5) do
+thread = repeat_every(12) do
   AppTriviaController.on_timer_tick
 end
