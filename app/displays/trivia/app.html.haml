@@ -25,7 +25,6 @@
         #trivia-results
           %object{:name=>"status"}
           %object{:name=>"winner"}
-          %object{:name=>"placement"}
 
   %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
     %h2 Choose wisely [[nickname]]
@@ -45,10 +44,6 @@
   %object{:name=>"status", "data-defaults" => "{status:'...'}"}
     %h2#status.correct
       [[status]]
-
-  %object{:name=>"placement", "data-defaults" => "{placement:'-'}"}
-    %p
-      You got [[placement]] place!
 
   %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
     %p
