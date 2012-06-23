@@ -35,7 +35,9 @@ class AppTriviaController < RylyzAppController
 
   def self.on_timer_tick
     puts "=== tick ==="
+
     self.play_next_trivia
+    self.notify_players
   end
 
   def self.play_next_trivia
@@ -48,6 +50,29 @@ class AppTriviaController < RylyzAppController
       self.up1_blog_idx
     end
     trivia
+  end
+
+  def self.notify_players
+    trivia = AppTriviaController.current_game
+    events = []
+
+    ctx = {appName: app_name, screenName:'trivia-room', displayName:'question'}
+    data = {question: trivia.question, url: trivia.blog_url}
+    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    events << event
+
+    ctx = {appName: app_name, screenName:'trivia-room', displayName:'status'}
+    data = {status:'pick your answer'}
+    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    events << event
+
+    ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
+    idx = -1
+    data = trivia.options.map { |option| idx +=1; {option: option, key: idx}}
+    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    events << event
+
+    PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", events)
   end
 
   class ScreenTriviaRoomController < RylyzScreenController
