@@ -66,6 +66,16 @@ class AppTriviaController < RylyzAppController
     event = {queue:'app-server', type:'load-data', context:ctx, data: data}
     events << event
 
+    ctx = {appName:app_name, screenName:'trivia-room', displayName:'placement'}
+    data = {placement:'-'}
+    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    events << event
+
+    ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
+    data = {nickname:'', source_url:''}
+    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    events << event
+
     ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
     idx = -1
     data = trivia.options.map { |option| idx +=1; {option: option, key: idx}}
@@ -124,6 +134,12 @@ class AppTriviaController < RylyzAppController
       end
 
       trivia.save
+
+
+      ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
+      data = trivia.correct_answers.first
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
 
       ctx = {appName:app_name, screenName:'trivia-room', displayName:'status'}
       data = {status:status}

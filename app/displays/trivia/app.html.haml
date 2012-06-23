@@ -8,10 +8,11 @@
     %h1 Nick
 
   %screen{:name=>"trivia-room"}
-    %h1 Room
+    %h1 Trivia
     %object{:name=>"question"}
     %object{:name=>"status"}
     %object{:name=>"placement"}
+    %object{:name=>"winner"}
     %collection{:name=>"options"}
 
 
@@ -29,10 +30,14 @@
     %li{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}"}
       [[option]]
 
-  %object{:name=>"status", "data-defaults" => "{status: '...'}"}
+  %object{:name=>"status", "data-defaults" => "{status:'...'}"}
     %h3
       [[status]]
 
-  %object{:name=>"placement", "data-defaults" => "{placement: '-'}"}
+  %object{:name=>"placement", "data-defaults" => "{placement:'-'}"}
     %h3
       [[placement]]
+
+  %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
+    %h3
+      [[nickname]] - [[source_url]]
