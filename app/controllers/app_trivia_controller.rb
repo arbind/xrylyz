@@ -127,11 +127,11 @@ class AppTriviaController < RylyzAppController
       klass = 'none'
       if trivia.correct_answer == choice
         klass = 'correct'
-        status = "Correct Answer"
+        status = "That's Correct!"
         trivia.correct_answers << visitor.for_display
         placement = trivia.correct_answers.size
         if 1==placement
-          status = "You Won it"
+          status = "You Won!"
           klass = 'winner'
         end
 
@@ -143,7 +143,7 @@ class AppTriviaController < RylyzAppController
         events << event
       else
         klass = 'wrong'
-        status = "Wrong Answer"
+        status = "You chose poorly"
         trivia.wrong_answers << visitor.for_display
       end
 
@@ -151,6 +151,7 @@ class AppTriviaController < RylyzAppController
 
       ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
       data = trivia.correct_answers.first
+      data["nickname"] = "The winner is #{data['nickname']}"
       event = {queue:'app-server', type:'load-data', context:ctx, data: data}
       events << event
 

@@ -26,7 +26,7 @@
           %object{:name=>"winner"}
 
   %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
-    %h2{:style => "color: black;"} [[nickname]], Choose wisely
+    %h2{:style => "color: black;"} [[nickname]], choose an answer
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
@@ -47,10 +47,8 @@
 
   %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
     %p
-      %strong
-        Winner
-      %br
-      [[nickname]]
-      %br
-      %a{:href => "[[source_url]]", :target => "_blank"}
-        [[source_url]]
+      %strong.name
+        [[nickname]]
+      %span.url
+        %a{:href => "[[source_url]]", :target => "_blank"}
+          [[source_url]]
