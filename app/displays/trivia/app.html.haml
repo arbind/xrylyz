@@ -5,15 +5,14 @@
     %screen{:name=>"trivia-room"}
 
   %screen{:name=>"input-nickname"}
-    %h1 Play Trivia
-    %form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
-      %h3 Enter Your Nickname To Play:
-      .field
-        %input.text{:type => "text", :name => "nickname"}
-      .field
-        %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
-    .button-bar.exit
-      .button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
+    #signin
+      %h1 Play Trivia
+      %form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
+        %h3 Please enter your nickname:
+        .field
+          %input.text{:type => "text", :name => "nickname", :placeholder => "i.e. tenderlovemaking"}
+        .field
+          %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
 
   %screen{:name=>"trivia-room"}
     #trivia
@@ -27,7 +26,7 @@
           %object{:name=>"winner"}
 
   %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
-    %h2 Choose wisely [[nickname]]
+    %h2 [[nickname]], Choose wisely
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
@@ -41,9 +40,12 @@
     .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
       [[option]]
 
-  %object{:name=>"status", "data-defaults" => "{status:'...'}"}
-    %h2#status.correct
-      [[status]]
+  %object{:name=>"status", "data-defaults" => "{status:'...',message:'...',klass:'hidden'}"}
+    %div{:class => '[[klass]]'}
+      %h2#status
+        [[status]]
+      %p.message
+        [[messsage]]
 
   %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
     %p
