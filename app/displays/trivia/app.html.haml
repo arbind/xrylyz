@@ -26,7 +26,7 @@
           %object{:name=>"winner"}
 
   %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
-    %h2 [[nickname]], Choose wisely
+    %h2{:style => "color: black;"} [[nickname]], Choose wisely
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
@@ -40,12 +40,10 @@
     .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
       [[option]]
 
-  %object{:name=>"status", "data-defaults" => "{status:'...',message:'...',klass:'hidden'}"}
+  %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
     %div{:class => '[[klass]]'}
       %h2#status
         [[status]]
-      %p.message
-        [[messsage]]
 
   %object{:name=>"winner", "data-defaults" => "{nickname:'', source_url:''}"}
     %p
@@ -54,4 +52,5 @@
       %br
       [[nickname]]
       %br
-      [[source_url]]
+      %a{:href => "[[source_url]]", :target => "_blank"}
+        [[source_url]]
