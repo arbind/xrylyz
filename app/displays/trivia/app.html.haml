@@ -10,24 +10,25 @@
   %screen{:name=>"trivia-room"}
     #trivia
       %object{:name=>"question"}
-      #trivia-picks
-        %h2 Yo! Pick your answer
-        %collection{:name=>"options"}
-      #trivia-results
-        %object{:name=>"status"}
-        %object{:name=>"winner"}
-        %object{:name=>"placement"}
+      .inner
+        #trivia-picks
+          %h2 Yo! Pick your answer
+          %collection{:name=>"options"}
+        #trivia-results
+          %object{:name=>"status"}
+          %object{:name=>"winner"}
+          %object{:name=>"placement"}
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
       [[question]]
 
   %collection{:name=>"options", :item=>"option-item", "data-defaults"=>"[]"}
-    %ul
+    #choices
       %collection
 
   %item{:name=>"option-item"}
-    %li{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}"}
+    .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}"}
       [[option]]
 
   %object{:name=>"status", "data-defaults" => "{status:'...'}"}
