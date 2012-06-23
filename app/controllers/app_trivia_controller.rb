@@ -97,6 +97,11 @@ class AppTriviaController < RylyzAppController
       event = {queue:'app-server', type:'load-data', context:ctx, data: data}
       events << event
 
+      ctx = {appName: app_name, screenName:'trivia-room', displayName:'prompt'}
+      data = {nickname: visitor.nickname}
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
+
       ctx = {appName: app_name, screenName:'trivia-room', displayName:'status'}
       data = {status:'pick your answer'}
       event = {queue:'app-server', type:'load-data', context:ctx, data: data}
@@ -149,4 +154,31 @@ class AppTriviaController < RylyzAppController
       PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", events)
     end
   end
+
+
+  class ScreenInputNicknameController < RylyzScreenController
+
+    def self.on_data_input(visitor, tokens)
+      wid = tokens['wid']
+
+      formMetadata = tokens['formData']
+      inputDataSet = formMetadata['dataSet']
+      nicknameInput = inputDataSet['nickname']
+      nickname = nicknameInput['value']
+      visitor.nickname = nickname
+
+      client_events = []
+
+      event  = {queue:'app-server', type:'update-me', data: visitor.for_display}
+      client_events << event
+
+      ctx = {appName: app_name}
+      event  = {queue:'screen', type:'navigation', nextScreen:'trivia-room', context:ctx }
+      client_events << event
+      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
+    end
+
+  end
+
+
 end

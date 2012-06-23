@@ -1,23 +1,34 @@
 %rylyz{:name=>"trivia"}
 
-  %app{:name=>"trivia", "data-defaults"=>"{title:'Trivia'}", :"start-screen" => "trivia-room"}
+  %app{:name=>"trivia", "data-defaults"=>"{title:'Trivia'}", :"start-screen" => "input-nickname"}
     %screen{:name=>"input-nickname"}
     %screen{:name=>"trivia-room"}
 
   %screen{:name=>"input-nickname"}
-    %h1 Nick
+    %h1 Play Trivia
+    %form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
+      %h3 Enter Your Nickname To Play:
+      .field
+        %input.text{:type => "text", :name => "nickname"}
+      .field
+        %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
+    .button-bar.exit
+      .button.quit{:onclick=>"javascript:Rylyz.quitApp();"} Quit
 
   %screen{:name=>"trivia-room"}
     #trivia
       %object{:name=>"question"}
       .inner
         #trivia-picks
-          %h2 Choose wisely
+          %object{:name=>"prompt"}
           %collection{:name=>"options"}
         #trivia-results
           %object{:name=>"status"}
           %object{:name=>"winner"}
           %object{:name=>"placement"}
+
+  %object{:name=>"prompt", "data-defaults" => "{nickname:'player'}"}
+    %h2 Choose wisely [[nickname]]
 
   %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
     %h1
