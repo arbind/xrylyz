@@ -53,7 +53,7 @@ class AppTriviaController < RylyzAppController
   end
 
   def self.notify_players
-    trivia = AppTriviaController.current_game
+    trivia = AppTriviaController.current_game || Trivia.new
     events = []
 
     ctx = {appName: app_name, screenName:'trivia-room', displayName:'question'}
