@@ -92,6 +92,12 @@
   .winner #status {
     color: gold;
   }
+  .winner-object p {
+    width: 100%;
+    overflow: hidden;
+    whitespace: nowrap;
+    text-overflow: ellipses;
+  }
 }
 
 .choice {
@@ -105,7 +111,7 @@
     background: LightYellow;
   }
   &.selected {
-    background: #444;
+    background: #222;
     color: white;
     font-weight: bold;
     border-color: transparent;
