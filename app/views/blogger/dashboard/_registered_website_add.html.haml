@@ -1,0 +1,10 @@
+%form{:action => dashboard_register_website_path, :method => "post"}
+  .field
+    %label Site URL
+    %br
+    %label
+      = "http://"
+    %input.long{:type => "text", :name => "site[domain]", :placeholder => "mydomain.com"}
+  .toolbar.fieldset.float-left
+    %button{:type => "submit"}
+      .button Register
