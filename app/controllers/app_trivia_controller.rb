@@ -133,6 +133,7 @@ class AppTriviaController < RylyzAppController
         if 1==placement
           status = "You Won!"
           klass = 'winner'
+          winner = true
         end
 
         placement = placement.ordinalize
@@ -149,11 +150,13 @@ class AppTriviaController < RylyzAppController
 
       trivia.save
 
-      ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
-      data = trivia.correct_answers.first
-      data["nickname"] = "The winner is #{data['nickname']}"
-      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      events << event
+      if !winner
+        ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
+        data = trivia.correct_answers.first
+        data['nickname'] = "The winner is #{data['nickname']}"
+        event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+        events << event
+      end
 
       ctx = {appName:app_name, screenName:'trivia-room', displayName:'status'}
       data = {status:status, klass:klass}
