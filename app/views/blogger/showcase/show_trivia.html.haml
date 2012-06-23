@@ -1,0 +1,24 @@
+%form{ :action => showcase_save_trivia_url , :method => 'POST'}
+  %label
+    Id
+  %div= @trivia.id
+
+  %label
+    Blog Url
+  %div= @trivia.blog_url
+  %br
+  %label
+    Question
+  %div= @trivia.question
+  %br
+  %label
+    Option
+    - @trivia.options.each do |option|
+      %div= option
+  %br
+  %label
+    Correct Answer
+  %div= @trivia.correct_answer
+  %br
+  %button{ :type => 'submit'}
+    Save

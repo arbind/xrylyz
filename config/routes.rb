@@ -50,6 +50,11 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get 'games',    :as => :showcase_games
     get 'blog',     :as => :showcase_blog
     get 'scratch',  :as => :showcase_scratch
+    get 'trivia',        :to => 'showcase#trivia', :as => :showcase_trivia
+    get 'trivia/:id',    :to => 'showcase#edit_trivia', :as => :showcase_edit_trivia
+    post 'trivia',       :to => 'showcase#save_trivia', :as => :showcase_save_trivia
+    post 'trivia/:id',   :to => 'showcase#update_trivia', :as => :showcase_update_trivia
+    post 'trivia/:id/delete', :to => 'showcase#delete_trivia', :as => :showcase_delete_trivia
   end
 
   # Authentication for Humans

@@ -1,0 +1,14 @@
+%form{ :action => showcase_save_trivia_url , :method => 'POST'}
+  %input{ :type => 'text', :name => 'trivia[blog_url]', :value => @trivia.blog_url, :placeholder => 'Blog Url' }
+  %input{ :type => 'text', :name => 'trivia[question]', :value => @trivia.question, :placeholder => 'Question'}
+  %button{ :type => 'submit'}
+    Save
+
+- @trivias.each do |trivia|
+  %div
+    %a{ :href => showcase_edit_trivia_url(trivia)}
+      = "#{trivia.correct_answer}/#{trivia.options.count} | #{trivia.question} | #{trivia.blog_url}"
+    %span
+      %form{ :action => showcase_delete_trivia_url(trivia) , :method => 'POST'}
+        %button{ :type => 'submit'}
+          Delete

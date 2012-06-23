@@ -1,0 +1,22 @@
+%form{ :action => showcase_update_trivia_url(@trivia) , :method => 'POST'}
+  %label
+    Blog Url
+  %input{ :type => 'text', :name => 'trivia[blog_url]', :value => @trivia.blog_url }
+  %br
+  %label
+    Question
+  %input{ :type => 'text', :name => 'trivia[question]', :value => @trivia.question }
+  %br
+  %label
+    Option
+  %input{ :type => 'text', :name => 'option' }
+  %br
+  - @trivia.options.each do |option|
+    %div= option
+  %br
+  %label
+    Correct Answer
+  %input{ :type => 'text', :name => 'trivia[correct_answer]', :value => @trivia.correct_answer }
+  %br
+  %button{ :type => 'submit'}
+    Save
