@@ -37,7 +37,7 @@
       %collection
 
   %item{:name=>"option-item"}
-    .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
+    .choice{:class=>"[[winclass]]", "fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
       [[option]]
 
   %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}

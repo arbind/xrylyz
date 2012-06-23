@@ -78,7 +78,7 @@ class AppTriviaController < RylyzAppController
 
     ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
     idx = -1
-    data = trivia.options.map { |option| idx +=1; {option: option, key: idx}}
+    data = trivia.options.map { |option| idx +=1; {option: option, key: idx, winclass:""}}
     event = {queue:'app-server', type:'load-data', context:ctx, data: data}
     events << event
 
@@ -109,7 +109,7 @@ class AppTriviaController < RylyzAppController
 
       ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
       idx = -1
-      data = trivia.options.map { |option| idx +=1; {option: option, key: idx}}
+      data = trivia.options.map { |option| idx +=1; {option: option, key: idx, winclass:""}}
       event = {queue:'app-server', type:'load-data', context:ctx, data: data}
       events << event
 
@@ -148,6 +148,18 @@ class AppTriviaController < RylyzAppController
       end
 
       trivia.save
+
+
+      ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
+      idx = -1
+      data = trivia.options.map { |option| 
+        idx +=1;
+        winclass = ""
+        winclass = "right-#{idx}" if idx == trivia.correct_answer
+        {option: option, key: idx, winclass:winclass}
+      }
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
 
       ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
       data = trivia.correct_answers.first
