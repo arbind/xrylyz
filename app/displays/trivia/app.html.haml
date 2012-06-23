@@ -1,6 +1,6 @@
 %rylyz{:name=>"trivia"}
 
-  %app{:name=>"trivia", "data-defaults"=>"{title:'Trivia'}", :"start-screen" => "input-nickname"}
+  %app{:name=>"trivia", "data-defaults"=>"{title:'Trivia'}", :"start-screen" => "trivia-room"}
     %screen{:name=>"input-nickname"}
     %screen{:name=>"trivia-room"}
 
@@ -9,3 +9,30 @@
 
   %screen{:name=>"trivia-room"}
     %h1 Room
+    %object{:name=>"question"}
+    %object{:name=>"status"}
+    %object{:name=>"placement"}
+    %collection{:name=>"options"}
+
+
+  %object{:name=>"question", "data-defaults" => "{question:'Waiting...', url:'www.test.com'}"}
+    %h2
+      [[question]]
+    %h3
+      [[url]]
+
+  %collection{:name=>"options", :item=>"option-item", "data-defaults"=>"[]"}
+    %ul
+      %collection
+
+  %item{:name=>"option-item"}
+    %li{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}"}
+      [[option]]
+
+  %object{:name=>"status", "data-defaults" => "{status: '...'}"}
+    %h3
+      [[status]]
+
+  %object{:name=>"placement", "data-defaults" => "{placement: '-'}"}
+    %h3
+      [[placement]]

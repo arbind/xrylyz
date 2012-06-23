@@ -1,7 +1,7 @@
 %form{ :action => showcase_update_trivia_url(@trivia) , :method => 'POST'}
   %label
     Blog Url
-  %input{ :type => 'text', :name => 'trivia[blog_url]', :value => @trivia.blog_url }
+  %input{ :type => 'text', :name => 'blog_trivia[url]', :value => @trivia.blog_trivia.url }
   %br
   %label
     Question

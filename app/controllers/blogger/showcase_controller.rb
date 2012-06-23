@@ -26,7 +26,6 @@ class Blogger::ShowcaseController < ApplicationController
   def scratch() end
 
   def trivia
-    @trivia = Trivia.new
     @trivias = Trivia.all
   end
 
@@ -35,15 +34,18 @@ class Blogger::ShowcaseController < ApplicationController
   end
 
   def save_trivia
-    @trivia = Trivia.create(params[:trivia])
+    @blog = BlogTrivia.find_or_create_by(:url => params[:blog_trivia][:url])
+    @trivia = @blog.trivias.create(params[:trivia])
+
     redirect_to :showcase_trivia
   end
 
   def update_trivia
     option = params[:option]
     @trivia = Trivia.find(params[:id])
+    @trivia.blog_trivia.update_attributes(params[:blog_trivia])
     @trivia.update_attributes(params[:trivia])
-    @trivia.options << option
+    @trivia.options << option unless option.blank?
     @trivia.save
 
     redirect_to :showcase_edit_trivia
