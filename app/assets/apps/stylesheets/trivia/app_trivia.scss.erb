@@ -1,38 +1,41 @@
-h1, h2, h3 {
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-h1 {
-  font-size: 24px;
-  line-height: 1.5;
-  padding: 1em;
-  margin-bottom: 1em;
-  text-align: center;
-  background: black;
-  color: white;
-}
-
-h2 {
-  margin-bottom: 1em;
-  font-size: 16px;
-  text-transform: uppercase;
-}
-.inner {
-  padding: 20px;
-}
-
-
 .trivia-app {
   color: #222;
-  background-color: #fafafa;
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
   font-size: 16px;
   -webkit-transform: translateZ(0);
 }
 
 #trivia {
+  h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+    font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", sans-serif; 
+    font-weight:600; 
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 1.5;
+    padding: .5em 1em;
+    margin-bottom: .5em;
+    text-align: center;
+    background: -webkit-linear-gradient(#222, #444);
+    color: white;
+    text-shadow: 0 2px 3px black;
+    border-radius: 4px 4px 0 0;
+  }
+
+  h2 {
+    margin-bottom: 1em;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+  .inner {
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px 20px;
+  }
 }
 
 #trivia-picks {
@@ -44,17 +47,33 @@ h2 {
   width: 45%;
   padding-left: 5%;
   float: left;
+  #status {
+    font-size: 24px;
+    text-transform: uppercase;
+    &.correct {
+      color: green;
+    }
+  }
 }
 
 .choice {
   position: relative;
   padding: 1em;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   cursor: pointer;
-  -webkit-transition: all .2s ease-out;
+  -webkit-transition: all .2s ease;
   &:hover {
     background: LightYellow;
+  }
+  &.selected {
+    background: #444;
+    color: white;
+    font-weight: bold;
+    border-color: transparent;
+    -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3), 0 5px 10px rgba(0, 0, 0, .3);
+    text-shadow: 0 1px 1px black;
   }
   &.incorrect {
     color: #cc0000;

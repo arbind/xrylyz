@@ -14,30 +14,28 @@ $appImagesURL: $imagesURL + 'images/' +$appName+ '/';
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
   font-size: 16px;
   margin: 0px auto;
-  width: 300px;
-  height: 200px;
-	padding: 10px 8px;
+	padding: 20px;
+  text-align: center;
   .space-screen {
 
   	.launch {
-  		color: #2222FF;
+  		color: #222;
+      font-weight: bold;
   		position: relative;
+      display: inline-block;
   		width: 180px;
   		height: 180px;
   		clear: both;
-  		margin: 20px auto;
-  		background-color: #2C2D2B;
-  		color: white;
-	    border: 3px solid #101010;
-	    &:hover {
-	  		color: #CCCC88;
-		    border-color: #CCCC88;
-		    background-color: #3C3D3B;
-	    }
+  		margin: 20px 10px;
+	    border: 2px solid #ccc;
+      cursor: pointer;
 		  border-radius: 8px;
 			-o-border-radius: 8px;
 			-moz-border-radius: 8px;
 			-webkit-border-radius: 8px;
+      &:hover {
+        background: LightYellow;
+      }
 			.name {
 				position: absolute;
 				bottom: 0;

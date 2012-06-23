@@ -12,7 +12,7 @@
       %object{:name=>"question"}
       .inner
         #trivia-picks
-          %h2 Yo! Pick your answer
+          %h2 Choose wisely
           %collection{:name=>"options"}
         #trivia-results
           %object{:name=>"status"}
@@ -28,11 +28,11 @@
       %collection
 
   %item{:name=>"option-item"}
-    .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}"}
+    .choice{"fire-onClick"=>"{queue:'hi', type:'choose', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
       [[option]]
 
   %object{:name=>"status", "data-defaults" => "{status:'...'}"}
-    %h2
+    %h2#status.correct
       [[status]]
 
   %object{:name=>"placement", "data-defaults" => "{placement:'-'}"}
