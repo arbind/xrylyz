@@ -1,3 +1,38 @@
+TriviaStairs:
+  4-level tournament
+  20 questions: 5 questions / level
+  level 1 - must get 2/5 to continue, 2strikes given to get correct answer
+  - Sign in is required to play level 2
+  Level 2 - must get 4/10 to continue, 1 strike given to get correct answer, buy 2strikes for 500 coins
+  Level 3 - must get 7/15 to continue, 1 strike given to get correct answer, buy 2strikes for 1000 coins
+  Level 4 - final round, 1 strike given to get correct answer, buy 2strikes for 2000 coins
+  - can also answer correctly with 1strike a special question to enter round next round:
+    Special question can be any question you choose from next round, you have 1 strike to get it right.
+  Can buy into level 2 for 100 coins
+  Can buy into level 3 for 200 coins
+  Can buy into level 4 for 300 coins
+  Can buy all levels for 500 coins
+  Each level is the point factor:
+  level 1 = 1x, level 2 = 2x, level 4 = 4x
+  Play a game - or play in real time.
+  Submit your own questions with options and win coins if approved
+
+
+  Check out Qrank
+  Allow free viewing of game.
+  Ask for nickname after first guess.
+  After question completes, place results into stream
+  After questiong completes, give results for a few seconds
+  Set up as a Daily Quiz
+  Add abiliy for bloggers to submit trivia question.
+  Add a 1 liner info about the answer - given in the results.
+  Add categories
+  Add category icons
+  Allow blogger to select which categories show up to their visitors
+  Provide Baddges
+  Allow user submitted questions, as well as blogger submitted questions.
+  User controlled timing.
+
 +++ TODO
 *** test logout and login with share_key in the url
 then another social account with the same share_key
