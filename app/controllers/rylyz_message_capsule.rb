@@ -21,19 +21,14 @@ class RylyzMessageCapsule
   end
 
   def notify
-puts "1 #{@messages.count}"
     events = []
     @messages.each do |message|
-puts "x"
       ctx = context_for_display (message[:displayName])
-puts ctx
       ev = {queue:@queue, type: @event_type, context:ctx, data: message[:data]}
       events << ev
     end
-puts "2 #{events.count}"
 
     PusherChannels.instance.trigger_private_channel_event(@channel_id, 'fire-event', events) unless events.empty?
-puts "3 #{@channel_id}"
   end
 
 end

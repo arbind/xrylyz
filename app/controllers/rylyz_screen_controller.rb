@@ -53,6 +53,7 @@ class RylyzScreenController
 
   end
 
+  # MessageCapsule Materializers
   def self.materialize_message_capsule_for_all (event_type)
     ctx = {appName: app_name, screenName: screen_name}
     RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
@@ -61,6 +62,15 @@ class RylyzScreenController
   def self.materialize_message_capsule_for_wid (event_type, wid)
     ctx = {appName: app_name, screenName: screen_name}
     RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
+  end
+
+
+  def self.load_data_message_capsule_for_all ()
+    materialize_message_capsule_for_all 'load-data'
+  end
+
+  def self.load_data_message_capsule_for_wid (wid)
+    materialize_message_capsule_for_wid 'load-data', wid
   end
 
 end
