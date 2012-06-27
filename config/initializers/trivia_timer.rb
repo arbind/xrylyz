@@ -10,5 +10,5 @@ def repeat_every(interval)
 end
 
 thread = repeat_every(12) do
-  AppTriviaController.on_timer_tick
+  AppTriviaController::ScreenTriviaRoomController.on_timer_tick
 end

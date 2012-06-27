@@ -1,5 +1,5 @@
 class RylyzAppController
- 
+
   def self.app_name # app_name for AppChatController is 'chat'
     self.name.split("::").first.underscore.split('_')[1...-1].join("_") 
   end
@@ -112,6 +112,16 @@ class RylyzAppController
       display:app_display
     }
     PusherChannels.instance.trigger_private_channel_event(wid, "open-app", event)
+  end
+
+  def self.materialize_message_capsule_for_all (event_type)
+    ctx = {appName: app_name}
+    RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
+  end
+
+  def self.materialize_message_capsule_for_wid (event_type, wid)
+    ctx = {appName: app_name}
+    RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
   end
 
 end

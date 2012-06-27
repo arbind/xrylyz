@@ -1,12 +1,12 @@
 class RylyzScreenController
 
-
   def self.app_name # app_name for AppChatController is 'chat'
     self.name.split("::").first.underscore.split('_')[1...-1].join("_") 
   end
 
   def self.screen_name # screen_name for AppChatController::ScreenChatRoomController is 'chat_room'
-    self.name.split("::").last.underscore.split('_')[1...-1].join("_") 
+    # self.name.split("::").last.underscore.split('_')[1...-1].join("_")
+    self.name.split("::").last.underscore.split('_')[1...-1].join("-")
   end
 
   def self.app_uid
@@ -51,6 +51,16 @@ class RylyzScreenController
 		# PusherChannels.instance.start_private_channel(aid)
 		# # this is a 1-way channel - from app to wyjyt - so no need to bind listeners
 
+  end
+
+  def self.materialize_message_capsule_for_all (event_type)
+    ctx = {appName: app_name, screenName: screen_name}
+    RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
+  end
+
+  def self.materialize_message_capsule_for_wid (event_type, wid)
+    ctx = {appName: app_name, screenName: screen_name}
+    RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
   end
 
 end

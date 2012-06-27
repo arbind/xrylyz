@@ -3,6 +3,11 @@ class AppTriviaController < RylyzAppController
   def self.on_load_data(visitor, tokens)
   end
 
+
+  class ScreenTriviaRoomController < RylyzScreenController
+
+
+
   def self.current_game
     trivia = nil
     if BlogTrivia.all.size > 0
@@ -53,43 +58,66 @@ class AppTriviaController < RylyzAppController
   end
 
   def self.notify_players
-    trivia = AppTriviaController.current_game || Trivia.new
-    events = []
 
-    ctx = {appName: app_name, screenName:'trivia-room', displayName:'question'}
-    data = {question: trivia.question, url: trivia.blog_url}
-    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-    events << event
+    trivia = current_game || Trivia.new
 
-    ctx = {appName: app_name, screenName:'trivia-room', displayName:'status'}
-    data = {status:''}
-    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-    events << event
+    capsule = materialize_message_capsule_for_all('load-data')
+    capsule.build_events do |messages|
+      data = {question: trivia.question, url: trivia.blog_url}
+      messages << {displayName:'question', data: data}
 
-    ctx = {appName:app_name, screenName:'trivia-room', displayName:'placement'}
-    data = {placement:'-'}
-    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-    events << event
+      data = {status:''}
+      messages << {displayName:'status', data: data}
 
-    ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
-    data = {nickname:'', source_url:''}
-    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-    events << event
+      data = {placement:'-'}
+      messages << {displayName:'placement', data: data}
 
-    ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
-    idx = -1
-    data = trivia.options.map { |option| idx +=1; {option: option, key: idx, winclass:""}}
-    event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-    events << event
+      data = {nickname:'', source_url:''}
+      messages << {displayName:'winner', data: data}
 
-    PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", events)
+      idx = -1
+      data = trivia.options.map { |option| idx +=1; {option: option, key: idx, winclass:""}}
+      messages << {displayName:'options', data: data}
+    end
+
+    capsule.notify
+
+    # events = []
+
+    # ctx = {appName: app_name, screenName:'trivia-room', displayName:'question'}
+    # data = {question: trivia.question, url: trivia.blog_url}
+    # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    # events << event
+
+    # ctx = {appName: app_name, screenName:'trivia-room', displayName:'status'}
+    # data = {status:''}
+    # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    # events << event
+
+    # ctx = {appName:app_name, screenName:'trivia-room', displayName:'placement'}
+    # data = {placement:'-'}
+    # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    # events << event
+
+    # ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
+    # data = {nickname:'', source_url:''}
+    # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    # events << event
+
+    # ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
+    # idx = -1
+    # data = trivia.options.map { |option| idx +=1; {option: option, key: idx, winclass:""}}
+    # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+    # events << event
+
+    # PusherChannels.instance.trigger_private_channel_event(app_uid, "fire-event", events)
   end
 
-  class ScreenTriviaRoomController < RylyzScreenController
+
     def self.on_load_data(visitor, tokens)
       wid = tokens['wid']
 
-      trivia = AppTriviaController.current_game
+      trivia = current_game
       events = []
 
       ctx = {appName: app_name, screenName:'trivia-room', displayName:'question'}
@@ -120,7 +148,7 @@ class AppTriviaController < RylyzAppController
       wid = tokens['wid']
 
       choice = tokens['choice'].to_i
-      trivia = AppTriviaController.current_game
+      trivia = current_game
 
       events = []
 
