@@ -1,0 +1,95 @@
+%rylyz{:name=>"quiz"}
+
+
+  %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
+    %screen{:name=>"input-nickname"}
+    %screen{:name=>"game"}
+    %screen{:name=>"question"}
+    %screen{:name=>"leaderboard"}
+    %screen{:name=>"submit-question"}
+
+
+  %screen{:name=>"input-nickname"}
+    #signin
+      %h1 Play Quiz
+      %form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
+        %h3 Please enter your nickname:
+        .field
+          %input.text{:type => "text", :name => "nickname", :placeholder => "i.e. tenderlovemaking"}
+        .field
+          %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
+
+
+  %screen{:name=>"game"}
+    .game-board
+      .level-1
+        %collection{:name=>"level1-questions"}
+      .level-2
+        %collection{:name=>"level2-questions"}
+      .level-3
+        %collection{:name=>"level3-questions"}
+    .button-bar
+      .button{"nav-onClick"=>"input-nickname"} Enter Name
+      .button{"nav-onClick"=>"question"} Question
+      .button{"nav-onClick"=>"leaderboard"} Leaderboard
+      .button{"nav-onClick"=>"submit-question"} Submit Question4
+
+  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    .level
+      %collection
+
+  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    .level
+      %collection
+
+  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    .level
+      %collection
+
+  %item{:name=>"question-item"}
+    .question-card{"fire-onClick"=>"{queue:'hi', type:'select-question', qid:'[[qid]]'}"}
+      ?
+
+
+  %screen{:name=>"question"}
+    .question
+      Question
+    .about
+      About
+    .progress-bar
+      = "===================="
+    .score
+      99
+    %h1
+      Options
+    %collection{:name=>"options"}
+    .button-bar.question-menu
+      .button.hint
+        Hint
+      .button.pass
+        Pass
+    .button-bar.close
+      .button{"nav-onClick"=>"game"} Close
+
+  %collection{:name=>"options", :item=>"option-item", "data-defaults"=>"[{key:1,option:'Text 1'},{key:2,option:'Text 2'},{key:3,option:'Text 3'},{key:4,option:'Text 4'}]"}
+    %h1
+      Collection
+    #choices
+      %collection
+
+  %item{:name=>"option-item"}
+    %h2
+      Item
+    .choice{"fire-onClick"=>"{queue:'hi', type:'select-answer', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
+      [[option]]
+
+
+  %screen{:name=>"leaderboard"}
+    .button-bar
+      .button{"nav-onClick"=>"game"} Back
+
+
+  %screen{:name=>"submit-question"}
+    .button-bar
+      .button{"nav-onClick"=>"game"} Back
+
