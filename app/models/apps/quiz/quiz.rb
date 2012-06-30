@@ -14,4 +14,22 @@ class Quiz
 
   validates_presence_of :category
   validates_presence_of :name
+
+  class Game
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    has_one :quiz
+    has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
+    # has_one :player
+
+    def initialize(quiz, player)
+      self.quiz = quiz
+      self.player = player
+
+      quiz.questions.each do |q|
+        self.questions << QuizQuestion::GameQuestion.new(q)
+      end
+    end
+  end
 end

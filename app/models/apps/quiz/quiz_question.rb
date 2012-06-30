@@ -20,4 +20,16 @@ class QuizQuestion
   validates_presence_of :question
   validates_presence_of :category
   validates :level, numericality: { greater_than_or_equal_to: 0 }
+
+  class GameQuestion
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    has_one :question, :class_name => "QuizQuestion"
+    belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
+
+    def initialize(quiz_question)
+      self.question = quiz_question
+    end
+  end
 end
