@@ -21,15 +21,33 @@ class QuizQuestion
   validates_presence_of :category
   validates :level, numericality: { greater_than_or_equal_to: 0 }
 
+  # adapter
+  belongs_to :game_question, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :quiz_question
   class GameQuestion
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    has_one :question, :class_name => "QuizQuestion"
+    has_one :quiz_question, :class_name => "QuizQuestion"
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
 
-    def initialize(quiz_question)
-      self.question = quiz_question
+    # adapter usage pattern:
+    # create then adapt
+    # precondition for adapt: instance has already been created
+    def adapt(quiz_question)
+      puts "ADAPTING #{quiz_question.question}"
+      self.quiz_question = quiz_question
+      save
+      self
     end
+
+    def question() quiz_question.question end
+    def category() quiz_question.category end
+    def level() quiz_question.level end
+    def info() quiz_question.info end
+    def options() quiz_question.options end
+    def quiz() self.game end
+    def test() "test" end
+
   end
+
 end
