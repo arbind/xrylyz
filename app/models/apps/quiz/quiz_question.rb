@@ -11,9 +11,11 @@ class QuizQuestion
 
   field :info, :type => Hash, :default => {}
 
-  has_many :options
-  has_many :blog_leaderboards
-  has_one :game_leaderboard
+
+  has_many :options, :class_name => "QuizOption", :inverse_of => :question
+
+  belongs_to :quiz, :class_name => "Quiz", :inverse_of => :questions
+
 
   validates_presence_of :question
   validates_presence_of :category

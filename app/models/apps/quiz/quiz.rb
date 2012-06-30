@@ -8,7 +8,7 @@ class Quiz
 
   field :info, :type => Hash, :default => {}
 
-  has_many :quiz_questions
+  has_many :questions, :class_name => "QuizQuestion", :inverse_of => :quiz
   has_many :blog_leaderboards
   has_one :game_leaderboard
 

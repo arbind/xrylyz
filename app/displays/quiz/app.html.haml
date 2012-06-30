@@ -35,21 +35,23 @@
       .button{"nav-onClick"=>"submit-question"} Submit Question4
 
   %collection{:name=>"level1-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    %h2 level1
     .level
       %collection
 
   %collection{:name=>"level2-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    %h2 level2
     .level
       %collection
 
   %collection{:name=>"level3-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+    %h2 level3
     .level
       %collection
 
   %item{:name=>"question-item"}
     .question-card{"fire-onClick"=>"{queue:'hi', type:'select-question', qid:'[[qid]]'}"}
-      ?
-
+      [[qid]].[[level]].[[category]]
 
   %screen{:name=>"question"}
     .question

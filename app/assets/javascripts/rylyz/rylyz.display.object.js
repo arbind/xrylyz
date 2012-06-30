@@ -74,7 +74,13 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     }
     else {
       if (!this.templateName) { throw "No object template found for <object name='" +this.templateName+ "'>\n"; }
+      //+++ 1st see if there is an object[template='"this.templateName"'], if not then get the object[name='']
       templateSelector = "rylyz[name='" +appName+ "'] > object[name='" +this.templateName+ "']";
+      //+++ throw exception if there is both a template= and a name= found with the same name
+      //+++ throw exception if there is more than 1 template found with this name
+      //+++ be sure to do the same with collections
+      //+++ be sue to do tha same with screens and apps also
+      // (Don't need to check for collection-item template since it is always a template anyway, and never has a named data)
     }
     return templateSelector;
   },
