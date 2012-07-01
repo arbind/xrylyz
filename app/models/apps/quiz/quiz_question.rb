@@ -14,6 +14,7 @@ class QuizQuestion
   field :author_email, :type => String
   field :author_referer, :type => String
 
+  field :is_complete, :type => Boolean, :default => false
   field :is_approved, :type => Boolean, :default => false
   field :is_rejected, :type => Boolean, :default => false
   field :is_for_testing, :type => Boolean, :default => false

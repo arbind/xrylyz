@@ -6,6 +6,8 @@ class Quiz
   field :topic, :type => String, :default => "general"
   field :description, :type => String
 
+  field :is_complete, :type => Boolean, :default => false
+
   field :info, :type => Hash, :default => {}
 
   has_many :questions, :class_name => "QuizQuestion", :inverse_of => :quiz
