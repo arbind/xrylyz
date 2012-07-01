@@ -1,10 +1,8 @@
 require "Rack"
 require "URI"
 
-class Sudo::ControlPanelController < ApplicationController
-	layout "sudo"
-	http_basic_authenticate_with :name => "rylyz.games", :password => "play.well" 
-
+class Sudo::ControlPanelController < Sudo::SudoController
+	
 	def index
 
 	end

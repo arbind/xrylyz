@@ -2,7 +2,7 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
-button, a button {
+.button, button, a button {
   float:left;
   @include btnMixin;
   @include  transitionsFastMixin;
@@ -15,6 +15,36 @@ button, a button {
   }
   &:visited {
     @include btnMixin;
+  }
+}
+
+.button.selected {
+  background-color: white;
+  color: black;
+  cursor:default;
+  &:hover {
+    background-color: white;
+  }
+  &:active {
+    background-color: white;
+  }
+  &:visited {
+    background-color: white;
+  }
+}
+.button.label {
+  border-color: transparent;
+  background-color: transparent;
+  cursor:default;
+  padding-right: 4px;
+  &:hover {
+    background-color: inherit;
+  }
+  &:active {
+    background-color: inherit;
+  }
+  &:visited {
+    background-color: inherit;
   }
 }
 

@@ -15,7 +15,7 @@ form {
   font-family: 'Ubuntu', Helvetica, Arial, sans-serif;  
 }
 
-input, textarea, select {
+input[type="text"], textarea, select {
   border: 1px solid #888888;
   background:none;
   width: 288px;
@@ -30,7 +30,7 @@ input, textarea, select {
 }
 
 
-input, select {
+input[type="text"], select {
   height:24px;
 }
 
@@ -39,14 +39,15 @@ textarea {
 }
 
 
-input.micro, textarea.micro{ width: 28px; }
-input.mini, textarea.mini{ width: 48px; }
-input.tiny, textarea.tiny{ width: 88px; }
-input.small, textarea.small { width: 188px; }
-input.short, textarea.short { width: 188px; }
-input.medium, textarea.medium { width: 288px; }
-input.long, textarea.long { width: 488px; }
-input.full, textarea.full { width: 100%; }
+label.micro, input[type="text"].micro, textarea.micro{ width: 28px; }
+label.mini, input[type="text"].mini, textarea.mini{ width: 48px; }
+label.tiny, input[type="text"].tiny, textarea.tiny{ width: 88px; }
+label.small, input[type="text"].small, textarea.small { width: 188px; }
+label.short, input[type="text"].short, textarea.short { width: 188px; }
+label.medium, input[type="text"].medium, textarea.medium { width: 288px; }
+label.long, input[type="text"].long, textarea.long { width: 488px;}
+label.superlong, input[type="text"].superlong, textarea.superlong { width: 888px;}
+label.full, input[type="text"].full, textarea.full { width: 100%; }
 
 .field, .prompt, .input, .select {
   position: relative;
@@ -59,7 +60,7 @@ input.full, textarea.full { width: 100%; }
   margin: 30px 0px 0px 0px;
   label {
   }
-  input, textarea {
+  input[type="text"], textarea {
     display: block;
     margin: 5px 0px;
   }

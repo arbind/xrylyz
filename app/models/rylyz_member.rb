@@ -10,7 +10,7 @@ class RylyzMember
   field :nickname, :type => String, :default=>nil
   field :email, :type => String, :default=>nil
   field :sign_in_count, :type => Integer, :default=>0
-  field :last_signed_in_at, :type => DateTime, :default => DateTime.now
+  field :last_signed_in_at, :type => DateTime, :default => ->{ DateTime.now }
   field :is_verified, :type => Boolean, :default => false
   field :is_active, :type => Boolean, :default => true
 

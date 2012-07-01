@@ -92,4 +92,20 @@ post 'test_purchase', :as => :dashboard_test_purchase
     # +++ add super user functionality - make sure to include super secure authentication
   end
 
+  scope "/sudo/apps/quiz", :module => "Sudo::Apps", :controller => 'quiz' do
+    get '',        :to => 'quiz#index', :as => :sudo_apps_quiz_index
+    get 'index'
+    get 'quizes', as: :sudo_apps_quiz_quizes
+    get 'quiz/:id', to: 'quiz#quiz', as: :sudo_apps_quiz_quiz
+    get 'questions', as: :sudo_apps_quiz_questions
+    get 'question/:id', to: 'quiz#question', as: :sudo_apps_quiz_question
+    post 'question/:id/level', to: 'quiz#post_level', as: :sudo_apps_quiz_question_post_level
+    post 'question/:id/approve', to: 'quiz#question_approve', as: :sudo_apps_quiz_question_approve
+    post 'question/:id/unapprove', to: 'quiz#question_unapprove', as: :sudo_apps_quiz_question_unapprove
+    post 'question/:id/reject', to: 'quiz#question_reject', as: :sudo_apps_quiz_question_reject
+    post 'question/:id/unreject', to: 'quiz#question_unreject', as: :sudo_apps_quiz_question_unreject
+    post 'question/:id/correct_answer', to: 'quiz#post_correct_answer', as: :sudo_apps_quiz_post_correct_answer
+    post 'question/:id', to: 'quiz#question_update', as: :sudo_apps_quiz_question_update
+  end
+
 end

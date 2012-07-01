@@ -3,7 +3,7 @@ class Quiz
   include Mongoid::Timestamps
 
   field :name, :type => String
-  field :category, :type => String, :default => "general"
+  field :topic, :type => String, :default => "general"
   field :description, :type => String
 
   field :info, :type => Hash, :default => {}
@@ -22,6 +22,8 @@ class Quiz
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    field :playing_referer, :type => String
+
     has_one :quiz
     has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
     # has_one :player
@@ -36,7 +38,6 @@ class Quiz
       self.quiz = quiz
       # self.player = player
       quiz.questions.each do |q|
-        puts "adding #{q.question}"
         gq = self.questions.create
         gq.adapt(q)
       end

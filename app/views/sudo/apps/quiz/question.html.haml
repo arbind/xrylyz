@@ -1,0 +1,104 @@
+%form{:id=>"question_update", :action => sudo_apps_quiz_question_update_url(@question) , :method => 'POST'}
+  .status
+    .toolbar
+      .button.label
+        status: 
+      - if not @question.is_approved
+        .button.approve{:onClick=>"$.post('#{sudo_apps_quiz_question_approve_url(@question)}', {}, function(data) {$('#question_update').submit();} )"}
+          approve&nbsp;&nbsp;&nbsp;&nbsp;
+      -else 
+        .button.selected 
+          approved!
+      - if not @question.is_rejected
+        .button.reject{:onClick=>"$.post('#{sudo_apps_quiz_question_reject_url(@question)}', {}, function(data) {$('#question_update').submit();} )"}
+          reject&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      - else
+        .button.selected 
+          rejected!
+
+    .toolbar
+      .button.label
+        level: 
+      - if 1 != @question.level
+        .button{:onClick=>"$.post('#{sudo_apps_quiz_question_post_level_url(@question)}', {level:1}, function(data) {$('#question_update').submit();} )"}
+          1&nbsp;
+      -else 
+        .button.selected 
+          1!
+      - if 2 != @question.level
+        .button{:onClick=>"$.post('#{sudo_apps_quiz_question_post_level_url(@question)}', {level:2}, function(data) {$('#question_update').submit();} )"}
+          2&nbsp;
+      -else 
+        .button.selected
+          2!
+      - if 3 != @question.level
+        .button{:onClick=>"$.post('#{sudo_apps_quiz_question_post_level_url(@question)}', {level:3}, function(data) {$('#question_update').submit();} )"}
+          3&nbsp;
+      -else 
+        .button.selected
+          3!
+  
+    %div prompt:
+    %input.superlong{ :type => 'text', :name => 'question[prompt]', :value => "#{@question.prompt}", :placeholder => 'question to prompt' }
+
+    %div answer 1:
+    %input{ :type => 'text', :name => 'answer1', :value => "#{@question[1]}", :placeholder => 'Answer 1' }
+    - if 1 == @question.correct_answer 
+      .right.inline
+        O
+    - else
+      .wrong.inline{:onClick=>"$.post('#{sudo_apps_quiz_post_correct_answer_url(@question)}', {correct_answer:1}, function(data) {$('#question_update').submit();} )"}
+        X
+    %div answer 2:
+    %input{ :type => 'text', :name => 'answer2', :value => "#{@question[2]}", :placeholder => 'Answer 2' }
+    - if 2 == @question.correct_answer 
+      .right.inline
+        O
+    - else
+      .wrong.inline{:onClick=>"$.post('#{sudo_apps_quiz_post_correct_answer_url(@question)}', {correct_answer:2}, function(data) {$('#question_update').submit();} )"}
+        X
+    %div answer 3:
+    %input{ :type => 'text', :name => 'answer3', :value => "#{@question[3]}", :placeholder => 'Answer 3' }
+    - if 3 == @question.correct_answer 
+      .right.inline
+        O
+    - else
+      .wrong.inline{:onClick=>"$.post('#{sudo_apps_quiz_post_correct_answer_url(@question)}', {correct_answer:3}, function(data) {$('#question_update').submit();} )"}
+        X
+    %div answer 4:
+    %input{ :type => 'text', :name => 'answer4', :value => "#{@question[4]}", :placeholder => 'Answer 4' }
+    - if 4 == @question.correct_answer 
+      .right.inline
+        O
+    - else
+      .wrong.inline{:onClick=>"$.post('#{sudo_apps_quiz_post_correct_answer_url(@question)}', {correct_answer:4}, function(data) {$('#question_update').submit();} )"}
+        X
+
+
+  - if @question.member
+    .member
+      %label member id:
+      %value= @question.member.id 
+
+  .author
+    %div referer:
+    %input{ :type => 'text', :name => 'question[author_referer]', :value => "#{@question.author_referer}", :placeholder => 'www.blog.com' }
+    %br
+    %div author:
+    %input{ :type => 'text', :name => 'question[author_name]', :value => "#{@question.author_name}", :placeholder => 'name' }
+
+  .trivia-question
+    %div category:
+    %input{ :type => 'text', :name => 'question[category]', :value => "#{@question.category}", :placeholder => 'category' }
+  .toolbar
+    %button{ :type => 'submit'}
+      Save
+
+/ - @question.options.each do |option|
+/   %div
+/     %a{ :href => showcase_edit_trivia_url(trivia)}
+/       = "#{trivia.correct_answer}/#{trivia.options.count} | #{trivia.question} | #{trivia.blog_trivia.url}"
+/     %span
+/       %form{ :action => showcase_delete_trivia_url(trivia) , :method => 'POST'}
+/         %button{ :type => 'submit'}
+/           Delete
