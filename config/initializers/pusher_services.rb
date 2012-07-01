@@ -301,13 +301,8 @@ puts "=========================================="
 #    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
 # end
 
-if "assets" == ENV['RAILS_GROUPS'].to_s.downcase
-  puts "RAILS_GROUPS = asses"
-else
-  puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}"
-end
-
-if "off" == ENV['REAL_TIME'].to_s.downcase
+puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}"
+if ("off" == ENV['REAL_TIME'].to_s.downcase) or ("assets" == ENV['RAILS_GROUPS'].to_s.downcase)
   puts "REAL_TIME = OFF"
 else
   puts "REAL_TIME = ON"
