@@ -20,6 +20,16 @@ $bgcolor-content-gradient-to: #283842;
   background:      -o-linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* Opera 11.10+ */
   background:         linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* not yet supported in 2012! */
 
+
+  .left {
+    float: left;
+    margin-right: 40px;
+  }
+  .right {
+    float: right;
+    border: 1px solid transparent;
+  }
+
   .left-column {
     float: left;
     width:600px;

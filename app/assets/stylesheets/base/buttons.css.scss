@@ -32,11 +32,42 @@
     background-color: white;
   }
 }
+.button.delete, button.delete, a button.delete {
+  border-color: #CC0000;
+  background-color: transparent;
+  cursor:default;
+  &:hover {
+    color: #CC0000;
+  }
+  &:active {
+    color: #CC0000;
+  }
+  &:visited {
+    color: #880000;
+  }
+}
+
+
 .button.label {
   border-color: transparent;
   background-color: transparent;
   cursor:default;
   padding-right: 4px;
+  &:hover {
+    background-color: inherit;
+  }
+  &:active {
+    background-color: inherit;
+  }
+  &:visited {
+    background-color: inherit;
+  }
+}
+
+.button.blank {
+  border-color: transparent;
+  background-color: transparent;
+  cursor:default;
   &:hover {
     background-color: inherit;
   }

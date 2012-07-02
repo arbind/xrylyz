@@ -1,4 +1,58 @@
-- @questions.each do |q|
-  .question
-    %a{href: sudo_apps_quiz_question_url(q)}
-      =q.prompt
+- @html_page_title = "Quiz::QuizQuestion"
+.right-column
+  #submenu
+    - unless @html_submenu_buttons.nil?
+      .secondary.toolbar.round-corners
+        - @html_submenu_buttons.each do |button|
+          %a{:href=>button[:href]}
+            %button{:title=>button[:title]}
+              = button[:name]
+    .secondary.toolbar.round-corners
+      %a{:href=>sudo_apps_quiz_question_create_url}
+        %button
+          Create a New Question
+
+.left-column
+  .toolbar.fullwidth
+    - @where.keys.each do |key|  
+      .button.label= "#{key}=#{@where[key]}"
+
+  .section
+    %h2
+      = "#{@questions.count} questions found"
+
+    %table
+      %tr
+        %th
+        / %th ok
+        %th R
+        %th L
+        / %th Category
+        / %th Season
+        %th A
+        %th Prompt
+        / %th Played
+        %th Referer
+      - @questions.each do |q|
+        %tr{:onClick =>"location.href='#{sudo_apps_quiz_question_url(q)}'"}
+          %td
+            = q.is_complete ? "&#10004; ".html_safe : "&nbsp;".html_safe
+          / %td
+          /   = q.is_approved ? "ok" : "&nbsp;".html_safe
+          %td
+            = q.is_rejected ? "x" : "&nbsp;".html_safe
+          %td
+            = (q.level>0) ? q.level : "--"
+          / %td
+          /   = q.category
+          / %td
+          /   = q.season
+          %td
+            = (q.correct_answer>0) ? q.correct_answer : "--"
+          %td.question
+            %a{href: sudo_apps_quiz_question_url(q)}
+              =q.prompt
+          / %td
+          /   = distance_of_time_in_words(Time.now.utc, Time.utc(q.last_played_at.year, q.last_played_at.month, q.last_played_at.day, 0, 0, 0, 0))
+          %td
+            = q.author_referer.blank? ? "--" : "ok"

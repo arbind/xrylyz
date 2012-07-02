@@ -7,7 +7,7 @@
 	font-size: 18px;	
 	line-height: 30px;
 	margin: 0px;
-	.status, .notice, .error {
+	.status, .notice, .error, .err, .warning, .warn {
 		width: 100%;
 		margin:0px 0px 6px 0px;
 	  @include roundCornersMixin;
@@ -15,7 +15,8 @@
 
 	.status  { background-color:#283848; border: 1px solid #182838; color: #8898A8; }
 	.notice  { background-color: #284838; border: 1px solid #183828; color: #88C898; }
-	.error   { background-color: #482838; border: 1px solid #381828; color: #C88898;}
+	.error, .err   { background-color: #482838; border: 1px solid #381828; color: #C88898;}
+	.warning, .warn { background-color: #484838; border: 1px solid #381828; color: #C88898;}
 
 	p.message { margin: 0px; padding: 0px 20px 0px 8px;}
 	p.close { 

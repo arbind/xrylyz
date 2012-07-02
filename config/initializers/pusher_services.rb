@@ -301,9 +301,19 @@ puts "=========================================="
 #    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
 # end
 
-puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}"
-if ("off" == ENV['REAL_TIME'].to_s.downcase) or ("assets" == ENV['RAILS_GROUPS'].to_s.downcase)
-  puts "REAL_TIME = OFF"
+
+def start_realtime_sockets
+  return true if ("on" == ENV['REAL_TIME'].to_s.downcase)
+  return false if ("off" == ENV['REAL_TIME'].to_s.downcase)
+  return false if ("assets" == ENV['RAILS_GROUPS'].to_s.downcase)
+  return false if defined?(Rails::Console)
+  return true
+end
+
+puts "CONSOLE IS RUNNING" if defined?(Rails::Console)
+puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}" if ENV['RAILS_GROUPS']
+if not start_realtime_sockets
+  puts "REALTIME SOCKETS ARE OFF"
 else
   puts "REAL_TIME = ON"
   begin

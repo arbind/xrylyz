@@ -4,6 +4,7 @@ class QuizQuestion
 
   field :level, :type => Integer, :default => -1
   field :category, :type => String
+  field :season, :type => String, :default => ""
 
   field :prompt , :type => String
   field :answers , :type => Hash, :default => {} #indexed by integer 1, 2, 3, 4
@@ -14,19 +15,35 @@ class QuizQuestion
   field :author_email, :type => String
   field :author_referer, :type => String
 
-  field :is_complete, :type => Boolean, :default => false
   field :is_approved, :type => Boolean, :default => false
   field :is_rejected, :type => Boolean, :default => false
-  field :is_for_testing, :type => Boolean, :default => false
+
+  field :is_complete, :type => Boolean, :default => false
 
   field :last_played_at, :type => DateTime, :default => ->{ 100.years.ago }
   field :info, :type => Hash, :default => {}
 
   belongs_to :quiz, :class_name => "Quiz", :inverse_of => :questions
+  before_save :before_save_check_if_complete
+  # validates_presence_of :question
+  # validates_presence_of :category
+  # validates :level, numericality: { greater_than_or_equal_to: 0 }
 
-  validates_presence_of :question
-  validates_presence_of :category
-  validates :level, numericality: { greater_than_or_equal_to: 0 }
+  def before_save_check_if_complete
+    complete = true
+    complete = false if 0 > level
+    complete = false if 0 > correct_answer
+    complete = false unless (is_approved or is_rejected)
+    complete = false if category.blank?
+    complete = false if prompt.blank?
+    complete = false if answer1.blank?
+    complete = false if answer2.blank?
+    complete = false if answer3.blank?
+    complete = false if answer4.blank?
+
+    self.is_complete = complete
+    return true
+  end
 
   def answer_list
     @a ||= []

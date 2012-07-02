@@ -66,3 +66,59 @@
 .round-right {
   @include roundRightCornersMixin;
 }
+
+.widefull, .fullwidth {width: 100%;}
+.wide5  { width:5px;}
+.wide10  { width:10px;}
+.wide15  { width:15px;}
+.wide20  { width:20px;}
+.wide25  { width:25px;}
+.wide50  { width:50px;}
+.wide100 { width:100px;}
+.wide100 { width:100px;}
+.wide200 { width:200px;}
+.wide250 { width:250px;}
+.wide300 { width:300px;}
+.wide350 { width:350px;}
+.wide400 { width:400px;}
+.wide450 { width:450px;}
+.wide500 { width:500px;}
+.wide550 { width:550px;}
+.wide600 { width:600px;}
+.wide650 { width:650px;}
+.wide700 { width:700px;}
+.wide750 { width:750px;}
+.wide800 { width:800px;}
+.wide850 { width:850px;}
+.wide900 { width:900px;}
+.wide950 { width:950px;}
+.wide1000 { width:1000px;}
+
+.highfull, .fullheight {height: 100%;}
+.high5   { height:5px;}
+.high10  { height:10px;}
+.high15  { height:15px;}
+.high20  { height:20px;}
+.high25  { height:25px;}
+.high50  { height:50px;}
+.high100 { height:100px;}
+.high100 { height:100px;}
+.high200 { height:200px;}
+.high250 { height:250px;}
+.high300 { height:300px;}
+.high350 { height:350px;}
+.high400 { height:400px;}
+.high450 { height:450px;}
+.high500 { height:500px;}
+.high550 { height:550px;}
+.high600 { height:600px;}
+.high650 { height:650px;}
+.high700 { height:700px;}
+.high750 { height:750px;}
+.high800 { height:800px;}
+.high850 { height:850px;}
+.high900 { height:900px;}
+.high950 { height:950px;}
+.high1000{ height:1000px;}
+
+.transparent {background-color: transparent !important;}

@@ -98,6 +98,7 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get 'quizes', as: :sudo_apps_quiz_quizes
     get 'quiz/:id', to: 'quiz#quiz', as: :sudo_apps_quiz_quiz
     get 'questions', as: :sudo_apps_quiz_questions
+    get 'question/new', to: 'quiz#question_create', as: :sudo_apps_quiz_question_create
     get 'question/:id', to: 'quiz#question', as: :sudo_apps_quiz_question
     post 'question/:id/level', to: 'quiz#post_level', as: :sudo_apps_quiz_question_post_level
     post 'question/:id/approve', to: 'quiz#question_approve', as: :sudo_apps_quiz_question_approve
@@ -106,6 +107,7 @@ post 'test_purchase', :as => :dashboard_test_purchase
     post 'question/:id/unreject', to: 'quiz#question_unreject', as: :sudo_apps_quiz_question_unreject
     post 'question/:id/correct_answer', to: 'quiz#post_correct_answer', as: :sudo_apps_quiz_post_correct_answer
     post 'question/:id', to: 'quiz#question_update', as: :sudo_apps_quiz_question_update
+    delete 'question/:id', to: 'quiz#question_delete', as: :sudo_apps_quiz_question_delete
   end
 
 end
