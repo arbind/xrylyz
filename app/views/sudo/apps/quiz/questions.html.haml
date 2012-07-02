@@ -29,8 +29,8 @@
         %th L
         / %th Category
         / %th Season
-        %th A
         %th Prompt
+        %th A
         / %th Played
         %th Referer
       - @questions.each do |q|
@@ -47,11 +47,11 @@
           /   = q.category
           / %td
           /   = q.season
-          %td
-            = (q.correct_answer>0) ? q.correct_answer : "--"
           %td.question
             %a{href: sudo_apps_quiz_question_url(q)}
               =q.prompt
+          %td
+            = (q.correct_answer>0) ? q.correct_answer : "--"
           / %td
           /   = distance_of_time_in_words(Time.now.utc, Time.utc(q.last_played_at.year, q.last_played_at.month, q.last_played_at.day, 0, 0, 0, 0))
           %td
