@@ -1,4 +1,49 @@
-- @quizes.each do |quiz|
-  .quiz
-    %a{href: sudo_apps_quiz_quiz_url(quiz)}
-      = quiz.questions.size
+- @html_page_title = "Quiz::Quizes"
+.right-column
+  #submenu
+    - unless @html_submenu_buttons.nil?
+      .secondary.toolbar.round-corners
+        - @html_submenu_buttons.each do |button|
+          %a{:href=>button[:href]}
+            %button{:title=>button[:title]}
+              = button[:name]
+    .secondary.toolbar.round-corners
+      %a{:href=>sudo_apps_quiz_quiz_create_url}
+        %button
+          Create a New Quiz
+
+.left-column
+  .toolbar.fullwidth
+    - @where.keys.each do |key|  
+      .button.label= "#{key}=#{@where[key]}"
+
+  .section
+    %h2
+      = "#{@quizes.count} quizes found"
+
+    %table
+      %tr
+        %th
+        %th Count
+        %th Kind
+        %th Topic
+        %th Name
+        %th Description
+      - @quizes.each do |q|
+        %tr{:onClick =>"location.href='#{sudo_apps_quiz_quiz_url(q)}'"}
+          %td
+            = q.is_complete ? "&#10004; ".html_safe : "&nbsp;".html_safe
+          / %td
+          /   = q.is_approved ? "ok" : "&nbsp;".html_safe
+          %td
+            =q.questions.count
+          %td
+            =q.kind
+          %td
+            =q.topic
+          %td
+            =q.name
+          %td
+            =q.description
+          / %td
+          /   = distance_of_time_in_words(Time.now.utc, Time.utc(q.last_played_at.year, q.last_played_at.month, q.last_played_at.day, 0, 0, 0, 0))

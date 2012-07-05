@@ -5,7 +5,35 @@ class Sudo::Apps::QuizController < Sudo::SudoController
   end
 
   def quizes
-    @quizes = Quiz.all
+    clear = params[:clear]
+    unless clear.nil?
+      session[:quiz_filter] = {}
+    end
+
+    db_filters = session[:quiz_filter] || {}
+
+    filter = params[:filter]
+    if filter
+      if db_filters[filter].nil?
+        db_filters[filter] = true 
+      else
+        db_filters[filter] =  !db_filters[filter]  #toggle
+      end
+      db_filters["is_rejected"] = false if "is_approved" == filter and true == db_filters[filter]
+      db_filters["is_approved"] = false if "is_rejected" == filter and true == db_filters[filter]
+    end
+
+    session[:quiz_filter] = db_filters
+
+    puts "filters = #{db_filters}"
+
+    @where = {}.merge(db_filters)
+
+    @quizes = Quiz.where(@where)
+
+    puts "where = #{@where}"
+    @html_submenu_buttons = quiz_submenu
+
   end
 
   def quiz
@@ -13,32 +41,90 @@ class Sudo::Apps::QuizController < Sudo::SudoController
     @quiz = Quiz.find(id) if id
   end
 
-  def post_level
-    id = params[:id]
-    level = params[:level].to_i
-    @question = QuizQuestion.find(id) if id
-    if @question
-      @question.level = level
-      @question.save
-      render :json => {level: level}
-    else 
-      render :json => {error: 'true'}
-    end
+  def quiz_create
+    @quiz = Quiz.create
+    redirect_to sudo_apps_quiz_quiz_url(@quiz)
   end
 
-  def post_correct_answer
+  def quiz_update
+    puts params
     id = params[:id]
-    correct_answer = params[:correct_answer].to_i
+    @quiz = Quiz.find(id) if id
 
-    @question = QuizQuestion.find(id) if id
-    if @question
-      @question.correct_answer = correct_answer
-      @question.save
-      render :json => {correct_answer: @question.correct_answer}
-    else 
-      render :json => {error: 'true'}
+    if @quiz
+      q = params[:quiz]
+
+      @quiz.update_attributes(q)
+      # @quiz.save
     end
+    
+    redirect_to sudo_apps_quiz_quiz_url(@quiz)
   end
+
+  def quiz_delete
+    id = params[:id]
+    @quiz = Quiz.find(id) if id
+
+    msg = @quiz.kind || @quiz.id.to_s
+    if @quiz
+      @quiz.destroy
+    end
+
+    redirect_to sudo_apps_quiz_quizes_url, :flash => {:warn => "Deleted quiz:\n#{msg}!"}
+  end
+
+  def quiz_approve
+    id = params[:id]
+    @quiz = Quiz.find(id) if id
+    if @quiz
+      @quiz.is_approved = true
+      @quiz.is_rejected = false
+      @quiz.save
+      puts "Approving!"
+    end
+    render :json => {ok: true}
+  end
+
+  def quiz_unapprove
+    id = params[:id]
+    @quiz = Quiz.find(id) if id
+    if @quiz
+      @quiz.is_approved = false
+      @quiz.save
+      puts "Unapproving!"
+    end
+    render :json => {ok: true}
+  end
+
+  def quiz_reject
+    id = params[:id]
+    @quiz = Quiz.find(id) if id
+    if @quiz
+      @quiz.is_rejected = true
+      @quiz.is_approved = false
+      @quiz.save
+      puts "Rejecting!"
+    end
+    render :json => {ok: true}
+  end
+
+  def quiz_unreject
+    id = params[:id]
+    @quiz = Quiz.find(id) if id
+    if @quiz
+      @quiz.is_rejected = false
+      @quiz.save
+      puts "un rejecting!"
+    end
+    render :json => {ok: true}
+  end
+
+
+
+
+
+
+
 
   def questions
     clear = params[:clear]
@@ -144,6 +230,33 @@ class Sudo::Apps::QuizController < Sudo::SudoController
     redirect_to sudo_apps_quiz_questions_path, :flash => {:warn => "Deleted question:\n#{msg}!"}
   end
 
+  def post_level
+    id = params[:id]
+    level = params[:level].to_i
+    @question = QuizQuestion.find(id) if id
+    if @question
+      @question.level = level
+      @question.save
+      render :json => {level: level}
+    else 
+      render :json => {error: 'true'}
+    end
+  end
+
+  def post_correct_answer
+    id = params[:id]
+    correct_answer = params[:correct_answer].to_i
+
+    @question = QuizQuestion.find(id) if id
+    if @question
+      @question.correct_answer = correct_answer
+      @question.save
+      render :json => {correct_answer: @question.correct_answer}
+    else 
+      render :json => {error: 'true'}
+    end
+  end
+
   def question_approve
     id = params[:id]
     @question = QuizQuestion.find(id) if id
@@ -155,6 +268,7 @@ class Sudo::Apps::QuizController < Sudo::SudoController
     end
     render :json => {ok: true}
   end
+
   def question_unapprove
     id = params[:id]
     @question = QuizQuestion.find(id) if id
@@ -189,6 +303,15 @@ class Sudo::Apps::QuizController < Sudo::SudoController
   end
 
   private
+
+  def quiz_submenu
+    [
+      {name: 'all', href: sudo_apps_quiz_quizes_url(clear: "true")},
+      {name: 'completed',     href: sudo_apps_quiz_quizes_url(filter: "is_complete")},
+      {name: 'approved',      href: sudo_apps_quiz_quizes_url(filter: "is_approved")},
+      {name: 'rejected',      href: sudo_apps_quiz_quizes_url(filter: "is_rejected")},
+    ]
+  end
 
   def quiz_questions_submenu
     [

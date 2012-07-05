@@ -3,19 +3,23 @@ class Quiz
   include Mongoid::Timestamps
 
   field :name, :type => String
-  field :topic, :type => String, :default => "general"
+  field :kind, :type => String
+  field :topic, :type => String
   field :description, :type => String
+
+  field :is_approved, :type => Boolean, :default => false
+  field :is_rejected, :type => Boolean, :default => false
 
   field :is_complete, :type => Boolean, :default => false
 
   field :info, :type => Hash, :default => {}
 
-  has_many :questions, :class_name => "QuizQuestion", :inverse_of => :quiz
+  has_and_belongs_to_many :questions, :class_name => "QuizQuestion", :inverse_of => :quiz
   has_many :blog_leaderboards
   has_one :game_leaderboard
 
-  validates_presence_of :category
-  validates_presence_of :name
+  # validates_presence_of :category
+  # validates_presence_of :name
 
 
   # adapter

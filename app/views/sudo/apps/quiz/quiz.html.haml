@@ -1,2 +1,55 @@
 .quiz
   = @quiz.questions.size
+
+
+%form{:id=>"quiz_update", :action => sudo_apps_quiz_quiz_update_url(@quiz) , :method => 'POST'}
+  .left.wide200
+    .section.transparent
+      - if @quiz.is_complete
+        %h2 complete
+      - else
+        %h2 incomplete
+      .toolbar.right
+        - if not @quiz.is_approved
+          .button.approve{:onClick=>"$.post('#{sudo_apps_quiz_quiz_approve_url(@quiz)}', {}, function(data) {$('#quiz_update').submit();} )"}
+            approve&nbsp;&nbsp;&nbsp;&nbsp;
+        -else 
+          .button.selected 
+            approved!
+        .button.blank
+        - if not @quiz.is_rejected
+          .button.reject{:onClick=>"$.post('#{sudo_apps_quiz_quiz_reject_url(@quiz)}', {}, function(data) {$('#quiz_update').submit();} )"}
+            reject&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        - else
+          .button.selected 
+            rejected!
+        %br
+        %br
+        .toolbar.fullwidth
+          %button{ :type => 'submit'}
+            Save
+          %a{:href=> sudo_apps_quiz_quizes_url}
+            .button.right
+              Done
+  .left.wide5.high100
+  .left.wide750
+    .section
+      %input.medium{ :type => 'text', :name => 'quiz[kind]', :value => "#{@quiz.kind}", :placeholder => 'kind' }
+      %br
+      %br
+      %input.medium{ :type => 'text', :name => 'quiz[topic]', :value => "#{@quiz.topic}", :placeholder => 'topic' }
+      %br
+      %br
+      %input.medium{ :type => 'text', :name => 'quiz[name]', :value => "#{@quiz.name}", :placeholder => 'name' }
+      %br
+      %br
+      %input.long{ :type => 'text', :name => 'quiz[description]', :value => "#{@quiz.description}", :placeholder => 'description' }
+
+    .toolbar.fullwidth
+      %button{ :type => 'submit'}
+        Save
+      %a{:onClick=> "$('#quiz_delete_form').submit();"}
+        .button.right.delete
+          x Delete
+%form{:id=>"quiz_delete_form", :action => sudo_apps_quiz_quiz_delete_url(@quiz) , :method => 'POST'}
+  %input{type: 'hidden', name: '_method', value: 'delete'}

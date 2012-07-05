@@ -96,7 +96,15 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get '',        :to => 'quiz#index', :as => :sudo_apps_quiz_index
     get 'index'
     get 'quizes', as: :sudo_apps_quiz_quizes
+    get 'quiz/new', to: 'quiz#quiz_create', as: :sudo_apps_quiz_quiz_create
     get 'quiz/:id', to: 'quiz#quiz', as: :sudo_apps_quiz_quiz
+    post 'quiz/:id/approve', to: 'quiz#quiz_approve', as: :sudo_apps_quiz_quiz_approve
+    post 'quiz/:id/unapprove', to: 'quiz#quiz_unapprove', as: :sudo_apps_quiz_quiz_unapprove
+    post 'quiz/:id/reject', to: 'quiz#quiz_reject', as: :sudo_apps_quiz_quiz_reject
+    post 'quiz/:id/unreject', to: 'quiz#quiz_unreject', as: :sudo_apps_quiz_quiz_unreject
+    post 'quiz/:id', to: 'quiz#quiz_update', as: :sudo_apps_quiz_quiz_update
+    delete 'quiz/:id', to: 'quiz#quiz_delete', as: :sudo_apps_quiz_quiz_delete
+
     get 'questions', as: :sudo_apps_quiz_questions
     get 'question/new', to: 'quiz#question_create', as: :sudo_apps_quiz_question_create
     get 'question/:id', to: 'quiz#question', as: :sudo_apps_quiz_question

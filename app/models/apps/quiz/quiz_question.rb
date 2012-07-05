@@ -23,7 +23,7 @@ class QuizQuestion
   field :last_played_at, :type => DateTime, :default => ->{ 100.years.ago }
   field :info, :type => Hash, :default => {}
 
-  belongs_to :quiz, :class_name => "Quiz", :inverse_of => :questions
+  has_and_belongs_to_many :quiz, :class_name => "Quiz", :inverse_of => :questions
   before_save :before_save_check_if_complete
   # validates_presence_of :question
   # validates_presence_of :category
