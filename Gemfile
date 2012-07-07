@@ -1,8 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.1'
-# gem 'rack', '1.3.6'
-gem 'rack'
 
 # run thin in production
 group :production do
@@ -23,7 +21,7 @@ gem 'pusher'
 gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
 
 #mass email service
-# gem 'postageapp'
+gem 'postageapp'
 
 #MongoDB
 gem 'mongoid'
