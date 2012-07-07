@@ -118,6 +118,7 @@ class QuizQuestion
     def answer2() quiz_question.answer2 end
     def answer3() quiz_question.answer3 end
     def answer4() quiz_question.answer4 end
+    def correct_answer() quiz_question.correct_answer end
     def category() quiz_question.category end
     def season() quiz_question.season end
     def level() quiz_question.level end

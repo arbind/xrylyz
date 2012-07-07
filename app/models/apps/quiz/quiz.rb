@@ -33,21 +33,21 @@ class Quiz
     has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
     # has_one :player
 
-    def self.create_adapter(quiz, player)
+    def self.create_adapter(quiz, identifier)
       g = self.create
-      g.adapt(quiz,player)
+      g.adapt(quiz, identifier)
     end
 
-    def self.daily_game(visitor, tokens)
-      wid = tokens['wid']
-      adapter = where(key: key).first
-      adapter ||= create_adapter(daily_quiz, nil)
+    def self.daily_game(visitor, identifier)
+      adapter = where(key: identifier).first
+      adapter ||= create_adapter(daily_quiz, identifier)
     end
 
     # precondition for adapt: instance has already been created
-    def adapt(quiz, player)
+    def adapt(quiz, identifier)
       self.quiz = quiz
       # self.player = player
+      self.key = identifier
       quiz.questions.each do |q|
         gq = self.questions.create
         gq.adapt(q)

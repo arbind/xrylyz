@@ -50,8 +50,13 @@
       %collection
 
   %item{:name=>"question-item"}
-    .question-card{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
+    ! [! if (answered) { !]
+    .question-card.answered
       %br [[category]] - [[answered]]
+    ! [! } else { !]
+    .question-card.unanswered{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
+      %br [[category]] - [[answered]]
+    ! [! } !]
 
   %screen{:name=>"question"}
     .about
@@ -69,14 +74,29 @@
     .button-bar.close
       .button{"nav-onClick"=>"game"} Close
 
-  %object{:name=>"prompt", "data-defaults"=>"{prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
-    %br [[prompt]]
-    %br [[answer1]]
-    %br [[answer2]]
-    %br [[answer3]]
-    %br [[answer4]]
+  %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
+    #trivia
+      %h1
+        [[prompt]]
+      .inner
+        #trivia-picks
+          %h2{:style => "color: black;"} Choose your answer:
+          #choices
+            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'1', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+              [[answer1]]
+            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'2', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+              [[answer2]]
+            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'3', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+              [[answer3]]
+            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'4', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+              [[answer4]]
+        #trivia-results
+          %object{:name=>"status"}
 
-
+  %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
+    %div{:class => '[[klass]]'}
+      %h2#status
+        [[status]]
 
   %screen{:name=>"leaderboard"}
     .button-bar
