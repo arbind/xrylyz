@@ -1,5 +1,4 @@
-require "Rack"
-require "URI"
+require "uri"
 
 class Sudo::ControlPanelController < Sudo::SudoController
 	
