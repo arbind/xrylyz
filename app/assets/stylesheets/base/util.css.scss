@@ -67,7 +67,11 @@
   @include roundRightCornersMixin;
 }
 
-.widefull, .fullwidth {width: 100%;}
+.widefull, .wide-full, .fullwidth {width: 100%;}
+.wide-one-half, {width: 48%; margin-left:1%; margin-right:1%; float:left;}
+.wide-one-third, {width: 31%; margin-left:1%; margin-right:1%; float:left;}
+.wide-one-fourth, {width: 23%; margin-left:1%; margin-right:1%; float:left;}
+.wide-one-fifth, {width: 18%; margin-left:1%; margin-right:1%; float:left;}
 .wide5  { width:5px;}
 .wide10  { width:10px;}
 .wide15  { width:15px;}

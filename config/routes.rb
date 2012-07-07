@@ -102,6 +102,9 @@ post 'test_purchase', :as => :dashboard_test_purchase
     post 'quiz/:id/unapprove', to: 'quiz#quiz_unapprove', as: :sudo_apps_quiz_quiz_unapprove
     post 'quiz/:id/reject', to: 'quiz#quiz_reject', as: :sudo_apps_quiz_quiz_reject
     post 'quiz/:id/unreject', to: 'quiz#quiz_unreject', as: :sudo_apps_quiz_quiz_unreject
+    post 'quiz/:id/add_question', to: 'quiz#quiz_add_question', as: :sudo_apps_quiz_add_question
+    post 'quiz/:id/remove_question', to: 'quiz#quiz_remove_question', as: :sudo_apps_quiz_remove_question
+
     post 'quiz/:id', to: 'quiz#quiz_update', as: :sudo_apps_quiz_quiz_update
     delete 'quiz/:id', to: 'quiz#quiz_delete', as: :sudo_apps_quiz_quiz_delete
 

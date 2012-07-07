@@ -120,6 +120,27 @@ class Sudo::Apps::QuizController < Sudo::SudoController
   end
 
 
+  def quiz_add_question
+    quiz_id = params[:id]
+    question_id = params[:question_id]
+    quiz = Quiz.find(quiz_id) if quiz_id
+    quiz_question = QuizQuestion.find(question_id) if question_id
+    (quiz.questions << quiz_question) if quiz_question
+    quiz.save
+    redirect_to sudo_apps_quiz_quiz_url(quiz)
+  end
+
+
+  def quiz_remove_question
+    quiz_id = params[:id]
+    question_id = params[:question_id]
+    quiz = Quiz.find(quiz_id) if quiz_id
+    quiz_question = QuizQuestion.find(question_id) if question_id
+    quiz.questions.delete(quiz_question) if quiz_question
+    # quiz.save
+    redirect_to sudo_apps_quiz_quiz_url(quiz)
+  end
+
 
 
 

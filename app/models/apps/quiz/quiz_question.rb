@@ -29,6 +29,16 @@ class QuizQuestion
   # validates_presence_of :category
   # validates :level, numericality: { greater_than_or_equal_to: 0 }
 
+  scope :level1, where(level: 1)
+  scope :level2, where(level: 2)
+  scope :level3, where(level: 3)
+
+  scope :approved, where(is_approved: true)
+  scope :rejected, where(is_rejected: true)
+
+  scope :complete, where(is_complete: true)
+ 
+
   def before_save_check_if_complete
     complete = true
     complete = false if 0 > level
