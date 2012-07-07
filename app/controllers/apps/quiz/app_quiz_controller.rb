@@ -1,7 +1,7 @@
 class AppQuizController < RylyzAppController
 
-  def self.quiz
-    Quiz.where(name:'Q1').first
+  def self.daily_game(visitor, tokens)
+    Quiz::Game.daily_game(visitor, tokens)
   end
 
   def self.on_load_data(visitor, tokens)
@@ -10,54 +10,33 @@ class AppQuizController < RylyzAppController
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
       qid = -1
-      quiz = AppQuizController.quiz
-      level1_questions = quiz.questions[0..4].collect do |question| 
-        qid += 1
-        {
-          qid:qid,
-          level: question.level,
-          category: question.category 
-        }
-      end
-      level2_questions = quiz.questions[5..9].collect do |question| 
-        qid += 1
-        {
-          qid:qid,
-          level: question.level,
-          category: question.category 
-        }
-      end
-      level3_questions = quiz.questions[10..14].collect do |question| 
-        qid += 1
-        {
-          qid:qid,
-          level: question.level,
-          category: question.category 
-        }
-      end
+      game = AppQuizController.daily_game(visitor, tokens)
 
       capsule = materialize_message_capsule_for_all('load-data')
       capsule.build_events do |messages|
-        data = level1_questions
+        data = game.level1_questions_as_card
         messages << {displayName:'level1-questions', data: data}
 
-        data = level2_questions
+        data = game.level2_questions_as_card
         messages << {displayName:'level2-questions', data: data}
 
-        data = level3_questions
+        data = game.level3_questions_as_card
         messages << {displayName:'level3-questions', data: data}
       end
 
-    capsule.notify
+      capsule.notify
 
     end
 
     def self.on_select_question(visitor, tokens)
       wid = tokens['wid']
+      select = tokens['select']
+      game_question = QuizQuestion::GameQuestion.find(select)
 
       client_events = []
       ctx = {appName: app_name}
-      event  = {queue:'screen', type:'navigation', nextScreen:'question', context:ctx }
+      settings = {select: game_question.id.to_s}
+      event  = {queue:'screen', type:'navigation', nextScreen:'question', context:ctx, settings:settings}
       client_events << event
       PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
     end
@@ -66,6 +45,19 @@ class AppQuizController < RylyzAppController
 
   class ScreenQuestionController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      settings = tokens['settings']
+      select = settings['select']
+      game_question = QuizQuestion::GameQuestion.find(select)
+      game = game_question.game
+
+      capsule = materialize_message_capsule_for_all('load-data')
+
+      capsule.build_events do |messages|
+        data = game_question.for_display_as_prompt
+        messages << {displayName:'prompt', data: data}
+      end
+
+      capsule.notify
     end
 
     def self.on_select_answer(visitor, tokens)

@@ -34,37 +34,33 @@
       .button{"nav-onClick"=>"leaderboard"} Leaderboard
       .button{"nav-onClick"=>"submit-question"} Submit Question4
 
-  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %h2 level1
     .level
       %collection
 
-  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %h2 level2
     .level
       %collection
 
-  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaults"=>"[{qid:1},{qid:2},{qid:3},{qid:4},{qid:5}]"}
+  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %h2 level3
     .level
       %collection
 
   %item{:name=>"question-item"}
-    .question-card{"fire-onClick"=>"{queue:'hi', type:'select-question', qid:'[[qid]]'}"}
-      [[qid]].[[level]].[[category]]
+    .question-card{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
+      %br [[category]] - [[answered]]
 
   %screen{:name=>"question"}
-    .question
-      Question
     .about
       About
     .progress-bar
       = "===================="
     .score
       99
-    %h1
-      Options
-    %collection{:name=>"options"}
+    %object{:name=>"prompt"}
     .button-bar.question-menu
       .button.hint
         Hint
@@ -73,17 +69,13 @@
     .button-bar.close
       .button{"nav-onClick"=>"game"} Close
 
-  %collection{:name=>"options", :item=>"option-item", "data-defaults"=>"[{key:1,option:'Text 1'},{key:2,option:'Text 2'},{key:3,option:'Text 3'},{key:4,option:'Text 4'}]"}
-    %h1
-      Collection
-    #choices
-      %collection
+  %object{:name=>"prompt", "data-defaults"=>"{prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
+    %br [[prompt]]
+    %br [[answer1]]
+    %br [[answer2]]
+    %br [[answer3]]
+    %br [[answer4]]
 
-  %item{:name=>"option-item"}
-    %h2
-      Item
-    .choice{"fire-onClick"=>"{queue:'hi', type:'select-answer', choice:'[[key]]'}", :onclick => "$(this).addClass('selected');"}
-      [[option]]
 
 
   %screen{:name=>"leaderboard"}

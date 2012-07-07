@@ -20,7 +20,7 @@ SCREEN_CHANNELS = {}
 OBJECT_CHANNELS = {}
 
 # VISITORS_AUTHENTICATING = {}
-VISITORS = {} # lookup visitor by id temporary memory storage! 
+VISITORS = {} # lookup visitor by id temporary memory storage!
 VISITOR_WIDS = {} # lookup visior by wid
 VISITOR_SOCKETS = {} # lookup visior by socket_id
 
@@ -89,7 +89,7 @@ class PusherChannels
   # to isolate a listener to this server only: add a hostname to the channel name:
   # adding hostname to end of a channel name will ensure that listeners run only on 1 machine
   # be aware that in order to communicate to this server's listener:
-  # the javascript clients must also add this same hostname to its channels 
+  # the javascript clients must also add this same hostname to its channels
   # Revist this approach when re-architecting for scaleability having multiple servers.
   # !!!! end
   def materialize_channel_name(scope, channel_name)
@@ -253,7 +253,7 @@ class PusherChannels
 
         socket.connect # thread goes to sleep and waits for channel events
       end
-      @channels[scope][channel_name] = listener_thread        
+      @channels[scope][channel_name] = listener_thread
       sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
       puts "-------x #{scoped_channel_name} Thread Launched"
     rescue
@@ -336,7 +336,7 @@ else
         visitor = VISITOR_WIDS[wid]
         tokens = nil
         begin
-          # lookup the TargetController 
+          # lookup the TargetController
           tokens = JSON.parse(data)
           # context = tokens["context"] || NoOBJECT
           # appName = context["appName"] || "rylyz"
@@ -363,10 +363,10 @@ else
         end
         begin #safeguard the handler block
 
-          controllers = RylyzAppController::lookup_controller(tokens) 
+          controllers = RylyzAppController::lookup_controller(tokens)
           action = tokens["action"] || "action_is_unknown"
 
-          #for hi events, the event type will specify the handler 
+          #for hi events, the event type will specify the handler
           if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
 
           action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
@@ -387,7 +387,7 @@ else
 
           target_controller.send(action, visitor, tokens) unless target_controller.nil?
           if target_controller.nil?
-            msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!" 
+            msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!"
             puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
             puts msg
             puts "tokens: #{tokens}"
@@ -402,7 +402,7 @@ else
           puts "Exception: #{e}"
           puts e.backtrace
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-          #+++TODO make this a convenience function: to trigger exceptions back 
+          #+++TODO make this a convenience function: to trigger exceptions back
           ev = { exception: e.to_s }
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
         rescue Exception => e
@@ -417,12 +417,14 @@ else
         else
           # Do this if no exception was raised
         ensure
-          # Do this whether or not an exception was raised    
+          # Do this whether or not an exception was raised
         end
       end
     end
-  rescue
-    puts "!!! Pusher can not Connect "
+  rescue Exception => e
+    puts "!!! Pusher can not Connect."
+    puts "Are you running in production without the key?"
+    puts e.message
   end
 end
 

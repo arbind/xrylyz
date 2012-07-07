@@ -26,6 +26,7 @@ class Quiz
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    field :key, :type => String
     field :playing_referer, :type => String
 
     has_one :quiz
@@ -35,6 +36,12 @@ class Quiz
     def self.create_adapter(quiz, player)
       g = self.create
       g.adapt(quiz,player)
+    end
+
+    def self.daily_game(visitor, tokens)
+      wid = tokens['wid']
+      adapter = where(key: key).first
+      adapter ||= create_adapter(daily_quiz, nil)
     end
 
     # precondition for adapt: instance has already been created
@@ -47,6 +54,28 @@ class Quiz
       end
       save
       self
+    end
+
+    def level1_questions_as_card() leveln_questions(1).map(&:for_display_as_card); end
+    def level2_questions_as_card() leveln_questions(2).map(&:for_display_as_card); end
+    def level3_questions_as_card() leveln_questions(3).map(&:for_display_as_card); end
+
+    def level1_questions_as_prompt() leveln_questions(1).map(&:for_display_as_prompt); end
+    def level2_questions_as_prompt() leveln_questions(2).map(&:for_display_as_prompt); end
+    def level3_questions_as_prompt() leveln_questions(3).map(&:for_display_as_prompt); end
+
+    def level1_questions_as_final() leveln_questions(1).map(&:for_display_as_final); end
+    def level2_questions_as_final() leveln_questions(2).map(&:for_display_as_final); end
+    def level3_questions_as_final() leveln_questions(3).map(&:for_display_as_final); end
+
+    private
+
+    def leveln_questions(level)
+      questions.select { |q| q.level == level }
+    end
+
+    def self.daily_quiz
+      Quiz.all.first
     end
   end
 end

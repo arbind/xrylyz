@@ -37,7 +37,7 @@ class QuizQuestion
   scope :rejected, where(is_rejected: true)
 
   scope :complete, where(is_complete: true)
- 
+
 
   def before_save_check_if_complete
     complete = true
@@ -92,9 +92,14 @@ class QuizQuestion
 
   # adapter
   belongs_to :game_question, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :quiz_question
+
   class GameQuestion
     include Mongoid::Document
     include Mongoid::Timestamps
+
+    field :selected_answer, :type => Integer, :default => -1
+    field :time_to_answer, :type => Integer, :default => -1
+    field :score, :type => Integer, :default => -1
 
     has_one :quiz_question, :class_name => "QuizQuestion"
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
@@ -109,11 +114,52 @@ class QuizQuestion
     end
 
     def prompt() quiz_question.prompt end
-    def options() quiz_question.options end
+    def answer1() quiz_question.answer1 end
+    def answer2() quiz_question.answer2 end
+    def answer3() quiz_question.answer3 end
+    def answer4() quiz_question.answer4 end
     def category() quiz_question.category end
+    def season() quiz_question.season end
     def level() quiz_question.level end
     def info() quiz_question.info end
-    def quiz() self.game end
+
+    def for_display_as_card
+      {
+        id: _id,
+        level: level,
+        category: category,
+        answered: selected_answer > 0
+      }
+    end
+
+    def for_display_as_prompt
+      {
+        id: _id,
+        level: level,
+        category: category,
+        season: season,
+        prompt: prompt,
+        answer1: answer1,
+        answer2: answer2,
+        answer3: answer3,
+        answer4: answer4
+      }
+    end
+
+    def for_display_as_final
+      {
+        id: _id,
+        level: level,
+        category: category,
+        season: season,
+        prompt: prompt,
+        correct_answer: correct_answer,
+        selected_answer: selected_answer,
+        time_to_answer: time_to_answer,
+        score: score,
+        info: info
+      }
+    end
 
   end
 
