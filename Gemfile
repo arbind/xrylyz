@@ -23,7 +23,7 @@ gem 'pusher'
 gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
 
 #mass email service
-gem 'postageapp'
+# gem 'postageapp'
 
 #MongoDB
 gem 'mongoid'

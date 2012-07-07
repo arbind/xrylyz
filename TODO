@@ -361,6 +361,23 @@ This will let multiple display's point to the same model.
 the server will still update models, by sending updates to a named display,
 All other displays referencing that same model should auto-update as well.
 
+o Add ability to name template differently than the model
+  %collection{name: 'first-items', template:'items'}
+  %collection{name: 'second-items', template:'items'}
+  %collection{name: 'third-items', template:'items'}
+  Above 3 examples all have different data bindings, but render using the same template
+
+o Allow conditional rendering of an object
+  %object{name: 'card', condition: '[[already-played]]'}
+    %html goes here for already played item
+  %object{name: 'card', condition: '![[already-played]]'}
+    %html goes here for item that hasen't been played
+  or
+  %collection{name: 'some-items', condition: 'empty'}
+    %html goes here for empty collection
+  %collection{name: 'some-items', condition: 'not-empty'}
+    %html goes here for non-empty collection
+
 o Create a conditional navigation for click events.
 Say you want to navigate to the chat room screen on click,
 if you have already registerd your name, then nav to chat room screen
