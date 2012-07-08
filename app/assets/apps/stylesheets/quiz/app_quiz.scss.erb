@@ -1,3 +1,5 @@
+@import 'mixins/mixin-transitions.css.scss';
+
 .quiz-app {
   color: #222;
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
@@ -31,10 +33,6 @@
   height: 25px;
   border: 1px solid black;
 }
-.progress-bar {
-  height: 25px;
-  border: 1px solid black;
-}
 .score {
   height: 25px;
   border: 1px solid black;
@@ -54,8 +52,20 @@
 }
 
 
-
-
+#progress-bar {
+  left:0;
+  right:0;
+  background-color: #888888;
+  border: 2px solid #555555;
+  height: 18px;
+  .progress {
+    width: 100%;
+    background-color:#AAFFAA;
+    height: 100%;
+    @include transitionsOnMixin;
+  }
+}
+  
 #trivia {
   h1, h2, h3 {
     margin: 0;

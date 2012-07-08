@@ -3,6 +3,7 @@
  *= require rylyz/rylyz.util.js
  *= require rylyz/rylyz.util.string.js
 
+ *= require rylyz/rylyz.timer.js
  *= require rylyz/rylyz.context.js
  *= require rylyz/rylyz.display.referencetable.js
 
