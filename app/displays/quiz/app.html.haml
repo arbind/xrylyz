@@ -92,13 +92,24 @@
               [[answer4]]
         #trivia-results
           %object{:name=>"status"}
+          %collection{:name=>"leaders"}
 
   %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
     %div{:class => '[[klass]]'}
       %h2#status
         [[status]]
 
+  %collection{:name=>"leaders", :item=>"leader", "data-defaults"=>"[{nickname:'mike', score:10},{nickname:'john', score:20}]"}
+    %h2 Leaders
+    %collection
+
+  %item{:name=>"leader"}
+    .leader
+      [[nickname]] - [[score]]
+
+
   %screen{:name=>"leaderboard"}
+    %collection{:name=>"leaders"}
     .button-bar
       .button{"nav-onClick"=>"game"} Back
 

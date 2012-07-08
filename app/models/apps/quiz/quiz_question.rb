@@ -124,6 +124,10 @@ class QuizQuestion
     def level() quiz_question.level end
     def info() quiz_question.info end
 
+    def leaderboard_key
+      LeaderboardService.key(game.leaderboard_key, quiz_question.id)
+    end
+
     def for_display_as_card
       {
         id: _id,

@@ -68,6 +68,10 @@ class Quiz
     def level2_questions_as_final() leveln_questions(2).map(&:for_display_as_final); end
     def level3_questions_as_final() leveln_questions(3).map(&:for_display_as_final); end
 
+    def leaderboard_key
+      LeaderboardService.key(quiz.id)
+    end
+
     private
 
     def leveln_questions(level)

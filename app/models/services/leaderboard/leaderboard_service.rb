@@ -26,13 +26,6 @@ class LeaderboardService
   end
 
   def self.key(*args)
-    k = ""
-    idx = 0
-    args.each do |v|
-      k << "." if idx > 0
-      k << v.id.to_s
-      idx += 1
-    end
-    k
+    args.join(".")
   end
 end

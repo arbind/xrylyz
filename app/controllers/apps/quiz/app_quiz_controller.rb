@@ -61,8 +61,6 @@ class AppQuizController < RylyzAppController
       capsule.notify
     end
 
-
-
     def self.on_done(visitor,tokens)
       client_events = []
       ctx = {appName: app_name}
@@ -73,9 +71,9 @@ class AppQuizController < RylyzAppController
 
 
     def self.calculate_score(time)
-      100
+      Random.rand(100)
     end
-    
+
     def self.on_choose_answer(visitor, tokens)
       wid = tokens['wid']
 
@@ -94,62 +92,29 @@ class AppQuizController < RylyzAppController
 
       game = game_question.game
 
+      key = game_question.leaderboard_key
+      LeaderboardService.record_score(key, wid, "some_url", score, nil)
+      leaderboard = LeaderboardService.leading_players_for_game(key)
+
       klass = 'none'
       winner = false
       if game_question.correct_answer == choice
         klass = 'correct'
         status = "That's Correct!"
-        # trivia.correct_answers << visitor.for_display
-        # placement = trivia.correct_answers.size
-        # if 1==placement
-        #   status = "You Won!"
-        #   klass = 'winner'
-        #   winner = true
-        # end
-
-        # placement = placement.ordinalize
-
-        # ctx = {appName:app_name, screenName:'trivia-room', displayName:'placement'}
-        # data = {placement:placement}
-        # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-        # events << event
-
-        # if !winner
-        #   ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
-        #   data = trivia.correct_answers.first
-        #   data['nickname'] = "The winner is #{data['nickname']}"
-        #   event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-        #   events << event
-        # end
-
       else
         klass = 'wrong'
         status = "You chose poorly"
-        # trivia.wrong_answers << visitor.for_display
       end
 
-      # trivia.save
-
-      # ctx = {appName: app_name, screenName:'trivia-room', displayName:'options'}
-      # idx = -1
-      # data = trivia.options.map { |option| 
-      #   idx +=1;
-      #   winclass = ""
-      #   winclass = "right-#{idx}" if idx == trivia.correct_answer
-      #   {option: option, key: idx, winclass:winclass}
-      # }
-      # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      # events << event
-
-      # ctx = {appName:app_name, screenName:'trivia-room', displayName:'winner'}
-      # data = trivia.correct_answers.first
-      # data["nickname"] = "The winner is #{data['nickname']}"
-      # event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      # events << event
-
       events = []
+
       ctx = {appName:app_name, screenName:'question', displayName:'status'}
       data = {status:status, klass:klass}
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
+
+      ctx = {appName:app_name, screenName:'question', displayName:'leaders'}
+      data = leaderboard
       event = {queue:'app-server', type:'load-data', context:ctx, data: data}
       events << event
 
@@ -157,10 +122,21 @@ class AppQuizController < RylyzAppController
     end
   end
 
-
-
   class ScreenLeaderboardController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      wid = tokens['wid']
+      game = AppQuizController.daily_game(visitor, wid)
+
+      key = game.leaderboard_key
+      leaderboard = LeaderboardService.leading_players_for_game(key)
+
+      capsule = materialize_message_capsule_for_all('load-data')
+      capsule.build_events do |messages|
+        data = leaderboard
+        messages << {displayName:'leaders', data: data}
+      end
+
+      capsule.notify
     end
   end
 

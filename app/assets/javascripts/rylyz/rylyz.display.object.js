@@ -46,7 +46,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     if (!this.eventBase) {
       var appName=null, screenName=null, displayName=null, origin=null, ctx=null;
       if (this.app) appName=this.app.name;
-      if (this.screen) { 
+      if (this.screen) {
         screenName = this.screen.name;
         displayName = this.name;
       }
@@ -110,7 +110,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     if(DBUG) console.info("Initializing " +this.dataType+ ": " + this.name);
     this.isCollectionItem = this.isCollectionItem || this.options.isCollectionItem || false;
 
-    
+
     this.initializeRootTagCSS(); //setup css of root html tag
 
     this.initializeTemplateName();
@@ -179,22 +179,33 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
         this.itemTemplateName = elTemplate[0].getAttribute("item");
       }
       else {
-        this.itemTemplateName = this.name + "-item";        
+        this.itemTemplateName = this.name + "-item";
       }
 
       if(elTemplate[0].getAttribute("data-defaults")){ // pick off the data-defaults attribute to set any defaults
         var defaults = null;  // should be specified as a collection: data-defaults='[{color:"blue"}, {color:"red"}]'
         var evalString = "defaults = " +elTemplate[0].getAttribute("data-defaults");
-        eval(evalString);
-        if(defaults) {
-          if ($.isArray(defaults)) {
-            this.dataDefaults = defaults;
+        try{
+          eval(evalString);
+          if(defaults) {
+            if ($.isArray(defaults)) {
+              this.dataDefaults = defaults;
+            }
+            else {
+              console.error("data-defaults='[{}, {}]' for a collection must be an array!")
+              console.error(elTemplate[0].getAttribute("data-defaults"));
+            }
           }
-          else {
-            console.error("data-defaults='[{}, {}]' for a collection must be an array!")
-            console.error(elTemplate[0].getAttribute("data-defaults"));
-          }
+        } catch(err) {
+          var msg ="Template error in " + elTemplate[0].getAttribute("name") + ":\n" + err + "\n\n";
+          msg += "Could not evaluate data-defaults:\n";
+          msg += elTemplate[0].getAttribute("data-defaults");
+          msg += "Check your syntax, commas, etc."
+          console.error(msg);
+          console.error(err);
+          return;
         }
+
       }
 
     }
@@ -258,7 +269,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   minimize: function() {
     this.remove();
   },
-  renderInto: function(elParent) {      
+  renderInto: function(elParent) {
     if (!elParent || !elParent.length) {
       var msg = "Parent Element does not exist!";
       if (elParent && elParent.selector) msg +="\nSelector: " + elParent.selector;
@@ -309,7 +320,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     });
 
     //render sub displays
-    if (this.renderCollectionObjects) this.renderCollectionObjects();      
+    if (this.renderCollectionObjects) this.renderCollectionObjects();
     this.loadSubDisplays();
     this.renderSubDisplays();
     if (this.launch) this.launch();
@@ -454,7 +465,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       })
       input.focus(function (srcc){
         label.removeClass("invisible") //remove the style so we do not add it 2x
-        label.addClass("invisible")    
+        label.addClass("invisible")
       })
       input.blur(function (srcc){
         if ($(this).val() == "") label.removeClass("invisible")
@@ -475,7 +486,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     methodName += isCollection? "Collection": "Model"
     if (!setup) throw "invalid setup to " + methodName ;
     if (!setup.name) throw "name is required to" + methodName ;
-    if (!setup.placeInto) throw "placeInto is required to " + methodName ; 
+    if (!setup.placeInto) throw "placeInto is required to " + methodName ;
 
     var modelData, modelDisplay;
     modelData = this.screen.referenceTable.lookupData(name) || null;
@@ -488,7 +499,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       var objectData = setup.objectData || setup.data || setup.object || {};
       var collectionData = setup.collectionData || setup.dataCollection || setup.collection ||[];
       if (!isCollection && objectData && $.isArray(objectData)) {
-        throw "Use renderCollectionDisplay when your data is a collection: " + objectData; 
+        throw "Use renderCollectionDisplay when your data is a collection: " + objectData;
       }
       else if (!collectionData && objectData) {
         collectionData = objectData;
@@ -499,8 +510,8 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       var modelTemplate, collectionTemplate;
       if (isCollection) {
         modelTemplate = setup.objectTemplate || setup.objectDataTemplate || setup.dataTemplate || setup.modelTemplate || setup.elementTemplate || setup.elementName || setup.itemTemplate || setup.itemName; //required!
-        if (!modelTemplate) throw "elementTemplate is required to renderCollection"; 
-        collectionTemplate = setup.template || setup.collectionTemplate || name //default to use the same name        
+        if (!modelTemplate) throw "elementTemplate is required to renderCollection";
+        collectionTemplate = setup.template || setup.collectionTemplate || name //default to use the same name
       }
       else {
         modelTemplate = setup.template ||  setup.modelTemplate || setup.objectTemplate ||  setup.objectDataTemplate || setup.itemName || name //default to use the same name
@@ -513,7 +524,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       var objectDisplayClass = Rylyz.ObjectDisplay.extend({templateName:modelTemplate});
 
       var collectionClass, collectionDisplayClass;
-      if(isCollection) { 
+      if(isCollection) {
         // setup the Collection class
         collectionClass = Rylyz.CollectionData.extend({ model: modelClass });
         // setup the collectionDisplay class
@@ -539,7 +550,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     if (fireOn) {
       var events = fireOn.split(',');
       _.each(events, function(ev) {
-        display.fireOn(ev);  
+        display.fireOn(ev);
       })
     }
     return modelDisplay;
