@@ -93,8 +93,7 @@ class AppQuizController < RylyzAppController
       game = game_question.game
 
       key = game_question.leaderboard_key
-      LeaderboardService.record_score(key, wid, "some_url", score, nil)
-      leaderboard = LeaderboardService.leading_players_for_game(key)
+      leaderboard = LeaderboardService.record_score(key, wid, "some_url", score, nil)
 
       klass = 'none'
       winner = false
