@@ -1,2 +1,2 @@
-  window.Rylyz = window.Rylyz || {};
-  window.Rylyz.vars = {};
+window.Rylyz = window.Rylyz || {};
+Rylyz.vars = {};

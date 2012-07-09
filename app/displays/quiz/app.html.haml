@@ -1,4 +1,57 @@
 %rylyz{:name=>"quiz"}
+  :javascript
+    var intervalTimer;
+    var stopProgress;
+
+    function noMoreAnswering() {
+      $('.choice').removeAttr('onclick')
+      //also hide hint and pass
+    }
+    function noMoreHinting() {
+      $('.hint').removeAttr('onclick')
+      //also hide hint and pass
+    }
+    function stopProgress() {
+      clearInterval(intervalTimer)
+      noMoreAnswering();
+    }
+    function startProgress() {
+      var progress = 0;
+      var interval = 15;
+      var f = function() {
+        progress += 1;
+        $('.progress').css('width', ''+ (100-progress) + '%')
+        if (99 < progress) stopProgress();
+      }
+      intervalTimer = setInterval(f, interval*1000/100);
+    }
+
+    function disableChoosing() {
+      noMoreAnswering();
+      stopProgress();
+    }
+    function choose(num, question_id) {
+      var answer = '.answer' + num
+      $(answer).addClass('selected');
+      disableChoosing();
+      // send choice to server
+      var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'choose-answer', choice:num, id: question_id}
+      Rylyz.event.fireEvent(hiEvent);
+    }
+
+    function hint(question_id) {
+      // GIVE HINT
+      noMoreHinting();
+      // send choice to server
+      var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'hint', id: question_id}
+      Rylyz.event.fireEvent(hiEvent);
+    }
+    function pass(question_id) {
+      disableChoosing();
+      // send choice to server
+      var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'pass', id: question_id}
+      Rylyz.event.fireEvent(hiEvent);
+    }
 
 
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
@@ -18,7 +71,6 @@
           %input.text{:type => "text", :name => "nickname", :placeholder => "i.e. tenderlovemaking"}
         .field
           %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
-
 
   %screen{:name=>"game"}
     .game-board
@@ -61,16 +113,11 @@
   %screen{:name=>"question"}
     .about
       About
-    .progress-bar
-      = "===================="
-    .score
+    #progress-bar
+      .progress
+    .score{onClick: "startProgress();"}
       99
     %object{:name=>"prompt"}
-    .button-bar.question-menu
-      .button.hint
-        Hint
-      .button.pass
-        Pass
     .button-bar.close
       .button{"nav-onClick"=>"game"} Close
 
@@ -82,17 +129,22 @@
         #trivia-picks
           %h2{:style => "color: black;"} Choose your answer:
           #choices
-            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'1', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+            .choice.answer1{:onclick => "choose(1, '[[id]]')"}
               [[answer1]]
-            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'2', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+            .choice.answer2{:onclick => "choose(2, '[[id]]')"}
               [[answer2]]
-            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'3', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+            .choice.answer3{:onclick => "choose(3, '[[id]]')"}
               [[answer3]]
-            .choice{"fire-onClick"=>"{queue:'hi', type:'choose-answer', choice:'4', id: '[[id]]'}", :onclick => "$(this).addClass('selected'); $('.choice').removeAttr('onclick')"}
+            .choice.answer4{:onclick => "choose(4, '[[id]]')"}
               [[answer4]]
         #trivia-results
           %object{:name=>"status"}
           %collection{:name=>"leaders"}
+    .button-bar.question-menu
+      .button.hint{onClick: "hint('[[id]]');"}
+        Hint
+      .button.pass{onClick: "pass('[[id]]');"}
+        Pass
 
   %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
     %div{:class => '[[klass]]'}

@@ -79,7 +79,7 @@ class AppQuizController < RylyzAppController
 
       id = tokens['id']
       game_question = QuizQuestion::GameQuestion.find(id)
-      return if 0<game_question.selected_answer
+      return if -1<game_question.selected_answer
 
       choice = tokens['choice'].to_i
       time = tokens['time'].to_i
@@ -119,6 +119,54 @@ class AppQuizController < RylyzAppController
 
       PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", events)
     end
+
+
+    def self.on_hint(visitor, tokens)
+      wid = tokens['wid']
+
+      id = tokens['id']
+      game_question = QuizQuestion::GameQuestion.find(id)
+      return if -1<game_question.selected_answer
+    end
+
+    def self.on_pass(visitor, tokens)
+      wid = tokens['wid']
+
+      id = tokens['id']
+      game_question = QuizQuestion::GameQuestion.find(id)
+      return if -1<game_question.selected_answer
+
+
+      game_question.selected_answer = 0
+      game_question.time_to_answer = 0
+      game_question.score = 0
+      game_question.save
+
+      game = game_question.game
+
+      key = game_question.leaderboard_key
+      leaderboard = LeaderboardService.leading_players_for_game(key)
+
+      klass = 'none'
+      winner = false
+      klass = 'wrong'
+      status = "Skipped!"
+
+      events = []
+
+      ctx = {appName:app_name, screenName:'question', displayName:'status'}
+      data = {status:status, klass:klass}
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
+
+      ctx = {appName:app_name, screenName:'question', displayName:'leaders'}
+      data = leaderboard
+      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
+      events << event
+
+      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", events)
+    end
+
   end
 
   class ScreenLeaderboardController < RylyzScreenController
