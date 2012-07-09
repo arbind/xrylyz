@@ -54,6 +54,29 @@ class RylyzScreenController
   end
 
   # MessageCapsule Materializers
+  # update interface to be more like:
+  # Format: capsule.[target].[event-type].data
+  # 
+  # For example: capsule.player(wid1).navigate(screen_name) to navigate one player'sview to screen_name
+  # For example: capsule.players([wid1, wid2]).show_data to show data to some of the players
+  # For Example: capsule.game(gid).show_data ...  to show data to all players in the onayers
+  # For Example: capsule.screen.show_data ...  to show data to all players in the one game of the app
+  # For Example: capsule.app.show_data ...  to show data to all players in all games of the app
+
+  # some usefull event types could be:
+  # capsule.[target].show_data.fire
+  # capsule.[target].navigate
+  # capsule.[target].push_screen
+  # capsule.[target].pop_screen
+  # capsule.[target].start_timer
+  # capsule.[target].stop_timer
+  # capsule.[target].add_class
+  # capsule.[target].remove_class
+  # capsule.[target].set_css
+  # capsule.[target].disable_click
+  # capsule.[target].enable_click
+  # capsule.[target].run_javascript
+
   def self.materialize_message_capsule_for_all (event_type)
     ctx = {appName: app_name, screenName: screen_name}
     RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
@@ -63,7 +86,6 @@ class RylyzScreenController
     ctx = {appName: app_name, screenName: screen_name}
     RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
   end
-
 
   def self.load_data_message_capsule_for_all ()
     materialize_message_capsule_for_all 'load-data'
