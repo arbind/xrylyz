@@ -1,8 +1,9 @@
-window.Rylyz = window.Rylyz || {}
+window.Rylyz = window.Rylyz || {};
+Rylyz.vars = Rylyz.vars || {};
+
 
 Rylyz.timer = function() {
   var registry = {};
-  var sharedVars = {};
   return {
 
     register: function(timerName, onTick, milliseconds, repeat, onStart, onStop) {
@@ -47,19 +48,19 @@ Rylyz.timer = function() {
 
       if (onStart) {
         onFireStart= function() {
-          vars = sharedVars; // create a space for handlers to use shared vars
+          vars = Rylyz.vars; // a space for handlers to share variables
           onStart();
         }
       }
       if (onStop) {
         onFireStop= function() {
-          vars = sharedVars; // create a space for handlers to use shared vars
+          vars = Rylyz.vars; // a space for handlers to share variables
           onStop();
         }
       }
 
       onFireTick= function() {
-        vars = sharedVars; // create a space for handlers to use shared vars
+        vars = Rylyz.vars; // a space for handlers to share variables
         onTick();
         if (!descriptor.repeat && onStop) Rylyz.timer.stop(timerName)
       }
