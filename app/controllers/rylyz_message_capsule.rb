@@ -22,6 +22,7 @@ class RylyzMessageCapsule
 
   def notify
     events = []
+    puts "notfiying for #{@event_type} with #{@messages.count}"
     @messages.each do |message|
       ctx = context_for_display (message[:displayName])
       ev = {queue:@queue, type: @event_type, context:ctx, data: message[:data]}

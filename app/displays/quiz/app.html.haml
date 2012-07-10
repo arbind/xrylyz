@@ -1,5 +1,24 @@
 %rylyz{:name=>"quiz"}
   :javascript
+
+    startCountDownTimer = function() {
+      vars.score = 100;
+      console.log("Starting Score: " + vars.score)
+    }
+    tickCountDownTimer = function() {
+      console.log(vars.score)
+      $('.progress').css('width', ''+ vars.score + '%')
+      vars.score -= 1;
+      if (0>vars.score) Rylyz.timer.stop('count-down-score')
+    }
+    stopCountDownTimer = function() {
+      noMoreAnswering();
+      vars.score += 1;
+      console.log("Final Score: " + vars.score)
+    }
+
+    Rylyz.timer.register('count-down-score', tickCountDownTimer, 1000, true, startCountDownTimer, stopCountDownTimer);
+
     var intervalTimer;
     var stopProgress;
 
@@ -12,7 +31,8 @@
       //also hide hint and pass
     }
     function stopProgress() {
-      clearInterval(intervalTimer)
+      //clearInterval(intervalTimer)
+      Rylyz.timer.stop('count-down-score')
       noMoreAnswering();
     }
     function startProgress() {

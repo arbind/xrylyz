@@ -95,4 +95,8 @@ class RylyzScreenController
     materialize_message_capsule_for_wid 'load-data', wid
   end
 
+  def self.materialize_start_timer_capsule_for_wid(wid)
+    materialize_message_capsule_for_wid 'start-timer', wid
+  end
+
 end

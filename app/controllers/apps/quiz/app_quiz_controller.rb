@@ -13,7 +13,7 @@ class AppQuizController < RylyzAppController
       qid = -1
       game = AppQuizController.daily_game(visitor, wid)
 
-      capsule = materialize_message_capsule_for_all('load-data')
+      capsule = materialize_message_capsule_for_wid('load-data', wid)
       capsule.build_events do |messages|
         data = game.level1_questions_as_card
         messages << {displayName:'level1-questions', data: data}
@@ -24,7 +24,6 @@ class AppQuizController < RylyzAppController
         data = game.level3_questions_as_card
         messages << {displayName:'level3-questions', data: data}
       end
-
       capsule.notify
 
     end
@@ -46,19 +45,26 @@ class AppQuizController < RylyzAppController
 
   class ScreenQuestionController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      wid = tokens['wid']
       settings = tokens['settings']
       select = settings['select']
       game_question = QuizQuestion::GameQuestion.find(select)
       game = game_question.game
 
-      capsule = materialize_message_capsule_for_all('load-data')
-
+      capsule = materialize_message_capsule_for_wid('load-data', wid)
       capsule.build_events do |messages|
         data = game_question.for_display_as_prompt
         messages << {displayName:'prompt', data: data}
       end
-
       capsule.notify
+
+      capsule = materialize_start_timer_capsule_for_wid(wid)
+      capsule.build_events do |messages|
+        data = {name: 'count-down-score'}
+        messages << {data: data}
+      end
+      capsule.notify
+
     end
 
     def self.on_done(visitor,tokens)

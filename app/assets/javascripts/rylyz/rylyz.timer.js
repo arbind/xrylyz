@@ -6,7 +6,9 @@ Rylyz.timer = function() {
   var registry = {};
   return {
 
+    // +++ todo: for repeat=true - add ability to specify the max number of timer ticks
     register: function(timerName, onTick, milliseconds, repeat, onStart, onStop) {
+      console.log("registering timer: " + timerName);
       this.unregister(timerName)
       if (undefined == milliseconds) milliseconds = -1;
       if (undefined == repeat) repeat = false;
@@ -60,9 +62,11 @@ Rylyz.timer = function() {
       }
 
       onFireTick= function() {
+        //+++ add counter for track number of ticks
         vars = Rylyz.vars; // a space for handlers to share variables
         onTick();
         if (!descriptor.repeat && onStop) Rylyz.timer.stop(timerName)
+        //+++ if max number of ticks (repeat=true), call stop timer
       }
 
       descriptor = {

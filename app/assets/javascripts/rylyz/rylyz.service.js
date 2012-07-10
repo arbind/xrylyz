@@ -49,13 +49,56 @@
 		handleDataEvent4AddCollectionItem: function(event) {
 			display = Rylyz.lookupDisplay(event);
 			//+++ check display
-			data = event['data'];
+			var data = event['data'];
 			//+++check data
 			display.collection.add(data);
 		},
 		handleDataEvent4RemoveCollectionItem: function(event) {
 		},
+    handleStartTimer: function(event) {
+      var data = event['data'];
+      if (!data) throw "No timer name was specified";
+      var timerName = data['name'];
+      timerName = timerName  || data['timer-name'];
+      if (!timerName) throw "No timer named " +timerName+ " was specified";
 
+      Rylyz.timer.start(timerName);
+
+      // +++ Todo - make these params into options for the timer
+      // var repeat = data['repeat'];
+      // if (repeatTimer) repeatTimer = true;
+      // else repeatTimer = false
+
+      // var milliseconds = data['milliseconds'];
+      // milli = -1
+      // if (milliseconds) milli  = parseInt(milliseconds);
+
+      // if (repeat && milli)
+      //   Rylyz.timer.start(timerName, milli, repeatTimer);
+      // else if (milli)
+      //   Rylyz.timer.start(timerName, milli);
+      // else
+      //   Rylyz.timer.start(timerName);
+    },
+    handleStopTimer: function(event) {
+      var data = event['data'];
+      if (!data) throw "No timer name was specified";
+      var timerName = data['name'];
+      timerName = timerName  || data['timer-name'];
+      if (!timerName) throw "No timer name was specified";
+
+      Rylyz.timer.stop(timerName);
+    },
+    handleCallJavascript: function(event){
+      // +++ to test
+      var data = event['data'];
+      if (!data) throw "No javascript function name was specified";
+      var functionName = data['function'];
+      functionName = functionName || data['method'];
+      var isFunction  = !!(functionName && Rylyz.js.functionName && Rylyz.js.functionName.constructor && Rylyz.js.functionName.call && Rylyz.js.functionName.apply)
+      if (!isFunction) throw "No javascript function is defined: Rylyz.js." + functionName + "()";
+      Rylyz.js[functionName]();
+    },
 		fireHIEvent: function(event) {
       Rylyz.Wyjyt.triggerWIDEvent("hi", event);
 		},
@@ -240,6 +283,34 @@
     }
   }
   Rylyz.event.registerEventHandler(hLoadData);
+
+
+  var hStartTimer = {
+    queue:"app-server",
+    type:"start-timer",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStartTimer(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStartTimer);
+
+  var hStopTimer = {
+    queue:"app-server",
+    type:"stop-timer",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStopTimer(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStopTimer);
+
+ var hCallJavascript = {
+    queue:"app-server",
+    type:"call-javascript",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleCallJavascript(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hCallJavascript);
 
  
 var hScreenNavigation = {
