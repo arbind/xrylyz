@@ -1,3 +1,5 @@
+
+
 TriviaStairs:
   3-level tournament
   15 questions: 5 questions / level
@@ -30,6 +32,19 @@ TriviaStairs:
   User controlled timing.
 
 +++ TODO
+
+*** unload  display templates:
+  - when loading display templates, they get added to the DOM.
+    Backbone can then select the templates for each app, screen, display from the dom.
+    When rendering, backbone can then render the html into the dom.
+    HOWEVER:
+    If id selectors are used: <div id="answers" />
+    and jquery is use to select the id: $('#answers')
+    then the element in the template is getting selected - rather than the elemene that was rendered onto the page using jquery
+    (When selecting by id, only the first one is picked)
+    Ideally, when a template is requested, it will get attached to the dom, then backbone will select all the templates,
+    and then the template should be removed from the dom - so that ID's can properly be used.
+
 *** test logout and login with share_key in the url
 then another social account with the same share_key
 then share key but with prior existing login with blogger already there
