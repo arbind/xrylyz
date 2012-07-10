@@ -322,7 +322,9 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
-      jQuery("#rylyz-widget").append(display);  
+      //jQuery("#rylyz-widget").append(display);
+      // append template to end of body, so id selectors # will find the first element from app, not template 
+      jQuery("body").append(display);  
       Rylyz.loadAppDisplays(appName);
       Rylyz.showApp(appName);
     });
