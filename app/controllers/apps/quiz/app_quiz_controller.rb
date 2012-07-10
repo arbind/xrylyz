@@ -60,7 +60,7 @@ class AppQuizController < RylyzAppController
 
       capsule = materialize_start_timer_capsule_for_wid(wid)
       capsule.build_events do |messages|
-        data = {name: 'count-down-score'}
+        data = {name: 'show-options'}
         messages << {data: data}
       end
       capsule.notify

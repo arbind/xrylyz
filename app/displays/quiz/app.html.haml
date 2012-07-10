@@ -1,6 +1,24 @@
 %rylyz{:name=>"quiz"}
   :javascript
 
+    showAnswers = function() {
+      $('.answers').css('visibility','visible');
+    }
+
+    startShowOptionsTimer = function() {
+      console.log("Starting Options");
+    }
+    tickShowOptionsTimer = function() {
+      console.log("Tick");
+    }
+    stopShowOptionsTimer = function() {
+      console.log("Display Options");
+      showAnswers();
+      Rylyz.timer.start('count-down-score')
+    }
+
+    Rylyz.timer.register('show-options', tickShowOptionsTimer, 3500, false, startShowOptionsTimer, stopShowOptionsTimer);
+
     startCountDownTimer = function() {
       vars.score = 100;
       console.log("Starting Score: " + vars.score)
@@ -131,15 +149,16 @@
     ! [! } !]
 
   %screen{:name=>"question"}
-    .about
-      About
-    #progress-bar
-      .progress
-    .score{onClick: "startProgress();"}
-      99
-    %object{:name=>"prompt"}
-    .button-bar.close
-      .button{"nav-onClick"=>"game"} Close
+    .question-canvas{:onclick => "Rylyz.timer.stop('show-options')"}
+      .about
+        About
+      #progress-bar
+        .progress
+      .score
+        99
+      %object{:name=>"prompt"}
+      .button-bar.close
+        .button{"nav-onClick"=>"game"} Close
 
   %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
     #trivia
@@ -148,15 +167,16 @@
       .inner
         #trivia-picks
           %h2{:style => "color: black;"} Choose your answer:
-          #choices
-            .choice.answer1{:onclick => "choose(1, '[[id]]')"}
-              [[answer1]]
-            .choice.answer2{:onclick => "choose(2, '[[id]]')"}
-              [[answer2]]
-            .choice.answer3{:onclick => "choose(3, '[[id]]')"}
-              [[answer3]]
-            .choice.answer4{:onclick => "choose(4, '[[id]]')"}
-              [[answer4]]
+          .choices
+            .answers
+              .choice.answer1{:onclick => "choose(1, '[[id]]')"}
+                [[answer1]]
+              .choice.answer2{:onclick => "choose(2, '[[id]]')"}
+                [[answer2]]
+              .choice.answer3{:onclick => "choose(3, '[[id]]')"}
+                [[answer3]]
+              .choice.answer4{:onclick => "choose(4, '[[id]]')"}
+                [[answer4]]
         #trivia-results
           %object{:name=>"status"}
           %collection{:name=>"leaders"}
