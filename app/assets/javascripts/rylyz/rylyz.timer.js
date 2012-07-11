@@ -1,5 +1,5 @@
 window.Rylyz = window.Rylyz || {};
-Rylyz.vars = Rylyz.vars || {};
+Rylyz.js = Rylyz.js || {};
 
 
 Rylyz.timer = function() {
@@ -50,20 +50,20 @@ Rylyz.timer = function() {
 
       if (onStart) {
         onFireStart= function() {
-          vars = Rylyz.vars; // a space for handlers to share variables
+          vars = Rylyz.js; // a space for handlers to share variables
           onStart();
         }
       }
       if (onStop) {
         onFireStop= function() {
-          vars = Rylyz.vars; // a space for handlers to share variables
+          vars = Rylyz.js; // a space for handlers to share variables
           onStop();
         }
       }
 
       onFireTick= function() {
         //+++ add counter for track number of ticks
-        vars = Rylyz.vars; // a space for handlers to share variables
+        vars = Rylyz.js; // a space for handlers to share variables
         onTick();
         if (!descriptor.repeat && onStop) Rylyz.timer.stop(timerName)
         //+++ if max number of ticks (repeat=true), call stop timer
@@ -88,8 +88,6 @@ Rylyz.timer = function() {
     },
 
     start: function(timerName, milliseconds, repeat) {
-      this.stop(timerName);
-
       descriptor = registry[timerName]
 
       if (!descriptor) {
@@ -97,6 +95,8 @@ Rylyz.timer = function() {
         console.error(msg);
         throw msg;
       }
+      if (descriptor.timer) return; // timer already started.
+
       if (undefined == milliseconds) milliseconds = descriptor.milliseconds
       descriptor.milliseconds = milliseconds
 
@@ -116,15 +116,20 @@ Rylyz.timer = function() {
         descriptor.timer = setTimeout(descriptor.onFireTick, descriptor.milliseconds);
       }
     },
-
-    stop: function(timerName) {
+    stop: function(timerName) { // stop timer and invoke onStop handler
+      this.end(timerName, true)
+    },
+    cancel: function(timerName) { // stop the timer; do not invoke any more handlers
+      this.end(timerName, false)
+    },
+    end: function(timerName, invokeOnStop) { // simply stop the timer and do not invoke any more handlers
       descriptor = registry[timerName]
       if (!descriptor) return;
       if (descriptor.timer){
         if (descriptor.repeat) clearInterval(descriptor.timer)        
         else clearTimeout(descriptor.timer);
         descriptor.timer = null
-        if (descriptor.onFireStop) descriptor.onFireStop();
+        if (invokeOnStop && descriptor.onFireStop) descriptor.onFireStop();
       }
     },
   }

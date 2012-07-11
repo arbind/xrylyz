@@ -1,96 +1,146 @@
 %rylyz{:name=>"quiz"}
   :javascript
+    var quizapp = Rylyz.makeNamespace('quizapp')
 
-    showAnswers = function() {
+    // manage phases
+    quizapp.resetState = function() {
+      Rylyz.timer.cancel('hide-options');
+      Rylyz.timer.cancel('score-timer');
+      quizapp.gamePhase = "prompted";
+      quizapp.hintGiven = false;    
+    }
+    quizapp.startPhasePromptQuestion = function(info) {
+      console.log("----starting Question! " + info)
+      quizapp.resetState();
+      quizapp.question_id = info['question_id']
+      Rylyz.timer.start('hide-options')
+    }
+    quizapp.startPhaseThinking = function(options) {
+      console.log("----starting Answering! "  + options)
+      quizapp.gamePhase = "thinking";
+      quizapp.showAnswers();
+      Rylyz.timer.start('score-timer');
+    }
+    quizapp.startPhaseAnswered = function(options) {
+      console.log("----starting Answering! "  + options)
+      quizapp.gamePhase = "answered";
+    }
+    quizapp.startPhaseFinished = function(options) {
+      console.log("----finish Answering! "  + options)
+      quizapp.gamePhase = "finished";
+    }
+
+    // nav
+    quizapp.goBackToGame = function() {
+      quizapp.resetState();
+      var navEvent = {queue:'nav', type:'nav-onClick', appName:'quiz', nextScreen:'game'}
+      Rylyz.event.fireEvent(navEvent);
+    }
+
+    // CSS update utilities
+    quizapp.noMoreHinting = function() {
+      $('.hint').removeAttr('onclick')
+    }
+    quizapp.noMoreAnswering = function() {
+      $('.choice').removeAttr('onclick')
+      quizapp.noMoreHinting();
+    }
+    quizapp.showAnswers = function() {
       $('.answers').css('visibility','visible');
     }
 
-    startShowOptionsTimer = function() {
-      console.log("Starting Options");
-    }
-    tickShowOptionsTimer = function() {
-      console.log("Tick");
-    }
-    stopShowOptionsTimer = function() {
-      console.log("Display Options");
-      showAnswers();
-      Rylyz.timer.start('count-down-score')
-    }
+    // click handlers
+    quizapp.clickQuestionScreen = function() {
+      phase = quizapp.gamePhase
+      console.log ("clicking with phase: " +phase)
+      if ("prompted" == phase)  Rylyz.timer.stop('hide-options')
+      if ( "finished" == phase) quizapp.goBackToGame();
+    } 
 
-    Rylyz.timer.register('show-options', tickShowOptionsTimer, 3500, false, startShowOptionsTimer, stopShowOptionsTimer);
+    quizapp.choose = function(num, question_id) {
+      if ("thinking" != quizapp.gamePhase) return;
 
-    startCountDownTimer = function() {
-      vars.score = 100;
-      console.log("Starting Score: " + vars.score)
-    }
-    tickCountDownTimer = function() {
-      console.log(vars.score)
-      $('.progress').css('width', ''+ vars.score + '%')
-      vars.score -= 1;
-      if (0>vars.score) Rylyz.timer.stop('count-down-score')
-    }
-    stopCountDownTimer = function() {
-      noMoreAnswering();
-      vars.score += 1;
-      console.log("Final Score: " + vars.score)
-    }
-
-    Rylyz.timer.register('count-down-score', tickCountDownTimer, 1000, true, startCountDownTimer, stopCountDownTimer);
-
-    var intervalTimer;
-    var stopProgress;
-
-    function noMoreAnswering() {
-      $('.choice').removeAttr('onclick')
-      //also hide hint and pass
-    }
-    function noMoreHinting() {
-      $('.hint').removeAttr('onclick')
-      //also hide hint and pass
-    }
-    function stopProgress() {
-      //clearInterval(intervalTimer)
-      Rylyz.timer.stop('count-down-score')
-      noMoreAnswering();
-    }
-    function startProgress() {
-      var progress = 0;
-      var interval = 15;
-      var f = function() {
-        progress += 1;
-        $('.progress').css('width', ''+ (100-progress) + '%')
-        if (99 < progress) stopProgress();
-      }
-      intervalTimer = setInterval(f, interval*1000/100);
-    }
-
-    function disableChoosing() {
-      noMoreAnswering();
-      stopProgress();
-    }
-    function choose(num, question_id) {
+      Rylyz.timer.stop('score-timer')
       var answer = '.answer' + num
       $(answer).addClass('selected');
-      disableChoosing();
       // send choice to server
       var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'choose-answer', choice:num, id: question_id}
       Rylyz.event.fireEvent(hiEvent);
     }
 
-    function hint(question_id) {
-      // GIVE HINT
-      noMoreHinting();
-      // send choice to server
-      var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'hint', id: question_id}
-      Rylyz.event.fireEvent(hiEvent);
-    }
-    function pass(question_id) {
-      disableChoosing();
-      // send choice to server
-      var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'pass', id: question_id}
-      Rylyz.event.fireEvent(hiEvent);
+    quizapp.hint = function(question_id) {
+      if (quizapp.hintGiven) return;
+      quizapp.hintGiven = true;
+
+      //var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'hint', id: question_id}
+      //Rylyz.event.fireEvent(hiEvent);
     }
 
+    // hide-options timer
+    quizapp.startHideOptionsTimer = function() {
+      console.log("Starting Options");
+    }
+    quizapp.tickHideOptionsTimer = function() {
+      console.log("Tick");
+    }
+    quizapp.stopHideOptionsTimer = function() {
+      console.log("Display Options");
+      quizapp.startPhaseThinking();
+    }
+    Rylyz.timer.register('hide-options', quizapp.tickHideOptionsTimer, 3500, false, quizapp.startHideOptionsTimer, quizapp.stopHideOptionsTimer);
+
+    // scoreing timer
+    quizapp.timeOver = 20; // seconds before time is over for player to choose answer 
+    quizapp.tickPeriod = 100; //scoring timer interval in milliseconds
+
+    quizapp.startScoreTimer = function() {
+      quizapp.ticks = 0;
+      quizapp.scorePercent = 100; // in percentage
+      console.log("Starting Score percentage: " + quizapp.scorePercent)
+    }
+    quizapp.tickScoreTimer = function() {
+      quizapp.ticks += 1;
+      var secondsSoFar = quizapp.ticks / (1000/quizapp.tickPeriod); 
+      var timeOverTicks = (1000/quizapp.tickPeriod) * quizapp.timeOver; // ticks till time is over
+      var percentComplete = 100*(timeOverTicks - quizapp.ticks)/(timeOverTicks);
+      percentComplete = Math.floor(percentComplete);
+      console.log("ticks: " +quizapp.ticks+ " secondsSoFar: " +secondsSoFar+ " timerOverTicks: " + timeOverTicks + " %complete: " + percentComplete);
+      quizapp.scorePercent = percentComplete;
+      $('.progress').css('width', ''+ percentComplete + '%')
+      console.log(quizapp.scorePercent)
+      if (quizapp.ticks == timeOverTicks || 0>quizapp.scorePercent ) {
+        quizapp.scorePercent = 0;
+        Rylyz.timer.stop('score-timer')
+        var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'time-over', id: quizapp.question_id}
+        Rylyz.event.fireEvent(hiEvent);
+      }
+
+    }
+    quizapp.stopScoreTimer = function() {
+      quizapp.scorePercent += 1;
+      console.log("Final Score: " + quizapp.scorePercent)
+    }
+    Rylyz.timer.register('score-timer', quizapp.tickScoreTimer, quizapp.tickPeriod, true, quizapp.startScoreTimer, quizapp.stopScoreTimer);
+
+    // var intervalTimer;
+    // var stopProgress;
+
+    // function stopProgress() {
+    //   ////clearInterval(intervalTimer)
+    //   Rylyz.timer.stop('score-timer')
+    //   noMoreAnswering();
+    // }
+    // function startProgress() {
+    //   var progress = 0;
+    //   var interval = 15;
+    //   var f = function() {
+    //     progress += 1;
+    //     $('.progress').css('width', ''+ (100-progress) + '%')
+    //     if (99 < progress) stopProgress();
+    //   }
+    //   intervalTimer = setInterval(f, interval*1000//100);
+    //   $('#choices').hide();
+    // }
 
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
     %screen{:name=>"input-nickname"}
@@ -149,7 +199,7 @@
     ! [! } !]
 
   %screen{:name=>"question"}
-    .question-canvas{:onclick => "Rylyz.timer.stop('show-options')"}
+    .question-canvas{:onclick => "quizapp.clickQuestionScreen();"}
       .about
         About
       #progress-bar
@@ -157,8 +207,6 @@
       .score
         99
       %object{:name=>"prompt"}
-      .button-bar.close
-        .button{"nav-onClick"=>"game"} Close
 
   %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
     #trivia
@@ -169,22 +217,20 @@
           %h2{:style => "color: black;"} Choose your answer:
           .choices
             .answers
-              .choice.answer1{:onclick => "choose(1, '[[id]]')"}
+              .choice.answer1{:onclick => "quizapp.choose(1, '[[id]]')"}
                 [[answer1]]
-              .choice.answer2{:onclick => "choose(2, '[[id]]')"}
+              .choice.answer2{:onclick => "quizapp.choose(2, '[[id]]')"}
                 [[answer2]]
-              .choice.answer3{:onclick => "choose(3, '[[id]]')"}
+              .choice.answer3{:onclick => "quizapp.choose(3, '[[id]]')"}
                 [[answer3]]
-              .choice.answer4{:onclick => "choose(4, '[[id]]')"}
+              .choice.answer4{:onclick => "quizapp.choose(4, '[[id]]')"}
                 [[answer4]]
         #trivia-results
           %object{:name=>"status"}
           %collection{:name=>"leaders"}
     .button-bar.question-menu
-      .button.hint{onClick: "hint('[[id]]');"}
+      .button.hint{onClick: "quizapp.hint('[[id]]');"}
         Hint
-      .button.pass{onClick: "pass('[[id]]');"}
-        Pass
 
   %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
     %div{:class => '[[klass]]'}

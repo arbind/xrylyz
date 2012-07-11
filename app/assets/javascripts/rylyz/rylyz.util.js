@@ -4,7 +4,13 @@
 window.DBUG = window.DBUG || false;
 window.dbugOut = window.dbugOut || function(){ return null };
 
-window.Rylyz = window.Rylyz || {}
+window.Rylyz = window.Rylyz || {};
+Rylyz.js = {};
+
+Rylyz.makeNamespace = function(ns) {
+  Rylyz.js[ns] = Rylyz.js[ns] || {}
+  return Rylyz.js[ns];
+}
 
 window.refreshCSSUniqueCounter = 0;
 Rylyz.refreshCSS = function() {

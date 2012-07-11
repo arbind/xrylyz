@@ -9,70 +9,41 @@ class AppQuizController < RylyzAppController
 
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      cap = capsule
       wid = tokens['wid']
-      qid = -1
+
       game = AppQuizController.daily_game(visitor, wid)
-
-      capsule = materialize_message_capsule_for_wid('load-data', wid)
-      capsule.build_events do |messages|
-        data = game.level1_questions_as_card
-        messages << {displayName:'level1-questions', data: data}
-
-        data = game.level2_questions_as_card
-        messages << {displayName:'level2-questions', data: data}
-
-        data = game.level3_questions_as_card
-        messages << {displayName:'level3-questions', data: data}
-      end
-      capsule.notify
-
+      cap.show_data('level1-questions', game.level1_questions_as_card)
+      cap.show_data('level2-questions', game.level2_questions_as_card)
+      cap.show_data('level3-questions', game.level3_questions_as_card)
+      cap.fire2player(wid)
     end
 
     def self.on_select_question(visitor, tokens)
+      cap = capsule
       wid = tokens['wid']
       select = tokens['select']
-      game_question = QuizQuestion::GameQuestion.find(select)
+        cap.exception("Nothing Selected").fire2player(wid) and return if !select
 
-      client_events = []
-      ctx = {appName: app_name}
+      game_question = QuizQuestion::GameQuestion.find(select)
+        cap.exception("Game Question Not Found").fire2player(wid) and return if !game_question
+
       settings = {select: game_question.id.to_s}
-      event  = {queue:'screen', type:'navigation', nextScreen:'question', context:ctx, settings:settings}
-      client_events << event
-      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
+      cap.show_screen('question', settings).fire2player(wid)
     end
 
   end
 
   class ScreenQuestionController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      cap = capsule
       wid = tokens['wid']
       settings = tokens['settings']
       select = settings['select']
       game_question = QuizQuestion::GameQuestion.find(select)
-      game = game_question.game
 
-      capsule = materialize_message_capsule_for_wid('load-data', wid)
-      capsule.build_events do |messages|
-        data = game_question.for_display_as_prompt
-        messages << {displayName:'prompt', data: data}
-      end
-      capsule.notify
-
-      capsule = materialize_start_timer_capsule_for_wid(wid)
-      capsule.build_events do |messages|
-        data = {name: 'show-options'}
-        messages << {data: data}
-      end
-      capsule.notify
-
-    end
-
-    def self.on_done(visitor,tokens)
-      client_events = []
-      ctx = {appName: app_name}
-      event  = {queue:'screen', type:'navigation', nextScreen:'game', context:ctx }
-      client_events << event
-      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
+      prompt_data = game_question.for_display_as_prompt
+      cap.show_data('prompt', prompt_data).call_javascript('startPhasePromptQuestion', {question_id: select}).fire2player(wid)
     end
 
 
@@ -81,6 +52,7 @@ class AppQuizController < RylyzAppController
     end
 
     def self.on_choose_answer(visitor, tokens)
+      cap = capsule
       wid = tokens['wid']
 
       id = tokens['id']
@@ -102,7 +74,6 @@ class AppQuizController < RylyzAppController
       leaderboard = LeaderboardService.record_score(key, wid, "some_url", score, nil)
 
       klass = 'none'
-      winner = false
       if game_question.correct_answer == choice
         klass = 'correct'
         status = "That's Correct!"
@@ -111,19 +82,37 @@ class AppQuizController < RylyzAppController
         status = "You chose poorly"
       end
 
-      events = []
+      status_data = {status:status, klass:klass}
+      capsule.show_data('status', status_data).show_data('leaders', leaderboard).call_javascript('startPhaseFinished').fire2player(wid);
+    end
 
-      ctx = {appName:app_name, screenName:'question', displayName:'status'}
-      data = {status:status, klass:klass}
-      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      events << event
 
-      ctx = {appName:app_name, screenName:'question', displayName:'leaders'}
-      data = leaderboard
-      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      events << event
+    def self.on_time_over(visitor, tokens)
+      cap = capsule
+      wid = tokens['wid']
 
-      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", events)
+      id = tokens['id']
+      game_question = QuizQuestion::GameQuestion.find(id)
+      return if -1<game_question.selected_answer
+
+      time = tokens['time'].to_i
+      score = calculate_score time
+
+      game_question.selected_answer = 0
+      game_question.time_to_answer = time
+      game_question.score = score
+      game_question.save
+
+      game = game_question.game
+
+      key = game_question.leaderboard_key
+      leaderboard = LeaderboardService.leading_players_for_game(key)
+
+      klass = 'time-over'
+      status = "Time Over!"
+
+      status_data = {status:status, klass:klass}
+      capsule.show_data('status', status_data).show_data('leaders', leaderboard).call_javascript('startPhaseFinished').fire2player(wid);
     end
 
 
@@ -133,44 +122,6 @@ class AppQuizController < RylyzAppController
       id = tokens['id']
       game_question = QuizQuestion::GameQuestion.find(id)
       return if -1<game_question.selected_answer
-    end
-
-    def self.on_pass(visitor, tokens)
-      wid = tokens['wid']
-
-      id = tokens['id']
-      game_question = QuizQuestion::GameQuestion.find(id)
-      return if -1<game_question.selected_answer
-
-
-      game_question.selected_answer = 0
-      game_question.time_to_answer = 0
-      game_question.score = 0
-      game_question.save
-
-      game = game_question.game
-
-      key = game_question.leaderboard_key
-      leaderboard = LeaderboardService.leading_players_for_game(key)
-
-      klass = 'none'
-      winner = false
-      klass = 'wrong'
-      status = "Skipped!"
-
-      events = []
-
-      ctx = {appName:app_name, screenName:'question', displayName:'status'}
-      data = {status:status, klass:klass}
-      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      events << event
-
-      ctx = {appName:app_name, screenName:'question', displayName:'leaders'}
-      data = leaderboard
-      event = {queue:'app-server', type:'load-data', context:ctx, data: data}
-      events << event
-
-      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", events)
     end
 
   end

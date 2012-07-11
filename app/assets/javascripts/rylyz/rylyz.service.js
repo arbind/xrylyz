@@ -42,7 +42,6 @@
 			 	 	console.warn("displayName: " + event.context.displayName);
 			 	 }
 			});
-
 		},
 		handleDataEvent4UpdateObject: function(event) {
 		},
@@ -89,15 +88,31 @@
 
       Rylyz.timer.stop(timerName);
     },
+    handleUnregisterTimer: function(event) {
+      var data = event['data'];
+      if (!data) throw "No timer name was specified";
+      var timerName = data['name'];
+      timerName = timerName  || data['timer-name'];
+      if (!timerName) throw "No timer name was specified";
+
+      Rylyz.timer.unregister(timerName);
+    },
     handleCallJavascript: function(event){
       // +++ to test
       var data = event['data'];
       if (!data) throw "No javascript function name was specified";
+      var namespace = data['namespace'];
+      if (!namespace) throw "No javascript namespace was given: Rylyz.js.[namespace] must be used to call javascript methods";
       var functionName = data['function'];
       functionName = functionName || data['method'];
-      var isFunction  = !!(functionName && Rylyz.js.functionName && Rylyz.js.functionName.constructor && Rylyz.js.functionName.call && Rylyz.js.functionName.apply)
+      ns = Rylyz.js[namespace]
+      if (!ns) throw "No javascript namespace found for: Rylyz.js." + namespace + "!\nUse Rylyz.makeNamespace('" +namespace+ "') to define the namespace.\n Then create your functions in this namespace like this:\n\nvar " +namespace+ " = Rylyz.makeNamespace('" +namespace+ "');\n" +namespace+ ".myFunction = function(arg){\n  console.log('arg: ' + arg);\n}\n\n The naming convention for your namespace is: [appname]app";
+      fn = ns[functionName]
+      var isFunction  = !!(fn && fn.constructor && fn.call && fn.apply)
       if (!isFunction) throw "No javascript function is defined: Rylyz.js." + functionName + "()";
-      Rylyz.js[functionName]();
+      var options = data['options']
+      if (options) fn(options);
+      else fn();
     },
 		fireHIEvent: function(event) {
       Rylyz.Wyjyt.triggerWIDEvent("hi", event);
@@ -114,21 +129,44 @@
 
 		},
 		fireHIEvent4Navigation: function(event) {
-      if (!ev.nextScreen) throw "Navigation event must specify nextScreen! " + ev;
+      var nextScreen = event.nextScreen
+      var data = event.data
+      if (!nextScreen) nextScreen = data.nextScreen
+      if (!nextScreen) throw "Navigation event must specify nextScreen! " + event;
       var nextScreenRoute = {
-      	appName: Rylyz.lookupProperty('appName', ev),
-      	screenName: ev.nextScreen
+        appName: Rylyz.lookupProperty('appName', event),
+        screenName: nextScreen
       }
       var screen = Rylyz.lookupScreen(nextScreenRoute);
-      if (!screen) throw "A screen named '" +ev.nextScreen+ "'' can not be found to handle this navigation event!";
-      var newSettings = event.settings || {}
-      if (event.select) newSettings.select = event.select;
+      if (!screen) throw "A screen named '" +nextScreen+ "'' can not be found to handle this navigation event!";
 
-      Rylyz.showScreenWithFadeIn(screen, newSettings);
+      var settings = {}
+      if (data) settings = data.settings
+      if (event.select) settings.select = event.select;
+
+      console.log ("about to show next screen " + nextScreen + " with settings " + settings);
+      Rylyz.showScreenWithFadeIn(screen, settings);
+
+      // var nextScreen = event.nextScreen
+      // if (!nextScreen && event.data) nextScreen = event.data.nextScreen
+      // if (!nextScreen) throw "Navigation event must specify nextScreen! " + event;
+      // var nextScreenRoute = {
+      // 	appName: Rylyz.lookupProperty('appName', event),
+      // 	screenName: nextScreen
+      // }
+      // var screen = Rylyz.lookupScreen(nextScreenRoute);
+      // if (!screen) throw "A screen named '" +nextScreen+ "'' can not be found to handle this navigation event!";
+      // var newSettings = event.settings
+      // if (!newSettings && event.data) newSettings  = event.data.settings;
+      // if (!newSettings) newSettings = {}
+      // if (event.select) newSettings.select = event.select;
+
+      // console.log ("about to show next screen " + nextScreen + " with settings " + settings);
+      // Rylyz.showScreenWithFadeIn(screen, newSettings);
 		},
 		fireHIEvent4Intent: function(event) {
-      if (!ev.intent) throw "Intent event must specify an intent! " + ev;
-      Rylyz.Intent.open(ev.intent);
+      if (!event.intent) throw "Intent event must specify an intent! " + event;
+      Rylyz.Intent.open(event.intent);
 		},
 	};
 
@@ -286,7 +324,7 @@
 
 
   var hStartTimer = {
-    queue:"app-server",
+    queue:"timer",
     type:"start-timer",
     handleEvent: function(ev) {
       Rylyz.Service.handleStartTimer(ev);
@@ -295,7 +333,7 @@
   Rylyz.event.registerEventHandler(hStartTimer);
 
   var hStopTimer = {
-    queue:"app-server",
+    queue:"timer",
     type:"stop-timer",
     handleEvent: function(ev) {
       Rylyz.Service.handleStopTimer(ev);
@@ -303,9 +341,18 @@
   }
   Rylyz.event.registerEventHandler(hStopTimer);
 
+  var hUnregisterTimer = {
+    queue:"timer",
+    type:"unregister-timer",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleUnregisterTimer(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hUnregisterTimer);
+
  var hCallJavascript = {
-    queue:"app-server",
-    type:"call-javascript",
+    queue:"javascript",
+    type:"call-function",
     handleEvent: function(ev) {
       Rylyz.Service.handleCallJavascript(ev);
     }
@@ -313,7 +360,7 @@
   Rylyz.event.registerEventHandler(hCallJavascript);
 
  
-var hScreenNavigation = {
+  var hScreenNavigation = {
     queue: "screen",
     type: "navigation",
     handleEvent: function(ev) { Rylyz.Service.fireHIEvent4Navigation(ev); }
@@ -372,5 +419,104 @@ var hScreenNavigation = {
   	}
   }
   Rylyz.event.registerEventHandler(hFormSubmit);
+
+
+  var hAddCSSClass = {
+    queue:"css",
+    type:"add-css-class",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hAddCSSClass);
+
+  var hRemoveCSSClass = {
+    queue:"css",
+    type:"remove-css-class",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hRemoveCSSClass);
+
+  var hSetCSSAttribute = {
+    queue:"css",
+    type:"set-css-attribute",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hSetCSSAttribute);
+
+  var hEnableButton = {
+    queue:"render",
+    type:"enable-button",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hEnableButton);
+
+  var hDisableButton = {
+    queue:"render",
+    type:"disable-button",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hDisableButton);
+
+  var hStartAnimation = {
+    queue:"animation",
+    type:"start-animation",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStartAnimation(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStartAnimation);
+
+  var hStopAnimation = {
+    queue:"animation",
+    type:"stop-animation",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStopAnimation(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStopAnimation);
+
+
+  var hStartSound = {
+    queue:"sound",
+    type:"start-sound",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStartSound(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStartSound);
+
+  var hStopSound = {
+    queue:"sound",
+    type:"stop-sound",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleStopSound(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hStopSound);
+
+  var hServiceException = {
+    queue:"exception",
+    type:"service-exception",
+    handleEvent: function(ev) {
+      throw "handler not yet implemented: " + ev
+      //Rylyz.Service.handle__(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hServiceException);
+
 
 })(jQuery)

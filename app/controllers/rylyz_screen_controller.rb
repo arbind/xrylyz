@@ -77,26 +77,46 @@ class RylyzScreenController
   # capsule.[target].enable_click
   # capsule.[target].run_javascript
 
-  def self.materialize_message_capsule_for_all (event_type)
+  # def self.materialize_message_capsule_for_all (event_type)
+  #   # ctx = {appName: app_name, screenName: screen_name}
+  #   # RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
+  #   ctx = {appName: app_name, screenName: screen_name}
+  #   c = RylyzMessageCapsule.new
+  #   c.app_name(app_name)
+  #   c.screen_name(screen_name)
+  #   c.context(ctx)
+  #   c.app_channel_id(app_uid)
+  # end
+
+  # def self.materialize_message_capsule_for_wid (event_type, wid)
+  #   # ctx = {appName: app_name, screenName: screen_name}
+  #   # RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
+
+  #   ctx = {appName: app_name, screenName: screen_name}
+  #   c = RylyzMessageCapsule.new
+  #   c.context(ctx)
+  #   c.player_channel_id(wid)
+  #   c
+  # end
+
+  # def self.load_data_message_capsule_for_all ()
+  #   materialize_message_capsule_for_all 'load-data'
+  # end
+
+  # def self.load_data_message_capsule_for_wid (wid)
+  #   materialize_message_capsule_for_wid 'load-data', wid
+  # end
+
+  # def self.materialize_start_timer_capsule_for_wid(wid)
+  #   materialize_message_capsule_for_wid 'start-timer', wid
+  # end
+
+  def self.capsule
     ctx = {appName: app_name, screenName: screen_name}
-    RylyzMessageCapsule.new('app-server', event_type, ctx, app_uid)
+    c = RylyzMessageCapsule.new
+    c.app_name app_name
+    c.screen_name screen_name
+    c.context ctx
+    c.app_channel_id app_uid
   end
-
-  def self.materialize_message_capsule_for_wid (event_type, wid)
-    ctx = {appName: app_name, screenName: screen_name}
-    RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
-  end
-
-  def self.load_data_message_capsule_for_all ()
-    materialize_message_capsule_for_all 'load-data'
-  end
-
-  def self.load_data_message_capsule_for_wid (wid)
-    materialize_message_capsule_for_wid 'load-data', wid
-  end
-
-  def self.materialize_start_timer_capsule_for_wid(wid)
-    materialize_message_capsule_for_wid 'start-timer', wid
-  end
-
 end

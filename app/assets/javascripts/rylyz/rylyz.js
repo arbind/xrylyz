@@ -5,6 +5,9 @@
 // 5. Integrate into widget
 
 (function($) {
+  window.Rylyz = window.Rylyz || {}
+  Rylyz.js = {};
+
   _.templateSettings = { 
     // [! var x; !] execute code
     // [[ varname ]] prints value
@@ -12,7 +15,8 @@
     interpolate : /\[\[([\s\S]+?)\]\]/g  
   };
 
-  window.Rylyz = window.Rylyz || {}
+
+
   Rylyz.Tag = "rylyz";
 
   Rylyz.appReferenceTable = new Rylyz.ReferenceTable();
