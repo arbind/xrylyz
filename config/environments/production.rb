@@ -1,15 +1,16 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-RYLYZ_PLAYER_HOST = ENV['RYLYZ_PLAYER_HOST'] unless ENV['RYLYZ_PLAYER_HOST'].empty?
-RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HEROKU_APP_NAME'].empty?
+RYLYZ_PLAYER_HOST = ENV['RYLYZ_PLAYER_HOST'] unless ENV['RYLYZ_PLAYER_HOST'].blank?
+RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HEROKU_APP_NAME'].blank?
 RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "rylyz-local.com"
 
 puts "ENV['HEROKU_APP_NAME'] set to #{ENV['HEROKU_APP_NAME']}"
 puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
+player_host = RYLYZ_PLAYER_HOST.downcase
 # Host specific configurations
-if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
+if player_host.include? "rylyz.ws"
   # See everything in the log (default is :info)
   config.log_level = :debug
   
@@ -61,7 +62,7 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
 
   }
 
-elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
+elsif player_host.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
   # See everything in the log (default is :info)
   config.log_level = :debug
   
@@ -113,7 +114,7 @@ elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.co
 
   }
 
-elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
+elsif player_host.include? "demo" # http://rylyz-demo.herokuapp.com/
   # See everything in the log (default is :info)
   config.log_level = :debug
   
@@ -165,7 +166,7 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
 
   }
   
-elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
+elsif player_host.include? "player" # http://rylyz-player.herokuapp.com/
   # See everything in the log (default is :info)
   config.log_level = :debug
   
