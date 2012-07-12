@@ -284,12 +284,6 @@ class PusherChannels
 
 end
 
-puts "=========================================="
-puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
-puts "Pusher app_id => #{SECRETS[:PUSHER][:APP_ID]}"
-puts "Pusher key    => #{SECRETS[:PUSHER][:KEY]}"
-puts "=========================================="
-
 # See: http://pusher.com/docs/pusher_protocol
 # handlers = {
 #  "pusher:heartbeat" => {},
@@ -309,6 +303,15 @@ def start_realtime_sockets
   return false if defined?(Rails::Console)
   return true
 end
+
+unless start_realtime_sockets
+  puts "=========================================="
+  puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
+  puts "Pusher app_id => #{SECRETS[:PUSHER][:APP_ID]}"
+  puts "Pusher key    => #{SECRETS[:PUSHER][:KEY]}"
+  puts "=========================================="
+end
+
 
 puts "CONSOLE IS RUNNING" if defined?(Rails::Console)
 puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}" if ENV['RAILS_GROUPS']
