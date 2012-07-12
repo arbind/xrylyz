@@ -29,7 +29,20 @@ Optionally, register and get your own Pusher APP ID, and create a personal RAILS
 for your own development by copying development.rb and updating the pusher App ID, key and secret
 
 == When deploying for stage or production
-RYLYZ_PLAYER_HOST config var must be set for the widget to work:
+Optionally turn off real time sockets (when deploying only parts of the app, like the dashboard):
+heroku config:add REAL_TIME=off
+
+By default, real time sockets are turned on.
+RYLYZ_PLAYER_HOST must be set in order to pick up the correct production configs:
+
+rylyz.ws picks up production configs
+dashboard.rylyz.ws also uses production configs and points to the same db (REAL_TIME is turned off in heroku configs)
+
+any RYLYZ_PLAYER_HOST with rylyz.ws will pick up production configs (live keys, secrets and credit card transactions)
+(for different heroku apps to point to the same database, set the db url the same in heroku configs)
+
+any RYLYZ_PLAYER_HOST with 'holodeck' uses the staging environment
+any RYLYZ_PLAYER_HOST with 'player' uses the dev environment
 
 When deploying to my-app-name.herokuapp.com simply set HEROKU_APP_NAME
 > heroku config:add HEROKU_APP_NAME=my-app-name
