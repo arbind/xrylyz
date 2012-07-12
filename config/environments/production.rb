@@ -1,16 +1,19 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-RYLYZ_PLAYER_HOST = ENV['RYLYZ_PLAYER_HOST'] unless ENV['RYLYZ_PLAYER_HOST'].nil?
-RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HEROKU_APP_NAME'].nil?
+RYLYZ_PLAYER_HOST = ENV['RYLYZ_PLAYER_HOST'] unless ENV['RYLYZ_PLAYER_HOST'].empty?
+RYLYZ_PLAYER_HOST ||= "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" unless ENV['HEROKU_APP_NAME'].empty?
 RYLYZ_PLAYER_HOST ||= Socket::gethostname rescue "rylyz-local.com"
-RYLYZ_PLAYER_HOST.downcase!
 
 puts "ENV['HEROKU_APP_NAME'] set to #{ENV['HEROKU_APP_NAME']}"
 puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
 # Host specific configurations
 if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
+  # See everything in the log (default is :info)
+  config.log_level = :debug
+  
+  puts "DEFINING SECRETS FOR rylyz.ws (LIVE)"
 
   SECRETS = {
     :STRIPE => { # LIVE CONFIG - MAKES REAL CREDIT CARD CHARGES
@@ -59,7 +62,10 @@ if RYLYZ_PLAYER_HOST.include? "rylyz.ws"
   }
 
 elsif RYLYZ_PLAYER_HOST.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
-puts "DEFINING SECRETS FOR HOLODECK"
+  # See everything in the log (default is :info)
+  config.log_level = :debug
+  
+  puts "DEFINING SECRETS FOR HOLODECK"
 
   SECRETS = {
     :STRIPE => { # TEST CONFIG
@@ -108,6 +114,10 @@ puts "DEFINING SECRETS FOR HOLODECK"
   }
 
 elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
+  # See everything in the log (default is :info)
+  config.log_level = :debug
+  
+  puts "DEFINING SECRETS FOR DEMO"
 
   SECRETS = {
     :STRIPE => { #TEST CONFIG
@@ -156,6 +166,10 @@ elsif RYLYZ_PLAYER_HOST.include? "demo" # http://rylyz-demo.herokuapp.com/
   }
   
 elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
+  # See everything in the log (default is :info)
+  config.log_level = :debug
+  
+  puts "DEFINING SECRETS FOR PLAYER"
 
   SECRETS = {
     :STRIPE => { # TEST CONFIG
@@ -203,8 +217,9 @@ elsif RYLYZ_PLAYER_HOST.include? "player" # http://rylyz-player.herokuapp.com/
 
   }
 
-else # default empty since heroku rake tasks do not alwyas load environment variables: RYLYZ_PLAYER_HOST will be nil
-
+else # default empty since heroku rake tasks do not always load environment variables: RYLYZ_PLAYER_HOST will be nil
+  # See everything in the log (default is :info)
+  config.log_level = :debug
   SECRETS = {
     :STRIPE => {},
     :PUSHER => {},
@@ -250,9 +265,6 @@ end
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
-
-  # See everything in the log (default is :info)
-  # config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
