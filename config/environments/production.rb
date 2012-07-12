@@ -10,7 +10,7 @@ puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
 player_host = RYLYZ_PLAYER_HOST.downcase
 # Host specific configurations
-if player_host.include? "rylyz.ws"
+if "rylyz.ws" == player_host
   # See everything in the log (default is :info)
   config.log_level = :debug
   
