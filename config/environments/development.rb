@@ -1,7 +1,6 @@
 RylyzPlayer::Application.configure do
 
 RYLYZ_PLAYER_HOST = "rylyz-local.com"
-RYLYZ_PLAYER_HOST.downcase!
 
 
   # Settings specified here will take precedence over those in config/application.rb
