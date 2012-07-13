@@ -38,7 +38,7 @@ Rylyz.Wygyt = {
     this.fetchCSS(css_location);
   },
   fetchCSS: function(name) {
-    var css_href = Rylyz.httpProtocol + "://" + Rylyz.PlayerHost + '/' +name+ ".css?a="+uniqueCounter++;
+    var css_href = Rylyz.httpProtocol + "://" + Rylyz.PlayerHost + '/assets/' +name+ ".css?a="+uniqueCounter++;
     if(DBUG) console.log('Loading CSS: ' + css_href);
     var css_link = $("<link>", { rel: "stylesheet", type: "text/css", href: css_href });
     css_link.appendTo('head');
@@ -105,7 +105,7 @@ Rylyz.Wygyt = {
       return;
     };
     $ = jQuery = jQuery;
-    var src = Rylyz.httpProtocol + "://" +Rylyz.PlayerHost+ "/play.rylyz.js"
+    var src = Rylyz.httpProtocol + "://" +Rylyz.PlayerHost+ "/assets/play.rylyz.js"
     if(DBUG) console.info("o-- Cycle: about to load javascript: " + src);
 
     var onDone = function(script, textStatus) {
