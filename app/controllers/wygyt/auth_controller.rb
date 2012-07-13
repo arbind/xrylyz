@@ -1,4 +1,4 @@
-class Wyjyt::AuthController < ApplicationController
+class Wygyt::AuthController < ApplicationController
   include ApplicationHelper
   protect_from_forgery :except => :pusher_auth
 

@@ -1,8 +1,8 @@
 (function() {
 
 window.DBUG = "<%= Rails.env %>" != "production";
-var  wyjytCSS = 'rylyz.wyjyt';
-var startApp = 'wyjyt';
+var  wygytCSS = 'rylyz.wygyt';
+var startApp = 'wygyt';
   
 var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
@@ -22,13 +22,13 @@ var jQueryScriptURL = 'https://ajax.googleapis.com/ajax/libs/jquery/' +jQueryVer
 // var pusherScriptURL = 'http://js.pusher.com/' +pusherVersion+ '/pusher.min.js';
 
 var uniqueCounter = 0;
-Rylyz.Wyjyt = {
+Rylyz.Wygyt = {
   //channelName: 'private-rylyz',
   started: false,
-  wyjytChannelName: 'wyjyt',
-  wyjytChannel: null,
+  wygytChannelName: 'wygyt',
+  wygytChannel: null,
   clientChannel: null,
-  wyjytSource: {},
+  wygytSource: {},
   transparentOverlayDiv: null,
   appOverlayDiv: null,
   displayFormat: null,
@@ -45,52 +45,52 @@ Rylyz.Wyjyt = {
   },
   setup: function() {
     jQuery(document).ready(function($) {
-      var wyjyt = jQuery("#rylyz-widget")
-      if (!wyjyt || !wyjyt.length) {
-        wyjyt = jQuery("<div id='rylyz-widget' displayFormat='footer'/>");
-        wyjyt.appendTo("body");
+      var wygyt = jQuery("#rylyz-widget")
+      if (!wygyt || !wygyt.length) {
+        wygyt = jQuery("<div id='rylyz-widget' displayFormat='footer'/>");
+        wygyt.appendTo("body");
       }
-      Rylyz.Wyjyt.displayFormat = jQuery("#rylyz-widget").attr("displayFormat") || 'button';
-      if ('button' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.setupAsButton();
-      else if ('footer' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.setupAsFooter();
-      else alert('unsupported display format for Wygyt: ' + Rylyz.Wyjyt.displayFormat)
+      Rylyz.Wygyt.displayFormat = jQuery("#rylyz-widget").attr("displayFormat") || 'button';
+      if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsButton();
+      else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsFooter();
+      else alert('unsupported display format for Wygyt: ' + Rylyz.Wygyt.displayFormat)
     });
   },
   setupAsButton: function() {
-    var html = Rylyz.Wyjyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
+    var html = Rylyz.Wygyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
     jQuery("#rylyz-widget .button").remove();    
     jQuery("#rylyz-widget").append(html);
-    Rylyz.Wyjyt.setupForAll();
+    Rylyz.Wygyt.setupForAll();
   },
   setupAsFooter: function () {
-    Rylyz.Wyjyt.setupForAll();
+    Rylyz.Wygyt.setupForAll();
   },
   setupForAll: function () {
-    Rylyz.Wyjyt.fetchCSS(wyjytCSS);
+    Rylyz.Wygyt.fetchCSS(wygytCSS);
 
     //setup socket service and register socket event handlers
     var socketSvcLoader = 'setup'+socketService; //i.e. setupPusher()
-    var triggerSocketServiceLoading = Rylyz.Wyjyt[socketSvcLoader];
+    var triggerSocketServiceLoading = Rylyz.Wygyt[socketSvcLoader];
 
-    Rylyz.Wyjyt.loadRylyzCore(triggerSocketServiceLoading);
+    Rylyz.Wygyt.loadRylyzCore(triggerSocketServiceLoading);
   },
   show: function() {
-    if ('button' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.showAsButton();
-    else if ('footer' == Rylyz.Wyjyt.displayFormat) Rylyz.Wyjyt.showAsFooter();
-    else alert('unsupported display format for Wygyt: ' + Rylyz.Wyjyt.displayFormat)
+    if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsButton();
+    else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsFooter();
+    else alert('unsupported display format for Wygyt: ' + Rylyz.Wygyt.displayFormat)
   },
   showAsButton: function() {
-    var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
-      "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
+    var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
+      "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
     jQuery("#rylyz-widget .button").remove();    
     jQuery("#rylyz-widget").append(html);
-    Rylyz.Wyjyt.showForAll();
+    Rylyz.Wygyt.showForAll();
   },
   showAsFooter: function() {
     var footerConsole = jQuery("<div class='rylyz-console footer'/>");
     footerConsole.appendTo("body");
     jQuery(".rylyz-console.footer").css('height', '36px');
-    Rylyz.Wyjyt.showForAll();
+    Rylyz.Wygyt.showForAll();
   },
   showForAll: function() {
     //
@@ -107,8 +107,8 @@ Rylyz.Wyjyt = {
     var onDone = function(script, textStatus) {
       if(DBUG) console.info("o-- Cycle: loaded javascript status: " + textStatus);
       // now we can call rylyz framework functions like Rylyz.wid();
-      Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
-      Rylyz.Wyjyt.wyjytSource.url = document.URL;
+      Rylyz.Wygyt.wygytSource.wid = Rylyz.Wygyt.wygytSource.wid || Rylyz.materializeUID();
+      Rylyz.Wygyt.wygytSource.url = document.URL;
       callbackOnComplete(); 
     };
     var onFail = function(jqxhr, settings, exception) {
@@ -122,10 +122,10 @@ Rylyz.Wyjyt = {
     jQuery.getScript(src).done(onDone).fail(onFail);
 
     /*
-    Rylyz.Wyjyt.loadScriptsSerially(, scriptNames, function() {
+    Rylyz.Wygyt.loadScriptsSerially(, scriptNames, function() {
       // now we can call framework functions like Rylyz.wid();
-      Rylyz.Wyjyt.wyjytSource.wid = Rylyz.Wyjyt.wyjytSource.wid || Rylyz.materializeUID();
-      Rylyz.Wyjyt.wyjytSource.url = document.URL;
+      Rylyz.Wygyt.wygytSource.wid = Rylyz.Wygyt.wygytSource.wid || Rylyz.materializeUID();
+      Rylyz.Wygyt.wygytSource.url = document.URL;
       callbackOnComplete(); 
     });
     */
@@ -135,11 +135,11 @@ Rylyz.Wyjyt = {
     // jQuery.getScript(pusherScriptURL, function() { Rylyz.Pusher.setup(); });
     Rylyz.Pusher.setup();;
   },
-  onWyjytChannelConnected: function() {
-      if(DBUG) console.info("---------o wyjyt connected !!!")
+  onWygytChannelConnected: function() {
+      if(DBUG) console.info("---------o wygyt connected !!!")
   },
-  onWyjytChannelFailed: function(status) {
-    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect wyjyt!")
+  onWygytChannelFailed: function(status) {
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect wygyt!")
     if(status == 408 || status == 503){
       // retry?
     }
@@ -169,12 +169,12 @@ Rylyz.Wyjyt = {
   onCloseApp: function(appName) {},
   showOverlay: function() {
     jQuery("body").css("overflow","hidden");
-    var o = Rylyz.Wyjyt.transparentOverlayDiv;
-    var canvas = Rylyz.Wyjyt.appOverlayDiv;
+    var o = Rylyz.Wygyt.transparentOverlayDiv;
+    var canvas = Rylyz.Wygyt.appOverlayDiv;
     if (!o) {
-      o = Rylyz.Wyjyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
-      canvas = Rylyz.Wyjyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
-      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wyjyt.hideOverlay()'>x</div>");
+      o = Rylyz.Wygyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
+      canvas = Rylyz.Wygyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
+      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wygyt.hideOverlay()'>x</div>");
       var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
       var appSpot = jQuery("<div id='rylyz-app-spot'/>");
       appSpot.appendTo(frame);
@@ -189,18 +189,18 @@ Rylyz.Wyjyt = {
   },
   hideOverlay: function() {
     jQuery("body").css("overflow","auto");
-    var o = Rylyz.Wyjyt.transparentOverlayDiv;
-    var canvas = Rylyz.Wyjyt.appOverlayDiv;
+    var o = Rylyz.Wygyt.transparentOverlayDiv;
+    var canvas = Rylyz.Wygyt.appOverlayDiv;
     if (!o) return;
     o.fadeOut(1888);
     canvas.fadeOut(888);
-    var html = Rylyz.Wyjyt.buttonHTML("play", "Play", 
-        "Rylyz.Wyjyt.start('"+startApp+"')", 100, "Starting...");
+    var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
+        "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
     jQuery("#rylyz-widget .button").remove();    
     jQuery("#rylyz-widget").append(html);
   },
   start: function(data) {
-    Rylyz.Wyjyt.showOverlay();
+    Rylyz.Wygyt.showOverlay();
 
     var app_name = Rylyz.lookupProperty("app", data);
     if (null==app_name) app_name = Rylyz.lookupProperty("appName", data);
@@ -217,20 +217,20 @@ Rylyz.Wyjyt = {
     }
     // else app has not yet been loaded, so go get it
 
-    if (Rylyz.Wyjyt.started==app_name) { //debounce - if already being loaded
+    if (Rylyz.Wygyt.started==app_name) { //debounce - if already being loaded
       if(DBUG) console.log(app_name + " is already starting!");
       return;
     }
-    Rylyz.Wyjyt.started = app_name;
+    Rylyz.Wygyt.started = app_name;
 
 
-    Rylyz.Wyjyt.fetchAppCSS(app_name);
+    Rylyz.Wygyt.fetchAppCSS(app_name);
     ev = {
       appName: app_name
     };
     Rylyz.Pusher.triggerWIDEvent("open_app", ev);
-    // Rylyz.Wyjyt.loadChat();
-    // console.info("o-- Cycle: got data back to Start Wyjyt: " + data);
+    // Rylyz.Wygyt.loadChat();
+    // console.info("o-- Cycle: got data back to Start Wygyt: " + data);
   },
 
   openApp: function(appName) {
@@ -248,7 +248,7 @@ Rylyz.Wyjyt = {
       function(){
         jQuery = jQuery;
         $ = jQuery;
-        Rylyz.Wyjyt.loadScriptsSerially(endpoint, scriptNames, callbackOnComplete);
+        Rylyz.Wygyt.loadScriptsSerially(endpoint, scriptNames, callbackOnComplete);
       }
     );
   },
@@ -267,7 +267,7 @@ Rylyz.Wyjyt = {
   },
 
 }
-Rylyz.Wyjyt.buttonHTML = function(style, text, onclick, width, textAfterClick) {
+Rylyz.Wygyt.buttonHTML = function(style, text, onclick, width, textAfterClick) {
   var w = width || 100;
   var afterClick= "";
   if (textAfterClick) afterClick = "jQuery(this).html('"+textAfterClick+"');"
@@ -278,7 +278,7 @@ Rylyz.Wyjyt.buttonHTML = function(style, text, onclick, width, textAfterClick) {
 }
 
 
-Rylyz.wid = function() { return Rylyz.Wyjyt.wyjytSource.wid; }
+Rylyz.wid = function() { return Rylyz.Wygyt.wygytSource.wid; }
 
 
 window.Rylyz.Pusher = {
@@ -286,7 +286,7 @@ window.Rylyz.Pusher = {
   socketID: null,
   channels: {},
   config: {
-    authEndpointPath: '/wyjyt/auth/pusher_access',
+    authEndpointPath: '/wygyt/auth/pusher_access',
     apiKeyPusher: 'a9206fc7a3b77a7986c5',
   },
   setup: function() {
@@ -303,21 +303,21 @@ window.Rylyz.Pusher = {
           };
     }
     // establish a private WID channel
-    // once wid channel connects, establish a private wyjyt channel
-    // once wyjyt channel connects, let the server know about the wID channel so it can listen
+    // once wid channel connects, establish a private wygyt channel
+    // once wygyt channel connects, let the server know about the wID channel so it can listen
     // the serve will send an ack on new wid channel
-    // once ack is received, disconnect from the wyjyt channel
+    // once ack is received, disconnect from the wygyt channel
 
-    //create a private client channel then let the widget know about it from the wyjyt channel
+    //create a private client channel then let the widget know about it from the wygyt channel
     //+++ refactor so it is independent of Pusher or any socketService!
-    if(DBUG) console.info("o-- Cycle: about to start wyjyt");
+    if(DBUG) console.info("o-- Cycle: about to start wygyt");
     var onConnect, onFail;
 
-    Rylyz.Wyjyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
+    Rylyz.Wygyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
       //+++ move into wygyt as a function
-      Rylyz.Pusher.closePrivateChannel(Rylyz.Wyjyt.wyjytChannelName);
-      Rylyz.Wyjyt.show();
+      Rylyz.Pusher.closePrivateChannel(Rylyz.Wygyt.wygytChannelName);
+      Rylyz.Wygyt.show();
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
@@ -363,21 +363,21 @@ window.Rylyz.Pusher = {
     });
   },
 
-  onWyjytChannelConnected: function() {
-    Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wyjyt.wyjytChannelName,"open-wid-channel")
-    Rylyz.Wyjyt.onWyjytChannelConnected();
-    if(DBUG) console.info("---------o connect to wyjyt!!!")
+  onWygytChannelConnected: function() {
+    Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.Wygyt.wygytChannelName,"open-wid-channel")
+    Rylyz.Wygyt.onWygytChannelConnected();
+    if(DBUG) console.info("---------o connect to wygyt!!!")
   },
-  onWyjytChannelFailed: function(status) {
-    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect to wyjyt!")
+  onWygytChannelFailed: function(status) {
+    if(DBUG) console.error("----------! Error [" +status+" ]: Could not connect to wygyt!")
     if(status == 408 || status == 503){
       // retry?
     }
-    Rylyz.Wyjyt.onWIDChannelFailed(status)
+    Rylyz.Wygyt.onWIDChannelFailed(status)
   },
   onWIDChannelConnected: function() {
-    Rylyz.Wyjyt.wyjytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wyjyt.wyjytChannelName, Rylyz.Pusher.onWyjytChannelConnected, Rylyz.Pusher.onWyjytChannelFailed);
-    Rylyz.Wyjyt.onWIDChannelConnected();
+    Rylyz.Wygyt.wygytChannel = Rylyz.Pusher.privateChannel(Rylyz.Wygyt.wygytChannelName, Rylyz.Pusher.onWygytChannelConnected, Rylyz.Pusher.onWygytChannelFailed);
+    Rylyz.Wygyt.onWIDChannelConnected();
       if(DBUG) console.info("---------o connected to wid: " + Rylyz.wid())
   },
   onWIDChannelFailed: function(status) {
@@ -385,10 +385,10 @@ window.Rylyz.Pusher = {
     if(status == 408 || status == 503){
       // retry?
     }
-    Rylyz.Wyjyt.onWIDChannelFailed(status)
+    Rylyz.Wygyt.onWIDChannelFailed(status)
   },
   onChannelConnected: function(chanelName) {
-    Rylyz.Wyjyt.onChannelConnected(chanelName);
+    Rylyz.Wygyt.onChannelConnected(chanelName);
     if(DBUG) console.info("---------o connected to custom id: " + chanelName);
   },
   onChannelFailed: function(status) {
@@ -396,7 +396,7 @@ window.Rylyz.Pusher = {
     if(status == 408 || status == 503){
       // retry?
     }
-    Rylyz.Wyjyt.onChannelFailed(status)
+    Rylyz.Wygyt.onChannelFailed(status)
   },
   authenticateConnection: function() {
     if (this.singleton) return this.singleton;
@@ -405,7 +405,7 @@ window.Rylyz.Pusher = {
     this.singleton.connection.bind('connected', function() {
       var p = Rylyz.Pusher.singleton;
       Rylyz.Pusher.socketID = p.socket_id || p.connection.socket_id;
-      Rylyz.Wyjyt.wyjytSource.pusher_socket_id = Rylyz.Pusher.socketID;
+      Rylyz.Wygyt.wygytSource.pusher_socket_id = Rylyz.Pusher.socketID;
     });
     return this.singleton;
   },
@@ -459,7 +459,7 @@ window.Rylyz.Pusher = {
     return channel.trigger(scopedEventName, payload); //add refferrerr, ip, clientWID and stuff
   },
   payload: function(tokens) {
-    var p = jQuery.extend({}, Rylyz.Wyjyt.wyjytSource, tokens)
+    var p = jQuery.extend({}, Rylyz.Wygyt.wygytSource, tokens)
     p = JSON.stringify(p);
     return p;
   },
@@ -520,7 +520,7 @@ window.Rylyz.Pusher = {
 
 // ========= Bootstrap utilities =========
 function bootstrap(){
-  localizeJQuery(); //load jquery first, then calls Rylyz.Wyjyt.setup().
+  localizeJQuery(); //load jquery first, then calls Rylyz.Wygyt.setup().
 };
 
 function localizeJQuery() {
@@ -538,7 +538,7 @@ function localizeJQuery() {
   } else {
     jQuery = window.jQuery; // The jQuery version on the window is the one we want to use
     $ = jQuery
-    Rylyz.Wyjyt.setup();
+    Rylyz.Wygyt.setup();
   }
 }
 
@@ -552,11 +552,11 @@ function restoreJQuery() {
   if (undefined == window.$) window.$ = jQuery
 
   // Call our main function
-  Rylyz.Wyjyt.setup();
+  Rylyz.Wygyt.setup();
 }
 
 //some debug functions
-window.rylyzRefreshCSS = Rylyz.Wyjyt.refreshCSS;
+window.rylyzRefreshCSS = Rylyz.Wygyt.refreshCSS;
 
 bootstrap(); //start loading everything
 

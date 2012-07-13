@@ -1,15 +1,15 @@
-class Wyjyt::IntentController < ApplicationController
+class Wygyt::IntentController < ApplicationController
   include ApplicationHelper
-  layout "wyjyt"
+  layout "wygyt"
 
-  def wyjyt
+  def wygyt
   end
 
   def login
     socket_id = params[:timestamp] # socket_id is hidden as timestamp parameter
 
-    self.next_page_on_success = [:wyjyt, :intent_to_wyjyt]
-    self.next_page_on_failure = [:wyjyt, :intent_to_login]
+    self.next_page_on_success = [:wygyt, :intent_to_wygyt]
+    self.next_page_on_failure = [:wygyt, :intent_to_login]
 
   end
 

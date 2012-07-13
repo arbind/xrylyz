@@ -28,7 +28,7 @@ class RylyzScreenController
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
-  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
+  def self.on_close_uid_channel (visitor, tokens) #+++ change wygyt uid channel to presence channel
   	# wid = "client-rylyz-#{tokens['wid']}"
   	#  PusherChannels.stop_private_channel(wid)
 	end
@@ -49,7 +49,7 @@ class RylyzScreenController
   #   PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", {launchChannel:aid, scope:'private', wid:wid})
 		# # open a channel for this app(aid) so we can send messages on it to everyone listening
 		# PusherChannels.instance.start_private_channel(aid)
-		# # this is a 1-way channel - from app to wyjyt - so no need to bind listeners
+		# # this is a 1-way channel - from app to wygyt - so no need to bind listeners
 
   end
 

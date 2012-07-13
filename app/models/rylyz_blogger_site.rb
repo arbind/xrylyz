@@ -40,7 +40,7 @@ end
 # Site status
 # valid_url: url exists
 # invalid_url: url does not exist
-# wyjyt_verified: widget exists on site
+# wygyt_verified: widget exists on site
 
 # Site Active Status
 # active: site is generating visits

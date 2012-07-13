@@ -1,4 +1,4 @@
-class AppWyjytController < RylyzAppController
+class AppWygytController < RylyzAppController
 
   def self.on_load_data(visitor, tokens)
   end

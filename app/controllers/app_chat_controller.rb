@@ -76,7 +76,7 @@ class AppChatController < RylyzAppController
 
       #+++ is it required to start a listener thread?
       #PusherChannels.instance.start_private_channel(chat_room.channel_id)
-      # this is a 1-way channel - from app to wyjyt - so no need to bind listeners
+      # this is a 1-way channel - from app to wygyt - so no need to bind listeners
       PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", {launchChannel:chat_room.channel_id, scope:'private', wid:wid})
 
       ctx = {appName: app_name, screenName:'chat-room', displayName:'messages'}

@@ -1,0 +1,2 @@
+module WygytHelper
+end

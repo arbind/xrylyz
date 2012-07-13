@@ -13,7 +13,7 @@
     
 		//Data Events
 		fireDataEvent4Load: function(event) {
-			Rylyz.Wyjyt.triggerWIDEvent("load-data", event)
+			Rylyz.Wygyt.triggerWIDEvent("load-data", event)
 		},
 
 		handleDataEvent4LoadData: function(events) {
@@ -115,7 +115,7 @@
       else fn();
     },
 		fireHIEvent: function(event) {
-      Rylyz.Wyjyt.triggerWIDEvent("hi", event);
+      Rylyz.Wygyt.triggerWIDEvent("hi", event);
 		},
 		fireHIEvent4DataInput: function(event) {
       var ev = {
@@ -125,7 +125,7 @@
       	settings: event.settings,
       	formData: event.formData
       }
-      Rylyz.Wyjyt.triggerWIDEvent("data-input", ev);
+      Rylyz.Wygyt.triggerWIDEvent("data-input", ev);
 
 		},
 		fireHIEvent4Navigation: function(event) {

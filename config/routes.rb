@@ -70,11 +70,11 @@ post 'test_purchase', :as => :dashboard_test_purchase
     get '/coins',               :to => 'purchase#coins',  :as => :purchase_coins
   end
 
-  namespace :wyjyt do
+  namespace :wygyt do
     post '/auth/pusher_access' # Grant access to wygyts using pusher
 
-    # Wyjyt Intents (launched in a new window)
-    get '/intent/wyjyt',    :as => :intent_to_wyjyt
+    # Wygyt Intents (launched in a new window)
+    get '/intent/wygyt',    :as => :intent_to_wygyt
     get '/intent/login',    :as => :intent_to_login
     get '/intent/logout',   :as => :intent_to_logout
     get '/intent/share',    :as => :intent_to_share

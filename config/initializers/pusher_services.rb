@@ -291,7 +291,7 @@ end
 #  "pusher:error" => {},  # "data": { "message": String, "code": Integer }
 # }
 
-# PusherChannels.instance.on_private_channel_event("wyjyt", "start-wyjyt") do |data|
+# PusherChannels.instance.on_private_channel_event("wygyt", "start-wygyt") do |data|
 #    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
 # end
 
@@ -320,8 +320,8 @@ if not start_realtime_sockets
 else
   puts "REAL_TIME = ON"
   begin
-    PusherChannels.instance.start_private_channel("wyjyt")
-    PusherChannels.instance.on_private_channel_event("wyjyt", "open-wid-channel") do |data|
+    PusherChannels.instance.start_private_channel("wygyt")
+    PusherChannels.instance.on_private_channel_event("wygyt", "open-wid-channel") do |data|
       tokens = JSON.parse(data)
 
       wid = tokens["wid"]
@@ -438,6 +438,6 @@ end
 #   # on_events - start channel_set
 # end
 
-# PusherChannels.instance.on_private_channel_event("wyjyt", 'text-event') do |data|
+# PusherChannels.instance.on_private_channel_event("wygyt", 'text-event') do |data|
 #   puts "==== #{data} ===="
 # end

@@ -71,14 +71,14 @@ class RylyzAppController
   	puts "UnKnown action!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
-  def self.on_close_uid_channel (visitor, tokens) #+++ change wyjyt uid channel to presence channel
+  def self.on_close_uid_channel (visitor, tokens) #+++ change wygyt uid channel to presence channel
   	# uid_channel = "client-rylyz-#{tokens['wid']}"
   	#  PusherChannels.stop_private_channel(uid_channel)
 	end
 
   def self.on_open_app (visitor, tokens)
     # lookup the TargetController 
-    app_name = lookup_property(tokens, "appName") || "wyjyt"
+    app_name = lookup_property(tokens, "appName") || "wygyt"
 		app_controller_name = "App#{app_name.underscore.camelize}Controller"
 
     wid = tokens['wid'] || tokens['uid']
@@ -94,7 +94,7 @@ class RylyzAppController
 
     # send a direct message(wid) to launch a new listener for the app(aid)
     # so we can send messages on it to ever widget listening
-    # this is a 1-way channel - from app to wyjyt
+    # this is a 1-way channel - from app to wygyt
     # no need to bind listeners on the client side
     event = {
       launchChannel:aid,
