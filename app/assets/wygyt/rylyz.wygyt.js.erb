@@ -45,12 +45,12 @@ Rylyz.Wygyt = {
   },
   setup: function() {
     jQuery(document).ready(function($) {
-      var wygyt = jQuery("#rylyz-widget")
+      var wygyt = jQuery("#rylyz-wygyt")
       if (!wygyt || !wygyt.length) {
-        wygyt = jQuery("<div id='rylyz-widget' displayFormat='footer'/>");
+        wygyt = jQuery("<div id='rylyz-wygyt' displayFormat='footer'/>");
         wygyt.appendTo("body");
       }
-      Rylyz.Wygyt.displayFormat = jQuery("#rylyz-widget").attr("displayFormat") || 'button';
+      Rylyz.Wygyt.displayFormat = jQuery("#rylyz-wygyt").attr("displayFormat") || 'button';
       if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsButton();
       else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsFooter();
       else alert('unsupported display format for Wygyt: ' + Rylyz.Wygyt.displayFormat)
@@ -58,8 +58,8 @@ Rylyz.Wygyt = {
   },
   setupAsButton: function() {
     var html = Rylyz.Wygyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
-    jQuery("#rylyz-widget .button").remove();    
-    jQuery("#rylyz-widget").append(html);
+    jQuery("#rylyz-wygyt .button").remove();    
+    jQuery("#rylyz-wygyt").append(html);
     Rylyz.Wygyt.setupForAll();
   },
   setupAsFooter: function () {
@@ -82,8 +82,8 @@ Rylyz.Wygyt = {
   showAsButton: function() {
     var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
       "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
-    jQuery("#rylyz-widget .button").remove();    
-    jQuery("#rylyz-widget").append(html);
+    jQuery("#rylyz-wygyt .button").remove();    
+    jQuery("#rylyz-wygyt").append(html);
     Rylyz.Wygyt.showForAll();
   },
   showAsFooter: function() {
@@ -196,8 +196,8 @@ Rylyz.Wygyt = {
     canvas.fadeOut(888);
     var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
         "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
-    jQuery("#rylyz-widget .button").remove();    
-    jQuery("#rylyz-widget").append(html);
+    jQuery("#rylyz-wygyt .button").remove();    
+    jQuery("#rylyz-wygyt").append(html);
   },
   start: function(data) {
     Rylyz.Wygyt.showOverlay();
@@ -322,7 +322,7 @@ window.Rylyz.Pusher = {
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
-      //jQuery("#rylyz-widget").append(display);
+      //jQuery("#rylyz-wygyt").append(display);
       // append template to end of body, so id selectors # will find the first element from app, not template 
       jQuery("body").append(display);  
       Rylyz.loadAppDisplays(appName);
