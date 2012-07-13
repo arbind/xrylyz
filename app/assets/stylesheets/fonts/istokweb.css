@@ -2,5 +2,5 @@
   font-family: 'Istok Web';
   font-style: normal;
   font-weight: 400;
-  src: local('Istok Web Regular'), local('IstokWeb-Regular'), url('/assets/fonts/istokweb-v5.woff') format('woff');
+  src: local('Istok Web Regular'), local('IstokWeb-Regular'), url('/fonts/istokweb-v5.woff') format('woff');
 }
