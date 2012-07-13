@@ -1,3 +1,26 @@
+widget:
+   Use button with power icon: "Play"
+   overlay should fade not slide
+   close button on top right corner of app (not in overlay)
+   close button image
+
+Trivia Splash Screen:
+    Fade out
+    Enter nickname on splash screen
+Trivia Game Screen:
+    Cards: Show Olymipic logo
+    Locked card: show faded Olympic logo and lock button
+Trivia Question Screen:
+  Percentage answering correct / incorrect / your choice / all choices
+  Fastest Time / Avg Time
+  your Rank if correct
+  Where does timer progress bar go?
+  add "next" button
+  Show correct Answer
+Question Leaderboard
+  nickname, score, visit link icon
+Quiz Leaderboard
+
 
 
 TriviaStairs:
