@@ -1,7 +1,7 @@
-<!-- 
+/*
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
- -->
+*/ 
 
 /* CSS Variables */
 /* ================================================  */
@@ -68,9 +68,7 @@ img {
   color:#228822;
   background-color: white;
   border: 2px solid #228822;
-  <!--
-  @include  roundCornersMixin;
--->
+  /*  @include  roundCornersMixin; */
 
   cursor: pointer;
 
@@ -92,15 +90,11 @@ img {
     font-family: Arial,'Helvetica Neue',Helvetica,sans-serif;
     line-height: 24px;
 
-    <!--
-    @include transitionsFastMixin;
-  -->
+    /*    @include transitionsFastMixin; */  
 
     &:hover {
       color: fade_out($labelColor, .6);
-      <!--
-      @include transitionsFastMixin;
-    -->
+      /*      @include transitionsFastMixin; */    
     }
   }
   input, textarea, select {
@@ -449,10 +443,8 @@ img.money {
   margin:           0px;
   color:            $themeColor;
   background-color: $themeBGcolor;
-  <!--
-  @include          transitionsOnMixin;
--->
   */
+  /*  @include          transitionsOnMixin; */
   
   text-decoration:  none;
   -webkit-user-select: none;    -khtml-user-select: none;-moz-user-select: none; 
@@ -595,7 +587,5 @@ form, fieldset {
   filter:alpha(opacity=88);
   border: 0;
   border-top: 1px solid yellow;
-  <!--
-  @include transitionsSlowMixin;
--->
+  /*  @include transitionsSlowMixin; */
 };
