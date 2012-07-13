@@ -50,6 +50,10 @@ Rylyz.Wygyt = {
         wygyt = jQuery("<div id='rylyz-wygyt' displayFormat='footer'/>");
         wygyt.appendTo("body");
       }
+      else {
+        wygyt.html('');
+        wygyt.css('font-size', '14px');
+      }
       Rylyz.Wygyt.displayFormat = jQuery("#rylyz-wygyt").attr("displayFormat") || 'button';
       if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsButton();
       else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsFooter();
