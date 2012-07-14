@@ -7,7 +7,7 @@ class Blogger::DashboardController < ApplicationController
   layout "dashboard"
 
   #
-  # 
+  #
   #
   def confirm_signup
     share_key = params[:share_key]
@@ -17,7 +17,7 @@ class Blogger::DashboardController < ApplicationController
   end
 
   #
-  # 
+  #
   #
   def this_is_not_me
     session[:signup_confirmation_blogger_oid] = nil
@@ -34,7 +34,7 @@ class Blogger::DashboardController < ApplicationController
 
 
   #
-  # 
+  #
   #
   def login
     self.current_member = nil #logout current_member immediately
@@ -47,7 +47,7 @@ class Blogger::DashboardController < ApplicationController
   end
 
   # Logout
-  # 
+  #
   #
   def logout
     self.current_member = nil #logout current_member immediately if a share key is present
@@ -72,7 +72,7 @@ class Blogger::DashboardController < ApplicationController
     @site = current_blogger.sites.find(id)
     @site.site_key ||= "nokey"
     @code_snippet =<<EOL
-<script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{@site.site_key}' type='text/javascript'></script> 
+<script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{@site.site_key}' type='text/javascript'></script>
 <div id='rylyz-wygyt' style='font-size:1px;'><a href='http://rylyz.com'>play games online</a></div>
 EOL
 
@@ -126,14 +126,14 @@ EOL
     @html_submenu_buttons = profile_submenu
   end
 
-  def social_accounts 
+  def social_accounts
     @html_submenu_buttons = profile_submenu
-    
+
   end
 
   def subscription_plans
     @html_submenu_buttons = profile_submenu
-    
+
   end
 
   def creditcards()

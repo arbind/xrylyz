@@ -24,7 +24,16 @@ class RylyzBloggerSite
   private
 
   def scrape_attributes
+    uri = URI.parse(domain)
+    if uri.scheme
+      self.domain = uri.host
+      self.scheme = uri.scheme
+    end
+    return false if domain.blank?
+
     page = MetaInspector.new(self.domain)
+    return false unless page
+
     self.title = page.title
     self.description = page.description
   end
