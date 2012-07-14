@@ -56,8 +56,7 @@ Rylyz.Wygyt = {
       }
       Rylyz.Wygyt.displayFormat = jQuery("#rylyz-wygyt").attr("displayFormat") || 'button';
       if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsButton();
-      else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsFooter();
-      else alert('unsupported display format for Wygyt: ' + Rylyz.Wygyt.displayFormat)
+      else Rylyz.Wygyt.setupAsFooter(); //assume  ('footer' == Rylyz.Wygyt.displayFormat)
     });
   },
   setupAsButton: function() {
@@ -80,20 +79,21 @@ Rylyz.Wygyt = {
   },
   show: function() {
     if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsButton();
-    else if ('footer' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsFooter();
-    else alert('unsupported display format for Wygyt: ' + Rylyz.Wygyt.displayFormat)
+    else Rylyz.Wygyt.showAsFooter(); //assume ('footer' == Rylyz.Wygyt.displayFormat) 
   },
   showAsButton: function() {
     var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
-      "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
+      "Rylyz.Wygyt.startWygyt('"+startApp+"')", 100, "Starting...");
     jQuery("#rylyz-wygyt .button").remove();    
     jQuery("#rylyz-wygyt").append(html);
     Rylyz.Wygyt.showForAll();
   },
   showAsFooter: function() {
-    var footerConsole = jQuery("<div class='rylyz-console footer'/>");
+    var footerConsole = jQuery("<div id='rylyz-footer'/>");
     footerConsole.appendTo("body");
-    jQuery(".rylyz-console.footer").css('height', '36px');
+    jQuery("#rylyz-footer").css('height', '36px');
+    jQuery("#rylyz-footer").click(function(){ Rylyz.Wygyt.startWygyt(startApp);});
+
     Rylyz.Wygyt.showForAll();
   },
   showForAll: function() {
@@ -178,32 +178,39 @@ Rylyz.Wygyt = {
     if (!o) {
       o = Rylyz.Wygyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
       canvas = Rylyz.Wygyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
-      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wygyt.hideOverlay()'>x</div>");
+      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wygyt.suspendWygyt()'>x</div>");
       var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
       var appSpot = jQuery("<div id='rylyz-app-spot'/>");
       appSpot.appendTo(frame);
       frame.appendTo(canvas);
-      closeButton.appendTo(canvas);
+      closeButton.appendTo(frame);
       canvas.appendTo("body");
       o.appendTo("body");
     }
     if ('none' != o.css('display')) return;
-    o.show(888);
-    canvas.show(1888);
+
+    o.fadeIn(888);
+    canvas.fadeIn(288);
+    canvas.click(function(e){ //close wygyt if canvas is clicked
+      if (jQuery(e.target).is('#rylyz-app-spot-canvas')) Rylyz.Wygyt.suspendWygyt();
+    });
   },
   hideOverlay: function() {
     jQuery("body").css("overflow","auto");
     var o = Rylyz.Wygyt.transparentOverlayDiv;
     var canvas = Rylyz.Wygyt.appOverlayDiv;
     if (!o) return;
-    o.fadeOut(1888);
-    canvas.fadeOut(888);
-    var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
-        "Rylyz.Wygyt.start('"+startApp+"')", 100, "Starting...");
-    jQuery("#rylyz-wygyt .button").remove();    
-    jQuery("#rylyz-wygyt").append(html);
+    o.fadeOut(888);
+    canvas.fadeOut(288);
+
+    if ('button' == Rylyz.Wygyt.displayFormat) {
+      var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
+          "Rylyz.Wygyt.startWygyt('"+startApp+"')", 100, "Starting...");
+      jQuery("#rylyz-wygyt .button").remove();    
+      jQuery("#rylyz-wygyt").append(html);
+    }
   },
-  start: function(data) {
+  startWygyt: function(data) {
     Rylyz.Wygyt.showOverlay();
 
     var app_name = Rylyz.lookupProperty("app", data);
@@ -235,6 +242,10 @@ Rylyz.Wygyt = {
     Rylyz.Pusher.triggerWIDEvent("open_app", ev);
     // Rylyz.Wygyt.loadChat();
     // console.info("o-- Cycle: got data back to Start Wygyt: " + data);
+  },
+  suspendWygyt: function() {
+    // quit the active app?
+    Rylyz.Wygyt.hideOverlay();
   },
 
   openApp: function(appName) {
