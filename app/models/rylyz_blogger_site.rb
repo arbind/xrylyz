@@ -26,10 +26,11 @@ class RylyzBloggerSite
   def scrape_attributes
     uri = URI.parse(domain)
     if uri.scheme
-      self.domain = uri.host
-      self.scheme = uri.scheme
+      self.domain = uri.host.downcase
+      self.scheme = uri.scheme.downcase
     end
     return false if domain.blank?
+    return false unless ["http", "http"].include? scheme
 
     page = MetaInspector.new(self.domain)
     return false unless page
