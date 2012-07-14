@@ -581,22 +581,51 @@ form, fieldset {
   position: fixed;
   left:0;
   bottom:0;
-  height:0px;
+  height:48px;
   width: 100%;
   z-index:88888;
   background-color: transparent;
-  opacity: 0.88;
-  -moz-opacity: 0.88;
-  filter:alpha(opacity=88);
+  opacity: 0.78;
+  -moz-opacity: 0.78;
+  filter:alpha(opacity=78);
   border: 0;
   border-top: 2px solid transparent;
   @include transitionsMedMixin;
   &:hover {
     background-color:#282828;
     border-color: yellow;
+    opacity: 0.98;
+    -moz-opacity: 0.98;
+    filter:alpha(opacity=98);
+    #rylyz-console-display {
+      visibility:visible;
+    }
+  }
+  #rylyz-power-button {
+    display: inline-block;
+    height: 36px;
+    width: 36px;
+    margin: 4px;
+    border: 1px solid yellow;
+    background-color: blue;
+  }
+  #rylyz-console-display {
+    visibility:hidden;
+    height: 36px;
+    margin: 4px;
+    border: 1px solid yellow;
+    background-color: black;
+    color: white;
   }
 };
+
 #rylyz-footer.powered-on {
   background-color: #00FF00;
   border-color: transparent;
+  opacity: 1.0;
+  -moz-opacity: 1.0;
+  filter:alpha(opacity=100);
+  #rylyz-console-display {
+    visibility:visible;
+  }
 }

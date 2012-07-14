@@ -90,8 +90,14 @@ Rylyz.Wygyt = {
   },
   showAsFooter: function() {
     var footerConsole = jQuery("<div id='rylyz-footer'/>");
+    var powerButton = jQuery("<div id='rylyz-power-button'><img src='http://results.poweruplife.com/wp-content/uploads/2010/09/aluminumPowerButton1-300x300.png' width='36px' height='36px'/></div>");
+    powerButton.appendTo(footerConsole)
+    
+    var powerPanel = jQuery("<span id='rylyz-console-display'>Play</span>");
+    powerPanel.appendTo(footerConsole)
+
     footerConsole.appendTo("body");
-    jQuery("#rylyz-footer").css('height', '36px');
+    // jQuery("#rylyz-footer").css('height', '36px');
     jQuery("#rylyz-footer").click(function(){ jQuery(this).addClass('powered-on'); Rylyz.Wygyt.startWygyt(startApp);});
 
     Rylyz.Wygyt.showForAll();

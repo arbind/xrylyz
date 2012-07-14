@@ -150,7 +150,7 @@ class PusherChannels
     PusherChannels.instance.on_channel_event(:presence, channel_name, presence_event_name, block)
   end
   def on_channel_event(scope, channel_name, scoped_event_name, handler)
-    channel_socket(scope, channel_name).bind(scoped_event_name) do |data|
+    channel_socket(scope, channel_name).bind(scoped_event_name) do |data| # +++ *** getting error on this line whne channel_socket is nil for some reason?
       begin #safeguard the handler block
         handler.call( data )
       rescue RuntimeError => e
