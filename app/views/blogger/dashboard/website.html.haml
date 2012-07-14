@@ -1,15 +1,16 @@
 - @html_page_title = "settings:#{@site.domain}"
 
 .section
-  %h3
-    = "rylyz wygyt for #{@site.domain}:"
-  .wygyt-code
-    %textarea.snippet{rows:3}= @code_snippet
-    #copy copy to clipboard
-  %h3
-    Add this HTML5 code to the pages on your website
-  %p
-    The Rylyz Wygyt will allows #{@site.domain} visitors to play games and use cool apps!
+  #clipboard
+    %h3
+      = "rylyz wygyt for #{@site.domain}:"
+    .wygyt-code
+      %textarea.snippet{rows:3}= @code_snippet
+      .copy copy to clipboard
+    %h3
+      Add this HTML5 code to the pages on your website
+    %p
+      The Rylyz Wygyt will allows #{@site.domain} visitors to play games and use cool apps!
 .section
   %h2
     =h @site.title
@@ -23,5 +24,10 @@
   var clip = new ZeroClipboard.Client();
   var snippet = $('.snippet').text()
   clip.setText(snippet);
-  clip.glue('copy');
+  clip.glue('clipboard');
+  clip.addEventListener( 'onComplete', onCopy );
+
+  function onCopy( client, text ) {
+    $('.copy').addClass('copied').html('Copied to Clipboard!');
+  }
 
