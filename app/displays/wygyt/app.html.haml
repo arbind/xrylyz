@@ -1,7 +1,8 @@
 %rylyz{:name=>"wygyt"}
 
-	%app{:name=>"wygyt", :"start-screen" => "space"}
+	%app{:name=>"wygyt", :"start-screen" => "site-notice"}
 		%screen{:name=>"space"}
+		%screen{:name=>"site-notice"}
 
 	%screen{:name=>"space"}
 		%h2
@@ -18,3 +19,11 @@
 			.name Chat
 		.launch{:onclick=>"Rylyz.Wygyt.startWygyt({appName:'TicTacToe'});"}
 			.name Tic Tac Toe
+
+	%screen{:name=>"site-notice"}
+		%h1
+			Welcome
+		%h2
+			Play games and use cool apps
+		%h1
+			Coming soon!

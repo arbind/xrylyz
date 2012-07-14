@@ -9,4 +9,8 @@ class AppWygytController < RylyzAppController
 	  end
 
   end
+
+  class ScreenSiteNoticeController < RylyzScreenController
+  end
+
 end
