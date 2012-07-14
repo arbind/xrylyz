@@ -7,7 +7,7 @@ class RylyzBloggerSite
   field :domain,      :type => String, :default => nil
   field :title,       :type => String, :default => nil
   field :description, :type => String, :default => nil
-  field :site_key,    :type => String, :default => "invalid"
+  field :site_key,    :type => String, :default => nil
 
   # Site status
   field :status,          :type => String, :default => "invalid_url"
@@ -17,7 +17,7 @@ class RylyzBloggerSite
   belongs_to :blogger, :class_name => "RylyzBlogger", :inverse_of => :sites
 
   before_create :scrape_attributes
-  before_create :generate_site_key
+  before_save :check_site_key
 
   def url() "#{scheme}://#{domain}" end
 
@@ -27,6 +27,10 @@ class RylyzBloggerSite
     page = MetaInspector.new(self.domain)
     self.title = page.title
     self.description = page.description
+  end
+
+  def check_site_key
+    self.site_key ||= generate_site_key
   end
 
   def generate_site_key
