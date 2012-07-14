@@ -4,8 +4,8 @@
   %h3
     = "rylyz wygyt for #{@site.domain}:"
   .wygyt-code
-    %textarea{rows:3}= @code_snippet
-    .copy copy to clipboard
+    %textarea.snippet{rows:3}= @code_snippet
+    #copy copy to clipboard
   %h3
     Add this HTML5 code to the pages on your website
   %p
@@ -17,3 +17,11 @@
     =h @site.description
   %h3
     =h @site.url
+
+:javascript
+  ZeroClipboard.setMoviePath("/assets/vendor/ZeroClipboard.swf");
+  var clip = new ZeroClipboard.Client();
+  var snippet = $('.snippet').text()
+  clip.setText(snippet);
+  clip.glue('copy');
+
