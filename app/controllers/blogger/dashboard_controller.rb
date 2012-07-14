@@ -82,8 +82,9 @@ EOL
 
   def register_website
     domain =  params[:site][:domain]
-    if validate_hostname(domain)
-      @site = current_blogger.sites.find_or_create_by(:domain => domain)
+    domain = domain.downcase if domain
+    @site = current_blogger.sites.find_or_create_by(:domain => domain)
+    if @site
       status = "Thanks for registering #{domain}."
       notice = "Click on the code to copy, then paste it into your pages!"
       redirect_to dashboard_website_path(@site), :flash => {:notice => notice, :status => status}
@@ -153,17 +154,6 @@ EOL
   end
 
   private
-
-  require 'resolv'
-
-  def validate_hostname(hostname)
-    begin
-      Resolv.getaddress(hostname)
-    rescue Resolv::ResolvError => e
-      logger.info "#{e.message}"
-      nil
-    end
-  end
 
   def register_blogger
 

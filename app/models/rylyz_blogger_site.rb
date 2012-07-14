@@ -30,7 +30,9 @@ class RylyzBloggerSite
       self.scheme = uri.scheme.downcase
     end
     return false if domain.blank?
-    return false unless ["http", "http"].include? scheme
+    return false unless ["http", "http"].include?(scheme)
+
+    return false unless validate_hostname(domain)
 
     page = MetaInspector.new(self.domain)
     return false unless page
@@ -38,6 +40,18 @@ class RylyzBloggerSite
     self.title = page.title
     self.description = page.description
   end
+
+  require 'resolv'
+
+  def validate_hostname(hostname)
+    begin
+      Resolv.getaddress(hostname)
+    rescue Resolv::ResolvError => e
+      puts "#{e.message}"
+      nil
+    end
+  end
+
 
   def check_site_key
     self.site_key ||= generate_site_key
