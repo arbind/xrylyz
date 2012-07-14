@@ -67,6 +67,19 @@ class Blogger::DashboardController < ApplicationController
     @sites = current_blogger.sites || []
   end
 
+  def website
+    id = params[:id]
+    @site = current_blogger.sites.find(id)
+    @site.site_key ||= "nokey"
+    @code_snippet =<<EOL
+<script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{@site.site_key}' type='text/javascript'></script> 
+<div id='rylyz-wygyt' style='font-size:1px;'><a href='http://rylyz.com'>play games online</a></div>
+EOL
+
+    @code_snippet.html_safe
+    @html_submenu_buttons =  dashboard_submenu
+  end
+
   def register_website
     domain =  params[:site][:domain]
     if validate_hostname(domain)
