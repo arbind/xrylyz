@@ -1,17 +1,13 @@
 - @html_page_title = "websites"
 .section
-  %h2 Register your website
   %form{ :action => dashboard_register_website_path, :method => "post"}
+    %h2 Register your website
     .field
-      %label Website URL
-      %br
-      %label
-        = "http://"
+      %label Website URL:
       %input.long{:type => "text", :name => "site[domain]", :placeholder => "mydomain.com"}
     .toolbar.fieldset.float-left
       %button{:type => "submit"}
         .button Save
-
 
 .section
   %h2 Registered Sites

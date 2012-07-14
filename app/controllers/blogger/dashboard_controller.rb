@@ -84,12 +84,13 @@ EOL
     domain =  params[:site][:domain]
     if validate_hostname(domain)
       @site = current_blogger.sites.find_or_create_by(:domain => domain)
-      notice = "Thanks for registering #{domain}."
+      status = "Thanks for registering #{domain}."
+      notice = "Click on the code to copy, then paste it into your pages!"
+      redirect_to dashboard_website_path(@site), :flash => {:notice => notice, :status => status}
     else
       error = "We couldn't validate #{domain}. It was not registered."
+      redirect_to :dashboard_websites, :flash => {:error => error}
     end
-
-    redirect_to :dashboard_websites, :flash => {:notice => notice, :error => error}
   end
 
   def unregister_website
