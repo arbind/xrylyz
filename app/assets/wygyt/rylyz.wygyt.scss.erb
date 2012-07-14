@@ -584,11 +584,19 @@ form, fieldset {
   height:0px;
   width: 100%;
   z-index:88888;
-  background: #282828 none repeat scroll 0 0;
+  background-color: transparent;
   opacity: 0.88;
   -moz-opacity: 0.88;
   filter:alpha(opacity=88);
   border: 0;
-  border-top: 1px solid yellow;
-  @include transitionsSlowMixin;
+  border-top: 2px solid transparent;
+  @include transitionsMedMixin;
+  &:hover {
+    background-color:#282828;
+    border-color: yellow;
+  }
 };
+#rylyz-footer.powered-on {
+  background-color: #00FF00;
+  border-color: transparent;
+}

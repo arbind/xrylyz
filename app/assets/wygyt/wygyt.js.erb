@@ -92,7 +92,7 @@ Rylyz.Wygyt = {
     var footerConsole = jQuery("<div id='rylyz-footer'/>");
     footerConsole.appendTo("body");
     jQuery("#rylyz-footer").css('height', '36px');
-    jQuery("#rylyz-footer").click(function(){ Rylyz.Wygyt.startWygyt(startApp);});
+    jQuery("#rylyz-footer").click(function(){ jQuery(this).addClass('powered-on'); Rylyz.Wygyt.startWygyt(startApp);});
 
     Rylyz.Wygyt.showForAll();
   },
@@ -208,6 +208,9 @@ Rylyz.Wygyt = {
           "Rylyz.Wygyt.startWygyt('"+startApp+"')", 100, "Starting...");
       jQuery("#rylyz-wygyt .button").remove();    
       jQuery("#rylyz-wygyt").append(html);
+    }
+    else {
+      jQuery('#rylyz-footer').removeClass('powered-on');       
     }
   },
   startWygyt: function(data) {

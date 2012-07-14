@@ -1,5 +1,6 @@
 $xTimeOn: 0.3s;
 $xTimeSlow: 0.8s;
+$xTimeMed:  0.4s;
 $xTimeFast: 0.15s;
 $xTimeOff: 0.01s;
 $xFunction: ease-in-out;
@@ -16,6 +17,11 @@ $xFunction: ease-in-out;
   transition:         all $xTimeSlow $xFunction;
 }
 
+@mixin transitionsMedMixin {
+  -webkit-transition: all $xTimeMed $xFunction;  -moz-transition: all $xTimeMed $xFunction;
+  -ms-transition:     all $xTimeMed $xFunction;  -o-transition:   all $xTimeMed $xFunction;
+  transition:         all $xTimeMed $xFunction;
+}
 @mixin transitionsFastMixin {
   -webkit-transition: all $xTimeFast $xFunction;  -moz-transition: all $xTimeFast $xFunction;
   -ms-transition:     all $xTimeFast $xFunction;  -o-transition:   all $xTimeFast $xFunction;

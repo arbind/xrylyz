@@ -329,7 +329,7 @@ else
       socket_id = tokens["pusher_socket_id"]
 
       visitor = VISITOR_SOCKETS[socket_id]
-      visitor.wid = wid  #+++ sometimes getting nil for visitor here - did not auth properly?
+      visitor.wid = wid  #+++ *** sometimes getting nil for visitor here - did not auth properly?
       visitor.source_url = url
       VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
       PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
