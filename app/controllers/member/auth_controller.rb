@@ -9,7 +9,7 @@ class Member::AuthController < ApplicationController
 
   def logout
     self.current_member = nil
-    next_page = next_page_on_success!
+    next_page = next_page_on_success
     redirect_to next_page
   end
 
@@ -69,10 +69,15 @@ class Member::AuthController < ApplicationController
       logger.error "Oauth Error #{e.message}"
       s = "exception: #{e.message}<br>"
       s << e.backtrace.join("<br>")
-      next_page = next_page_on_failure!
+      next_page = next_page_on_failure
       error = "Login failed. #{e.message}"
     ensure
-      next_page ||= next_page_on_success!
+      next_page ||= next_page_on_success
+
+      if next_page.nil?
+        redirect_to dashboard_login_path and return if :dashboard == session[:in_website]
+      end
+
       redirect_to next_page, :flash => {:notice => notice, :error => error}
     end
 
@@ -83,7 +88,7 @@ class Member::AuthController < ApplicationController
     # e.g: https://rylyz-local.com/auth/failure?message=invalid_credentials
     # +++ log this cancelation
     # +++ send game event to wid if not blogger member
-    redirect_to next_page_on_failure!
+    redirect_to next_page_on_failure
   end
 
   private

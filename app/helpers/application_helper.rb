@@ -12,24 +12,15 @@ module ApplicationHelper
 		session.delete :next_page_on_failure
 	end
 
-	def next_page_on_success! 
-		page = session[:next_page_on_success] # one time access
-		clear_next_page_from_session					# clears next_page vars from the session
-		page
+	def next_page_on_success
+		page = session[:next_page_on_success]
 	end
 	def next_page_on_success=(page)
 		session[:next_page_on_success] = page
 	end
 
-	def next_page_on_failure!
-		page = session[:next_page_on_failure]	# one time access
-		clear_next_page_from_session					# clears next_page vars from the session
-		page
-
-		# +++
-		# do not clear on failure - otherwise back button will no longer find value in the session after a failure
-		# user may likely hit back button after a failure)
-
+	def next_page_on_failure
+		page = session[:next_page_on_failure]
 	end
 
 	def next_page_on_failure=(page)
@@ -48,7 +39,6 @@ module ApplicationHelper
 	end
 
 
-
   def wygyt_code_snippet (rylyz_blogger_site)
     code =<<EOL
 <script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{rylyz_blogger_site.site_key}' type='text/javascript'></script>
@@ -56,6 +46,5 @@ module ApplicationHelper
 EOL
   	code.html_safe
   end
-
 
 end

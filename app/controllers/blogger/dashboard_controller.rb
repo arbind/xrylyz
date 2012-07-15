@@ -2,7 +2,8 @@ class Blogger::DashboardController < ApplicationController
   include ApplicationHelper
   before_filter :require_member_to_be_signed_in,  :except =>         [ :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
   before_filter :require_blogger_to_be_signed_in, :except => [ :index, :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
-  before_filter :register_blogger, :only => [ :index ]
+  before_filter :check_for_blogger, :only => [ :index ]
+  before_filter :in_dashboard_website
 
   layout "dashboard"
 
@@ -156,7 +157,11 @@ class Blogger::DashboardController < ApplicationController
 
   private
 
-  def register_blogger
+  def in_dashboard_website
+    session[:in_website] = :dashboard
+  end
+
+  def check_for_blogger
 
     if current_member.blogger.nil? # 1st login, see if they are confirming their account
 
@@ -164,15 +169,15 @@ class Blogger::DashboardController < ApplicationController
       @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
 
       # redirect to signup page if there was no confirmation
-      redirect_to :dashboard_signup, :notice => "Please signup first. We'll send you a confirmation email so you can login!" if @signup_confirmation_blogger.nil?
+      redirect_to :dashboard_signup, :notice => "Please signup first. We'll send you a confirmation email so you can login!" and return if @signup_confirmation_blogger.nil?
 
       # blogger has logged in for the first time and confirmed their account
       current_member.blogger = @signup_confirmation_blogger
       current_member.save!
       flash.now[:notice] = "Thanks for confirming your account! You can now register your websites!"
     end
-
-    session[:signup_confirmation_blogger_oid] = nil
+    clear_next_page_from_session # clear out the next_page_on_success/failure vars from session
+    session[:signup_confirmation_blogger_oid] = nil # clear out any signup confirmation var from session
   end
 
   def dashboard_submenu
