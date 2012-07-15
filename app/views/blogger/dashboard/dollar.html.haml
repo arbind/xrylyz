@@ -1,3 +1,9 @@
 - @html_page_title = "dollar"
+
 .section
-  dollar.html.haml
+  %h2 Profit Sharing
+  - if @plan
+    = "You are signed up for #{number_to_percentage(100*@plan.base_profit_sharing_rate, precision: 0)} profit sharing!"
+.section
+  %h3 Comming Soon!
+  %p Here you will be able to see a breakdown of purchases made by your visitors.

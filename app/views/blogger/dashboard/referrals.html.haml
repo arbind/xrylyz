@@ -1,17 +1,22 @@
 - @html_page_title = "referrals"
 
 .section
-  %ol
-    %li
-      Share URL
-      = "https://rylyz.com/play/#{current_blogger.share_key}"
-    %li
-      Number of clicks
-      = current_blogger.share_clicks
-    %li
-      Number of conversions
-      = current_blogger.share_conversions
+  %h3 Referral Metrics
+  .newline= "Number of Clicks: #{current_blogger.share_clicks}"
+  .newline= "Number of Signups: #{current_blogger.share_conversions}" 
+  .newline= "Number of Activations: comming soon!"
   %br
+  .newline="Your referral link has been clicked #{pluralize(current_blogger.share_clicks, 'time')} resulting in #{pluralize(current_blogger.share_conversions, 'signup')}."
+
+.section
+  %h3 Comming Soon!
+  .newline Here you will be able to see which of your referrals have activated their account.
+  .newline= "Your profit sharing rate will go up by #{number_to_percentage(100*current_blogger.plan.referral_rate, precision: 0)} for every referral who becomes active!"
+  %br
+  .newline Use your Share URL to get more referrals:
+  .newline.selectable= "https://rylyz.com/play/#{current_blogger.share_key}"
+
+.section.invisible
   %ol
     %li for each signup
     %li email username (not whole address)

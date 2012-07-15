@@ -1,17 +1,9 @@
 - @html_page_title = "profile"
 
 .section
-  %label share_key
-  %value #{current_blogger.share_key}
+  %label your email:
+  .newline #{current_blogger.email}
   %br
-  %label email
-  %value #{current_blogger.email}
-  %br
-  %label share_clicks
-  %value #{current_blogger.share_clicks}
-  %br
-  %label share_conversions
-  %value #{current_blogger.share_conversions}
-
-
+  .newline Use your Share URL to get more referrals:
+  .newline.selectable= "https://rylyz.com/play/#{current_blogger.share_key}"
 

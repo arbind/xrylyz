@@ -60,6 +60,7 @@ class Blogger::DashboardController < ApplicationController
 	def index
     @html_submenu_buttons =  dashboard_submenu
     @sites = current_blogger.sites || []
+    @plan = current_blogger.plan
 	end
 
   def websites
@@ -114,6 +115,7 @@ class Blogger::DashboardController < ApplicationController
 
 
 	def dollar()
+    @plan = current_blogger.plan
     @html_submenu_buttons = dollar_submenu
   end
 
@@ -132,8 +134,8 @@ class Blogger::DashboardController < ApplicationController
   end
 
   def subscription_plans
+    @plan = current_blogger.plan
     @html_submenu_buttons = profile_submenu
-
   end
 
   def creditcards()

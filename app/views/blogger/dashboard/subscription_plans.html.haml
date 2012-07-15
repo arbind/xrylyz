@@ -1,4 +1,12 @@
 - @html_page_title = "plans"
 
 .section
-  subscription_plans.html.haml
+  %h3= "#{@plan.name}"
+  %p
+    = "#{@plan.description}"
+  .newline= "Base Profit Sharing Rate: #{number_to_percentage(100*@plan.base_profit_sharing_rate, precision: 0)}"
+  .newline= "Subscription Cost: #{number_to_currency(@plan.monthly_subscription_rate)}"
+  .newline= "Referral Rate: #{number_to_percentage(100*@plan.referral_rate, precision: 0)}"
+  %br
+  .newline Use your Share URL to get more referrals:
+  .newline.selectable= "https://rylyz.com/play/#{current_blogger.share_key}"
