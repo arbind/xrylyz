@@ -71,27 +71,26 @@ class Blogger::DashboardController < ApplicationController
     id = params[:id]
     @site = current_blogger.sites.find(id)
     @site.site_key ||= "nokey"
-    @code_snippet =<<EOL
-<script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{@site.site_key}' type='text/javascript'></script>
-<div id='rylyz-wygyt' style='font-size:1px;'><a href='http://rylyz.com'>play games online</a></div>
-EOL
-
-    @code_snippet.html_safe
     @html_submenu_buttons =  dashboard_submenu
   end
 
   def register_website
-    domain =  params[:site][:domain]
-    domain = domain.downcase if domain
-    @site = current_blogger.sites.find_or_create_by(:domain => domain)
-    if @site
-      status = "Thanks for registering #{domain}."
-      notice = "Click on the code to copy, then paste it into your pages!"
-      redirect_to dashboard_website_path(@site), :flash => {:notice => notice, :status => status}
-    else
-      error = "We couldn't validate #{domain}. It was not registered."
+    d =  params[:site][:domain]
+    @scheme, @domain = RylyzBloggerSite.uri_components (d)
+    if @scheme and @domain
+      @site = current_blogger.sites.find_or_create_by(:scheme => @scheme, :domain => @domain)
+      if @site
+        status = "Thanks for registering #{@domain}."
+        notice = "Click on the code to copy, then paste it into your pages!"
+        redirect_to dashboard_website_path(@site), :flash => {:notice => notice, :status => status}
+      end
+    end
+
+    if not @site
+      error = "We couldn't validate #{@domain}. It was not registered."
       redirect_to :dashboard_websites, :flash => {:error => error}
     end
+
   end
 
   def unregister_website

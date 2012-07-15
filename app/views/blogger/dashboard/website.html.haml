@@ -1,16 +1,8 @@
 - @html_page_title = "wygyt:#{@site.domain}"
 
 .section
-  #clipboard
-    %h3
-      = "rylyz wygyt for #{@site.domain}:"
-    .wygyt-code
-      %textarea#snippet{rows:3}= @code_snippet
-      #copy-link copy to clipboard
-    %h3
-      Add this HTML5 code to the pages on your website
-    %p
-      The wygyt allows #{@site.domain} visitors to play games and use cool apps!
+  = render :partial => "registered_website", :locals => {:site => @site}
+
 .section
   %h2
     =h @site.title
@@ -18,16 +10,3 @@
     =h @site.description
   %h3
     =h @site.url
-
-:javascript
-  ZeroClipboard.setMoviePath("/assets/vendor/ZeroClipboard.swf");
-  var clip = new ZeroClipboard.Client();
-  var snippet = $('#snippet').text()
-  clip.setText(snippet);
-  clip.glue('snippet');
-  clip.addEventListener('onComplete', onCopyComplete );
-  function onCopyComplete(client, text ) {
-    $('#copy-link').addClass('copied').html('copied! now you can paste to your site.');
-    $('#snippet').select();
-  }
-

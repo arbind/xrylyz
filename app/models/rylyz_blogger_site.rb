@@ -23,18 +23,26 @@ class RylyzBloggerSite
 
   private
 
-  def scrape_attributes
-    uri = URI.parse(domain)
+  def self.uri_components(url)
+    return nil if url.blank?
+
+    s = nil
+    d = nil
+
+    uri = URI.parse(url)
+    uri = URI.parse("http://#{url}") unless uri.scheme
     if uri.scheme
-      self.domain = uri.host.downcase
-      self.scheme = uri.scheme.downcase
+      s = uri.scheme.downcase
+      d = uri.host.downcase
     end
-    return false if domain.blank?
-    return false unless ["http", "http"].include?(scheme)
+    return nil if d.blank?
+    return nil unless ["http", "https"].include?(s)
+    return nil unless hostname_resolves?(d)
+    [s, d]
+  end
 
-    return false unless validate_hostname(domain)
-
-    page = MetaInspector.new(self.domain)
+  def scrape_attributes
+    page = MetaInspector.new(url)
     return false unless page
 
     self.title = page.title
@@ -43,7 +51,8 @@ class RylyzBloggerSite
 
   require 'resolv'
 
-  def validate_hostname(hostname)
+  def self.hostname_resolves?(hostname)
+    return nil if hostname.blank?
     begin
       Resolv.getaddress(hostname)
     rescue Resolv::ResolvError => e
@@ -51,7 +60,6 @@ class RylyzBloggerSite
       nil
     end
   end
-
 
   def check_site_key
     self.site_key ||= generate_site_key

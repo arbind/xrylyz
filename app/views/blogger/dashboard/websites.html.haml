@@ -7,6 +7,6 @@
   .registered-sites
     - if @sites.any?
       - @sites.each do |site|
-        = render :partial => 'registered_website', :locals => {:site => site}
+        = render :partial => 'registered_website_item', :locals => {:site => site}
     - else
       %p Add your site above

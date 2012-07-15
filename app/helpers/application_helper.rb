@@ -47,4 +47,15 @@ module ApplicationHelper
 		session[:layout_on_render] = layout
 	end
 
+
+
+  def wygyt_code_snippet (rylyz_blogger_site)
+    code =<<EOL
+<script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{rylyz_blogger_site.site_key}' type='text/javascript'></script>
+<div id='rylyz-wygyt' style='font-size:1px;'><a href='http://rylyz.com'>play games online</a></div>
+EOL
+  	code.html_safe
+  end
+
+
 end

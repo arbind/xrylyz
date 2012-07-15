@@ -1,19 +1,16 @@
-- @html_page_title = "dashboard"
 .section
   %h2= "Welcome, #{current_member.nickname}"
-  Add this code to you html files:
-  .html-code
-    = "<script src='http://#{RYLYZ_PLAYER_HOST}/assets/rylyz.wygyt.js' type='text/javascript'></script>"
+  %p
+    = "You have"
+    %a{:href => dashboard_websites_path}
+      = "#{pluralize(@sites.count, 'registered site')}!"
 
+
+- @html_page_title = "dashboard"
 - if @sites.empty?
   .section
-    %form{:action => dashboard_register_website_path, :method => "post"}
-      .field
-        %label Site URL
-        %br
-        %label
-          = "http://"
-        %input.long{:type => "text", :name => "site[domain]", :placeholder => "mydomain.com"}
-      .toolbar.fieldset.float-left
-        %button{:type => "submit"}
-          .button Save
+    = render :partial => 'registered_website_add'
+
+- if 1 == @sites.count
+  .section
+    = render :partial => 'registered_website', :locals => {:site => @sites.first}
