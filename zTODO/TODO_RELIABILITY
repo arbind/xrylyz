@@ -1,0 +1,19 @@
+*** Reliability
+  - WID Exception
+  - Channel Exception
+  - Add Thread Management
+  - Add Session Management
+  - add client-side retry for lost messages
+    add unique message id that increments with every send
+    add a try# field to every message that defaults to 1
+    add a timeout for the expected response
+    return the unique message id on responses to wid's
+    if a message response times out, increment the try# and resend.
+    when a message is received, cancel the timeout
+    notify user of connectivity issues (use indicator in status bar)
+  - To Fix Request-URI Too Large:
+    After a successfull login using OPENID to signin with Yahoo, you may get "Request-URI Too Large" error.
+    You can reconfigure the threshhold in your webserver.
+    For webrick: update a config file somewhere in: 
+    ~/.rvm/rubies/ruby-1.9.2-p290/lib/ruby/1.9.1/webrick/httprequest.rb 
+    search for: RequestURITooLarge and change the max value to: 8192 instead of 1024

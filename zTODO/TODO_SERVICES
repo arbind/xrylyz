@@ -1,0 +1,11 @@
+Services:
+o login: username, facebook, twitter, google+
+o invite friends to a game
+o share post
+o store: gifts, identity
+o purchase: mobile payment, paypal, credit card, others?
+o subscription: (same options)
+o leader-board
+o achievments
+o persistence: mongoDB
+

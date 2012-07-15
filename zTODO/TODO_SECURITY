@@ -1,0 +1,10 @@
+*** Security
+  - Make everything SSL
+    - Configure Webrick to use SSL:
+    - http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
+    - Create Self-Signed Certificate:
+    - https://devcenter.heroku.com/articles/ssl-certificate-self
+
+  - js->wid connection: create a token on server with referral and site key
+    - run a js callback on client to accept and validate token
+    - sned token on each socket request to validate request each event

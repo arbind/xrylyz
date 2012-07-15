@@ -1,0 +1,59 @@
+Auto-launch app
+  - invite friends with autolaunch url
+  - if url contains someblog.com?startRylyz=appName
+    Then launch appName automatically once the widget finishes loading
+
+UI Framework
+- Add js before and after Callbacks for each rylyzservice event
+  - All handlers should be found in the app js namespace: e.g. quizapp.before_show_app = function() {}
+  - before_show_app
+  - after_show_app
+  - before_show_screen
+  - after_show_screen
+  - before_navigation
+  - after_navigation
+  - before_show_data(display_name, data)
+  - after_show_data(display_name, data)
+
+o modal prompt
+
+o animation framework
+
+o sound framework
+
+o Create a  ModelReferenceTable for BackBone Models only.
+Allow displays to reference a model by name in the ModelReferenceTable
+(Instead of creating their own default-empty model)
+This will let multiple display's point to the same model.
+the server will still update models, by sending updates to a named display,
+All other displays referencing that same model should auto-update as well.
+
+o Add ability to name template differently than the model
+  %collection{name: 'first-items', template:'items'}
+  %collection{name: 'second-items', template:'items'}
+  %collection{name: 'third-items', template:'items'}
+  Above 3 examples all have different data bindings, but render using the same template
+
+o Allow conditional rendering of an object
+  %object{name: 'card', condition: '[[already-played]]'}
+    %html goes here for already played item
+  %object{name: 'card', condition: '![[already-played]]'}
+    %html goes here for item that hasen't been played
+  or
+  %collection{name: 'some-items', condition: 'empty'}
+    %html goes here for empty collection
+  %collection{name: 'some-items', condition: 'not-empty'}
+    %html goes here for non-empty collection
+
+o Create a conditional navigation for click events.
+Say you want to navigate to the chat room screen on click,
+if you have already registerd your name, then nav to chat room screen
+else nav to registration screen first to enter name, then to the chat room screen
+
+o prepopulate form data with model
+
+o Create a wizard which has many screens bound to the same model set
+(May also be able to use this for the conditional navigation)
+  + model set (maybe one root model?)
+  + screen set (all the screens in the wizard)
+  + rule set - specify screen flow logic

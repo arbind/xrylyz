@@ -1,0 +1,4 @@
+x change directory path for 
+  display/TicTacToe => display/tic_tac_toe
+  (underscore app name when loading its html)
+  Also for stylesheets and images
