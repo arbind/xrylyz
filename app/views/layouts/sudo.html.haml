@@ -11,10 +11,11 @@
     = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/sudo/application", :media => "all"
 
-    = javascript_include_tag "base/index", :media => "all"
-    = javascript_include_tag "website/base/index", :media => "all"
+    = javascript_include_tag "base/index"
+    = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/sudo/application"
 
+    = yield :head
     = csrf_meta_tags
   %body.rylyz.sudo
     #site-header
@@ -33,13 +34,7 @@
 
     #content
       - unless flash.empty?
-        #flash-messages
-          - flash.each do |key, msg|
-            - unless msg.blank?
-              %div{:class=>key}
-                %p.close(onclick="Effect.Fade('#{key}')")
-                  = '&nbsp;X&nbsp;'.html_safe
-                %p.message= msg
+        = render :partial => 'util/flash_messages'
       = yield
 
     #site-footer

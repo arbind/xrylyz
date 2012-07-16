@@ -39,10 +39,19 @@ class RylyzBlogger
   validates_uniqueness_of :email
   validates_uniqueness_of :share_key
 
+  after_initialize :check_plan_exists
 
   def nickname 
   	nick = self.email.split('@').first if self.email
   	nick ||= self.member.nickname if self.member
   	nick ||= 'blogger'
+  end
+
+  private
+
+  def check_plan_exists
+    return true unless plan.nil?
+    self.plan = RylyzBloggerPlan.find_or_create_by(name: 'free')
+    self.save
   end
 end

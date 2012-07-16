@@ -18,7 +18,6 @@ class Sudo::ControlPanelController < Sudo::SudoController
 		
 	def load_signups
 		# ++++todo get this data directly from launchrock: http://developers.launchrock.com/documentation/api/reference#api-insights
-
 		require 'csv'
 		require 'open-uri'
 		blogger = nil
@@ -50,7 +49,8 @@ class Sudo::ControlPanelController < Sudo::SudoController
 
 			  # bind the blogger's subscription plan
 			  blogger.plan = RylyzBloggerPlan.where(name: r['plan_name']).first if blogger.plan.nil?
-			  if blogger.plan.nil? # create a new plan if needed
+			  if blogger.plan.nil? and r['plan_name'] and r['share'] and and r['ref'] and r['affil8'] and r['$/month']
+		  		# create a new plan if needed
 				  blogger.plan = RylyzBloggerPlan.create!(
 				  	name: r['plan_name'],
 						base_profit_sharing_rate: r['share'].to_f/100,
@@ -58,6 +58,9 @@ class Sudo::ControlPanelController < Sudo::SudoController
 						affiliate_rate: r['affil8'].to_f/100,
 						monthly_subscription_rate: r['$/month'].to_f
 						)
+				else
+				  blogger.plan = RylyzBloggerPlan.where(name: 'free')
+				  blogger.plan ||= RylyzBloggerPlan.create
 				end
 
 				# update latest stats for all bloggers

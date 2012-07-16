@@ -1,0 +1,99 @@
+%h1 Start Using ChatPlay Today!
+.pricing-plans
+
+  %ul.benefits
+    %li.plan
+    %li.profiting profit sharing
+    %li.connections connections
+    %li.configuration configurations
+    %li.games games
+    %li.themes themes
+    %li.signup
+
+  - plan = 0
+  %ul.plan
+    %li.plan
+      .name.free FREE
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 0%
+    %li.connections unlimited
+    %li.configuration default
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+
+  - plan = 9
+  %ul.plan
+    %li.plan
+      .name bobcat
+      .price= "$#{plan}"
+      .per-month per month
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 5%
+    %li.connections unlimited
+    %li.configuration default
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+
+  - plan = 19
+  %ul.plan
+    %li.plan
+      .name bobcat
+      .price= "$#{plan}"
+      .per-month per month
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 10%
+    %li.connections unlimited
+    %li.configuration default
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+
+  - plan = 29
+  %ul.plan
+    %li.plan
+      .name bobcat
+      .price= "$#{plan}"
+      .per-month per month
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 20%
+    %li.connections unlimited
+    %li.configuration customizable
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+
+  - plan = 49
+  %ul.plan
+    %li.plan
+      .name bobcat
+      .price= "$#{plan}"
+      .per-month per month
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 30%
+    %li.connections unlimited
+    %li.configuration customizable
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+
+  - plan = 99
+  %ul.plan
+    %li.plan
+      .name bobcat
+      .price= "$#{plan}"
+      .per-month per month
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)
+    %li.profiting 60%
+    %li.connections unlimited
+    %li.configuration customizable
+    %li.games X
+    %li.themes X
+    %li.signup
+      .signup.button= link_to "Get the Code", sign_up_path(:plan=>plan)

@@ -1,0 +1,52 @@
+!!! 5
+%html{ :lang => "en"}
+  %head
+    %title= "rylyz"
+
+    = stylesheet_link_tag    "fonts/istokweb", :media => "all"
+    = stylesheet_link_tag    "fonts/ubuntu", :media => "all"
+
+    = stylesheet_link_tag    "base/index", :media => "all"
+    = stylesheet_link_tag    "website/base/index", :media => "all"
+    = stylesheet_link_tag    "website/home_page/application", :media => "all"
+
+    = javascript_include_tag "base/index"
+    = javascript_include_tag "website/base/index"
+    = javascript_include_tag "website/home_page/application"
+
+    = csrf_meta_tags
+  %body.rylyz.home_page
+    #site-header
+      #site-name
+        #site-logo
+          %a{href: root_path}
+            =image_tag "rylyz/rylyz-logo-green.png"
+        = @html_page_title
+      #site-menu
+        .account.toolbar
+          %a{:href=>dashboard_me_path, :title=>"sign up for rylyz"}
+            %button me
+        .primary.toolbar
+          %a{:href=>home_page_path}
+            %button home
+          / %a{:href=>pricing_path}
+          /   %button Pricing
+          / %a{:href=>profiting_path}
+          /   %button Profiting
+          / %a{:href=>installing_path}
+          /   %button Installing
+          %a{:href=>dashboard_path}
+            %button dashboard
+          %a{:href=>dashboard_dollar_path}
+            %button dollar
+
+    #content
+      - unless flash.empty?
+        = render :partial => 'util/flash_messages'
+      = yield
+
+    #site-footer
+      %p        
+        = link_to "&copy; rylyz.com".html_safe, root_path          
+        = link_to  "privacy policy", privacy_policy_path
+        = link_to  "contact us", contact_us_path

@@ -4,7 +4,10 @@
     %title= "Wygyt"
     = stylesheet_link_tag    "base", :media => "all"
     = stylesheet_link_tag    "website/chat_plays/application", :media => "all"
+
     = javascript_include_tag "website/chat_plays/application"
+
+    = yield :head
     = csrf_meta_tags
   %body.rylyz.wygyt
     #site-header
@@ -15,7 +18,7 @@
           %li= link_to  "Pricing", :pricing
           %li= link_to  "Profiting", :profiting
           %li= link_to  "Installing", :installing
-          %li= link_to  "Sign Up", :sign_up
+          %li= link_to  "Sign Up", :signup
 
   = yield
 

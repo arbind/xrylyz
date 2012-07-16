@@ -8,7 +8,7 @@ class Member::AuthController < ApplicationController
   end
 
   def logout
-    self.current_member = nil
+    logout_current_member
     next_page = next_page_on_success
     redirect_to next_page
   end

@@ -1,0 +1,7 @@
+#flash-messages
+  - flash.each do |key, msg|
+    - unless msg.blank?
+      %div{:class=>key}
+        %p.close{:onclick=>"jQuery('.#{key}').fadeOut()"}
+          = '&nbsp;X&nbsp;'.html_safe
+        %p.message= msg

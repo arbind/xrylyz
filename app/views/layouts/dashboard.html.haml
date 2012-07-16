@@ -12,38 +12,38 @@
     = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/dashboard/application", :media => "all"
 
-    = javascript_include_tag "base/index", :media => "all"
-    = javascript_include_tag "website/base/index", :media => "all"
+    = javascript_include_tag "base/index"
+    = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/dashboard/application"
 
+    = yield :head
     = csrf_meta_tags
   %body.rylyz.dashboard
     #site-header
       #site-name
-        #site-logo=image_tag "rylyz/rylyz-logo-green.png"
+        #site-logo
+          %a{href: root_path}
+            =image_tag "rylyz/rylyz-logo-green.png"
         = @html_page_title
       #site-menu
         .account.toolbar
-          %a{:href=>dashboard_me_url, :title=>"account profile"}
+          %a{:href=>dashboard_me_path, :title=>"account profile"}
             %button me
           - if blogger_signed_in?
-            %a{:href=>dashboard_logout_url, :title=>"logout"}
+            %a{:href=>dashboard_logout_path, :title=>"logout"}
               %button.logout x
         .primary.toolbar
-          %a{:href=>dashboard_url}
+          - unless blogger_signed_in?
+            %a{:href=>home_page_path}
+              %button home
+          %a{:href=>dashboard_path}
             %button dashboard
-          %a{:href=>dashboard_dollar_url}
+          %a{:href=>dashboard_dollar_path}
             %button dollar
 
     #content
       - unless flash.empty?
-        #flash-messages
-          - flash.each do |key, msg|
-            - unless msg.blank?
-              %div{:class=>key}
-                %p.close(onclick="Effect.Fade('#{key}')")
-                  = '&nbsp;X&nbsp;'.html_safe
-                %p.message= msg
+        = render :partial => 'util/flash_messages'
       .right-column
         #submenu
           - unless @html_submenu_buttons.nil?
@@ -57,7 +57,7 @@
         = yield
 
     #site-footer
-      %p
-        %strong &copy; rylyz.com
-        = link_to  "privacy policy", "#"
-        = link_to  "contact us", "#"
+      %p        
+        = link_to "&copy; rylyz.com".html_safe, root_path
+        = link_to  "privacy policy", privacy_policy_path
+        = link_to  "contact us", contact_us_path
