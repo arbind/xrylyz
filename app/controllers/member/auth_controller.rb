@@ -75,7 +75,7 @@ class Member::AuthController < ApplicationController
       next_page ||= next_page_on_success
 
       if next_page.nil?
-        redirect_to dashboard_login_path and return if :dashboard == session[:in_website]
+        redirect_to dashboard_login_path and return if :wygyt != session[:in_website]
       end
 
       redirect_to next_page, :flash => {:notice => notice, :error => error}

@@ -49,7 +49,7 @@ class Sudo::ControlPanelController < Sudo::SudoController
 
 			  # bind the blogger's subscription plan
 			  blogger.plan = RylyzBloggerPlan.where(name: r['plan_name']).first if blogger.plan.nil?
-			  if blogger.plan.nil? and r['plan_name'] and r['share'] and and r['ref'] and r['affil8'] and r['$/month']
+			  if blogger.plan.nil? and r['plan_name'] and r['share'] and r['ref'] and r['affil8'] and r['$/month']
 		  		# create a new plan if needed
 				  blogger.plan = RylyzBloggerPlan.create!(
 				  	name: r['plan_name'],

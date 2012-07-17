@@ -7,6 +7,8 @@ RylyzPlayer::Application.routes.draw do
   scope :module => :website, :controller=> "home_page" do #The rylyz website
     get "index",                :as => :home_page
     get "play",                 :as => :signup,                :to => 'home_page#signup'
+    get "login",                :as => :login
+    get "logout",               :as => :logout
     # get "pricing",              :as => :pricing
     # get "profiting",            :as => :profiting
     # get "installing",           :as => :installing

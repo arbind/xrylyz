@@ -1,4 +1,9 @@
-Polish up Dashboard
+1. Add close button to widget footer (so people can click on links at the bottom of page)
+2. Contain widget css = so it does not affect the host blog
+3. Polish up Dashboard CSS
+4. Add Home Page content
+5. Setup rylyz.com on heroku
+
 Email invites to bloggers
 Quiz admin
 Quiz Game
