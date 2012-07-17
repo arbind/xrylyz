@@ -1,11 +1,14 @@
+4. postage app
+5. launch bar polished up
+6. comming soon wygyt works (looks good too)
+
 1. Add Home Page content
-2. Contact Us page
-3. Setup rylyz.com on heroku
+2. Setup rylyz.com on heroku
+3. write email invitation
+
 
 x1. Shorten width of footer so links on page can be clicked.
 x2. Contain widget css = so it does not affect the host blog
-x3. Polish up Dashboard CSS
-x1. cancel login via twitter not working.
 
 2. delete and unregister buttons should require confirmation.
 

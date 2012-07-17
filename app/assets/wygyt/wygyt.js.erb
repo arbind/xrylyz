@@ -90,16 +90,26 @@ Rylyz.Wygyt = {
     Rylyz.Wygyt.showForAll();
   },
   showAsFooter: function() {
-    var footerConsole = jQuery("<div id='rylyz-footer'/>");
-    var powerButton = jQuery("<div id='rylyz-power-button'><img src='http://wygyt.rylyz.ws/assets/rylyz/power-btn.png' width='24px' height='24px'/></div>");
-    powerButton.appendTo(footerConsole)
-    
-    var powerPanel = jQuery("<span id='rylyz-console-display'>Play</span>");
-    powerPanel.appendTo(footerConsole)
+    var launchRylyz = jQuery('<div id="launchRylyz"/>');
+    var launchWrapper = jQuery('<div id="launchWrapper"/>');
+    var launchBtn = jQuery('<div id="launchBtn"/>');
+    var launchText = jQuery('<div id="launchText">Play</div>');
+    launchBtn.appendTo(launchWrapper);
+    launchText.appendTo(launchWrapper);
+    launchWrapper.appendTo(launchRylyz);
+    launchRylyz.appendTo('body');
+    jQuery('#launchRylyz').hover(function(){jQuery('#launchText, #launchRylyz').addClass('poweredOn')}, function(){jQuery('#launchText, #launchRylyz').removeClass('poweredOn')})
 
-    footerConsole.appendTo("body");
-    // jQuery("#rylyz-footer").css('height', '36px');
-    jQuery("#rylyz-footer").click(function(){ jQuery(this).addClass('powered-on'); Rylyz.Wygyt.startWygyt(startApp);});
+    // var footerConsole = jQuery("<div id='rylyz-footer'/>");
+    // var powerButton = jQuery("<div id='rylyz-power-button'><img src='http://wygyt.rylyz.ws/assets/rylyz/power-btn.png' width='24px' height='24px'/></div>");
+    // powerButton.appendTo(footerConsole)
+    
+    // var powerPanel = jQuery("<span id='rylyz-console-display'>Play</span>");
+    // powerPanel.appendTo(footerConsole)
+
+    // footerConsole.appendTo("body");
+    // // jQuery("#rylyz-footer").css('height', '36px');
+    // jQuery("#rylyz-footer").click(function(){ jQuery(this).addClass('powered-on'); Rylyz.Wygyt.startWygyt(startApp);});
 
     Rylyz.Wygyt.showForAll();
   },
