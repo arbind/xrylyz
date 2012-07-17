@@ -1,4 +1,4 @@
-1. Add close button to widget footer (so people can click on links at the bottom of page)
+1. Shorten width of footer so links on page can be clicked.
 2. Contain widget css = so it does not affect the host blog
 3. Polish up Dashboard CSS
 4. Add Home Page content

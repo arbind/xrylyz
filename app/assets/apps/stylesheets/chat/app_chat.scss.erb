@@ -20,196 +20,198 @@ $borderColorField: yellow;
 $textColorBox: #FFFFCC;
 $bgColorBox: $textColor;
 
-a.button {
-	&:hover{
-	  color: #333;
-	}
-}
-
-.button-bar.exit {
-	position: absolute;
-	top: 20px;
-	right: 10px;
-}
-
-.button-bar.exit .quit{
-	float: right;
-}
-
-.chat-app {
-	color: $textColor;
-  background-color: transparent;
-  padding: 10px 8px; 
-	width: 100%;
-	min-height: 250px;
-
-	form {
-		.field {
-	    width: 400px;
-			margin: 20px auto;
-			input.text {
-				color: $textColorField;
-				background-color:$bgColorField;
-				font-weight: bold;
-			  border: 1px solid $borderColorField;
-				width: 200px;
-		    margin: 10px 40px;
-		    padding: 5px;
-		    font-size: 14px;
-		    text-shadow: 0px 1px 0px #fff;
-		    outline: none;
-			}
-			input.text:focus {
-		    -webkit-box-shadow: 0px 0px 5px yellow;
-		    -moz-box-shadow: 0px 0px 5px yellow;
-		    box-shadow: 0px 0px 5px yellow;
-			}
-			a.button {
-				margin: 0px 38px;
-				width: 165px;
-			}
-		};
-	}
-
-
-	.input-nickname-screen {
-		form.nickname {
-	    width: 400px;
-	    height: 200px;
-	    margin: 50px auto; 
-			color: $textColorBox;
-  		background-color: $bgColorBox;
-	    border: 3px solid #101010;  		
-		  border-radius: 8px;
-		};
-	}
-
-	.lobby-screen {
-		.rooms-collection {
-			width: 300px;
-			height: 200px;
-			overflow: auto;
-			margin: 20px auto;
-			padding: 8px 20px;
-			color: $textColorBox;
-  		background-color: $bgColorBox;
-	    border: 3px solid #101010;  		
-		  border-radius: 8px;
-			-o-border-radius: 8px;
-			-moz-border-radius: 8px;
-			-webkit-border-radius: 8px;
-			ul {
-				overflow: visible;
-				list-style: none;
-				margin-top: 0px;
-				margin-left: 10px;
-				padding-left: 1em;
-				text-indent: -2em;
-				li {
-					padding: 4px 0px;
-				}
-			}
+#rylyz-app-spot {
+	a.button {
+		&:hover{
+		  color: #333;
 		}
-  	form {
-  		clear: both;
-  		width: 300px;
-  		margin: 20px auto;
-  		.button {
-  			margin-left: 40px;
-  		}
-  	};
 	}
-}
 
-
-.chat-room-screen {
-	top:0;
-	left:0;
-	height: 100%;
-	width: 100%;
-	color: $textColor;
-	background-color:$bgColor;
-
-	.people{
+	.button-bar.exit {
 		position: absolute;
-		top: 88px;
-		left:0;
-		width: 200px;
-		height: 380px;
-		overflow: auto;
-		padding: 0px 20px;
-		.person {
-				position: relative;
-				margin: 0px 5px 5px 5px;
-				padding: 3px 5px;
-	  		color: $textColorBox;
+		top: 20px;
+		right: 10px;
+	}
+
+	.button-bar.exit .quit{
+		float: right;
+	}
+
+	.chat-app {
+		color: $textColor;
+	  background-color: transparent;
+	  padding: 10px 8px; 
+		width: 100%;
+		min-height: 250px;
+
+		form {
+			.field {
+		    width: 400px;
+				margin: 20px auto;
+				input.text {
+					color: $textColorField;
+					background-color:$bgColorField;
+					font-weight: bold;
+				  border: 1px solid $borderColorField;
+					width: 200px;
+			    margin: 10px 40px;
+			    padding: 5px;
+			    font-size: 14px;
+			    text-shadow: 0px 1px 0px #fff;
+			    outline: none;
+				}
+				input.text:focus {
+			    -webkit-box-shadow: 0px 0px 5px yellow;
+			    -moz-box-shadow: 0px 0px 5px yellow;
+			    box-shadow: 0px 0px 5px yellow;
+				}
+				a.button {
+					margin: 0px 38px;
+					width: 165px;
+				}
+			};
+		}
+
+
+		.input-nickname-screen {
+			form.nickname {
+		    width: 400px;
+		    height: 200px;
+		    margin: 50px auto; 
+				color: $textColorBox;
 	  		background-color: $bgColorBox;
-		    border: 1px solid #101010;  		
-			  border-radius: 4px;
-				-o-border-radius: 4px;
-				-moz-border-radius: 4px;
-				-webkit-border-radius: 4px;
-			.name {
-				text-align: center;
-				padding: 4px;
+		    border: 3px solid #101010;  		
+			  border-radius: 8px;
+			};
+		}
+
+		.lobby-screen {
+			.rooms-collection {
+				width: 300px;
+				height: 200px;
+				overflow: auto;
+				margin: 20px auto;
+				padding: 8px 20px;
+				color: $textColorBox;
+	  		background-color: $bgColorBox;
+		    border: 3px solid #101010;  		
+			  border-radius: 8px;
+				-o-border-radius: 8px;
+				-moz-border-radius: 8px;
+				-webkit-border-radius: 8px;
+				ul {
+					overflow: visible;
+					list-style: none;
+					margin-top: 0px;
+					margin-left: 10px;
+					padding-left: 1em;
+					text-indent: -2em;
+					li {
+						padding: 4px 0px;
+					}
+				}
 			}
-			.source-url {
-				text-align: center;
-				padding: 4px;
-				a, a:visited, a:active {
-					color: $textColorLink;
-					text-decoration: none;
-					&:hover { color: $textColorLinkHover; }
+	  	form {
+	  		clear: both;
+	  		width: 300px;
+	  		margin: 20px auto;
+	  		.button {
+	  			margin-left: 40px;
+	  		}
+	  	};
+		}
+	}
+
+
+	.chat-room-screen {
+		top:0;
+		left:0;
+		height: 100%;
+		width: 100%;
+		color: $textColor;
+		background-color:$bgColor;
+
+		.people{
+			position: absolute;
+			top: 88px;
+			left:0;
+			width: 200px;
+			height: 380px;
+			overflow: auto;
+			padding: 0px 20px;
+			.person {
+					position: relative;
+					margin: 0px 5px 5px 5px;
+					padding: 3px 5px;
+		  		color: $textColorBox;
+		  		background-color: $bgColorBox;
+			    border: 1px solid #101010;  		
+				  border-radius: 4px;
+					-o-border-radius: 4px;
+					-moz-border-radius: 4px;
+					-webkit-border-radius: 4px;
+				.name {
+					text-align: center;
+					padding: 4px;
+				}
+				.source-url {
+					text-align: center;
+					padding: 4px;
+					a, a:visited, a:active {
+						color: $textColorLink;
+						text-decoration: none;
+						&:hover { color: $textColorLinkHover; }
+					}
 				}
 			}
 		}
-	}
-	.messages {
-		position: absolute;
-		top: 88px;
-		left:240px;
-		height: 380px;
-		width: 500px;
-		overflow: hidden;
-		padding: 0px 20px;
-		border: 1px dotted blue;
-		background-color:$bgColorBox;
-		.messages-collection {
-			height: 300px;
-			overflow: auto;
-	 		border-bottom: 1px solid #0000FF;
-			ul {
-				li {
-					padding: 0;
-					margin-right:20px;
-					border: 0;
-					line-height: 2em;
-					border-top: 1px solid #666677;
-					color:#88FF88;
-					list-style-image:none;
-					list-style-type:none;
-				}				
+		.messages {
+			position: absolute;
+			top: 88px;
+			left:240px;
+			height: 380px;
+			width: 500px;
+			overflow: hidden;
+			padding: 0px 20px;
+			border: 1px dotted blue;
+			background-color:$bgColorBox;
+			.messages-collection {
+				height: 300px;
+				overflow: auto;
+		 		border-bottom: 1px solid #0000FF;
+				ul {
+					li {
+						padding: 0;
+						margin-right:20px;
+						border: 0;
+						line-height: 2em;
+						border-top: 1px solid #666677;
+						color:#88FF88;
+						list-style-image:none;
+						list-style-type:none;
+					}				
+				}
 			}
 		}
-	}
-	form {
-		margin: 10px 0px;
-		.field {
-			margin: 4px 0px;
-			input.text {
-				line-height: 1.8em;
-				width: 490px;
-				margin: 0px;
-			}
-			a.button {
-				position: relative;
-				top: -32px;
-				left: 400px;
-				text-align:center;
-				line-height: 1.5em;
-				width: 40px;
-			  color: blue;
-				margin: 0px;
+		form {
+			margin: 10px 0px;
+			.field {
+				margin: 4px 0px;
+				input.text {
+					line-height: 1.8em;
+					width: 490px;
+					margin: 0px;
+				}
+				a.button {
+					position: relative;
+					top: -32px;
+					left: 400px;
+					text-align:center;
+					line-height: 1.5em;
+					width: 40px;
+				  color: blue;
+					margin: 0px;
+				}
 			}
 		}
 	}

@@ -24,298 +24,300 @@ $bgColorBox: $textColor;
 
 $piece-size: 50px;
 
-.button-bar {
-	clear: both;
-	width: 300px;
-	margin: 8px auto;
-	.button {
-		margin-left: auto;
-	}
-};
+#rylyz-app-spot {
+  .button-bar {
+  	clear: both;
+  	width: 300px;
+  	margin: 8px auto;
+  	.button {
+  		margin-left: auto;
+  	}
+  };
 
-.button-bar.exit {
-	position: absolute;
-	top: 20px;
-	left: 400px;
-}
+  .button-bar.exit {
+  	position: absolute;
+  	top: 20px;
+  	left: 400px;
+  }
 
-.button-bar.exit .quit{
-	float: right;
-}
+  .button-bar.exit .quit{
+  	float: right;
+  }
 
-.button-canvas{
-	margin: 0px auto;
-};
+  .button-canvas{
+  	margin: 0px auto;
+  };
 
-form {
-	.field {
-    width: $piece-size*8;
-		margin: 20px auto;
-		input.text {
-			color: $textColorField;
-			background-color:$bgColorField;
-			font-weight: bold;
-		  border: 1px solid $borderColorField;
-			width: 200px;
-	    margin: 10px 40px;
-	    padding: 5px;
-	    font-size: 14px;
-	    text-shadow: 0px 1px 0px #fff;
-	    outline: none;
-		}
-		input.text:focus {
-	    -webkit-box-shadow: 0px 0px 5px yellow;
-	    -moz-box-shadow: 0px 0px 5px yellow;
-	    box-shadow: 0px 0px 5px yellow;
-		}
-		a.button {
-			margin: 0px 38px;
-			width: 165px;
-		}
-	}
-}
+  form {
+  	.field {
+      width: $piece-size*8;
+  		margin: 20px auto;
+  		input.text {
+  			color: $textColorField;
+  			background-color:$bgColorField;
+  			font-weight: bold;
+  		  border: 1px solid $borderColorField;
+  			width: 200px;
+  	    margin: 10px 40px;
+  	    padding: 5px;
+  	    font-size: 14px;
+  	    text-shadow: 0px 1px 0px #fff;
+  	    outline: none;
+  		}
+  		input.text:focus {
+  	    -webkit-box-shadow: 0px 0px 5px yellow;
+  	    -moz-box-shadow: 0px 0px 5px yellow;
+  	    box-shadow: 0px 0px 5px yellow;
+  		}
+  		a.button {
+  			margin: 0px 38px;
+  			width: 165px;
+  		}
+  	}
+  }
 
-a, a:visited, a:active {
-	color:$textColorLink;
-	cursor: pointer;
-	text-decoration: none;
-	&:hover {
-		color: $textColorLinkHover;
-	}
-}
+  a, a:visited, a:active {
+  	color:$textColorLink;
+  	cursor: pointer;
+  	text-decoration: none;
+  	&:hover {
+  		color: $textColorLinkHover;
+  	}
+  }
 
-a.button {
-	&:hover{
-	  color: #333;
-	}
-}
+  a.button {
+  	&:hover{
+  	  color: #333;
+  	}
+  }
 
-li {
-	color:$textColorLink;
-	cursor: pointer;
-	&:hover {
-		color: $textColorLinkHover;
-	}	
-}
+  li {
+  	color:$textColorLink;
+  	cursor: pointer;
+  	&:hover {
+  		color: $textColorLinkHover;
+  	}	
+  }
 
-.game-status {
-	color: $textColor;
-	background-color: $bgColor;
-	clear:both;
-	text-align: center;
-	font:normal bold 22px/28px Georgia, serif; 
-}
-.connect4-app {
-	color: $textColor;
-	background-color: transparent;
-	padding: 10px 8px; 
-	width: 100%;
-	min-width: ($piece-size*12);
-	min-height: ($piece-size*9)+20;
-
-	h4.your-turn{
-		color: yellow;
-	}
-	.player-panel h2, .player-panel h3, .player-panel h4, .player-panel h5 {
-		margin: 0.7em 0;
-	}
-
-  .play-game-screen, .input-nickname-screen, .lobby-screen {
+  .game-status {
+  	color: $textColor;
+  	background-color: $bgColor;
+  	clear:both;
+  	text-align: center;
+  	font:normal bold 22px/28px Georgia, serif; 
+  }
+  .connect4-app {
+  	color: $textColor;
+  	background-color: transparent;
+  	padding: 10px 8px; 
   	width: 100%;
-  	height: 100%;
-  }
+  	min-width: ($piece-size*12);
+  	min-height: ($piece-size*9)+20;
 
-  .connect4-app h1 {
-    color: #5555CC; }
+  	h4.your-turn{
+  		color: yellow;
+  	}
+  	.player-panel h2, .player-panel h3, .player-panel h4, .player-panel h5 {
+  		margin: 0.7em 0;
+  	}
 
- 	.turn-true, .turn-false {
- 	}
+    .play-game-screen, .input-nickname-screen, .lobby-screen {
+    	width: 100%;
+    	height: 100%;
+    }
 
- 	.turn-indicator {
-	 	.chip {
-	 		position: static;
-	 		margin: 0px auto;
-	 	}
-	}
- 	.turn-true{
- 		opacity: 1;
- 		filter:Alpha(opacity=100);
- 	}
- 	.turn-false {
- 		opacity:0.18;
- 		filter:Alpha(opacity=18); 	
- 	}
+    .connect4-app h1 {
+      color: #5555CC; }
 
- 	.your-turn {
- 		text-align: center;
- 		font-weight:bold;
- 	}
- 	.your-turn.turn-true{
+   	.turn-true, .turn-false {
+   	}
 
- 	}
- 	.your-turn.turn-false{
- 		opacity:0;
- 		filter:Alpha(opacity=0);
- 	}
+   	.turn-indicator {
+  	 	.chip {
+  	 		position: static;
+  	 		margin: 0px auto;
+  	 	}
+  	}
+   	.turn-true{
+   		opacity: 1;
+   		filter:Alpha(opacity=100);
+   	}
+   	.turn-false {
+   		opacity:0.18;
+   		filter:Alpha(opacity=18); 	
+   	}
 
-	.input-nickname-screen {
-		form.nickname {
-	    width: $piece-size*8;
-	    height: $piece-size*4;
-	    margin: $piece-size auto; 
-			color: $textColorBox;
-  		background-color: $bgColorBox;
-	    border: 3px solid #101010;  		
-		  border-radius: 8px;
-		};
-	}
+   	.your-turn {
+   		text-align: center;
+   		font-weight:bold;
+   	}
+   	.your-turn.turn-true{
 
-	.lobby-screen {
-		.games-collection {
-			width: 300px;
-			height: 200px;
-			overflow: auto;
-			margin: 20px auto;
-			padding: 8px 20px;
-			color: $textColorBox;
-  		background-color: $bgColorBox;
-	    border: 3px solid #101010;  		
-		  border-radius: 8px;
-			-o-border-radius: 8px;
-			-moz-border-radius: 8px;
-			-webkit-border-radius: 8px;
-			ul {
-				list-style: none;
-				margin-top: 0px;
-				margin-left: 10px;
-				padding-left: 1em;
-				text-indent: -2em;
-				li {
-					padding: 4px 0px;
-				}
-			}
-		}
-	}
+   	}
+   	.your-turn.turn-false{
+   		opacity:0;
+   		filter:Alpha(opacity=0);
+   	}
 
-  .main-screen {
-  	min-width: $piece-size*17;
-  	min-height: $piece-size*9;
-  	.button-bar {
-  		clear: both;
-  		float: right;
-  		margin: 10px 20px;
-  	};
-	  .player-panel.player1 {
-	    clear:left;
-	  }
-	  .game-board-object {
-	  	float:left;
-	  }
-  	.player-panel {
-	  	float:left;
-	    width: $piece-size*3;
-	    height: $piece-size*6;
-	    margin: $piece-size 30px 8px 30px;
-	    color: $textColorBox;
-  		background-color: $bgColorBox;
-	    border: 3px solid #101010;  		
-		  border-radius: 8px;
-			-o-border-radius: 8px;
-			-moz-border-radius: 8px;
-			-webkit-border-radius: 8px;
-	 		h2.blue, h3.blue, h4.blue, h5.blue { color: blue; }
-	 		h2.red, h3.red, h4.red, h5.red { color: red; }
-	 		h2.yellow, h3.yellow, h4.yellow, h5.yellow { color: yellow; }
-	  }
-	  .board_canvas {
-	    z-index:0;
-	    float:left;
-	    min-width: $piece-size*7;
-	    min-height: $piece-size*6;
-	    background-color:transparent;
-		  .dropspot {
-		    float:left;
-		    width: $piece-size;
-		    height: $piece-size;
-		    background-color: transparent;
-		  }
-		  .board {
-		    clear:left;
-		    position:relative;
-		    z-index:2;
-		    min-width: $piece-size*7;
-		    min-height: $piece-size*6;
-			  .column {
-			  	&:hover {
-		  	 		opacity: 0.58;
-		  	 		-moz-opacity: 0.58;
-				 		filter:Alpha(opacity=58);
-			  	}
-			    float:left;
+  	.input-nickname-screen {
+  		form.nickname {
+  	    width: $piece-size*8;
+  	    height: $piece-size*4;
+  	    margin: $piece-size auto; 
+  			color: $textColorBox;
+    		background-color: $bgColorBox;
+  	    border: 3px solid #101010;  		
+  		  border-radius: 8px;
+  		};
+  	}
+
+  	.lobby-screen {
+  		.games-collection {
+  			width: 300px;
+  			height: 200px;
+  			overflow: auto;
+  			margin: 20px auto;
+  			padding: 8px 20px;
+  			color: $textColorBox;
+    		background-color: $bgColorBox;
+  	    border: 3px solid #101010;  		
+  		  border-radius: 8px;
+  			-o-border-radius: 8px;
+  			-moz-border-radius: 8px;
+  			-webkit-border-radius: 8px;
+  			ul {
+  				list-style: none;
+  				margin-top: 0px;
+  				margin-left: 10px;
+  				padding-left: 1em;
+  				text-indent: -2em;
+  				li {
+  					padding: 4px 0px;
+  				}
+  			}
+  		}
+  	}
+
+    .main-screen {
+    	min-width: $piece-size*17;
+    	min-height: $piece-size*9;
+    	.button-bar {
+    		clear: both;
+    		float: right;
+    		margin: 10px 20px;
+    	};
+  	  .player-panel.player1 {
+  	    clear:left;
+  	  }
+  	  .game-board-object {
+  	  	float:left;
+  	  }
+    	.player-panel {
+  	  	float:left;
+  	    width: $piece-size*3;
+  	    height: $piece-size*6;
+  	    margin: $piece-size 30px 8px 30px;
+  	    color: $textColorBox;
+    		background-color: $bgColorBox;
+  	    border: 3px solid #101010;  		
+  		  border-radius: 8px;
+  			-o-border-radius: 8px;
+  			-moz-border-radius: 8px;
+  			-webkit-border-radius: 8px;
+  	 		h2.blue, h3.blue, h4.blue, h5.blue { color: blue; }
+  	 		h2.red, h3.red, h4.red, h5.red { color: red; }
+  	 		h2.yellow, h3.yellow, h4.yellow, h5.yellow { color: yellow; }
+  	  }
+  	  .board_canvas {
+  	    z-index:0;
+  	    float:left;
+  	    min-width: $piece-size*7;
+  	    min-height: $piece-size*6;
+  	    background-color:transparent;
+  		  .dropspot {
+  		    float:left;
+  		    width: $piece-size;
+  		    height: $piece-size;
   		    background-color: transparent;
-				  .hole {
-				    z-index:3;
-				    width: $piece-size;
-				    height: $piece-size;
-				    background-image:url($appImagesURL+ 'hole.png');
-				    background-size: cover;
-				  }
-			  }  
-		  }
-	  }
-	}
-  .board_sheen { /* overlay the board with a nice sheen */
-    position:absolute;
-    z-index:5;
-    pointer-events:none;  /* not supported on IE or opera. Do not show the board_sheen as an overlay in those browsers */
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-image:url($appImagesURL + 'sheen.png');
-    background-size: cover;
-  }
+  		  }
+  		  .board {
+  		    clear:left;
+  		    position:relative;
+  		    z-index:2;
+  		    min-width: $piece-size*7;
+  		    min-height: $piece-size*6;
+  			  .column {
+  			  	&:hover {
+  		  	 		opacity: 0.58;
+  		  	 		-moz-opacity: 0.58;
+  				 		filter:Alpha(opacity=58);
+  			  	}
+  			    float:left;
+    		    background-color: transparent;
+  				  .hole {
+  				    z-index:3;
+  				    width: $piece-size;
+  				    height: $piece-size;
+  				    background-image:url($appImagesURL+ 'hole.png');
+  				    background-size: cover;
+  				  }
+  			  }  
+  		  }
+  	  }
+  	}
+    .board_sheen { /* overlay the board with a nice sheen */
+      position:absolute;
+      z-index:5;
+      pointer-events:none;  /* not supported on IE or opera. Do not show the board_sheen as an overlay in those browsers */
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-image:url($appImagesURL + 'sheen.png');
+      background-size: cover;
+    }
 
-  .move {
-    float:left;
-    width:$piece-size;
-  } 
-  .chip {
-    position:absolute;
-    background-color: transparent;
-    width:$piece-size;
-    height:$piece-size;
-    background-size: cover;
-  }
-  .chip.inplay {
-      z-index:-1;
-  }
-  .chip.red {
-    background-image:url($appImagesURL+ 'red_chip.png');
-  }
-  .chip.blue {
-    background-image:url($appImagesURL+ 'blue_chip.png');
-  }
-  .chip.black {
-    background-image:url($appImagesURL+ 'black_chip.png');
-  }
+    .move {
+      float:left;
+      width:$piece-size;
+    } 
+    .chip {
+      position:absolute;
+      background-color: transparent;
+      width:$piece-size;
+      height:$piece-size;
+      background-size: cover;
+    }
+    .chip.inplay {
+        z-index:-1;
+    }
+    .chip.red {
+      background-image:url($appImagesURL+ 'red_chip.png');
+    }
+    .chip.blue {
+      background-image:url($appImagesURL+ 'blue_chip.png');
+    }
+    .chip.black {
+      background-image:url($appImagesURL+ 'black_chip.png');
+    }
 
-  .c0 { left: (0 * $piece-size);}
-  .c1 { left: (1 * $piece-size);}
-  .c2 { left: (2 * $piece-size);}
-  .c3 { left: (3 * $piece-size);}
-  .c4 { left: (4 * $piece-size);}
-  .c5 { left: (5 * $piece-size);}
-  .c6 { left: (6 * $piece-size);}
-  .c7 { left: (7 * $piece-size);}
-  .c8 { left: (8 * $piece-size);}
-  .c9 { left: (9 * $piece-size);}
-  .c10 { left: (19 * $piece-size);}
+    .c0 { left: (0 * $piece-size);}
+    .c1 { left: (1 * $piece-size);}
+    .c2 { left: (2 * $piece-size);}
+    .c3 { left: (3 * $piece-size);}
+    .c4 { left: (4 * $piece-size);}
+    .c5 { left: (5 * $piece-size);}
+    .c6 { left: (6 * $piece-size);}
+    .c7 { left: (7 * $piece-size);}
+    .c8 { left: (8 * $piece-size);}
+    .c9 { left: (9 * $piece-size);}
+    .c10 { left: (19 * $piece-size);}
 
-  .r5 { top: (0 * $piece-size);}
-  .r4 { top: (1 * $piece-size);}
-  .r3 { top: (2 * $piece-size);}
-  .r2 { top: (3 * $piece-size);}
-  .r1 { top: (4 * $piece-size);}
-  .r0 { top: (5 * $piece-size);}
+    .r5 { top: (0 * $piece-size);}
+    .r4 { top: (1 * $piece-size);}
+    .r3 { top: (2 * $piece-size);}
+    .r2 { top: (3 * $piece-size);}
+    .r1 { top: (4 * $piece-size);}
+    .r0 { top: (5 * $piece-size);}
+  }
 }
