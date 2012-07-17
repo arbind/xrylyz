@@ -51,8 +51,6 @@
       padding: 10px;
     }
     .rset {
-      float: left;
-      width: 33%;
       list-style-type: none;
       margin: 0;
       padding: 0;
@@ -60,6 +58,8 @@
     }
     .rset li {
       list-style-type: none;
+      display: inline-block;
+      margin: 0 10px 20px;
     }
     .rquestion {
       position: relative;
@@ -72,9 +72,10 @@
       border: 1px solid #888;
       border-radius: 4px;
       box-shadow: 0 1px 0 rgba(255, 255, 255, .3) inset, 0 1px 5px rgba(0, 0, 0, .5);
+      -webkit-transition: top .1s linear;
     }
     .rquestion:hover {
-
+      top: -2px;
     }
     .rcheck {
       display: none;
