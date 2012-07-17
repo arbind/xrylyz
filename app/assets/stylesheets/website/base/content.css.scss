@@ -46,8 +46,8 @@ $bgcolor-content-gradient-to: #283842;
 
   .section {
     width:100%;
-    color: green;
-    background-color: white;
+    color: #002200;
+    background-color: #E0E0E0;
     padding: 15px 20px 20px 20px;
     border: 1px solid #CCCCCC;
     @include roundCornersMixin;

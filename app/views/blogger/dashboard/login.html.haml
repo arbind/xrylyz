@@ -10,7 +10,6 @@
     We are using secure oauth for our sign in, so there's no need to create a new username and password to use your rylyz dashboard.
   = render partial: "member/auth/social_sign_in"
 
-  %hr
   - if not social_presences.empty?
     %div You are already logged in!
     .button= link_to "logout", dashboard_logout_url

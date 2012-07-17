@@ -2,10 +2,15 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
+button {
+  padding: 4px 8px;
+  font: normal normal 14px/28px "Ubuntu", Helvetica, Arial, sans-serif;
+}
 .button, button, a button {
   float:left;
   @include btnMixin;
   @include  transitionsFastMixin;
+  font: normal normal 14px/28px "Ubuntu", Helvetica, Arial, sans-serif;
   &:hover {
     @include btnHoverMixin;
     color: white;
@@ -33,14 +38,14 @@
   }
 }
 .button.delete, button.delete, a button.delete {
-  border-color: #CC0000;
-  background-color: transparent;
   cursor:default;
   &:hover {
-    color: #CC0000;
+    background-color: #AA0000;
   }
   &:active {
     color: #CC0000;
+    background-color: white;
+    border-color: #CC000000;
   }
   &:visited {
     color: #880000;

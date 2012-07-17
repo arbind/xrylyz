@@ -13,4 +13,12 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   # rdio
 end
 
+class SafeFailureEndpoint < OmniAuth::FailureEndpoint
+  # for when user cancels out of twitter:
+  # ref: http://stackoverflow.com/questions/10963286/callback-denied-with-omniauth
+  def call
+    redirect_to_failure
+  end
+end
 
+OmniAuth.config.on_failure = SafeFailureEndpoint

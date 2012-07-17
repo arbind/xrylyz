@@ -1,8 +1,12 @@
-1. Shorten width of footer so links on page can be clicked.
-2. Contain widget css = so it does not affect the host blog
-3. Polish up Dashboard CSS
+1. cancel login via twitter not working.
 4. Add Home Page content
 5. Setup rylyz.com on heroku
+
+x1. Shorten width of footer so links on page can be clicked.
+x2. Contain widget css = so it does not affect the host blog
+x3. Polish up Dashboard CSS
+
+2. delete and unregister buttons should require confirmation.
 
 Email invites to bloggers
 Quiz admin

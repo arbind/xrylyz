@@ -13,35 +13,36 @@
 .toolbar.form {
   display:block;
   margin: 18px 0px 0px 0px;
-  button {
+  button, .button  {
     @include  roundCornersMixin;
+    font: normal normal 14px/28px "Ubuntu", Helvetica, Arial, sans-serif;
   }
 }
 
 .toolbar.fieldset {
   display:block;
   margin: 18px 0px 0px 0px;
-  button {
-    font-size:12px;
-    line-height: 24px;
+  button, .button {
     @include  roundCorners5Mixin;
+    font: normal normal 14px/28px "Ubuntu", Helvetica, Arial, sans-serif;
+    margin-right:8px;
   }
 }
 
 .toolbar.list {
   display:block;
   margin: 0px 0px 0px 0px;
-  button {
+  button, .button  {
     @include  roundCornersMixin;
+    font: normal normal 14px/28px "Ubuntu", Helvetica, Arial, sans-serif;
   }
 }
 
 .toolbar.list-item {
   margin: 0px 0px 0px 0px;
-  button {
-    font-size:12px;
-    line-height: 24px;
+  button, .button  {
     @include  roundCorners5Mixin;
+    font: normal normal 12px/24px "Ubuntu", Helvetica, Arial, sans-serif;
   }
 }
 
