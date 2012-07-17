@@ -98,18 +98,8 @@ Rylyz.Wygyt = {
     launchText.appendTo(launchWrapper);
     launchWrapper.appendTo(launchRylyz);
     launchRylyz.appendTo('body');
-    jQuery('#launchRylyz').hover(function(){jQuery('#launchText, #launchRylyz').addClass('poweredOn')}, function(){jQuery('#launchText, #launchRylyz').removeClass('poweredOn')})
-
-    // var footerConsole = jQuery("<div id='rylyz-footer'/>");
-    // var powerButton = jQuery("<div id='rylyz-power-button'><img src='http://wygyt.rylyz.ws/assets/rylyz/power-btn.png' width='24px' height='24px'/></div>");
-    // powerButton.appendTo(footerConsole)
-    
-    // var powerPanel = jQuery("<span id='rylyz-console-display'>Play</span>");
-    // powerPanel.appendTo(footerConsole)
-
-    // footerConsole.appendTo("body");
-    // // jQuery("#rylyz-footer").css('height', '36px');
-    // jQuery("#rylyz-footer").click(function(){ jQuery(this).addClass('powered-on'); Rylyz.Wygyt.startWygyt(startApp);});
+    jQuery('#launchRylyz').hover(function(ev){jQuery('#launchRylyz').addClass('warmOn')}, function(){jQuery('#launchText, #launchRylyz').removeClass('warmOn')})
+    jQuery("#launchRylyz").click(function(ev){ev.stopPropagation(); jQuery('#launchRylyz').addClass('poweredOn'); Rylyz.Wygyt.startWygyt(startApp);});
 
     Rylyz.Wygyt.showForAll();
   },
@@ -227,7 +217,7 @@ Rylyz.Wygyt = {
       jQuery("#rylyz-wygyt").append(html);
     }
     else {
-      jQuery('#rylyz-footer').removeClass('powered-on');       
+      jQuery('#launchRylyz').removeClass('poweredOn');       
     }
   },
   startWygyt: function(data) {

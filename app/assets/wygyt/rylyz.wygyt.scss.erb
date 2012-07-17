@@ -610,8 +610,19 @@ rylyz {display:none;}
     }
   }
 }
+#launchRylyz.warmOn {
+  width: 80px;
+  color: #cccc33;
+  #launchBtn {
+    background-color: #cccc33;
+  }
+}
 #launchRylyz.poweredOn {
   width: 80px;
+  color: #33cc00;
+  #launchBtn {
+    background-color: #33cc00;
+  }
 }
 
 #launchWrapper {
@@ -631,9 +642,6 @@ rylyz {display:none;}
   -ms-transition: background-color .1s linear;
   transition: background-color .1s linear;
 }
-#launchBtn.poweredOn {
-  background-color: #33cc00;  
-}
 
 #launchText {
   float:left;
@@ -641,6 +649,4 @@ rylyz {display:none;}
   margin: 0px 0px 0px 8px;
   height: 24px;
   line-height: 24px;
-}
-#launchText.poweredOn {
 }

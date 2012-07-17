@@ -43,8 +43,20 @@
     #launchRylyz:hover #launchBtn {
       background-color: #33cc00;
     }
+    #launchRylyz.warmOn {
+      width: 80px;
+      color: #cccc33;
+    }
+
+    #launchRylyz.warmOn #launchBtn {
+      background-color: #cccc33;
+    }
     #launchRylyz.poweredOn {
       width: 80px;
+      color: #33cc00;
+    }
+    #launchRylyz.poweredOn #launchBtn {
+      background-color: #33cc00;
     }
 
     #launchWrapper {
@@ -64,9 +76,6 @@
       -ms-transition: background-color .1s linear;
       transition: background-color .1s linear;
     }
-    #launchBtn.poweredOn {
-      background-color: #33cc00;  
-    }
 
     #launchText {
       float:left;
@@ -75,13 +84,10 @@
       height: 24px;
       line-height: 24px;
     }
-    #launchText.poweredOn {
-    }
-
 
   </style>
 </head>
-<body>
+<body style="height:1000px;">
 
   <div id="launchRylyz">
     <div id="launchWrapper">
@@ -92,9 +98,12 @@
 
   <script type="text/javascript">
     jQuery('#launchRylyz').hover(
-      function(){jQuery('#launchText, #launchRylyz').addClass('poweredOn')},
-      function(){jQuery('#launchText, #launchRylyz').removeClass('poweredOn')}
+      function(){jQuery('#launchRylyz').addClass('warmOn')},
+      function(){jQuery('#launchRylyz').removeClass('warmOn')}
     )
+    jQuery("#launchRylyz").click(function(ev){ev.stopPropagation(); jQuery('#launchRylyz').addClass('poweredOn');});
+    jQuery("body").click(function(ev){jQuery('#launchRylyz').removeClass('poweredOn');});
+
   </script>
 </body>
 </html>
