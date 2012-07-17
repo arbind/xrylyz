@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trivia Launch Button</title>
+  <style>
+    /* general app styles */
+    html {
+      background: #ccc;
+    }
+    #rylyze-app {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      margin: 50px auto 0;
+      background: #fff;
+      font-family: helvetica, arial, sans-serif;
+    }
+    #close-rylyze {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .rheader {
+      background: #000;
+      padding: 10px;
+    }
+    #rapp-name {
+      float: left;
+      color: #aaa;
+      font-size: 14px;
+      margin: 0;
+    }
+    #rscore {
+      margin: 0;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+    }
+    #rapp-container {
+      padding: 40px 20px 20px;
+      overflow: hidden;
+    }
+
+    /* trivia app styles */
+    .rquestions {
+      padding: 10px;
+    }
+    .rset {
+      float: left;
+      width: 33%;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .rset li {
+      list-style-type: none;
+    }
+    .rquestion {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 30px;
+      color: #000;
+      background: url(olympic-icon.png) center center no-repeat, -moz-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -ms-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -o-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, linear-gradient(#111, #000);
+      border: 1px solid #000;
+      border-radius: 4px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .3) inset, 0 1px 5px rgba(0, 0, 0, .5);
+    }
+    .rquestion:hover {
+      background: url(olympic-icon.png) center center no-repeat, -moz-linear-gradient(#333, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#333, #000);
+      background: url(olympic-icon.png) center center no-repeat, -ms-linear-gradient(#333, #000);
+      background: url(olympic-icon.png) center center no-repeat, -o-linear-gradient(#333, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#333, #000);
+    }
+    .rcheck {
+      display: none;
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 24px;
+      height: 24px;
+      background: url(check.png) 0 0 no-repeat;
+    }
+    .rlocked {
+      -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+      filter: alpha(opacity=80);
+      opacity: .8;
+      cursor: default;
+    }
+    .rlocked:hover {
+      background: url(olympic-icon.png) center center no-repeat, -moz-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -ms-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -o-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#111, #000);
+    }
+    .ranswered {
+      cursor: default;
+    }
+    .ranswered:hover {
+      background: url(olympic-icon.png) center center no-repeat, -moz-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -ms-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -o-linear-gradient(#111, #000);
+      background: url(olympic-icon.png) center center no-repeat, -webkit-linear-gradient(#111, #000);
+    }
+    .ranswered .rcheck {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="rylyze-app">
+    <a href="#" id="close-rylyze" title="Close Game">Close</a>
+    <div class="rheader">
+      <h1 id="rapp-name">Trivia</h1>
+      <p id="rscore">Score: 1589</p>
+    </div>
+    <div id="rapp-container" class="trivia">
+      <div class="questions">
+        <ul class="rset">
+          <li><a href="#" class="rquestion runlocked ranswered"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion runlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion runlocked ranswered"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion runlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion runlocked"><span class="rcheck"></span></a></li>
+        </ul>
+        <ul class="rset">
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+        </ul>
+        <ul class="rset">
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+          <li><a href="#" class="rquestion rlocked"><span class="rcheck"></span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
