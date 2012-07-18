@@ -2,9 +2,9 @@
 
 window.DBUG = "<%= Rails.env %>" != "production";
 var  wygytCSS = 'rylyz.wygyt';
-// var startApp = 'wygyt';
-var startApp = 'quiz';
-  
+var startApp = 'wygyt';
+// var startApp = 'quiz';
+
 var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
 
@@ -62,7 +62,7 @@ Rylyz.Wygyt = {
   },
   setupAsButton: function() {
     var html = Rylyz.Wygyt.buttonHTML("spark", "Loading...", "jQuery(this).html('Loading...!')");
-    jQuery("#rylyz-wygyt .button").remove();    
+    jQuery("#rylyz-wygyt .button").remove();
     jQuery("#rylyz-wygyt").append(html);
     Rylyz.Wygyt.setupForAll();
   },
@@ -80,12 +80,12 @@ Rylyz.Wygyt = {
   },
   show: function() {
     if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsButton();
-    else Rylyz.Wygyt.showAsFooter(); //assume ('footer' == Rylyz.Wygyt.displayFormat) 
+    else Rylyz.Wygyt.showAsFooter(); //assume ('footer' == Rylyz.Wygyt.displayFormat)
   },
   showAsButton: function() {
-    var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
+    var html = Rylyz.Wygyt.buttonHTML("play", "Play",
       "Rylyz.Wygyt.startWygyt('"+startApp+"')", 100, "Starting...");
-    jQuery("#rylyz-wygyt .button").remove();    
+    jQuery("#rylyz-wygyt .button").remove();
     jQuery("#rylyz-wygyt").append(html);
     Rylyz.Wygyt.showForAll();
   },
@@ -120,7 +120,7 @@ Rylyz.Wygyt = {
       // now we can call rylyz framework functions like Rylyz.wid();
       Rylyz.Wygyt.wygytSource.wid = Rylyz.Wygyt.wygytSource.wid || Rylyz.materializeUID();
       Rylyz.Wygyt.wygytSource.url = document.URL;
-      callbackOnComplete(); 
+      callbackOnComplete();
     };
     var onFail = function(jqxhr, settings, exception) {
       console.error("o-- Cycle:Failed to load javascript!");
@@ -137,7 +137,7 @@ Rylyz.Wygyt = {
       // now we can call framework functions like Rylyz.wid();
       Rylyz.Wygyt.wygytSource.wid = Rylyz.Wygyt.wygytSource.wid || Rylyz.materializeUID();
       Rylyz.Wygyt.wygytSource.url = document.URL;
-      callbackOnComplete(); 
+      callbackOnComplete();
     });
     */
   },
@@ -211,13 +211,13 @@ Rylyz.Wygyt = {
     canvas.fadeOut(288);
 
     if ('button' == Rylyz.Wygyt.displayFormat) {
-      var html = Rylyz.Wygyt.buttonHTML("play", "Play", 
+      var html = Rylyz.Wygyt.buttonHTML("play", "Play",
           "Rylyz.Wygyt.startWygyt('"+startApp+"')", 100, "Starting...");
-      jQuery("#rylyz-wygyt .button").remove();    
+      jQuery("#rylyz-wygyt .button").remove();
       jQuery("#rylyz-wygyt").append(html);
     }
     else {
-      jQuery('#launchRylyz').removeClass('poweredOn');       
+      jQuery('#launchRylyz').removeClass('poweredOn');
     }
   },
   startWygyt: function(data) {
@@ -234,7 +234,7 @@ Rylyz.Wygyt = {
     var app = Rylyz.lookupApp(app_name);
     if (app) {
       Rylyz.showApp(app_name);
-      return; 
+      return;
     }
     // else app has not yet been loaded, so go get it
 
@@ -267,7 +267,7 @@ Rylyz.Wygyt = {
     if (undefined == scriptNames) return;
     if (0 == scriptNames.length) { // all scripts are loaded, call the callback
       if (callbackOnComplete) callbackOnComplete();
-      return; 
+      return;
     }
     jQuery.getScript(endpoint+"/"+scriptNames.shift(),
       function(){
@@ -318,7 +318,7 @@ window.Rylyz.Pusher = {
     if ('production' == Rylyz.env) {
       // Flash fallback logging - don't include this in production
       WEB_SOCKET_DEBUG = false;
-      Pusher.log = function(message) {};    
+      Pusher.log = function(message) {};
     }
     else {
       WEB_SOCKET_DEBUG = true;
@@ -348,8 +348,8 @@ window.Rylyz.Pusher = {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
       //jQuery("#rylyz-wygyt").append(display);
-      // append template to end of body, so id selectors # will find the first element from app, not template 
-      jQuery("body").append(display);  
+      // append template to end of body, so id selectors # will find the first element from app, not template
+      jQuery("body").append(display);
       Rylyz.loadAppDisplays(appName);
       Rylyz.showApp(appName);
     });
@@ -379,7 +379,7 @@ window.Rylyz.Pusher = {
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "fire-event", function(ev) {
         if (DBUG) console.log("firing event for ch: " + launchChannel);
         Rylyz.event.fireEvent(ev);
-      });      
+      });
       Rylyz.Pusher.onPrivateChannelEvent(launchChannel, "server-side-exception", function(data) {
         Rylyz.Service.reportServerSideException(launchChannel, data)
         var exception = data["exception"];
@@ -557,7 +557,7 @@ function localizeJQuery() {
       script_tag.onreadystatechange = function () { // For old versions of IE
         if (this.readyState == 'complete' || this.readyState == 'loaded') restoreJQuery();
       };
-    } 
+    }
     else { script_tag.onload = restoreJQuery; }
     (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
   } else {
