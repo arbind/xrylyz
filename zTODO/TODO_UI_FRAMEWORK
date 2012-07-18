@@ -1,3 +1,14 @@
+Rendering Logic
+  - remove containing divs (render().el) for objects, screens, apps and collections
+  - also remove collection tag when rendering items into their spot
+  - verify that everything re-renders properly when navigating away and back
+  - consider making a copy of the template if necessary, when rendering (since placement divs may be removed after 1st render)
+  - effectively juggle these techniques when rendering:
+    - parent.append(render().el)
+    - parent.append(render().el.contents())
+    - parent.replaceWith(parent.contents())
+
+
 Auto-launch app
   - invite friends with autolaunch url
   - if url contains someblog.com?startRylyz=appName
