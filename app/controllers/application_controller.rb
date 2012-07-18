@@ -3,7 +3,14 @@ class ApplicationController < ActionController::Base
   helper_method :current_blogger, :blogger_signed_in?
   helper_method :current_super_user, :super_user_signed_in?
 
+  before_filter :check_for_dot_com_domain
+
+
 protected
+
+  def check_for_dot_com_domain
+    redirect to "http://rylyz.com" if player_host.include? "rylyz.ws"
+  end
 
   def require_member_to_be_signed_in
     redirect_to :dashboard_login, :notice=>"Please sign in first" if not member_signed_in?
