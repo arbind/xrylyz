@@ -7,7 +7,7 @@
       Rylyz.timer.cancel('hide-options');
       Rylyz.timer.cancel('score-timer');
       quizapp.gamePhase = "prompted";
-      quizapp.hintGiven = false;    
+      quizapp.hintGiven = false;
     }
     quizapp.startPhasePromptQuestion = function(info) {
       console.log("----starting Question! " + info)
@@ -55,7 +55,7 @@
       console.log ("clicking with phase: " +phase)
       if ("prompted" == phase)  Rylyz.timer.stop('hide-options')
       if ( "finished" == phase) quizapp.goBackToGame();
-    } 
+    }
 
     quizapp.choose = function(num, question_id) {
       if ("thinking" != quizapp.gamePhase) return;
@@ -90,7 +90,7 @@
     Rylyz.timer.register('hide-options', quizapp.tickHideOptionsTimer, 3500, false, quizapp.startHideOptionsTimer, quizapp.stopHideOptionsTimer);
 
     // scoreing timer
-    quizapp.timeOver = 20; // seconds before time is over for player to choose answer 
+    quizapp.timeOver = 20; // seconds before time is over for player to choose answer
     quizapp.tickPeriod = 100; //scoring timer interval in milliseconds
 
     quizapp.startScoreTimer = function() {
@@ -100,7 +100,7 @@
     }
     quizapp.tickScoreTimer = function() {
       quizapp.ticks += 1;
-      var secondsSoFar = quizapp.ticks / (1000/quizapp.tickPeriod); 
+      var secondsSoFar = quizapp.ticks / (1000/quizapp.tickPeriod);
       var timeOverTicks = (1000/quizapp.tickPeriod) * quizapp.timeOver; // ticks till time is over
       var percentComplete = 100*(timeOverTicks - quizapp.ticks)/(timeOverTicks);
       percentComplete = Math.floor(percentComplete);
@@ -143,9 +143,9 @@
     // }
 
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
-    %h1 Quiz APP
     %screen{:name=>"input-nickname"}
     %screen{:name=>"game"}
+    %screen{:name=>"game-old"}
     %screen{:name=>"question"}
     %screen{:name=>"leaderboard"}
     %screen{:name=>"submit-question"}
@@ -161,7 +161,87 @@
         .field
           %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
 
+
   %screen{:name=>"game"}
+    #quiz-game
+      #close-rylyz
+        Close
+      .rheader
+        #rapp-name
+          Trivia
+        %p#rscore
+          100
+      #rapp-container.trivia
+        .questions
+          %ul.rset
+            ! [! _.each([{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}], function(question) { !]
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            ! [! }); !]
+
+          %ul.rset
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+          %ul.rset
+            %li
+              %a.rquestion.runlocked
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+            %li
+              %a.rquestion.runlocked.ranswered
+                %span.rcheck
+
+
+  %collection{:name=>"level1-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+    %ul.rset
+      %collection
+
+  %collection{:name=>"level2-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+    %ul.rset
+      %collection
+
+  %collection{:name=>"level3-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+    %ul.rset
+      %collection
+
+  %item{:name=>"rquestion-item"}
+    ! [! if (answered) { !]
+    %li
+      %a.rquestion.runlocked.ranswered
+        %span.rcheck
+    ! [! } else { !]
+    %li
+      %a.rquestion.runlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'id'}"}
+        %span.rcheck
+    ! [! } !]
+
+
+
+
+
+  %screen{:name=>"game-old"}
     .game-board
       .level-1
         %collection{:name=>"level1-questions"}

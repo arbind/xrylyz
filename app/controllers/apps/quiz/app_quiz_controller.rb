@@ -7,7 +7,20 @@ class AppQuizController < RylyzAppController
   def self.on_load_data(visitor, tokens)
   end
 
-  class ScreenGameController < RylyzScreenController
+  class ScreenGameOldController < RylyzScreenController
+    def self.on_load_data(visitor, tokens)
+      cap = capsule
+      wid = tokens['wid']
+
+      game = AppQuizController.daily_game(visitor, wid)
+      cap.show_data('level1-rset', game.level1_questions_as_card)
+      # cap.show_data('level2-questions', game.level2_questions_as_card)
+      # cap.show_data('level3-questions', game.level3_questions_as_card)
+      cap.fire2player(wid)
+    end
+  end
+
+  class ScreenGameOldController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
       cap = capsule
       wid = tokens['wid']
