@@ -1,3 +1,4 @@
 *** Performance
   - write our own socket service
+  - Manage Socket Connection (see reliability for more details)
 

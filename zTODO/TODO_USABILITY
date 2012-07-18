@@ -1,5 +1,6 @@
-o reset each display on first render
-  (otherwise reloading a screen shows data from last render - since the screen was cached)
-  When playing a game and leaving, then starting a new game.
-  the displays show the end of the last game played.
-  when showing a display, be have a reset data function prior to rendering
+USABILITY
+  o reset each display on first render
+    (otherwise reloading a screen shows data from last render - since the screen was cached)
+    When playing a game and leaving, then starting a new game.
+    the displays show the end of the last game played.
+    when showing a display, be have a reset data function prior to rendering

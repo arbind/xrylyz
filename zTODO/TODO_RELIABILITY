@@ -3,6 +3,9 @@
   - Channel Exception
   - Add Thread Management
   - Add Session Management
+  - Manage Socket Connection
+    - Do not open connection on every page impression
+    - open connection only when user opens widget
   - add client-side retry for lost messages
     add unique message id that increments with every send
     add a try# field to every message that defaults to 1
