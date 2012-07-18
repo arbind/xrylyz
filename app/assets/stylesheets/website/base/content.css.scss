@@ -21,6 +21,18 @@ $bgcolor-content-gradient-to: #283842;
   background:         linear-gradient(top, $bgcolor-content-gradient-from, $bgcolor-content-gradient-to);  /* not yet supported in 2012! */
 
 
+  .section {
+    width:95%;
+    color: #002200;
+    background-color: #E0E0E0;
+    padding: 15px 20px 20px 20px;
+    border: 1px solid #CCCCCC;
+    @include roundCornersMixin;
+    margin: 0px 0px 12px 0px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', helvetica, arial, sans-serif    
+  }
+
   .left {
     float: left;
     margin-right: 40px;
@@ -35,6 +47,9 @@ $bgcolor-content-gradient-to: #283842;
     width:600px;
     min-height:400px;
     margin-right: 40px;
+    .section {
+      width:100%;
+    }
   }
 
   .right-column {
@@ -42,17 +57,9 @@ $bgcolor-content-gradient-to: #283842;
     float: right;
     border: 1px solid transparent;
     width: 215px;
-  }
-
-  .section {
-    width:100%;
-    color: #002200;
-    background-color: #E0E0E0;
-    padding: 15px 20px 20px 20px;
-    border: 1px solid #CCCCCC;
-    @include roundCornersMixin;
-    margin: 0px 0px 12px 0px;
-    overflow: hidden;
+    .section {
+      width:100%;
+    }
   }
 
 }
