@@ -269,7 +269,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   minimize: function() {
     this.remove();
   },
-  renderInto: function(elParent) {
+  renderInto: function(elParent, replaceParentWithContent) {
     if (!elParent || !elParent.length) {
       var msg = "Parent Element does not exist!";
       if (elParent && elParent.selector) msg +="\nSelector: " + elParent.selector;
@@ -280,7 +280,20 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     }
 
     this.triggerDataLoadStart(this.settings);
-    elParent.append(this.render().el);
+    // elParent.append(this.render().el); 
+
+  var cntnt = this.render().el;
+  if ('object' == this.dataType)
+    cntnt = $(cntnt).contents();
+
+    if (undefined === replaceParentWithContent) replaceParentWithContent = false;
+    if (replaceParentWithContent)
+      elParent.replaceWith(cntnt);
+    else
+      elParent.append(cntnt);
+
+
+
     this.preparePrompts();
   },
   render: function() {

@@ -61,10 +61,22 @@ window.Rylyz.CollectionDisplay = Rylyz.ObjectDisplay.extend({
     var itemTemplateName = this.itemTemplateName;
     var idx=0;
     var parentDisplay = this;
+    // this.collection.each (function(model) {
+    //   objectDisplay = new displayConstructor({name:itemName+idx, templateName:itemTemplateName, model:model, isCollectionItem:true, app: thisApp, screen: thisScreen, parent:parentDisplay})
+    //   $listSelector.append(objectDisplay.render().el);
+    //   idx++;
+    // });
+    var itemContainer;
+    var itemContent;
     this.collection.each (function(model) {
       objectDisplay = new displayConstructor({name:itemName+idx, templateName:itemTemplateName, model:model, isCollectionItem:true, app: thisApp, screen: thisScreen, parent:parentDisplay})
-      $listSelector.append(objectDisplay.render().el);
+      itemContainer = objectDisplay.render().el;
+      $listSelector.append($(itemContainer).contents());
       idx++;
     });
+    $listSelector.replaceWith($listSelector.contents());
   }
 });
+
+
+
