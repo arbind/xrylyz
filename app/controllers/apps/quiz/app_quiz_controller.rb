@@ -20,7 +20,7 @@ class AppQuizController < RylyzAppController
     end
   end
 
-  class ScreenGameOldController < RylyzScreenController
+  class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
       cap = capsule
       wid = tokens['wid']

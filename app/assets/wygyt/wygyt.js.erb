@@ -2,8 +2,8 @@
 
 window.DBUG = "<%= Rails.env %>" != "production";
 var  wygytCSS = 'rylyz.wygyt';
-// var startApp = 'wygyt';
-var startApp = 'quiz';
+var startApp = 'wygyt';
+// var startApp = 'quiz';
 
 var jQuery; // Localized jQuery variable
 var $; // Localized jQuery variable
@@ -55,7 +55,9 @@ Rylyz.Wygyt = {
         wygyt.html('');
         wygyt.css('font-size', '14px');
       }
-      Rylyz.Wygyt.displayFormat = jQuery("#rylyz-wygyt").attr("displayFormat") || 'footer';
+      wygyt = jQuery("#rylyz-wygyt")
+      Rylyz.Wygyt.displayFormat = wygyt.attr("displayFormat") || 'footer';
+      startApp = wygyt.attr("startApp") ||  startApp;
       if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.setupAsButton();
       else Rylyz.Wygyt.setupAsFooter(); //assume  ('footer' == Rylyz.Wygyt.displayFormat)
     });

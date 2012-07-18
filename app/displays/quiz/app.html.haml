@@ -122,25 +122,6 @@
     }
     Rylyz.timer.register('score-timer', quizapp.tickScoreTimer, quizapp.tickPeriod, true, quizapp.startScoreTimer, quizapp.stopScoreTimer);
 
-    // var intervalTimer;
-    // var stopProgress;
-
-    // function stopProgress() {
-    //   ////clearInterval(intervalTimer)
-    //   Rylyz.timer.stop('score-timer')
-    //   noMoreAnswering();
-    // }
-    // function startProgress() {
-    //   var progress = 0;
-    //   var interval = 15;
-    //   var f = function() {
-    //     progress += 1;
-    //     $('.progress').css('width', ''+ (100-progress) + '%')
-    //     if (99 < progress) stopProgress();
-    //   }
-    //   intervalTimer = setInterval(f, interval*1000//100);
-    //   $('#choices').hide();
-    // }
 
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
     %screen{:name=>"input-nickname"}
@@ -164,130 +145,58 @@
 
   %screen{:name=>"game"}
     #quiz-game
-      #close-rylyz
-        Close
-      .rheader
-        #rapp-name
-          Trivia
-        %p#rscore
-          100
+      %object{:name=>"header"}
       #rapp-container.trivia
         .questions
-          %ul.rset
-            ! [! _.each([{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}], function(question) { !]
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            ! [! }); !]
+          %collection{:name=>"level1-questions"}
+          %collection{:name=>"level2-questions"}
+          %collection{:name=>"level3-questions"}
 
-          %ul.rset
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-          %ul.rset
-            %li
-              %a.rquestion.runlocked
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
-            %li
-              %a.rquestion.runlocked.ranswered
-                %span.rcheck
+  %object{:name=>"header"}
+    #close-rylyz
+      Close
+    .rheader
+      #rapp-name
+        Trivia
+      %p#rscore
+        100
 
-
-  %collection{:name=>"level1-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %ul.rset
       %collection
 
-  %collection{:name=>"level2-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %ul.rset
       %collection
 
-  %collection{:name=>"level3-rset", :item=>"rquestion-item", "data-defaults"=>"[{category:1,answered:false},{category:2,answered:false},{category:3,answered:true},{category:4,answered:true},{category:5,answered:true}]"}
+  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
     %ul.rset
       %collection
 
-  %item{:name=>"rquestion-item"}
+  %item{:name=>"question-item"}
     ! [! if (answered) { !]
     %li
       %a.rquestion.runlocked.ranswered
         %span.rcheck
     ! [! } else { !]
     %li
-      %a.rquestion.runlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'id'}"}
+      %a.rquestion.runlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
         %span.rcheck
     ! [! } !]
 
 
-
-
-
-  %screen{:name=>"game-old"}
-    .game-board
-      .level-1
-        %collection{:name=>"level1-questions"}
-      .level-2
-        %collection{:name=>"level2-questions"}
-      .level-3
-        %collection{:name=>"level3-questions"}
-    .button-bar
-      .button{"nav-onClick"=>"input-nickname"} Enter Name
-      .button{"nav-onClick"=>"question"} Question
-      .button{"nav-onClick"=>"leaderboard"} Leaderboard
-      .button{"nav-onClick"=>"submit-question"} Submit Question4
-
-  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %h2 level1
-    .level
-      %collection
-
-  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %h2 level2
-    .level
-      %collection
-
-  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %h2 level3
-    .level
-      %collection
-
-  %item{:name=>"question-item"}
-    ! [! if (answered) { !]
-    .question-card.answered
-      %br [[category]] - [[answered]]
-    ! [! } else { !]
-    .question-card.unanswered{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
-      %br [[category]] - [[answered]]
-    ! [! } !]
-
   %screen{:name=>"question"}
-    .question-canvas{:onclick => "quizapp.clickQuestionScreen();"}
-      .about
-        About
-      #progress-bar
-        .progress
-      .score
-        99
-      %object{:name=>"prompt"}
+    #quiz-game
+      %object{:name=>"header"}
+      .question-canvas{:onclick => "quizapp.clickQuestionScreen();"}
+        .about
+          About
+        #progress-bar
+          .progress
+        .score
+          99
+        %object{:name=>"prompt"}
+
 
   %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
     #trivia
