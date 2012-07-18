@@ -1,8 +1,10 @@
 class Website::HomePageController < ApplicationController
   include ApplicationHelper
 
+  before_filter :check_for_dot_com_domain
+
   layout "home_page", :except => :signup
-  
+
   def index
   end
 
@@ -15,7 +17,7 @@ class Website::HomePageController < ApplicationController
     redirect_to root_path
   end
 
-  def signup    
+  def signup
     render layout: "plain"
   end
 
