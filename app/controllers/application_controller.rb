@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 protected
 
   def check_for_dot_com_domain
-    redirect to "http://rylyz.com" if player_host.include? "rylyz.ws"
+    redirect to "http://rylyz.com" if ENV['RYLYZ_PLAYER_HOST'].downcase.include? "wygyt."
   end
 
   def require_member_to_be_signed_in
