@@ -6,11 +6,11 @@ class ApplicationController < ActionController::Base
   before_filter :check_for_dot_com_domain
 
 
-  def check_for_dot_com_domain
-    redirect to "http://rylyz.com" if ENV['RYLYZ_PLAYER_HOST'].downcase.include? "wygyt."
-  end
-
 protected
+
+  def check_for_dot_com_domain
+    redirect_to "http://rylyz.com" if ENV['RYLYZ_PLAYER_HOST'].downcase.include? "wygyt."
+  end
 
   def require_member_to_be_signed_in
     redirect_to :dashboard_login, :notice=>"Please sign in first" if not member_signed_in?
