@@ -1,0 +1,37 @@
+  leaderboard
+  email
+  share url interface to auto-open quiz
+  add auto-open functionality when possible
+  
+    <div>
+      <h2>Enter name</h2>
+      nicknmae
+      country / location
+    </div>
+    <div>
+      <h2>after quiz</h2>
+      <div>score</div>
+      <div>time - on each q? total time?</div>
+      <div>rank - next iteration</div>
+      <div> </div>
+    </div>
+
+    <div>
+      <h2>Rating</h2>
+      <div>Rate this quiz </div>
+      <div>Awesome Time</div>
+      <div>Great use of my time</div>
+      <div>Good one</div>
+      <div>Not bad</div>  
+    </div>
+    <div>
+      <h2></h2>
+
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>  
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
