@@ -1,5 +1,6 @@
 broken:
 o. working game: question screen not loading data
+o. heroku: setup ping service to keep from idling: rylyz.com / wygyt.rylyz.ws
 
 customer relationship:
 o. postage app
