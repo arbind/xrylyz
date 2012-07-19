@@ -104,21 +104,21 @@
     padding: 20px;
   }
   
-  #welcome {
+  #ryWelcome {
     padding-bottom: 150px;
     background: url(olympic-logo.png) center bottom no-repeat;
   }
-  #welcome h1 {
+  #ryWelcome h1 {
     font-size: 60px;
     color: #666;
     margin-bottom: .5em;
   }
-  #welcome h2 {
+  #ryWelcome h2 {
     font-size: 24px;
     font-weight: normal;
     margin-bottom: 1em;
   }
-  #welcome p {
+  #ryWelcome p {
     font-size: 24px;
     font-weight: bold;
   }
@@ -139,32 +139,20 @@
   text-align: center;
 }
   
-#ryTriviaSplash {
-  padding-bottom: 150px;
-  background: url(olympic-logo.png) center bottom no-repeat;
-}
-#ryTriviaSplash h1 {
-  font-size: 60px;
-  color: #666;
-  margin-bottom: .5em;
-}
-#ryTriviaSplash h2 {
-  font-size: 24px;
-  font-weight: normal;
-  margin-bottom: 1em;
-}
-#ryTriviaSplash p {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-
+/* line 6, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryQuizGame {
   position: relative;
   height: 600px;
   background: #fff;
   font-family: helvetica, arial, sans-serif;
 }
+
+#ryTriviaSplash {
+  padding-bottom: 150px;
+  background: url(olympic-logo.png) center bottom no-repeat;
+}
+
+/* line 12, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryCloseQuiz {
   position: absolute;
   top: 10px;
@@ -174,10 +162,12 @@
   font-size: 14px;
   font-weight: bold;
 }
+/* line 21, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryHeader {
   background: #000;
   padding: 10px;
 }
+/* line 25, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryAppName {
   float: left;
   color: #aaa;
@@ -185,6 +175,7 @@
   font-weight: bold;
   margin: 0;
 }
+/* line 32, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryScore {
   margin: 0;
   font-size: 14px;
@@ -192,24 +183,29 @@
   text-align: center;
   color: #fff;
 }
+/* line 39, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryAppContainer {
   padding: 40px 20px 20px;
   overflow: hidden;
 }
+/* line 45, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryQuestions {
   padding: 10px;
 }
+/* line 48, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySet {
   list-style-type: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
+/* line 54, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySet li {
   list-style-type: none;
   display: inline-block;
   margin: 0 10px 20px;
 }
+/* line 59, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryQuestion {
   position: relative;
   display: inline-block;
@@ -217,15 +213,17 @@
   height: 60px;
   margin-bottom: 30px;
   color: #000;
-  background: white url(http://wygyt.rylyz.ws/assets/rylyz/olympic-icon.png) center center no-repeat;
+  background: white url(olympic-icon.png) center center no-repeat;
   border: 1px solid #888;
   border-radius: 4px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 5px rgba(0, 0, 0, 0.5);
   -webkit-transition: top .1s linear;
 }
+/* line 72, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryQuestion:hover {
   top: -2px;
 }
+/* line 75, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryCheck {
   display: none;
   position: absolute;
@@ -233,24 +231,27 @@
   right: -12px;
   width: 24px;
   height: 24px;
-  background: url(http://wygyt.rylyz.ws/assets/rylyz/check.png) 0 0 no-repeat;
+  background: url(check.png) 0 0 no-repeat;
 }
+/* line 84, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryLocked {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter: alpha(opacity=80);
   opacity: .8;
   cursor: default;
 }
+/* line 93, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryAnswered {
   cursor: default;
 }
+/* line 99, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryAnswered .ryCheck {
   display: block;
 }
+/* line 105, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryQuestionReflection {
-  height: 25px;
-  border: 1px solid black;
 }
+/* line 110, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryProgressBar {
   left: 0;
   right: 0;
@@ -258,6 +259,7 @@
   border: 2px solid #555555;
   height: 18px;
 }
+/* line 116, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryProgressBar .ryProgress {
   width: 100%;
   background-color: #AAFFAA;
@@ -268,15 +270,26 @@
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
+/* line 124, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTrivia {
+  /*
+  .ryHidden {
+    display: none;
+  }
+  */
+}
+/* line 125, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia h1, #ryTrivia h2, #ryTrivia h3 {
   margin: 0;
   padding: 0;
   font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", sans-serif;
   font-weight: 600;
 }
+/* line 131, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia a {
   color: midnightblue;
 }
+/* line 134, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia h1 {
   font-size: 32px;
   line-height: 1.5;
@@ -288,28 +301,25 @@
   text-shadow: 0 2px 3px black;
   border-radius: 4px 4px 0 0;
 }
+/* line 146, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia h2 {
   margin-bottom: 1em;
   font-size: 16px;
   text-transform: uppercase;
 }
-/* line 150, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTrivia .ryHidden {
-  display: none;
-}
-/* line 153, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 156, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia .ryInner {
   float: left;
   width: 100%;
   box-sizing: border-box;
   padding: 0 20px 20px;
 }
-/* line 161, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 164, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTriviaPicks {
   width: 375px;
   float: left;
 }
-/* line 166, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 169, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTriviaResults {
   width: 361px;
   padding-left: 20px;
@@ -317,39 +327,22 @@
   text-align: center;
   float: left;
 }
-/* line 172, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 175, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTriviaResults #ryStatus {
   font-size: 36px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   text-transform: uppercase;
 }
-/* line 176, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 179, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTriviaResults #ryStatus.ryCorrect {
   color: green;
 }
-/* line 181, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTriviaResults .correct #status,
-#ryTriviaResults .winner #status {
-  color: green;
-}
 /* line 184, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTriviaResults .wrong #status {
+#ryTriviaResults .ryCorrect #ryStatus,
+#ryTriviaResults .ryWrong #ryStatus {
   color: #cc0000;
 }
-/* line 188, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTriviaResults .winner-object p .name, #ryTriviaResults .winner-object p .url {
-  display: block;
-  margin-bottom: .5em;
-}
-/* line 192, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTriviaResults .winner-object p .url a {
-  display: block;
-  width: 361px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-/* line 202, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 189, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryChoice {
   position: relative;
   padding: 1em;
@@ -358,44 +351,72 @@
   cursor: pointer;
   -webkit-transition: all .2s ease;
 }
-/* line 209, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 196, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryChoice:hover {
   background: LightYellow;
 }
-/* line 213, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 212, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoice.ryCorrect {
+  color: lightYellow;
+  background: green;
+}
+/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoice.ryCorrect:hover {
+  background: green;
+}
+
+.ryChoice.ryWrong {
+  color: #FAA;
+  background: transparent;
+  opacity: 0.55;
+  -moz-opacity: 0.55;
+  filter:alpha(opacity=55);  
+}
+/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoice.ryWrong:hover {
+  background: transparent;
+}
+
+/* line 200, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySelected {
   background: #222;
-  color: white;
+  color: purple;
   font-weight: bold;
   border-color: transparent;
   -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px black;
 }
-/* line 221, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+/* line 208, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySelected:hover {
   background: #222;
 }
-/* line 225, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-.ryRightAnswer {
+
+.rySelected.ryCorrect {
+  color: purple;
+  border-color: purple;
   background: green;
+}
+/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.rySelected.ryCorrect:hover {
+  background: green;
+}
+
+.rySelected.ryWrong {
+  background: red;
   color: white;
-  font-weight: bold;
-  border-color: transparent;
-  -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
+  border-color: purple;
 }
-/* line 232, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-.ryRightAnswer:hover {
-  background: green;
+/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.rySelected.ryWrong:hover {
+  background: red;
 }
-/* line 238, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+
+
+/* line 225, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryChoices .ryAnswers {
   visibility: hidden;
 }
-
-
-
 
   </style>
 
@@ -646,9 +667,53 @@
 
         <!-- APP Content -->
       <div class="quiz-app">
-        <h1>
-          Placeholder
-        </h1>
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 100%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>
+                    The five colors of the rings on the Olympic Flag are blue, yellow, black, red, and green. Three rings are across the top, and two are along the bottom. Which two are on the bottom?
+                  </h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: hidden; ">
+                          <div class="ryChoice ryAnswer1" onclick="quizapp.choose(1, '5007c4cdcaff508a6d0002db')">black and white</div>
+                          <div class="ryChoice ryAnswer2" onclick="quizapp.choose(2, '5007c4cdcaff508a6d0002db')">green and orange</div>
+                          <div class="ryChoice ryAnswer3" onclick="quizapp.choose(3, '5007c4cdcaff508a6d0002db')">yellow and green</div>
+                          <div class="ryChoice ryAnswer4" onclick="quizapp.choose(4, '5007c4cdcaff508a6d0002db')">red and blue</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="ryWrong">
+                            <h2 id="ryStatus"></h2>
+                            <div class="ryQuestionReflection"></div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
       </div>
         <!-- APP Content -->
 
@@ -672,10 +737,124 @@
 
         <!-- APP Content -->
       <div class="quiz-app">
-        <h1>
-          Placeholder
-        </h1>
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 28%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>
+                    The five colors of the rings on the Olympic Flag are blue, yellow, black, red, and green. Three rings are across the top, and two are along the bottom. Which two are on the bottom?
+                  </h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: visible; ">
+                          <div class="ryChoice ryAnswer1" onclick="quizapp.choose(1, '5007c4cdcaff508a6d0002db')">black and white</div>
+                          <div class="ryChoice ryAnswer2" onclick="quizapp.choose(2, '5007c4cdcaff508a6d0002db')">green and orange</div>
+                          <div class="ryChoice ryAnswer3" onclick="quizapp.choose(3, '5007c4cdcaff508a6d0002db')">yellow and green</div>
+                          <div class="ryChoice ryAnswer4" onclick="quizapp.choose(4, '5007c4cdcaff508a6d0002db')">red and blue</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="ryWrong">
+                            <h2 id="ryStatus"></h2>
+                            <div class="ryQuestionReflection"></div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
       </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Selection</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 95%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>
+                    How many of Carl Lewis' Olympic gold medals were won in long jump competitions?
+                  </h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: visible; ">
+                          <div class="ryChoice ryAnswer1" onclick="quizapp.choose(1, '5007cae3caff508a6d000306')">One</div>
+                          <div class="ryChoice ryAnswer2" onclick="quizapp.choose(2, '5007cae3caff508a6d000306')">Two</div>
+                          <div class="ryChoice ryAnswer3 rySelected" onclick="quizapp.choose(3, '5007cae3caff508a6d000306')">Three</div>
+                          <div class="ryChoice ryAnswer4" onclick="quizapp.choose(4, '5007cae3caff508a6d000306')">Four</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="">
+                            <h2 id="ryStatus"></h2>
+                            <div class="ryQuestionReflection"></div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>    
         <!-- APP Content -->
 
 
@@ -698,10 +877,56 @@
 
         <!-- APP Content -->
       <div class="quiz-app">
-        <h1>
-          Placeholder
-        </h1>
-      </div>
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 95%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>
+                    How many of Carl Lewis' Olympic gold medals were won in long jump competitions?
+                  </h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: visible; ">
+                          <div class="ryChoice ryAnswer1 ryWrong" onclick="quizapp.choose(1, '5007cae3caff508a6d000306')">One</div>
+                          <div class="ryChoice ryAnswer2 ryWrong" onclick="quizapp.choose(2, '5007cae3caff508a6d000306')">Two</div>
+                          <div class="ryChoice ryAnswer3 ryCorrect rySelected " onclick="quizapp.choose(3, '5007cae3caff508a6d000306')">Three</div>
+                          <div class="ryChoice ryAnswer4 ryWrong" onclick="quizapp.choose(4, '5007cae3caff508a6d000306')">Four</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="ryCorrect">
+                            <h2 id="ryStatus">That's Correct!</h2>
+                            <div class="ryQuestionReflection">
+                              Some cool fact about this question and maybe some information about a few of the wrong options together with an interesting tidbit to wrap it all up.
+                            </div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>    
         <!-- APP Content -->
 
 
@@ -724,10 +949,54 @@
 
         <!-- APP Content -->
       <div class="quiz-app">
-        <h1>
-          Placeholder
-        </h1>
-      </div>
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 72%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>Which of these was not one of the original Olympic sports?</h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: visible; ">
+                          <div class="ryChoice ryAnswer1 ryCorrect" onclick="quizapp.choose(1, '5007ca66caff508a6d0002f0')">Shotput</div>
+                          <div class="ryChoice ryAnswer2 ryWrong" onclick="quizapp.choose(2, '5007ca66caff508a6d0002f0')">Wrestling</div>
+                          <div class="ryChoice ryAnswer3 ryWrong rySelected ryWrong" onclick="quizapp.choose(3, '5007ca66caff508a6d0002f0')">Javelin Throw</div>
+                          <div class="ryChoice ryAnswer4 ryWrong" onclick="quizapp.choose(4, '5007ca66caff508a6d0002f0')">Boxing</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="ryWrong">
+                            <h2 id="ryStatus">You chose poorly</h2>
+                            <div class="ryQuestionReflection">
+                              Some cool fact about this question and maybe some information about a few of the wrong options together with an interesting tidbit to wrap it all up.
+                            </div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>    
         <!-- APP Content -->
 
 
@@ -750,10 +1019,54 @@
 
         <!-- APP Content -->
       <div class="quiz-app">
-        <h1>
-          Placeholder
-        </h1>
-      </div>
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div class="ryQuestionCanvas" onclick="quizapp.clickQuestionScreen();">
+            <div id="ryProgressBar">
+              <div class="ryProgress" style="width: 0%; "></div>
+            </div>
+            <object name="prompt">
+              <div class="prompt-object">
+                <div id="ryTrivia">
+                  <h1>What is the Olympic Motto?</h1>
+                  <div class="ryInner">
+                    <div id="ryTriviaPicks">
+                      <div class="ryChoices">
+                        <div class="ryAnswers" style="visibility: visible; ">
+                          <div class="ryChoice ryAnswer1 ryCorrect" onclick="quizapp.choose(1, '5007cb8ecaff508a6d00030f')">Citius, Altius, Fortius</div>
+                          <div class="ryChoice ryAnswer2 ryWrong" onclick="quizapp.choose(2, '5007cb8ecaff508a6d00030f')">Easy Come, Easy Go</div>
+                          <div class="ryChoice ryAnswer3 ryWrong" onclick="quizapp.choose(3, '5007cb8ecaff508a6d00030f')">Do unto others, as you would have them do unto you</div>
+                          <div class="ryChoice ryAnswer4 ryWrong" onclick="quizapp.choose(4, '5007cb8ecaff508a6d00030f')">May the force be with you</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="ryTriviaResults">
+                      <object name="status">
+                        <div class="status-object">
+                          <div class="ryTimeOver">
+                            <h2 id="ryStatus">Time Over!</h2>
+                            <div class="ryQuestionReflection">
+                              Some cool fact about this question and maybe some information about a few of the wrong options together with an interesting tidbit to wrap it all up.
+                            </div>
+                          </div>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>    
         <!-- APP Content -->
 
 
