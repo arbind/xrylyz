@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trivia Launch Button</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <style>
+    #rylyz-console {
+      display: none;
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 88888;
+      background: #080808 none repeat scroll 0 0;
+      width: 100%;
+      min-width: 800px;
+      height: 100%;
+      min-height: 600px;
+      opacity: 0.75;
+      -moz-opacity: 0.75;
+      filter: alpha(opacity=75);
+    }
+    #rylyz-app-spot-canvas {
+      /* display: none; */
+      position: fixed;
+      overflow: auto;
+      z-index: 288888;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      opacity: 1.0;
+      -moz-opacity: 1.0;
+      filter: alpha(opacity=100);
+    }
+  #rylyz-app-spot-frame {
+    position: relative;
+    margin: 88px auto 8px auto;
+    width: 796px;
+    min-height: 488px;
+    background: #FAFAFA;
+    border: 18px solid #282828;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  #rylyz-app-spot {
+    text-decoration: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    min-height: 448px;
+    overflow: hidden;
+  }
+  #rylyz-app-spot .wygyt-app {
+    color: #222;
+    background-color: #FAFAFA;
+    font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+    font-size: 16px;
+    margin: 0px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  #welcome {
+    padding-bottom: 150px;
+    background: url(olympic-logo.png) center bottom no-repeat;
+  }
+  #welcome h1 {
+    font-size: 60px;
+    color: #666;
+    margin-bottom: .5em;
+  }
+  #welcome h2 {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 1em;
+  }
+  #welcome p {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+
+  </style>
+</head>
+<body>
+<div id="rylyz-app-spot-canvas" style="display: block;">
+  <div id="rylyz-app-spot-frame">
+    <div id="rylyz-app-spot">
+      <div class="wygyt-app">
+
+        <!-- APP Content -->
+    <div>
+      <h2>Leaderboard</h2>
+      <h3 class="ryLeaderboardDate"> <a href="#">&lt; prev</a>:: 08/01 - 09/01 ::<a href="#">next &gt;</a> </h3>
+      <div class="ryLeaderboardRange"><a href="#">day</a> <a href="#">week</a> <a href="#">month</a> <a href="#">all time</a></div>
+      <div class="ryLeaderboardGroup"><a href="#">all players</a> | <a href="#"> players on myfavblog.com</a> | <a href="#">players in USA</a></div>
+      <div class="ryLeaders">
+        <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+          <div>nickname</div>
+          <div>Country</div>
+          <div>Score</div>
+          <div>Total Time</div>
+          <div># Questions</div>  
+          <div><a href="#">referrer url</a></div>
+        </div>
+        <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+          <div>nickname</div>
+          <div>Country</div>
+          <div>Score</div>
+          <div>Total Time</div>
+          <div># Questions</div>  
+          <div><a href="#">referrer url</a></div>
+        </div>
+        <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+          <div>nickname</div>
+          <div>Country</div>
+          <div>Score</div>
+          <div>Total Time</div>
+          <div># Questions</div>  
+          <div><a href="#">referrer url</a></div>
+        </div>
+      </div>
+    </div>
+        <!-- APP Content -->
+
+
+      </div>
+    </div>
+  </div>
+  <div id="rylyz-close">x</div>
+</div>
+
+<div id="rylyz-console" style="display: block; "/>
+</body>
+</html>
+
+
