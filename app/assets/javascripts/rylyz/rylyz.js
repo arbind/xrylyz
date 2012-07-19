@@ -48,7 +48,7 @@
   };
 
   Rylyz.showApp = function(appName, appSpotSelector) {
-    var spotSelector = appSpotSelector || "#rylyz-app-spot"
+    var spotSelector = appSpotSelector || "#ryApp"
     var oldApp = null, newApp = null;
     var newApp = Rylyz.lookupApp(appName);
     if (!newApp) throw "No app named '" +appName+ "' was found. Can not show it!"
@@ -65,7 +65,7 @@
   };
 
   Rylyz.quitApp = function(appSpotSelector) {
-    var spotSelector = appSpotSelector || "#rylyz-app-spot";
+    var spotSelector = appSpotSelector || "#ryApp";
     oldApp = Rylyz.popApp();
     prevApp = Rylyz.currentApp(); // previous app is now at top of stack
     if (!prevApp) {

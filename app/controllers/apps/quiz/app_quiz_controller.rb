@@ -88,10 +88,10 @@ class AppQuizController < RylyzAppController
 
       klass = 'none'
       if game_question.correct_answer == choice
-        klass = 'correct'
+        klass = 'ryCorrect'
         status = "That's Correct!"
       else
-        klass = 'wrong'
+        klass = 'ryWrong'
         status = "You chose poorly"
       end
 
@@ -121,7 +121,7 @@ class AppQuizController < RylyzAppController
       key = game_question.leaderboard_key
       leaderboard = LeaderboardService.leading_players_for_game(key)
 
-      klass = 'time-over'
+      klass = 'ryTimeOver'
       status = "Time Over!"
 
       status_data = {status:status, klass:klass}

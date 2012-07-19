@@ -92,16 +92,16 @@ Rylyz.Wygyt = {
     Rylyz.Wygyt.showForAll();
   },
   showAsFooter: function() {
-    var launchRylyz = jQuery('<div id="launchRylyz"/>');
-    var launchWrapper = jQuery('<div id="launchWrapper"/>');
-    var launchBtn = jQuery('<div id="launchBtn"/>');
-    var launchText = jQuery('<div id="launchText">Play</div>');
-    launchBtn.appendTo(launchWrapper);
-    launchText.appendTo(launchWrapper);
-    launchWrapper.appendTo(launchRylyz);
-    launchRylyz.appendTo('body');
-    jQuery('#launchRylyz').hover(function(ev){jQuery('#launchRylyz').addClass('warmOn')}, function(){jQuery('#launchText, #launchRylyz').removeClass('warmOn')})
-    jQuery("#launchRylyz").click(function(ev){ev.stopPropagation(); jQuery('#launchRylyz').addClass('poweredOn'); Rylyz.Wygyt.startWygyt(startApp);});
+    var ryLaunch = jQuery('<div id="ryLaunch"/>');
+    var ryLaunchWrapper = jQuery('<div id="ryLaunchWrapper"/>');
+    var ryLaunchBtn = jQuery('<div id="ryLaunchBtn"/>');
+    var ryLaunchText = jQuery('<div id="ryLaunchText">Play</div>');
+    ryLaunchBtn.appendTo(ryLaunchWrapper);
+    ryLaunchText.appendTo(ryLaunchWrapper);
+    ryLaunchWrapper.appendTo(ryLaunch);
+    ryLaunch.appendTo('body');
+    jQuery('#ryLaunch').hover(function(ev){jQuery('#ryLaunch').addClass('ryWarmOn')}, function(){jQuery('#ryLaunch').removeClass('ryWarmOn')})
+    jQuery("#ryLaunch").click(function(ev){ev.stopPropagation(); jQuery('#ryLaunch').addClass('ryPoweredOn'); Rylyz.Wygyt.startWygyt(startApp);});
 
     Rylyz.Wygyt.showForAll();
   },
@@ -183,25 +183,25 @@ Rylyz.Wygyt = {
   showOverlay: function() {
     jQuery("body").css("overflow","hidden");
     var o = Rylyz.Wygyt.transparentOverlayDiv;
-    var canvas = Rylyz.Wygyt.appOverlayDiv;
+    var ryAppCanvas = Rylyz.Wygyt.appOverlayDiv;
     if (!o) {
-      o = Rylyz.Wygyt.transparentOverlayDiv = jQuery("<div id='rylyz-console'/>");
-      canvas = Rylyz.Wygyt.appOverlayDiv = jQuery("<div id='rylyz-app-spot-canvas'/>");
-      var closeButton = jQuery("<div id='rylyz-close' onclick='Rylyz.Wygyt.suspendWygyt()'>x</div>");
-      var frame = jQuery("<div id='rylyz-app-spot-frame'/>");
-      var appSpot = jQuery("<div id='rylyz-app-spot'/>");
-      appSpot.appendTo(frame);
-      frame.appendTo(canvas);
-      closeButton.appendTo(frame);
-      canvas.appendTo("body");
+      o = Rylyz.Wygyt.transparentOverlayDiv = jQuery("<div id='ryConsole'/>");
+      ryAppCanvas = Rylyz.Wygyt.appOverlayDiv = jQuery("<div id='ryAppCanvas'/>");
+      var closeButton = jQuery("<div id='ryCloseButton' onclick='Rylyz.Wygyt.suspendWygyt()'>x</div>");
+      var ryAppFrame = jQuery("<div id='ryAppFrame'/>");
+      var ryApp = jQuery("<div id='ryApp'/>");
+      ryApp.appendTo(ryAppFrame);
+      ryAppFrame.appendTo(ryAppCanvas);
+      closeButton.appendTo(ryAppFrame);
+      ryAppCanvas.appendTo("body");
       o.appendTo("body");
     }
     if ('none' != o.css('display')) return;
 
     o.fadeIn(888);
-    canvas.fadeIn(288);
-    canvas.click(function(e){ //close wygyt if canvas is clicked
-      if (jQuery(e.target).is('#rylyz-app-spot-canvas')) Rylyz.Wygyt.suspendWygyt();
+    ryAppCanvas.fadeIn(288);
+    ryAppCanvas.click(function(e){ //close wygyt if canvas is clicked
+      if (jQuery(e.target).is('#ryAppCanvas')) Rylyz.Wygyt.suspendWygyt();
     });
   },
   hideOverlay: function() {
@@ -219,7 +219,7 @@ Rylyz.Wygyt = {
       jQuery("#rylyz-wygyt").append(html);
     }
     else {
-      jQuery('#launchRylyz').removeClass('poweredOn');
+      jQuery('#ryLaunch').removeClass('ryPoweredOn');
     }
   },
   startWygyt: function(data) {

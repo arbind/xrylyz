@@ -39,14 +39,14 @@
 
     // CSS update utilities
     quizapp.noMoreHinting = function() {
-      $('.hint').removeAttr('onclick')
+      $('.ryHint').removeAttr('onclick')
     }
     quizapp.noMoreAnswering = function() {
-      $('.choice').removeAttr('onclick')
+      $('.ryChoice').removeAttr('onclick')
       quizapp.noMoreHinting();
     }
     quizapp.showAnswers = function() {
-      $('.answers').css('visibility','visible');
+      $('.ryAnswers').css('visibility','visible');
     }
 
     // click handlers
@@ -61,8 +61,8 @@
       if ("thinking" != quizapp.gamePhase) return;
 
       Rylyz.timer.stop('score-timer')
-      var answer = '.answer' + num
-      $(answer).addClass('selected');
+      var answer = '.ryAnswer' + num
+      $(answer).addClass('rySelected');
       // send choice to server
       var hiEvent= {queue:'hi', appName:'quiz', screenName:'question', type:'choose-answer', choice:num, id: question_id}
       Rylyz.event.fireEvent(hiEvent);
@@ -106,7 +106,7 @@
       percentComplete = Math.floor(percentComplete);
       console.log("ticks: " +quizapp.ticks+ " secondsSoFar: " +secondsSoFar+ " timerOverTicks: " + timeOverTicks + " %complete: " + percentComplete);
       quizapp.scorePercent = percentComplete;
-      $('.progress').css('width', ''+ percentComplete + '%')
+      $('.ryProgress').css('width', ''+ percentComplete + '%')
       console.log(quizapp.scorePercent)
       if (quizapp.ticks == timeOverTicks || 0>quizapp.scorePercent ) {
         quizapp.scorePercent = 0;
@@ -126,11 +126,9 @@
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
     %screen{:name=>"input-nickname"}
     %screen{:name=>"game"}
-    %screen{:name=>"game-old"}
     %screen{:name=>"question"}
     %screen{:name=>"leaderboard"}
     %screen{:name=>"submit-question"}
-
 
   %screen{:name=>"input-nickname"}
     #signin
@@ -142,99 +140,22 @@
         .field
           %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
 
-
   %screen{:name=>"game"}
-    #quiz-game
+    #ryQuizGame
       %object{:name=>"header"}
-      #rapp-container.trivia
-        .questions
+      #ryAppContainer
+        .ryQuestions
           %collection{:name=>"level1-questions"}
           %collection{:name=>"level2-questions"}
           %collection{:name=>"level3-questions"}
 
-  %object{:name=>"header"}
-    #close-rylyz
-      Close
-    .rheader
-      #rapp-name
-        Trivia
-      %p#rscore
-        100
-
-  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %ul.rset
-      %collection
-
-  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %ul.rset
-      %collection
-
-  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
-    %ul.rset
-      %collection
-
-  %item{:name=>"question-item"}
-    ! [! if (answered) { !]
-    %li
-      %a.rquestion.runlocked.ranswered
-        %span.rcheck
-    ! [! } else { !]
-    %li
-      %a.rquestion.runlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
-        %span.rcheck
-    ! [! } !]
-
-
   %screen{:name=>"question"}
-    #quiz-game
+    #ryQuizGame
       %object{:name=>"header"}
-      .question-canvas{:onclick => "quizapp.clickQuestionScreen();"}
-        .about
-          About
-        #progress-bar
-          .progress
-        .score
-          99
+      .ryQuestionCanvas{:onclick => "quizapp.clickQuestionScreen();"}
+        #ryProgressBar
+          .ryProgress
         %object{:name=>"prompt"}
-
-
-  %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
-    #trivia
-      %h1
-        [[prompt]]
-      .inner
-        #trivia-picks
-          %h2{:style => "color: black;"} Choose your answer:
-          .choices
-            .answers
-              .choice.answer1{:onclick => "quizapp.choose(1, '[[id]]')"}
-                [[answer1]]
-              .choice.answer2{:onclick => "quizapp.choose(2, '[[id]]')"}
-                [[answer2]]
-              .choice.answer3{:onclick => "quizapp.choose(3, '[[id]]')"}
-                [[answer3]]
-              .choice.answer4{:onclick => "quizapp.choose(4, '[[id]]')"}
-                [[answer4]]
-        #trivia-results
-          %object{:name=>"status"}
-          %collection{:name=>"leaders"}
-    .button-bar.question-menu
-      .button.hint{onClick: "quizapp.hint('[[id]]');"}
-        Hint
-
-  %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
-    %div{:class => '[[klass]]'}
-      %h2#status
-        [[status]]
-
-  %collection{:name=>"leaders", :item=>"leader", "data-defaults"=>"[{nickname:'mike', score:10},{nickname:'john', score:20}]"}
-    %h2 Leaders
-    %collection
-
-  %item{:name=>"leader"}
-    .leader
-      [[nickname]] - [[score]]
-
 
   %screen{:name=>"leaderboard"}
     %collection{:name=>"leaders"}
@@ -245,4 +166,73 @@
   %screen{:name=>"submit-question"}
     .button-bar
       .button{"nav-onClick"=>"game"} Back
+
+  %object{:name=>"header"}
+    #ryCloseQuiz
+      Close
+    .ryHeader
+      #ryAppName
+        Trivia
+      %p#ryScore
+        100
+
+  %collection{:name=>"level1-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
+    %ul.rySet
+      %collection
+
+  %collection{:name=>"level2-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
+    %ul.rySet
+      %collection
+
+  %collection{:name=>"level3-questions", :item=>"question-item", "data-defaultss"=>"[{level:1},{level:2},{level:3},{level:4},{level:5}]"}
+    %ul.rySet
+      %collection
+
+  %item{:name=>"question-item"}
+    ! [! if (answered) { !]
+    %li
+      %a.ryQuestion.ryUnlocked.ryAnswered
+        %span.ryCheck
+    ! [! } else { !]
+    %li
+      %a.ryQuestion.ryUnlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
+        %span.ryCheck
+    ! [! } !]
+
+
+
+  %object{:name=>"prompt", "data-defaults"=>"{id: '50078743caff508a6d000018', prompt:'question?', answer1:'a1', answer2:'a2', answer3:'a3', answer4:''}"}
+    #ryTrivia
+      %h1
+        [[prompt]]
+      .ryInner
+        #ryTriviaPicks
+          .ryChoices
+            .ryAnswers
+              .ryChoice.ryAnswer1{:onclick => "quizapp.choose(1, '[[id]]')"}
+                [[answer1]]
+              .ryChoice.ryAnswer2{:onclick => "quizapp.choose(2, '[[id]]')"}
+                [[answer2]]
+              .ryChoice.ryAnswer3{:onclick => "quizapp.choose(3, '[[id]]')"}
+                [[answer3]]
+              .ryChoice.ryAnswer4{:onclick => "quizapp.choose(4, '[[id]]')"}
+                [[answer4]]
+        #ryTriviaResults
+          %object{:name=>"status"}
+
+  %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
+    %div{:class => '[[klass]]'}
+      %h2#ryStatus
+        [[status]]
+      .ryQuestionReflection
+        question reflection sentence.
+
+  %collection{:name=>"leaders", :item=>"leader", "data-defaults"=>"[{nickname:'mike', score:10},{nickname:'john', score:20}]"}
+    %h2 Leaders
+    %collection
+
+  %item{:name=>"leader"}
+    .leader
+      [[nickname]] - [[score]]
+
 

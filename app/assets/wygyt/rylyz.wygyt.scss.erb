@@ -27,7 +27,7 @@ rylyz {display:none;}
 
 
 
-#rylyz-console {
+#ryConsole {
   display:none;
   pointer-events:none;
   position:fixed;
@@ -42,9 +42,8 @@ rylyz {display:none;}
   opacity: 0.75;
   -moz-opacity: 0.75;
   filter:alpha(opacity=75);
-};
-
-#rylyz-app-spot-canvas {
+}
+#ryAppCanvas {
   display:none;
   position:fixed;
   overflow: auto;
@@ -58,7 +57,7 @@ rylyz {display:none;}
   -moz-opacity: 1.0;
   filter:alpha(opacity=100);
 }
-#rylyz-app-spot-frame {
+#ryAppFrame {
   position:relative;
   margin: 88px auto 8px auto;
   width: $rylyzFrameWidth + 8px;
@@ -68,7 +67,7 @@ rylyz {display:none;}
   border-radius: 8px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, .3), 0 10px 20px rgba(0, 0, 0, .3);
 }
-#rylyz-close {
+#ryCloseButton {
   position:absolute;
   top: -30px;
   right: -30px;
@@ -88,7 +87,7 @@ rylyz {display:none;}
 }
 
 
-#rylyz-app-spot { /* parent root style for all apps */
+#ryApp { /* parent root style for all apps */
   /*
   overflow:         hidden;
   padding:          0px;
@@ -107,6 +106,9 @@ rylyz {display:none;}
   padding:0;
   min-height: $rylyzMinFrameHeight - 40px;
   overflow: hidden;
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
 
   /* titles */
   h1, h2, h3, h4, h5, h6, h7 {
@@ -573,7 +575,7 @@ rylyz {display:none;}
 
 }
 
-#launchRylyz {
+#ryLaunch {
   position: fixed;
   bottom: 0;
   left: 4px;
@@ -605,33 +607,33 @@ rylyz {display:none;}
     filter: alpha(opacity=100);
     opacity: 1;
     color: #33cc00;
-    #launchBtn {
+    #ryLaunchBtn {
       background-color: #33cc00;
     }
   }
 }
-#launchRylyz.warmOn {
+#ryLaunch.ryWarmOn {
   width: 80px;
   color: #cccc33;
-  #launchBtn {
+  #ryLaunchBtn {
     background-color: #cccc33;
   }
 }
-#launchRylyz.poweredOn {
+#ryLaunch.ryPoweredOn {
   width: 80px;
   color: #33cc00;
-  #launchBtn {
+  #ryLaunchBtn {
     background-color: #33cc00;
   }
 }
 
-#launchWrapper {
+#ryLaunchWrapper {
   float:left;
   width:100px;
   overflow:hidden;  
 }
 
-#launchBtn {
+#ryLaunchBtn {
   float:left;
   height: 24px;
   width: 24px;
@@ -643,7 +645,7 @@ rylyz {display:none;}
   transition: background-color .1s linear;
 }
 
-#launchText {
+#ryLaunchText {
   float:left;
   padding: 0px;
   margin: 0px 0px 0px 8px;

@@ -280,17 +280,17 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     }
 
     this.triggerDataLoadStart(this.settings);
-    // elParent.append(this.render().el); 
+    elParent.append(this.render().el);
 
-  var cntnt = this.render().el;
-  if ('object' == this.dataType)
-    cntnt = $(cntnt).contents();
+  // var cntnt = this.render().el;
+  // if ('object' == this.dataType)
+  //   cntnt = $(cntnt).contents();
 
-    if (undefined === replaceParentWithContent) replaceParentWithContent = false;
-    if (replaceParentWithContent)
-      elParent.replaceWith(cntnt);
-    else
-      elParent.append(cntnt);
+  //   if (undefined === replaceParentWithContent) replaceParentWithContent = false;
+  //   if (replaceParentWithContent)
+  //     elParent.replaceWith(cntnt);
+  //   else
+  //     elParent.append(cntnt);
 
 
 

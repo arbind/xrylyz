@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trivia Launch Button</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <style>
+    .mockscreen {
+      position:relative;
+      color: white;
+      text-align: center;
+      top:60px;
+      margin-top: 50px;
+    }
+  </style>
+
+<style contents="overlay">
+#ryConsole {
+  display:none;
+  pointer-events:none;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:88888;
+  background: #080808 none repeat scroll 0 0;
+  width: 100%;
+  min-width:800px;
+  height: 100%;
+  min-height:600px;
+  opacity: 0.75;
+  -moz-opacity: 0.75;
+  filter:alpha(opacity=75);
+}
+
+#ryAppCanvas {
+  display:none;
+  position:fixed;
+  overflow: auto;
+  z-index:288888;
+  top:0;
+  left:0;
+  background-color:transparent;
+  width: 100%;
+  height: 100%;
+  opacity: 1.0;
+  -moz-opacity: 1.0;
+  filter:alpha(opacity=100);
+}
+#ryAppFrame {
+  position:relative;
+  margin: 88px auto 8px auto;
+  width: 796px;
+  min-height: 488px;
+  background: #fafafa;
+  border: 18px solid #282828;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .3), 0 10px 20px rgba(0, 0, 0, .3);
+}
+#ryCloseButton {
+  position:absolute;
+  top: -30px;
+  right: -30px;
+  padding: 0px 4px 4px 4px;
+  font: bold 25px/30px Arial, Helvetica;
+  color: #888888;
+  background-color: black;
+  border: 4px solid #888888;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    color: #FFFFCC;
+  }
+}
+#ryApp {
+  text-decoration: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 448px;
+  overflow: hidden;
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  }
+</style>
+
+
+
+
+<style contents="comming soon screen">
+  .wygyt-app {
+    color: #222;
+    background-color: #FAFAFA;
+    margin: 0px auto;
+    padding: 20px;
+  }
+  
+  #welcome {
+    padding-bottom: 150px;
+    background: url(olympic-logo.png) center bottom no-repeat;
+  }
+  #welcome h1 {
+    font-size: 60px;
+    color: #666;
+    margin-bottom: .5em;
+  }
+  #welcome h2 {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 1em;
+  }
+  #welcome p {
+    font-size: 24px;
+    font-weight: bold;
+  }
+</style>
+
+
+
+
+
+
+<style contents="trivia app">
+.quiz-app {
+  color: #222;
+  background-color: #FAFAFA;
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 16px;
+  margin: 0px auto;
+  text-align: center;
+}
+  
+#ryTriviaSplash {
+  padding-bottom: 150px;
+  background: url(olympic-logo.png) center bottom no-repeat;
+}
+#ryTriviaSplash h1 {
+  font-size: 60px;
+  color: #666;
+  margin-bottom: .5em;
+}
+#ryTriviaSplash h2 {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 1em;
+}
+#ryTriviaSplash p {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+#ryQuizGame {
+  position: relative;
+  height: 600px;
+  background: #fff;
+  font-family: helvetica, arial, sans-serif;
+}
+#ryCloseQuiz {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+.ryHeader {
+  background: #000;
+  padding: 10px;
+}
+#ryAppName {
+  float: left;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+#ryScore {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+#ryAppContainer {
+  padding: 40px 20px 20px;
+  overflow: hidden;
+}
+.ryQuestions {
+  padding: 10px;
+}
+.rySet {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.rySet li {
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 10px 20px;
+}
+.ryQuestion {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 30px;
+  color: #000;
+  background: white url(http://wygyt.rylyz.ws/assets/rylyz/olympic-icon.png) center center no-repeat;
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 5px rgba(0, 0, 0, 0.5);
+  -webkit-transition: top .1s linear;
+}
+.ryQuestion:hover {
+  top: -2px;
+}
+.ryCheck {
+  display: none;
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: url(http://wygyt.rylyz.ws/assets/rylyz/check.png) 0 0 no-repeat;
+}
+.ryLocked {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  opacity: .8;
+  cursor: default;
+}
+.ryAnswered {
+  cursor: default;
+}
+.ryAnswered .ryCheck {
+  display: block;
+}
+.ryQuestionReflection {
+  height: 25px;
+  border: 1px solid black;
+}
+#ryProgressBar {
+  left: 0;
+  right: 0;
+  background-color: #888888;
+  border: 2px solid #555555;
+  height: 18px;
+}
+#ryProgressBar .ryProgress {
+  width: 100%;
+  background-color: #AAFFAA;
+  height: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#ryTrivia h1, #ryTrivia h2, #ryTrivia h3 {
+  margin: 0;
+  padding: 0;
+  font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", sans-serif;
+  font-weight: 600;
+}
+#ryTrivia a {
+  color: midnightblue;
+}
+#ryTrivia h1 {
+  font-size: 32px;
+  line-height: 1.5;
+  padding: .5em 1em;
+  margin-bottom: .5em;
+  text-align: center;
+  background: -webkit-linear-gradient(#222222, #444444);
+  color: white;
+  text-shadow: 0 2px 3px black;
+  border-radius: 4px 4px 0 0;
+}
+#ryTrivia h2 {
+  margin-bottom: 1em;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+/* line 150, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTrivia .ryHidden {
+  display: none;
+}
+/* line 153, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTrivia .ryInner {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px 20px;
+}
+/* line 161, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaPicks {
+  width: 375px;
+  float: left;
+}
+/* line 166, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults {
+  width: 361px;
+  padding-left: 20px;
+  padding-top: 36px;
+  text-align: center;
+  float: left;
+}
+/* line 172, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults #ryStatus {
+  font-size: 36px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+}
+/* line 176, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults #ryStatus.ryCorrect {
+  color: green;
+}
+/* line 181, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults .correct #status,
+#ryTriviaResults .winner #status {
+  color: green;
+}
+/* line 184, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults .wrong #status {
+  color: #cc0000;
+}
+/* line 188, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults .winner-object p .name, #ryTriviaResults .winner-object p .url {
+  display: block;
+  margin-bottom: .5em;
+}
+/* line 192, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+#ryTriviaResults .winner-object p .url a {
+  display: block;
+  width: 361px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* line 202, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoice {
+  position: relative;
+  padding: 1em;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  -webkit-transition: all .2s ease;
+}
+/* line 209, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoice:hover {
+  background: LightYellow;
+}
+/* line 213, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.rySelected {
+  background: #222;
+  color: white;
+  font-weight: bold;
+  border-color: transparent;
+  -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 1px black;
+}
+/* line 221, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.rySelected:hover {
+  background: #222;
+}
+/* line 225, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryRightAnswer {
+  background: green;
+  color: white;
+  font-weight: bold;
+  border-color: transparent;
+  -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+/* line 232, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryRightAnswer:hover {
+  background: green;
+}
+/* line 238, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
+.ryChoices .ryAnswers {
+  visibility: hidden;
+}
+
+
+
+
+  </style>
+
+
+
+
+
+</head>
+<body>
+<div id="ryAppCanvas" style="display: block;">
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">Comming Soon</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="wygyt-app">
+        <div id="ryWelcome">
+          <h1>Welcome</h1>
+          <h2>Play games and use cool apps</h2>
+          <p>Coming soon!</p>
+        </div>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Splash Screen</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="wygyt-app">
+        <div id="ryTriviaSplash">
+          <h1>Play Social Trivia</h1>
+          <h2>Daily Quiz!</h2>
+          <p>Loading</p>
+        </div>
+      </div>      
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Login</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Game Board</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <div id="ryQuizGame">
+          <object name="header">
+            <div class="header-object">
+              <div id="ryCloseQuiz">Close</div>
+              <div class="ryHeader">
+                <div id="ryAppName">Trivia</div>
+                <p id="ryScore">100</p>
+              </div>
+            </div>
+          </object>
+          <div id="ryAppContainer">
+            <div class="ryQuestions">
+              <collection name="level1-questions">
+              <div class="level1-questions-collection">
+                <ul class="rySet">
+
+                  <li>
+                    <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000195'}">
+                      <span class="ryCheck"></span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019a'}">
+                      <span class="ryCheck"></span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019c'}">
+                      <span class="ryCheck"></span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019d'}">
+                      <span class="ryCheck"></span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d0001a1'}">
+                      <span class="ryCheck"></span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+            </collection>
+            <collection name="level2-questions">
+            <div class="level2-questions-collection">
+              <ul class="rySet">
+
+                <li>
+                  <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000197'}">
+                    <span class="ryCheck"></span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019b'}">
+                    <span class="ryCheck"></span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019f'}">
+                    <span class="ryCheck"></span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d0001a0'}">
+                    <span class="ryCheck"></span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d0001a2'}">
+                    <span class="ryCheck"></span>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </collection>
+          <collection name="level3-questions">
+          <div class="level3-questions-collection">
+            <ul class="rySet">
+
+              <li>
+                <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000194'}">
+                  <span class="ryCheck"></span>
+                </a>
+              </li>
+
+              <li>
+                <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000196'}">
+                  <span class="ryCheck"></span>
+                </a>
+              </li>
+
+              <li>
+                <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000198'}">
+                  <span class="ryCheck"></span>
+                </a>
+              </li>
+
+              <li>
+                <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d000199'}">
+                  <span class="ryCheck"></span>
+                </a>
+              </li>
+
+              <li>
+                <a class="ryQuestion ryUnlocked" fire-onclick="{queue:'hi', type:'select-question', select:'5007a1ddcaff508a6d00019e'}">
+                  <span class="ryCheck"></span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+          </collection>
+        </div>
+        </div>
+        </div>
+      </div>
+            <!-- APP Content -->
+
+
+      </div>      
+    </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Prompt</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Choices</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Right answer</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Wrong Answer</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: Question: Timeout</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">TriviaApp: LeaderBoard</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <div>
+          <h2>Leaderboard</h2>
+          <h3 class="ryLeaderboardDate"> <a href="#">&lt; prev</a>:: 08/01 - 09/01 ::<a href="#">next &gt;</a> </h3>
+          <div class="ryLeaderboardRange"><a href="#">day</a> <a href="#">week</a> <a href="#">month</a> <a href="#">all time</a></div>
+          <div class="ryLeaderboardGroup"><a href="#">all players</a> | <a href="#"> players on myfavblog.com</a> | <a href="#">players in USA</a></div>
+          <div class="ryLeaders">
+            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+              <div>nickname</div>
+              <div>Country</div>
+              <div>Score</div>
+              <div>Total Time</div>
+              <div># Questions</div>  
+              <div><a href="#">referrer url</a></div>
+            </div>
+            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+              <div>nickname</div>
+              <div>Country</div>
+              <div>Score</div>
+              <div>Total Time</div>
+              <div># Questions</div>  
+              <div><a href="#">referrer url</a></div>
+            </div>
+            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
+              <div>nickname</div>
+              <div>Country</div>
+              <div>Score</div>
+              <div>Total Time</div>
+              <div># Questions</div>  
+              <div><a href="#">referrer url</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!-- APP Content -->
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+
+
+
+
+
+  <!---------------- <MOCK SCREEN> ------------- -->
+  <h1 class="mockscreen">AppName: ScreenName: Template</h1>
+
+  <div id="ryAppFrame">
+    <div id="ryApp">
+
+        <!-- APP Content -->
+      <div class="quiz-app">
+        <h1>
+          Placeholder
+        </h1>
+      </div>
+        <!-- APP Content -->
+
+
+    </div>
+  </div>
+  <!---------------- </MOCK SCREEN> ------------- -->
+
+
+
+  <div id="ryCloseButton">x</div>
+</div>
+
+<div id="ryConsole" style="display: block; "/>
+</body>
+</html>
+
