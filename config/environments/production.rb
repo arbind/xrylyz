@@ -10,12 +10,12 @@ puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
 player_host = RYLYZ_PLAYER_HOST.downcase
 # Host specific configurations
-if (['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
+if ['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
+  puts "DEFINING SECRETS FOR LIVE DEPLOYMENT"
+
   # See everything in the log (default is :info)
   config.log_level = :debug
   
-  puts "DEFINING SECRETS FOR LIVE DEPLOYMENT"
-
   SECRETS = {
     :STRIPE => { # LIVE CONFIG - MAKES REAL CREDIT CARD CHARGES
       :SECRET => 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG',
@@ -62,7 +62,9 @@ if (['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
 
   }
 
-elsif player_host.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
+elsif ['holodeck.rylyz.com'].include?(player_host)
+  puts "DEFINING SECRETS FOR HOLODECK DEPLOYMENT"
+
   # See everything in the log (default is :info)
   config.log_level = :debug
   
@@ -114,12 +116,12 @@ elsif player_host.include? "holodeck" # http://rylyz-holodeck.herokuapp.com/
 
   }
 
-elsif player_host.include? "demo" # http://rylyz-demo.herokuapp.com/
+elsif ['demo.rylyz.com'].include?(player_host)
+  puts "DEFINING SECRETS FOR DEMO DEPLOYMENT"
+
   # See everything in the log (default is :info)
   config.log_level = :debug
   
-  puts "DEFINING SECRETS FOR DEMO"
-
   SECRETS = {
     :STRIPE => { #TEST CONFIG
       :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
@@ -166,12 +168,12 @@ elsif player_host.include? "demo" # http://rylyz-demo.herokuapp.com/
 
   }
   
-elsif player_host.include? "player" # http://rylyz-player.herokuapp.com/
+elsif ['player.rylyz.com'].include?(player_host)
+  puts "DEFINING SECRETS FOR PLAYER DEPLOYMENT"
+
   # See everything in the log (default is :info)
   config.log_level = :debug
   
-  puts "DEFINING SECRETS FOR PLAYER"
-
   SECRETS = {
     :STRIPE => { # TEST CONFIG
       :SECRET => '5LeZ5IabCsvLNA8YHZOwaILWpGPaFFlG',
@@ -219,6 +221,7 @@ elsif player_host.include? "player" # http://rylyz-player.herokuapp.com/
   }
 
 else # default empty since heroku rake tasks do not always load environment variables: RYLYZ_PLAYER_HOST will be nil
+  puts "DEFINING SECRETS FOR AN UNKNOWN DEPLOYMENT"
   # See everything in the log (default is :info)
   config.log_level = :debug
   SECRETS = {

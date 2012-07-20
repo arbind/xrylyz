@@ -5,6 +5,8 @@ RYLYZ_PLAYER_HOST = "rylyz-local.com"
 
   # Settings specified here will take precedence over those in config/application.rb
 
+  puts "DEFINING SECRETS FOR DEVELOPMENT DEPLOYMENT"
+
   #rylyz-local.com API Keys
 
   SECRETS = {
