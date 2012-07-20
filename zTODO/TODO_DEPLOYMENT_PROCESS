@@ -1,0 +1,89 @@
+WYGYT [wygyt.rylyz.com]
+  live dashboard
+  rylyz/ws/wygyt
+  live DB
+  No code is ever pushed from this environment to github
+  track master branch on github
+  git pull github master
+  git push heroku master
+  > check things out
+  > revert if issues are found
+
+DASHBOARD [www.rylyz.com]
+  live wygyt
+  rylyz/ws/dashboard
+  live DB
+  No code is ever pushed from this environment to github
+  track master branch on github
+  git pull github master
+  git push heroku master
+  > check things out
+  > revert if issues are found
+
+GLASS-DASHBOARD [glass-dashboard.rylyz-play.com]
+  offline mirror of live dashboard
+  rylyz/glasss/dashboard
+  private DB (always in sync with live DB)
+  No code is ever pushed from this environment to github
+  Temporary coding can be done by creating glass branches to debug live issues (Should be pulled into trnsformation to validate)
+  track master branch on heroku dashboard code base (not connected to github) 
+  git pull heroku-dashboard
+  git push heroku master
+  > check things out
+  > debug live issues 
+
+GLASS-WYGYT [glass-wygyt.rylyz-play.com]
+  offline mirror of live dashboard
+  rylyz/glasss/dashboard
+  private DB (always in sync with live DB)
+  No code is ever pushed from this environment to github
+  Temporary coding can be done by creating glass branches to debug live issues (Should be pulled into trnsformation to validate)
+  Track master branch on heroku wygyt code base (not connected to github) 
+  Glass branches can be pushed back to heroku (and temporarily tested there)
+  git pull heroku-wygyt
+  git push heroku master
+  > check things out
+  > debug live issues 
+
+TRANSFORMATION? [transformation.rylyz.com]
+  preflight new code before deploying live to dashboard or wygyt
+  Should always be functional, or else revert
+  rylyz/transform?/transformation?
+  private DB (always in sync with live DB)
+  This is the only path to update github master
+  No development is done in this environment
+  New branches ready to go live are first merged here (holodeck and glass branches)
+  Holodeck code merged into master, tested and pushed back into github
+  Glass hotfixes merged into master, tested and pushed back into github
+  track master branch on github
+  merge holodeck branch / or glass branch from heroku
+  check new functionality
+  push new functionality from holodeck into master branch
+  git pull github master
+  git merge github holodeck
+  git push heroku master
+  > make sure that everything works
+  > identify any issues
+  > revert if things do not work
+  git push github master (if everything works)
+
+HOLODECK [holodeck.rylyz.com]
+  rylyz/play/holodeck
+  private DB (can sync with live DB)
+  track holodeck branch on github (integration branch)
+  integrate new development from player
+  git pull github holodeck
+  git merge github player
+  git push heroku master
+  > make sure things are working
+  git push github holodeck
+
+PLAYER [player.rylyz.com]
+  rylyz/play/player
+  private DB (can sync with live DB)
+  track player branch on github (development branch)
+  integrate new development from player
+  git pull github player
+  git push heroku master
+  > check things out
+  git push github player
