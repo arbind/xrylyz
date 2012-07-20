@@ -2,11 +2,10 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.1'
 
-# run thin in production
 group :production do
   gem 'thin'
-	gem 'newrelic_rpm' #Server Monitoring
 end
+gem 'newrelic_rpm' #Server Monitoring
 
 gem 'json'
 gem 'haml'
