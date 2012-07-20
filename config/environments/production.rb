@@ -10,11 +10,11 @@ puts "RYLYZ_PLAYER_HOST set to #{RYLYZ_PLAYER_HOST}"
 
 player_host = RYLYZ_PLAYER_HOST.downcase
 # Host specific configurations
-if player_host.include? "rylyz.ws"
+if (['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
   # See everything in the log (default is :info)
   config.log_level = :debug
   
-  puts "DEFINING SECRETS FOR rylyz.ws (LIVE)"
+  puts "DEFINING SECRETS FOR LIVE DEPLOYMENT"
 
   SECRETS = {
     :STRIPE => { # LIVE CONFIG - MAKES REAL CREDIT CARD CHARGES
