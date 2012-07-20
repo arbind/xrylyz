@@ -1,5 +1,6 @@
+o load signups
+
 broken:
-o. working game: question screen not loading data
 o. heroku: setup ping service to keep from idling: rylyz.com / wygyt.rylyz.ws
 
 customer relationship:
@@ -33,3 +34,5 @@ x. comming soon wygyt works (looks good too)
 Email invites to bloggers
 Quiz admin
 Quiz Game
+
+x. working game: question screen not loading data
