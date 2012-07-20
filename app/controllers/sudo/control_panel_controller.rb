@@ -1,6 +1,5 @@
-require "uri"
-
 class Sudo::ControlPanelController < Sudo::SudoController
+	require 'csv'
 	
 	def index
 
@@ -12,14 +11,13 @@ class Sudo::ControlPanelController < Sudo::SudoController
 
 	def signups
 		@signups = RylyzBlogger.all
+		@plans = RylyzBloggerPlan.all
 	end
 
 	def api() end
 		
 	def load_signups
 		# ++++todo get this data directly from launchrock: http://developers.launchrock.com/documentation/api/reference#api-insights
-		require 'csv'
-		require 'open-uri'
 		blogger = nil
 		plan = nil
 
@@ -47,20 +45,24 @@ class Sudo::ControlPanelController < Sudo::SudoController
 				  	)
 			  end
 
+			  blogger.plan = nil if (blogger.plan and RylyzBloggerPlan::DEFAULT_PLAN_NAME == blogger.plan.name)
 			  # bind the blogger's subscription plan
 			  blogger.plan = RylyzBloggerPlan.where(name: r['plan_name']).first if blogger.plan.nil?
-			  if blogger.plan.nil? and r['plan_name'] and r['share'] and r['ref'] and r['affil8'] and r['$/month']
-		  		# create a new plan if needed
-				  blogger.plan = RylyzBloggerPlan.create!(
-				  	name: r['plan_name'],
-						base_profit_sharing_rate: r['share'].to_f/100,
-						referral_rate: r['ref'].to_f/100,
-						affiliate_rate: r['affil8'].to_f/100,
-						monthly_subscription_rate: r['$/month'].to_f
-						)
-				else
-				  blogger.plan = RylyzBloggerPlan.where(name: 'free')
-				  blogger.plan ||= RylyzBloggerPlan.create
+
+			  if blogger.plan.nil? # create a new plan if needed
+			  	if r['plan_name'] and r['share'] and r['ref'] and r['affil8'] and r['$/month']
+					  blogger.plan = RylyzBloggerPlan.create!(
+					  	name: r['plan_name'],
+							base_profit_sharing_rate: r['share'].to_f/100,
+							referral_rate: r['ref'].to_f/100,
+							affiliate_rate: r['affil8'].to_f/100,
+							monthly_subscription_rate: r['$/month'].to_f
+							)
+					else
+						# back to default plan
+					  blogger.plan = RylyzBloggerPlan.where(name: RylyzBloggerPlan::DEFAULT_PLAN_NAME).first
+					  blogger.plan ||= RylyzBloggerPlan.create
+					end
 				end
 
 				# update latest stats for all bloggers
