@@ -23,7 +23,7 @@ class RylyzBlogger
 
   # signup history
 	field :signedup_at, :type => DateTime, :default => nil
-  field :confirmed_at, :type => DateTime, :default => nil
+  field :activated_at, :type => DateTime, :default => nil
 
   # email history
   field :do_not_email, :type => Boolean, :default => false
@@ -34,12 +34,13 @@ class RylyzBlogger
 
   has_one :member, :class_name => "RylyzMember", :inverse_of => :blogger
   has_many :sites, :class_name => "RylyzBloggerSite", :inverse_of => :blogger
-  belongs_to :plan, :class_name => "RylyzBloggerPlan", :inverse_of => :blogger
+  belongs_to :plan, :class_name => "RylyzBloggerPlan", :inverse_of => :bloggers
 
   validates_uniqueness_of :email
   validates_uniqueness_of :share_key
 
   after_initialize :check_plan_exists
+
 
   def nickname 
   	nick = self.email.split('@').first if self.email
@@ -51,7 +52,7 @@ class RylyzBlogger
 
   def check_plan_exists
     return true unless plan.nil?
-    self.plan = RylyzBloggerPlan.find_or_create_by(name: 'free')
+    self.plan = RylyzBloggerPlan.find_or_create_by(name:  RylyzBloggerPlan::DEFAULT_PLAN_NAME)
     self.save
   end
 end

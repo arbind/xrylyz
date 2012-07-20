@@ -2,7 +2,9 @@ class RylyzBloggerPlan
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :name, :type => String, :default => 'Free'
+  DEFAULT_PLAN_NAME = 'default'
+
+  field :name, :type => String, :default => DEFAULT_PLAN_NAME
   field :description, :type => String, :default => nil
 
   field :base_profit_sharing_rate, :type => Float, :default => 0

@@ -1,5 +1,8 @@
 %h2= "#{@signups.count} Bloggers"
-
+%p
+  %ul
+    - @plans.each do |plan|
+      %li= "#{pluralize(plan.bloggers.count, 'blogger')} signed up for the #{plan.name} plan"
 .section
   %form{:action=>"load_signups", :method=>"POST"}
     %button.submit-button{:type=>"submit"} Load Signups
