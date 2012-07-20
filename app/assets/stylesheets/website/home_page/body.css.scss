@@ -3,4 +3,17 @@ body.rylyz {
   border-color: #47626B;
   background-color: #283842;
   font-family: 'Istok Web', Helvetica, Verdana, sans-serif;
+
+  a {
+    color: #687888;
+    background-color:transparent;
+    text-decoration: none;
+    &:hover {
+      color: #228822;
+      text-decoration: underline;
+    }
+    &:active {
+      color:#888888;
+    }
+  }
 }

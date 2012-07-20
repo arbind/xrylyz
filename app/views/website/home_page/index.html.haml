@@ -6,9 +6,10 @@
     background: url(/assets/rylyz/olympic-logo.png) center bottom no-repeat;
   }
   #welcome h1 {
-    font-size: 60px;
+    font-size: 32px;
     color: #203036;
-    margin-bottom: .5em;
+    margin-top: 1em;
+    margin-bottom: .8em;
     text-align: center;
   }
   #welcome h2 {
@@ -22,12 +23,17 @@
     font-weight: bold;
     text-align: center;
   }
+  .section {
+    cursor: pointer;
+  }
 
-.section
+.section{:onclick=>"location.href = '/play'"}
   #welcome
     %h1
-      Welcome
+      Add social games and cool real-time apps to your site!
     %h2
-      Play games and use cool apps
-    %p
       Coming soon!
+    %p
+      %a{:href=>'/play'}
+        sign up now as an early adopter
+      
