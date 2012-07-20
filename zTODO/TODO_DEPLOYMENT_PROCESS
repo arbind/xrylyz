@@ -1,8 +1,10 @@
 WYGYT [wygyt.rylyz.com]
-  live dashboard
+  Live environment that provides wygyt services
+  only way to update wygyt from github master
   rylyz/ws/wygyt
   live DB
-  No code is ever pushed from this environment to github
+  Only environment to update wygyt from github master
+  No code can be pushed from this environment to github (only pull from master)
   track master branch on github
   git pull github master
   git push heroku master
@@ -10,10 +12,11 @@ WYGYT [wygyt.rylyz.com]
   > revert if issues are found
 
 DASHBOARD [www.rylyz.com]
-  live wygyt
+  Live environment that provides dashboard and homepage web applications
   rylyz/ws/dashboard
   live DB
-  No code is ever pushed from this environment to github
+  Only environment to update dashboaard from github master
+  No code can be pushed from this environment to github (only pull from master)
   track master branch on github
   git pull github master
   git push heroku master
@@ -21,10 +24,11 @@ DASHBOARD [www.rylyz.com]
   > revert if issues are found
 
 GLASS-DASHBOARD [glass-dashboard.rylyz-play.com]
-  offline mirror of live dashboard
+  Offline environment for reproducing dashboard functionality and troubleshooting live issues
   rylyz/glasss/dashboard
   private DB (always in sync with live DB)
-  No code is ever pushed from this environment to github
+  This environment is not connected to github
+  No code is ever pushed or pulled directly from this environment to github (always goes through heroku)
   Temporary coding can be done by creating glass branches to debug live issues (Should be pulled into trnsformation to validate)
   track master branch on heroku dashboard code base (not connected to github) 
   git pull heroku-dashboard
@@ -33,24 +37,27 @@ GLASS-DASHBOARD [glass-dashboard.rylyz-play.com]
   > debug live issues 
 
 GLASS-WYGYT [glass-wygyt.rylyz-play.com]
-  offline mirror of live dashboard
+  Offline environment for reproducing wygyt functionality and troubleshooting live issues
   rylyz/glasss/dashboard
   private DB (always in sync with live DB)
-  No code is ever pushed from this environment to github
-  Temporary coding can be done by creating glass branches to debug live issues (Should be pulled into trnsformation to validate)
-  Track master branch on heroku wygyt code base (not connected to github) 
+  This environment is not connected to github
+  No code is ever pushed or pulled directly from this environment to github (always goes through heroku)
+  Temporary coding can be done by creating glass branches to debug live issues (Should be pulled into portal for validate)
+  Track master branch on heroku wygyt code base
   Glass branches can be pushed back to heroku (and temporarily tested there)
   git pull heroku-wygyt
   git push heroku master
   > check things out
   > debug live issues 
 
-TRANSFORMATION? [transformation.rylyz.com]
-  preflight new code before deploying live to dashboard or wygyt
-  Should always be functional, or else revert
-  rylyz/transform?/transformation?
+PORTAL [portal.rylyz.com]
+  Offline environment that can push new code into master.
+  This should be the only path to update the github master.
+  preflight the new code before pushing into github master.
+  Should always be functional, or else revert and fix issues in holodeck
+  rylyz/portal/portal
   private DB (always in sync with live DB)
-  This is the only path to update github master
+  This is the only path to update heroku-wygyt and heroku-dashboard master
   No development is done in this environment
   New branches ready to go live are first merged here (holodeck and glass branches)
   Holodeck code merged into master, tested and pushed back into github
