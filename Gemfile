@@ -1,30 +1,27 @@
 source 'http://rubygems.org'
 
+# technology stack
 gem 'rails', '3.1.1'
-
+gem 'mongoid' #MongoDB
+gem 'bson_ext'
+gem 'newrelic_rpm' #Server Monitoring
 group :production do
   gem 'thin'
 end
-gem 'newrelic_rpm' #Server Monitoring
 
+# utils
 gem 'json'
 gem 'haml'
-gem 'jquery-rails'
-
-gem 'addressable'
 gem 'httparty'
+gem 'addressable'
+gem 'jquery-rails'
 gem 'metainspector'
 
+# 3rd party services
 gem 'stripe'
 gem 'pusher'
-gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git'
-
-#mass email service
-gem 'postageapp'
-
-#MongoDB
-gem 'mongoid'
-gem 'bson_ext'
+gem 'pusher-client', :git => 'git://github.com/neocsr/pusher-client.git' # alpha client-side triggers
+gem 'postageapp' #mass email service
 
 #oauth
 gem 'omniauth'
