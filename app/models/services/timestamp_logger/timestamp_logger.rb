@@ -4,7 +4,7 @@ class TimestampLogger
 
   def self.stamp(domain, ns, key, at_datetime=DateTime.now.utc)
     stamp = lookup_timestamp_log(domain, ns, key)
-    stamp ||= TimestampLog.new(domain:domain, ns: ns, key:key)
+    stamp ||= TimestampLog.new(domain:domain.to_s ns: ns.to_s, key:key.to_s)
     stamp.timestamps.push(at_datetime.to_s)
     stamp.save
     timestamps_to_datetime(stamp.timestamps)
@@ -17,7 +17,7 @@ class TimestampLogger
   end
 
   def self.stamped?(domain, ns, key)
-    stamp = TimestampLog.where(domain:domain, ns: ns, key:key).first
+    stamp = lookup_timestamp_log(domain, ns, key)
     return false if (stamp.nil? or stamp.timestamps.empty?)
     not stamp.timestamps.empty?
   end
@@ -26,7 +26,7 @@ class TimestampLogger
 
   # last stamped at
   def self.last_stamped_at(domain, ns, key)
-    stamp = TimestampLog.where(domain:domain, ns: ns, key:key).first
+    stamp = lookup_timestamp_log(domain, ns, key)
     return nil if (stamp.nil? or stamp.timestamps.empty?)
     timestamps_to_datetime(stamp.timestamps).last
   end
@@ -46,7 +46,7 @@ class TimestampLogger
   # first stamped at
 
   def self.first_stamped_at(domain, ns, key)
-    stamp = TimestampLog.where(domain:domain, ns: ns, key:key).first
+    stamp = lookup_timestamp_log(domain, ns, key)
     return nil if (stamp.nil? or stamp.timestamps.empty?)
     timestamps_to_datetime(stamp.timestamps).first
   end
@@ -74,9 +74,8 @@ class TimestampLogger
     stamps.sort!
   end
 
-
   def self.lookup_timestamp_log(domain, ns, key)
-    stamp = TimestampLog.where(domain:domain, ns: ns, key:key).first
+    TimestampLog.where(domain:domain.to_s, ns: ns.to_s, key:key.to_s).first
   end
 
 end
