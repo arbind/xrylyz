@@ -25,9 +25,8 @@ class RylyzBlogger
 	field :signedup_at, :type => DateTime, :default => nil
   field :activated_at, :type => DateTime, :default => nil
 
-  # email history
+  # communication prefs
   field :do_not_email, :type => Boolean, :default => false
-  field :email_history, :type => Hash, :default => {}
 
   # session history
   field :login_count, :type => Integer, :default => 0

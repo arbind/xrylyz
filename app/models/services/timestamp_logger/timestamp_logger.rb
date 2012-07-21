@@ -4,7 +4,7 @@ class TimestampLogger
 
   def self.stamp(domain, ns, key, at_datetime=DateTime.now.utc)
     stamp = lookup_timestamp_log(domain, ns, key)
-    stamp ||= TimestampLog.new(domain:domain.to_s ns: ns.to_s, key:key.to_s)
+    stamp ||= TimestampLog.new(domain:domain.to_s, ns: ns.to_s, key:key.to_s)
     stamp.timestamps.push(at_datetime.to_s)
     stamp.save
     timestamps_to_datetime(stamp.timestamps)

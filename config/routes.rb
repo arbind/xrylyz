@@ -16,6 +16,11 @@ RylyzPlayer::Application.routes.draw do
     get "contact_us",           :as => :contact_us
   end
 
+  scope :controller=> "ping" do
+    get "ping",
+  end
+
+
   # Dashboard Routes for bloggers (authenticated)
   scope '/dashboard', :module => :blogger, :controller => "dashboard" do
     get '',                     :as => :dashboard,            :to => 'dashboard#index'
