@@ -46,7 +46,7 @@ if ['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
       :CLIENT_ID => "14513bcfd678454098a165495e076299",
       :CLIENT_SECRET => "af61d47fcc8d440da01f120c2889de95"
     },
-    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index:       ---  http://msdn.microsoft.com/en-us/library/hh243641.aspx
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index :       ---  http://msdn.microsoft.com/en-us/library/hh243641.aspx
       :CLIENT_ID => "00000000400A7976",
       :SECRET => "PW6mhzSi-W8ST3NfGV9RgJg1rPiFp-g6"
     },
@@ -157,8 +157,8 @@ elsif ['demo.rylyz.com'].include?(player_host)
       :SECRET => "cAcoYNKu7sfORSXck9meEhBTiqqMD44j"
     },
     :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
-      :CONSUMER_KEY => "dj0yJmk9YnE3eTZob0hOM1k1JmQ9WVdrOWJUUlhNRzVSTXpRbWNHbzlNVGcxTXpFM09UUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1iOA--",
-      :CONSUMER_SECRET => "e21be564a9bd79139d3d76a8141f4ab01b618327"
+      :CONSUMER_KEY => "dj0yJmk9VzNOYVY4dVZTMENmJmQ9WVdrOVNrRXhVM04wTkRnbWNHbzlNVFl6TXpFeE5UUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MQ--",
+      :CONSUMER_SECRET => "c28f7613aeb72587131e6d08f3a03ad11cf716b2"
     },    
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "ra9iwn3dwrt7",
