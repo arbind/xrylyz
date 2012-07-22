@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_filter :redirect_naked_domain_to_www  # make sure this before filter is first to run!
+
   helper_method :current_member, :member_signed_in?, :social_presences
   helper_method :current_blogger, :blogger_signed_in?
   helper_method :current_super_user, :super_user_signed_in?
@@ -64,5 +66,9 @@ protected
   def current_super_user()    current_member.super_user if member_signed_in?  end
   def super_user_signed_in?() !!current_super_user                            end
 
+  def redirect_naked_domain_to_www
+    # url forward naked domain rylyz.com to www.rylyz.com
+    redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if /^rylyz\.com/.match(request.host)
+  end
 
 end

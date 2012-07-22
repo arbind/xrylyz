@@ -51,8 +51,8 @@ if ['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
       :SECRET => "PW6mhzSi-W8ST3NfGV9RgJg1rPiFp-g6"
     },
     :YAHOO => { # google signin with (play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
-      :CONSUMER_KEY => "dj0yJmk9ZTBGdGVPUHljb2dKJmQ9WVdrOVNXRmxORTFOTm1zbWNHbzlNVEUxTmpBME1qYzJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--",
-      :CONSUMER_SECRET => "0161f8ad2a8ae45387bc7d6c039a1367354784f1"
+      :CONSUMER_KEY => "dj0yJmk9YnhaZGc0MUJhSFhFJmQ9WVdrOWJtaGhPR1ZLTnpJbWNHbzlNVFU0T0RZMU1qTTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0xYw--",
+      :CONSUMER_SECRET => "43c4ccb8df36476306d6c91faa3ee48b5752848c"
     },
     :LINKEDIN => { # play@rylyz.com: https://www.linkedin.com/secure/developer
       :API_KEY => "mptdgs5bqv5h",

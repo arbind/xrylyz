@@ -9,9 +9,6 @@ require "active_resource/railtie"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
-# require '/lib/www_ditcher' # https://github.com/iSabanin/www_ditcher
-
-
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   # Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -35,12 +32,6 @@ module RylyzPlayer
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-
-    # ditch the www from the hostname (ref: https://github.com/iSabanin/www_ditcher)
-    config.autoload_paths += Dir[ Rails.root.join('lib', 'www_ditcher') ]
-    # require 'www_ditcher'
-    # config.middleware.use "WwwDitcher"
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
