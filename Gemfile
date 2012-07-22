@@ -15,7 +15,7 @@ gem 'haml'
 gem 'httparty'
 gem 'addressable'
 gem 'jquery-rails'
-gem 'metainspector'
+gem 'metainspector', '1.9.2'
 
 # 3rd party services
 gem 'stripe'

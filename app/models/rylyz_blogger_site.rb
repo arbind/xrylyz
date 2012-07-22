@@ -44,8 +44,8 @@ class RylyzBloggerSite
   def scrape_attributes
     page = MetaInspector.new(url)
     return false unless page
-      self.title = page.title rescue nil
-      self.description = page.description rescue nil
+    self.title = page.title
+    self.description = page.description
   end
 
   require 'resolv'
