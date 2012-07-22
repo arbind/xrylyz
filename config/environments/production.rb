@@ -46,11 +46,11 @@ if ['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
       :CLIENT_ID => "14513bcfd678454098a165495e076299",
       :CLIENT_SECRET => "af61d47fcc8d440da01f120c2889de95"
     },
-    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index: http://msdn.microsoft.com/en-us/library/hh243641.aspx
+    :WINDOWSLIVE => { # play@rylyz.com: https://manage.dev.live.com/Applications/Index:       ---  http://msdn.microsoft.com/en-us/library/hh243641.aspx
       :CLIENT_ID => "00000000400A7976",
       :SECRET => "PW6mhzSi-W8ST3NfGV9RgJg1rPiFp-g6"
     },
-    :YAHOO => { # google signin(play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
+    :YAHOO => { # google signin with (play@rylyz.com): https://developer.apps.yahoo.com/projects !select 1 service(√Social Directory), then updated keys
       :CONSUMER_KEY => "dj0yJmk9ZTBGdGVPUHljb2dKJmQ9WVdrOVNXRmxORTFOTm1zbWNHbzlNVEUxTmpBME1qYzJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--",
       :CONSUMER_SECRET => "0161f8ad2a8ae45387bc7d6c039a1367354784f1"
     },
