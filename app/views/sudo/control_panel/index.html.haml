@@ -1,6 +1,10 @@
 %h1= "Members (#{@members.count})"
 - @members.each do |member|
   %p= "#{member.nickname}: <#{member.email}>"
+  - if member.blogger
+    %p= "BLOGGER: #{member.blogger.nickname} <#{member.blogger.email}> [#{member.blogger.share_key}] "
+  - else
+    %p NO BLOGGER BINDING
   - member.rylyz_member_presences.each do |presence|
     %p= "#{presence.provider}[#{presence.sign_in_count}]:#{presence.nickname} <#{presence.email}> [#{presence.name} = #{presence.first_name} #{presence.last_name}]"
   %br
