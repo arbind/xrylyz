@@ -1,1 +1,16 @@
-index.html.haml
+%h1= "Members (#{@members.count})"
+- @members.each do |member|
+  %p= "#{member.nickname}: <#{member.email}>"
+  - member.rylyz_member_presences.each do |presence|
+    %p= "#{presence.provider}[#{presence.sign_in_count}]:#{presence.nickname} <#{presence.email}> [#{presence.name} = #{presence.first_name} #{presence.last_name}]"
+  %br
+
+%h1= "MemberPresence (#{@presences.count})"
+- @presences.each do |presence|
+  %p= "#{presence.provider}[#{presence.sign_in_count}]:#{presence.nickname} <#{presence.email}> [#{presence.name} = #{presence.first_name} #{presence.last_name}]"
+  %br
+
+%h1= "Websites (#{@websites.count})"
+- @websites.each do |site|
+  %p= site.url
+  %br

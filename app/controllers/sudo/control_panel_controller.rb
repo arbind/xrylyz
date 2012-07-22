@@ -2,7 +2,9 @@ class Sudo::ControlPanelController < Sudo::SudoController
 	require 'csv'
 	
 	def index
-
+		@members = RylyzMember.all
+		@presences = RylyzMemberPresence.all
+		@websites = RylyzBloggerSite.all
 	end
 
 	def new_bloggers
