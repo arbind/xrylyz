@@ -16,7 +16,7 @@
     = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/dashboard/application"
 
-    / = javascript_include_tag "http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=88888888"
+    = javascript_include_tag "http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{RYLYZ_PLAYER_HOST}x88888888"
     / = javascript_include_tag "http://rylyz-local.com/assets/wygyt.js?sitekey=localhost"
     = yield :head
     = csrf_meta_tags
