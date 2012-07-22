@@ -182,7 +182,7 @@ puts "o ss #{session[:activating_blogger_id]}"
           # auto activate this blogger
           current_member.blogger = already_signed_up_blogger
           current_member.save!
-          flash.now[:notice] = "Your account is activated! You can now register your website(s) and get the rylyz wygyt!"
+          flash.now[:notice] = "Your account is activated! You can now register your website(s) to get the rylyz wygyt!"
           clear_next_page_from_session # clear out the next_page_on_success/failure vars from session
           session[:activating_blogger_id] = nil # clear out any signup confirmation var from session
           return
