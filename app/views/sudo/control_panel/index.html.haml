@@ -1,9 +1,14 @@
 %h1= "Members (#{@members.count})"
 - @members.each do |member|
-  %p= "#{member.nickname}: <#{member.email}>"
+  - blogger = member.blogger
+  - num_sites = blogger ? blogger.sites.count: 0
+  %p= "#{member.nickname}: <#{member.email}> (#{pluralize(num_sites, 'registered website')})"
   - if member.blogger
-    %p= "BLOGGER: #{member.blogger.nickname} <#{member.blogger.email}> [#{member.blogger.share_key}] "
-  - else
+    %p= "BLOGGER: #{member.blogger.nickname} <#{member.blogger.email}> [#{member.blogger.share_key}]}"
+    - member.blogger.sites.each do |site|
+      %a{:href=>site.url}
+        site.domain
+  - if not member.blogger
     %p NO BLOGGER BINDING
   - member.rylyz_member_presences.each do |presence|
     %p= "#{presence.provider}[#{presence.sign_in_count}]:#{presence.nickname} <#{presence.email}> [#{presence.name} = #{presence.first_name} #{presence.last_name}]"
