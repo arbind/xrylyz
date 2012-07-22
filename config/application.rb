@@ -39,8 +39,8 @@ module RylyzPlayer
 
     # ditch the www from the hostname (ref: https://github.com/iSabanin/www_ditcher)
     config.autoload_paths += Dir[ Rails.root.join('lib', 'www_ditcher') ]
-    require 'www_ditcher'
-    config.middleware.use "WwwDitcher"
+    # require 'www_ditcher'
+    # config.middleware.use "WwwDitcher"
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
