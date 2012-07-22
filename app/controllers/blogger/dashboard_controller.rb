@@ -163,21 +163,49 @@ puts "o ss #{session[:activating_blogger_id]}"
 
   def check_for_blogger
 
-    if current_member.blogger.nil? # 1st login, see if they are confirming their account
+    if current_member.blogger.nil? # account has not been activated
 
       activating_blogger_id = session[:activating_blogger_id]
       @activating_blogger = RylyzBlogger.find(activating_blogger_id) if activating_blogger_id
 
-      # redirect to signup page if there was no confirmation
+
       if @activating_blogger.nil?
-        logout_current_member
-        redirect_to :signup, :notice => "Please signup and check for your activation email!" and return
+        #  see if this unactivated member's email match an unactivated blogger's email. If so, auto activate the blogger. 
+        already_signed_up_blogger = RylyzBlogger.where(email: current_member.email).first
+        if already_signed_up_blogger.nil?
+          # redirect to signup page if account is not being activated, and there is no unactivated blogger with the same email
+          logout_current_member
+          redirect_to :signup, :notice => "Please signup and check for your activation email!" and return
+        end
+
+        if already_signed_up_blogger.member.nil?
+          # auto activate this blogger
+          current_member.blogger = already_signed_up_blogger
+          current_member.save!
+          flash.now[:notice] = "Your account is activated! You can now register your website(s) and get the rylyz wygyt!"
+          clear_next_page_from_session # clear out the next_page_on_success/failure vars from session
+          session[:activating_blogger_id] = nil # clear out any signup confirmation var from session
+          return
+        else
+          # security conflict this blogger is already bound to a different member
+          # +++ todo check if the all the social presences for already_signed_up_blogger.member have the same email as current_member. If so, add this social precense to already_signed_up_blogger.member remove currrent_member from the database and switch users
+          # +++ todo if all emails don't match, then send email to the activating blogger, the activating_blogger.member, and the current_member to resolve this conflict
+          logout_current_member
+          redirect_to :dashboard_login, :notice => "There is already an active account with that email! You can merge accounts by logging in with the other account." and return          
+        end
       end
 
-      # blogger has logged in for the first time and confirmed their account
-      current_member.blogger = @activating_blogger
-      current_member.save!
-      flash.now[:notice] = "Thanks for confirming your account! You can now register your website(s)!"
+      if @activating_blogger.member.nil?
+        # blogger has logged in for the first time and confirmed their account
+        current_member.blogger = @activating_blogger
+        current_member.save!
+        flash.now[:notice] = "Thanks for activating your account! You can now register your website(s) and get the rylyz wygyt!"
+      else 
+        # security conflict this blogger is already bound to a different member
+        # +++ todo email the activating blogger, the activating_blogger.member, and the current_member to resolve this conflict
+        logout_current_member
+        redirect_to :dashboard_login, :notice => "There is already an active account with that email! You can merge accounts by logging in with the other account." and return
+      end
     end
     clear_next_page_from_session # clear out the next_page_on_success/failure vars from session
     session[:activating_blogger_id] = nil # clear out any signup confirmation var from session
