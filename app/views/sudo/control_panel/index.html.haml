@@ -6,7 +6,7 @@
   - if member.blogger
     %p= "BLOGGER: #{member.blogger.nickname} <#{member.blogger.email}> [#{member.blogger.share_key}]}"
     - member.blogger.sites.each do |site|
-      %a{:href=>site.url, :target='_blank'}
+      %a{:href=>site.url, :target=>'_blank'}
         = site.domain
   - if not member.blogger
     %p NO BLOGGER BINDING
@@ -21,6 +21,7 @@
 
 %h1= "Websites (#{@websites.count})"
 - @websites.each do |site|
-  %a{:href=>site.url, :target='_blank'}
+  %a{:href=>site.url, :target=>'_blank'}
     = site.domain
-  %br
+  %blogger
+
