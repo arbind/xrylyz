@@ -26,7 +26,12 @@ class RylyzMember
   alias :social_presences :rylyz_member_presences
 
   def self.materialize(email, nickname, is_verified=false)
-    member = RylyzMember.where(:email => email).first
+    if email.blank?
+      member = nil 
+    else 
+      member = RylyzMember.where(:email => email).first
+    end
+    
     if member
       # no need to override nickname
       member.verify(member.is_verified || is_verified)
