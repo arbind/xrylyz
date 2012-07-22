@@ -102,9 +102,9 @@ puts "o ss #{session[:activating_blogger_id]}"
     if site
       url = site.url
       site.delete
-      warn = "#{url} deleted!"
+      warn = "#{url} unregistered!"
     else
-      error = "site id #{oid} cannot be deleted."
+      error = "site id #{oid} cannot be unregistered."
     end
 
     redirect_to :dashboard_websites, :flash => {:warn => warn, :error => error}
