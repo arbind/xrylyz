@@ -1,7 +1,6 @@
 class Website::HomePageController < ApplicationController
   include ApplicationHelper
-
-  before_filter :redirect_wygyt_to_www
+  before_filter :redirect_wygyt_to_www # make sure redirect before filters run first
 
   layout "home_page", :except => :signup
 

@@ -63,11 +63,11 @@ protected
 
   def redirect_naked_domain_to_www
     # url forward naked domain rylyz.com to www.rylyz.com
-    redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if /^rylyz\.com/.match(request.host)
+    redirect_to request.protocol + 'www.' + request.host_with_port + request.fullpath if /^rylyz\.com/.match(request.host)
   end
 
   def redirect_wygyt_to_www
-    redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if /^wygyt\.rylyz\.ws/.match(request.host)
+    redirect_to request.protocol + 'www.rylyz.com' if /rylyz\.ws\z/.match(request.host)
   end
 
 
