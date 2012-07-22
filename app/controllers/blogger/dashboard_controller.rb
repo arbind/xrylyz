@@ -89,7 +89,7 @@ puts "o ss #{session[:activating_blogger_id]}"
     end
 
     if not @site
-      error = "We couldn't validate #{@domain}. It was not registered."
+      error = "We couldn't validate #{d} - it was not registered."
       redirect_to :dashboard_websites, :flash => {:error => error}
     end
 
