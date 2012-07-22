@@ -1,17 +1,15 @@
 class BloggerMailer
 
-  EMAIL_HEADER_FROM_ADDRESS = 'play@rylyz.com'
-  EMAIL_TEMPLATE_FOR_ACTIVATION = 'activation'
-  SCOPE_EMAIL_TO_BLOGGER = 'email-to-blogger'
+  FROM_ADDRESS        = 'play@rylyz.com'
+  LOG_SCOPE           = 'email-to-blogger'
+  ACTIVATION_TEMPLATE = 'activation'
 
-  def self.send_emails_to_bloggers_for_activation(options = {})
-    bloggers = bloggers_for_activation(options)
-    postageapp_data =  {
-            'headers'     => options['headers']  || { 'from' => EMAIL_HEADER_FROM_ADDRESS },
-            'template'    => options['template'] || EMAIL_TEMPLATE_FOR_ACTIVATION,
-            'recipients'  => postageapp_recipients_for_activation(bloggers)
-    }
-    postage_app_send_email_template(bloggers, postageapp_data)
+  def self.send_activation_emails(options = {})
+    blogger_recipients = bloggers_for_activation(options)
+    return 0 if blogger_recipients.empty?
+    
+    postageapp_recipients = postageapp_recipients_for_activation(blogger_recipients)
+    send_email(ACTIVATION_TEMPLATE, postageapp_recipients, blogger_recipients, options)
   end
 
   private
@@ -19,44 +17,73 @@ class BloggerMailer
   # setup for activation
   def self.bloggers_for_activation(options = {})
     bloggers = options['bloggers'] || RylyzBlogger.all
-    recipient_bloggers = bloggers.reject do |blogger|
-      blogger.member.nil? or
+
+    blogger_recipients = bloggers.reject do |blogger|
       blogger.do_not_email or
-      TimestampLogger.last_stamped_after(SCOPE_EMAIL_TO_BLOGGER, blogger.id, options['template'], 15.days.ago)
+      not blogger.member.nil? or
+      TimestampLogger.last_stamped_after?(LOG_SCOPE, blogger.id, ACTIVATION_TEMPLATE, 15.days.ago)
     end
   end
 
-  def self.postageapp_recipients_for_activation(recipient_bloggers)
-    recipients = {}
-    recipient_bloggers.each do |blogger|
+  def self.postageapp_recipients_for_activation(blogger_recipients)
+    postageapp_recipients = {}
+    blogger_recipients.each do |blogger|
       profit_sharing_rate = Util::percentage(blogger.plan.base_profit_sharing_rate)
-      recipients[blogger.email] = {
+      postageapp_recipients[blogger.email] = {
         'share_key' => blogger.share_key,
         'base_profit_sharing_rate' => profit_sharing_rate
       }
     end
-    recipients
+    postageapp_recipients
   end
 
 
   # postage app utils
-  def self.postage_app_send_email_template(recipient_bloggers, data)
-    response  = PostageApp::Request.new(:send_message, data).send
-    stamp_email_history(recipient_bloggers, data['template']) if response.ok?
-    puts data
-    true
+  def self.send_email(template, postageapp_recipients, bloggers, options)
+    postageapp_data =  {
+            'headers'     => options['headers']  || { 'from' => FROM_ADDRESS },
+            'template'    => template,
+            'recipients'  => postageapp_recipients
+    }
+    postage_app_send_email_template(bloggers, postageapp_data)
   end
 
-  def self.stamp_email_history(recipient_blogger, template_name)
+  def self.postage_app_send_email_template(blogger_recipients, data)
+    d = limit_recipients_if_testing(data)
+    response  = PostageApp::Request.new(:send_message, d).send
+    stamp_email_history(blogger_recipients, data['template']) if response.ok?
+  end
+
+  def self.limit_recipients_if_testing(data)
+    return data if PostageApp.config.recipient_override.blank?
+    # limit recipients to only 1 real person plus spirit+001 - spirit+005@rylyz.com if in test mode
+    # all test emails will actually end up going to value of PostageApp.config.recipient_override (which is set to spirit+000@rylyz.com)
+    test_recipients = {}    
+    (1..5).to_a.each do |n|
+      email = "spirit+00#{n}@rylyz.com"
+      test_recipients[email] = data['recipients'][email] unless data['recipients'][email].nil?
+    end
+    one_real_recipient = data['recipients'].first # get key, value of first recipient
+    test_recipients[one_real_recipient[0]] = one_real_recipient[1] unless one_real_recipient.nil?
+
+    puts "IN TESTMODE: postageapp is configured to override email recipients. sending only #{test_recipients.count} emails instead of all #{data['recipients'].count}."
+
+    data['recipients'] = test_recipients
+    data
+  end
+
+  # utils
+  def self.stamp_email_history(blogger_recipients, template_name)
     # update email history for recipients
     begin
-      timestamp = DateTime.now.to_s
-      recipient_blogger.each do |blogger|
-        TimestampLogger.last_stamped_after(SCOPE_EMAIL_TO_BLOGGER, blogger.id, options['template'], 15.days.ago)
+      timestamp = DateTime.now
+      blogger_recipients.each do |blogger|
+        TimestampLogger.stamp(LOG_SCOPE, blogger.id, template_name, timestamp)
       end
-      true
+      puts "o-- Just sent #{template_name} email to #{blogger_recipients.count} people!"
+      blogger_recipients.count
     rescue
-      false
+      0
     end
   end
 

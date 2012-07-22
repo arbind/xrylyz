@@ -6,6 +6,8 @@
 .section
   %form{:action=>"load_signups", :method=>"POST"}
     %button.submit-button{:type=>"submit"} Load Signups
+  %form{:action=>"send_activation_emails", :method=>"POST"}
+    %button.submit-button{:type=>"submit"} Activate!
 
 .section
   %ol

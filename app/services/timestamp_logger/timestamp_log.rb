@@ -1,4 +1,4 @@
-class TimestampLog
+class TimestampLogger::TimestampLog
   include Mongoid::Document
   include Mongoid::Timestamps
 

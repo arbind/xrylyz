@@ -1,8 +1,8 @@
 - @html_page_title = "login"
 
-- if @signup_confirmation_blogger
-  = @signup_confirmation_blogger.email 
-  = @signup_confirmation_blogger.plan.base_profit_sharing_rate if @signup_confirmation_blogger.plan
+- if @activating_blogger
+  = @activating_blogger.email 
+  = Util.percentage(@activating_blogger.plan.base_profit_sharing_rate) if @activating_blogger.plan
 
 .section
   %p 

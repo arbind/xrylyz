@@ -30,11 +30,14 @@ class Member::AuthController < ApplicationController
     #     double check that this provider is not already in the list as another uid, if so, create a new member and switch user
     #   if a current_member is not signed in and this is a new presence, create a new member and sign them in for the first time
     next_page = nil
+
+    # logout clears activating_blogger from the session, so capture it in case logout is invoked (or self.current_member = nil)
+    activating_blogger_id = session[:activating_blogger_id]
+
     begin
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)
       presence = RylyzMemberPresence.materialize_from_omni_auth(omniauth_hash)
       presence.mark_sign_in
-
       if presence.signed_in_before? # this presence has signed in from this provider before, just sign them in again
         if member_signed_in? # member already signed in
           unless self.current_member.id == presence.member.id
@@ -51,11 +54,10 @@ class Member::AuthController < ApplicationController
             self.current_member.add_social_presence presence
         else # not signed in
           # see if there is signup confirmation
-          signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid]
-          @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+          @activating_blogger = RylyzBlogger.find(activating_blogger_id) if activating_blogger_id
 
           # see if the blogger has confirmed before using a different provider (just add this as new provider to same member)
-          self.current_member = @signup_confirmation_blogger.member if not @signup_confirmation_blogger.nil?
+          self.current_member = @activating_blogger.member if not @activating_blogger.nil?
 
           # if create a new member (or find one matching the same email as this presence)
           self.current_member ||= RylyzMember.materialize(presence.email, presence.nickname, presence.is_verified)
@@ -64,7 +66,6 @@ class Member::AuthController < ApplicationController
       end
 
       #next_page = next_page_on_failure! if self.current_member.nil?
-
     rescue Exception => e
       logger.error "Oauth Error #{e.message}"
       s = "exception: #{e.message}<br>"
@@ -72,6 +73,8 @@ class Member::AuthController < ApplicationController
       next_page = next_page_on_failure
       error = "Login failed. #{e.message}"
     ensure
+    session[:activating_blogger_id] = activating_blogger_id if activating_blogger_id # restore the session
+
       next_page ||= next_page_on_success
 
       if next_page.nil?
@@ -80,7 +83,6 @@ class Member::AuthController < ApplicationController
 
       redirect_to next_page, :flash => {:notice => notice, :error => error}
     end
-
   end
 
   def omniauth_failure_callback

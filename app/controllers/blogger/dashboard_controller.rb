@@ -1,7 +1,7 @@
 class Blogger::DashboardController < ApplicationController
   include ApplicationHelper
-  before_filter :require_member_to_be_signed_in,  :except =>         [ :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
-  before_filter :require_blogger_to_be_signed_in, :except => [ :index, :confirm_signup, :this_is_not_me, :login, :logout, :signup ]
+  before_filter :require_member_to_be_signed_in,  :except => [ :activate_me, :this_is_not_me, :login, :logout, :signup ]
+  before_filter :require_blogger_to_be_signed_in, :except => [ :index, :activate_me, :this_is_not_me, :login, :logout, :signup ]
   before_filter :check_for_blogger, :only => [ :index ]
   before_filter :in_dashboard_website
   before_filter :check_for_dot_com_domain
@@ -11,10 +11,17 @@ class Blogger::DashboardController < ApplicationController
   #
   #
   #
-  def confirm_signup
+  def activate_me
+    logout_current_member
     share_key = params[:share_key]
-    @signup_confirmation_blogger = RylyzBlogger.where(:share_key => share_key).first
-    session[:signup_confirmation_blogger_oid] = @signup_confirmation_blogger.id if not @signup_confirmation_blogger.nil?
+    redirect_to :home_page, :notice=>'Please signup to activate an account!' and return if share_key.empty?
+
+    @activating_blogger = RylyzBlogger.where(:share_key => share_key).first
+    redirect_to :home_page, :notice=>'Please signup to activate an account!' and return if @activating_blogger.nil?
+
+puts "o id #{@activating_blogger.id}"
+    session[:activating_blogger_id] = @activating_blogger.id
+puts "o ss #{session[:activating_blogger_id]}"
     redirect_to :dashboard_login
   end
 
@@ -22,7 +29,7 @@ class Blogger::DashboardController < ApplicationController
   #
   #
   def this_is_not_me
-    session[:signup_confirmation_blogger_oid] = nil
+    session[:activating_blogger_id] = nil
     redirect_to :dashboard_login
   end
 
@@ -30,10 +37,14 @@ class Blogger::DashboardController < ApplicationController
   #
   #
   def login
-    logout_current_member
+    activating_blogger_id = session[:activating_blogger_id]   # see if blogger is activating their account
 
-    signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid] # see if blogger is confirming their signup
-    @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+    logout_current_member # logout anyone comming to this page
+
+    if activating_blogger_id
+      session[:activating_blogger_id] = activating_blogger_id # keep them in session in order to bind them after authentication
+      @activating_blogger = RylyzBlogger.find(activating_blogger_id)
+    end
 
     self.next_page_on_success = dashboard_url
     self.next_page_on_failure = dashboard_login_url
@@ -154,22 +165,22 @@ class Blogger::DashboardController < ApplicationController
 
     if current_member.blogger.nil? # 1st login, see if they are confirming their account
 
-      signup_confirmation_blogger_oid = session[:signup_confirmation_blogger_oid]
-      @signup_confirmation_blogger = RylyzBlogger.find(signup_confirmation_blogger_oid) if signup_confirmation_blogger_oid
+      activating_blogger_id = session[:activating_blogger_id]
+      @activating_blogger = RylyzBlogger.find(activating_blogger_id) if activating_blogger_id
 
       # redirect to signup page if there was no confirmation
-      if @signup_confirmation_blogger.nil?
+      if @activating_blogger.nil?
         logout_current_member
-        redirect_to :signup, :notice => "Please signup first! We'll send you a email invitation once your account is setup :)" and return
+        redirect_to :signup, :notice => "Please signup and check for your activation email!" and return
       end
 
       # blogger has logged in for the first time and confirmed their account
-      current_member.blogger = @signup_confirmation_blogger
+      current_member.blogger = @activating_blogger
       current_member.save!
       flash.now[:notice] = "Thanks for confirming your account! You can now register your website(s)!"
     end
     clear_next_page_from_session # clear out the next_page_on_success/failure vars from session
-    session[:signup_confirmation_blogger_oid] = nil # clear out any signup confirmation var from session
+    session[:activating_blogger_id] = nil # clear out any signup confirmation var from session
   end
 
   def dashboard_submenu

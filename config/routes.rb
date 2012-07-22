@@ -28,11 +28,11 @@ RylyzPlayer::Application.routes.draw do
 
     # +++ add dashboard resources for authentication, websites, analytics, etc.
     # resource: blogger authentication
-    get 'login',                :as => :dashboard_login
-    get 'logout',               :as => :dashboard_logout
-    get 'signup',               :as => :dashboard_signup
-    get 'this_is_not_me',       :as => :dashboard_this_is_not_me
-    get 'confirm_signup/:share_key', :to => 'dashboard#confirm_signup'
+    get 'login',                    :as => :dashboard_login
+    get 'logout',                   :as => :dashboard_logout
+    get 'signup',                   :as => :dashboard_signup
+    get 'this_is_not_me',           :as => :dashboard_this_is_not_me
+    get 'activate_me/:share_key',   :as => :dashboard_activate_me, :to => 'dashboard#activate_me'
 
     # resource: blogger's website:
     get 'websites',             :as => :dashboard_websites
@@ -95,12 +95,13 @@ post 'test_purchase', :as => :dashboard_test_purchase
   end
 
   scope "/sudo", :module => :sudo, :controller => 'control_panel' do
-    get '',        :to => 'control_panel#index', :as => :sudo_index
+    get '',                         :as => :sudo_index, :to => 'control_panel#index'
     get 'index'
-    get 'new_bloggers',        :as => :sudo_new_bloggers
-    get 'signups',        :as => :sudo_signups
-    post 'load_signups',  :as => :sudo_load_signups
-    get 'api',        :as => :sudo_api
+    get 'new_bloggers',             :as => :sudo_new_bloggers
+    get 'signups',                  :as => :sudo_signups
+    post 'load_signups',            :as => :sudo_load_signups
+    post 'send_activation_emails',  :as => :sudo_send_activation_emails
+    get 'api',                      :as => :sudo_api
     # +++ add super user functionality - make sure to include super secure authentication
   end
 

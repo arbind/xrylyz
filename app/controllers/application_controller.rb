@@ -32,17 +32,21 @@ protected
   def logout_current_member
     @current_member = nil
     session[:member_id] = nil
-    session[:signup_confirmation_blogger_oid] = nil
+    session[:activating_blogger_id] = nil
   end
 
   def current_member=(rylyz_member)
-    logout_current_member and return if rylyz_member.nil?
+    if rylyz_member.nil?
+      logout_current_member 
+      return nil
+    end
 
   	member_id = rylyz_member.id.to_s
     session[:member_id] = member_id
 
     @current_member = rylyz_member  # +++ ? @current_member = RylyzMember.find(member_id)
     @current_member.mark_sign_in
+    @current_member
   end
 
   def member_signed_in?

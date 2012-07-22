@@ -26,7 +26,7 @@ module RylyzPlayer
     # config.autoload_paths += %W(#{config.root}/extras)
     # config.autoload_paths += Dir[ Rails.root.join('app', 'models', '**/') ]
     config.autoload_paths += Dir[ Rails.root.join('app', 'models', 'apps', '**/') ]
-    config.autoload_paths += Dir[ Rails.root.join('app', 'models', 'services', '**/') ]
+    config.autoload_paths += Dir[ Rails.root.join('app', 'services', '{**}') ]
 
     config.autoload_paths += Dir[ Rails.root.join('app', 'controllers', 'apps', '**/') ]
     # Only load the plugins named here, in the order given (default is alphabetical).

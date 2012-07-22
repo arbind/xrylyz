@@ -16,6 +16,11 @@ class Sudo::ControlPanelController < Sudo::SudoController
 
 	def api() end
 		
+	def send_activation_emails
+		sent_email_count = BloggerMailer.send_activation_emails
+		redirect_to :sudo_signups, :notice =>"Sent emails to #{sent_email_count} people!"
+	end
+
 	def load_signups
 		# ++++todo get this data directly from launchrock: http://developers.launchrock.com/documentation/api/reference#api-insights
 		blogger = nil
@@ -73,7 +78,6 @@ class Sudo::ControlPanelController < Sudo::SudoController
 			end
 		end
 
-		@signups = RylyzBlogger.all
 		redirect_to :sudo_signups
 	end
 
