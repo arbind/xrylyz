@@ -1,7 +1,7 @@
 class Website::HomePageController < ApplicationController
   include ApplicationHelper
 
-  before_filter :check_for_dot_com_domain
+  before_filter :redirect_wygyt_to_www
 
   layout "home_page", :except => :signup
 

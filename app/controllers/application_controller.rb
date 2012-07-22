@@ -7,11 +7,6 @@ class ApplicationController < ActionController::Base
 
 protected
 
-  def check_for_dot_com_domain
-    player_host = ENV['RYLYZ_PLAYER_HOST'] || ""
-    redirect_to "http://rylyz.com" if player_host.downcase.include? "wygyt."
-  end
-
   def require_member_to_be_signed_in
     redirect_to :dashboard_login, :notice=>"Please sign in first" if not member_signed_in?
   end
@@ -70,5 +65,10 @@ protected
     # url forward naked domain rylyz.com to www.rylyz.com
     redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if /^rylyz\.com/.match(request.host)
   end
+
+  def redirect_wygyt_to_www
+    redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if /^wygyt\.rylyz\.ws/.match(request.host)
+  end
+
 
 end

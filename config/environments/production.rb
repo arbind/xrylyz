@@ -16,6 +16,7 @@ if ['www.rylyz.com',  'wygyt.rylyz.ws'].include?(player_host)
   # See everything in the log (default is :info)
   config.log_level = :debug
   
+  # Note: only www.rylyz.com is configured for these oauth keys (these won't work with wygyt.rylyz.ws and the naked domain: rylyz.com)
   SECRETS = {
     :STRIPE => { # LIVE CONFIG - MAKES REAL CREDIT CARD CHARGES
       :SECRET => 'Ev7W4ozqnmHR5taP5uYpcpb0BQa5ShPG',

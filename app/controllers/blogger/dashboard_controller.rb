@@ -4,7 +4,7 @@ class Blogger::DashboardController < ApplicationController
   before_filter :require_blogger_to_be_signed_in, :except => [ :index, :activate_me, :this_is_not_me, :login, :logout, :signup ]
   before_filter :check_for_blogger, :only => [ :index ]
   before_filter :in_dashboard_website
-  before_filter :check_for_dot_com_domain
+  before_filter :redirect_wygyt_to_www
 
   layout "dashboard", :except => [:signup]
 

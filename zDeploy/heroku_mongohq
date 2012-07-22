@@ -1,3 +1,5 @@
 to backup the db
 https://github.com/pedro/heroku-mongo-sync
 
+to run from console:
+heroku run console
