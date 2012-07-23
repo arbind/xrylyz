@@ -7,6 +7,7 @@
     = stylesheet_link_tag    "fonts/istokweb", :media => "all"
     = stylesheet_link_tag    "fonts/ubuntu", :media => "all"
 
+
     = stylesheet_link_tag    "base/index", :media => "all"
     = stylesheet_link_tag    "website/base/index", :media => "all"
     = stylesheet_link_tag    "website/sudo/application", :media => "all"
@@ -15,9 +16,11 @@
     = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/sudo/application"
 
-  / <script src="../../ui/jquery.ui.core.js"></script>
-  / <script src="../../ui/jquery.ui.widget.js"></script>
-  / <script src="../../ui/jquery.ui.datepicker.js"></script>
+    / jquery ui css and js files
+    = stylesheet_link_tag    "http://jqueryui.com/themes/ui-lightness/jquery-ui.css", :media => "all"
+    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.core.js"
+    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.widget.js"
+    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.datepicker.js"
 
     = yield :head
     = csrf_meta_tags

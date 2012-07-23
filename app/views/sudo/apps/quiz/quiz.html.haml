@@ -1,3 +1,6 @@
+:javascript
+  $(function() { $( "#pickStart" ).datepicker();  $( "#pickStop" ).datepicker() });
+
 .quiz
   = @quiz.questions.size
 
@@ -46,6 +49,11 @@
       %input.long{ :type => 'text', :name => 'quiz[description]', :value => "#{@quiz.description}", :placeholder => 'description' }
       %br
       %br
+      %label
+      %input{:type=>'text', :name=>'dates[start]', :id=>'pickStart', :placeholder => '01/01/01'}
+      %br
+      %br
+
       .wide-one-third.high300
         %h2= "Level 1 - #{@quiz.questions.level1.count}"
         - @quiz.questions.level1.each do |q|

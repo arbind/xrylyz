@@ -1,4 +1,5 @@
 /*
  *= require_self
+ *= require vendor/jqueryui.com/themes/ui-lightness/jquery-ui.css
  *= require_tree .
 */
