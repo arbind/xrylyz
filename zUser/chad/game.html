@@ -27,9 +27,8 @@
   min-width:800px;
   height: 100%;
   min-height:600px;
-  opacity: 0.75;
-  -moz-opacity: 0.75;
   filter:alpha(opacity=75);
+  opacity: 0.75;
 }
 
 #ryAppCanvas {
@@ -42,9 +41,8 @@
   background-color:transparent;
   width: 100%;
   height: 100%;
-  opacity: 1.0;
-  -moz-opacity: 1.0;
   filter:alpha(opacity=100);
+  opacity: 1.0;
 }
 #ryAppFrame {
   position:relative;
@@ -52,9 +50,9 @@
   width: 796px;
   min-height: 488px;
   background: #fafafa;
-  border: 18px solid #282828;
-  border-radius: 8px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, .3), 0 10px 20px rgba(0, 0, 0, .3);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .5), 0 8px 15px rgba(0, 0, 0, .5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .5), 0 8px 15px rgba(0, 0, 0, .5);
 }
 #ryCloseButton {
   position:absolute;
@@ -66,9 +64,9 @@
   background-color: black;
   border: 4px solid #888888;
   border-radius: 50%;
-  -o-border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
+  border-radius: 50%;
   cursor: pointer;
   &:hover {
     color: #FFFFCC;
@@ -100,10 +98,11 @@
   .wygyt-app {
     color: #222;
     background-color: #FAFAFA;
+    border-radius: 6px 6px 0 0;
     margin: 0px auto;
     padding: 20px;
   }
-  
+
   #ryWelcome {
     padding-bottom: 150px;
     background: url(olympic-logo.png) center bottom no-repeat;
@@ -132,18 +131,16 @@
 <style contents="trivia app">
 .quiz-app {
   color: #222;
-  background-color: #FAFAFA;
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
   font-size: 16px;
   margin: 0px auto;
   text-align: center;
 }
-  
+
 /* line 6, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryQuizGame {
   position: relative;
   height: 600px;
-  background: #fff;
   font-family: helvetica, arial, sans-serif;
 }
 
@@ -165,7 +162,14 @@
 /* line 21, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryHeader {
   background: #000;
+  background: -webkit-linear-gradient(#000, #333);
+  background: -moz-linear-gradient(#000, #333);
+  background: -o-linear-gradient(#000, #333);
+  background: -ms-linear-gradient(#000, #333);
+  background: linear-gradient(#000, #333);
+  border-bottom: 1px solid #000;
   padding: 10px;
+  border-radius: 6px 6px 0 0;
 }
 /* line 25, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryAppName {
@@ -185,13 +189,14 @@
 }
 /* line 39, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryAppContainer {
-  padding: 40px 20px 20px;
+  padding: 20px;
   overflow: hidden;
 }
-/* line 45, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-.ryQuestions {
-  padding: 10px;
+.ryQuestionsHeading {
+  margin: 0 0 1.5em;
+  font-size: 21px;
 }
+
 /* line 48, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySet {
   list-style-type: none;
@@ -209,15 +214,16 @@
 .ryQuestion {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   margin-bottom: 30px;
   color: #000;
   background: white url(olympic-icon.png) center center no-repeat;
   border: 1px solid #888;
   border-radius: 4px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 5px rgba(0, 0, 0, 0.5);
-  -webkit-transition: top .1s linear;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset, 0 1px 0 #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset, 0 1px 0 #fff;
+  cursor: pointer;
 }
 /* line 72, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryQuestion:hover {
@@ -296,10 +302,9 @@
   padding: .5em 1em;
   margin-bottom: .5em;
   text-align: center;
-  background: -webkit-linear-gradient(#222222, #444444);
+  background: #333;
   color: white;
   text-shadow: 0 2px 3px black;
-  border-radius: 4px 4px 0 0;
 }
 /* line 146, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia h2 {
@@ -338,7 +343,9 @@
   color: green;
 }
 /* line 184, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTriviaResults .ryCorrect #ryStatus,
+#ryTriviaResults .ryCorrect #ryStatus {
+  color: green;
+}
 #ryTriviaResults .ryWrong #ryStatus {
   color: #cc0000;
 }
@@ -357,7 +364,7 @@
 }
 /* line 212, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryChoice.ryCorrect {
-  color: lightYellow;
+  color: #fff;
   background: green;
 }
 /* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
@@ -366,11 +373,10 @@
 }
 
 .ryChoice.ryWrong {
-  color: #FAA;
   background: transparent;
   opacity: 0.55;
-  -moz-opacity: 0.55;
-  filter:alpha(opacity=55);  
+  filter:alpha(opacity=55);
+  opacity: 0.55;
 }
 /* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .ryChoice.ryWrong:hover {
@@ -380,10 +386,15 @@
 /* line 200, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySelected {
   background: #222;
-  color: purple;
+  color: #fff;
   font-weight: bold;
   border-color: transparent;
   -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  -moz-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  -o-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  -ms-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  transform: rotate(-1deg) scale(1.05) translateY(-5%);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px black;
 }
@@ -393,8 +404,7 @@
 }
 
 .rySelected.ryCorrect {
-  color: purple;
-  border-color: purple;
+  color: white;
   background: green;
 }
 /* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
@@ -403,13 +413,11 @@
 }
 
 .rySelected.ryWrong {
-  background: red;
+  background: #cc0000;
   color: white;
-  border-color: purple;
-}
-/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-.rySelected.ryWrong:hover {
-  background: red;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  opacity: 1;
 }
 
 
@@ -470,7 +478,7 @@
           <h2>Daily Quiz!</h2>
           <p>Loading</p>
         </div>
-      </div>      
+      </div>
         <!-- APP Content -->
 
 
@@ -530,6 +538,7 @@
           </object>
           <div id="ryAppContainer">
             <div class="ryQuestions">
+              <h2 class="ryQuestionsHeading">Choose a question below</h2>
               <collection name="level1-questions">
               <div class="level1-questions-collection">
                 <ul class="rySet">
@@ -648,7 +657,7 @@
             <!-- APP Content -->
 
 
-      </div>      
+      </div>
     </div>
   <!---------------- </MOCK SCREEN> ------------- -->
 
@@ -854,7 +863,7 @@
             </object>
           </div>
         </div>
-      </div>    
+      </div>
         <!-- APP Content -->
 
 
@@ -926,7 +935,7 @@
             </object>
           </div>
         </div>
-      </div>    
+      </div>
         <!-- APP Content -->
 
 
@@ -996,7 +1005,7 @@
             </object>
           </div>
         </div>
-      </div>    
+      </div>
         <!-- APP Content -->
 
 
@@ -1066,7 +1075,7 @@
             </object>
           </div>
         </div>
-      </div>    
+      </div>
         <!-- APP Content -->
 
 
@@ -1103,7 +1112,7 @@
               <div>Country</div>
               <div>Score</div>
               <div>Total Time</div>
-              <div># Questions</div>  
+              <div># Questions</div>
               <div><a href="#">referrer url</a></div>
             </div>
             <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
@@ -1111,7 +1120,7 @@
               <div>Country</div>
               <div>Score</div>
               <div>Total Time</div>
-              <div># Questions</div>  
+              <div># Questions</div>
               <div><a href="#">referrer url</a></div>
             </div>
             <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
@@ -1119,7 +1128,7 @@
               <div>Country</div>
               <div>Score</div>
               <div>Total Time</div>
-              <div># Questions</div>  
+              <div># Questions</div>
               <div><a href="#">referrer url</a></div>
             </div>
           </div>
