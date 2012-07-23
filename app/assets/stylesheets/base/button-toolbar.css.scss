@@ -1,6 +1,8 @@
 @import 'mixins/mixin-transitions';
 @import 'mixins/mixin-round-corners';
 
+// wrap these in .rylyz ? prefix all styles with ry ?
+
 .toolbar, .toolbar.form, .toolbar.fieldset, .toolbar.list, .toolbar.list-item  {
   display:inline-block;
   margin: 0px;

@@ -6,6 +6,9 @@ class Quiz
   field :kind, :type => String
   field :topic, :type => String
   field :description, :type => String
+  
+  field :online_after, :type => DateTime, :default => nil
+  field :offline_after, :type => DateTime, :default => nil
 
   field :is_approved, :type => Boolean, :default => false
   field :is_rejected, :type => Boolean, :default => false

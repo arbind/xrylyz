@@ -3,3 +3,6 @@ https://github.com/pedro/heroku-mongo-sync
 
 to run from console:
 heroku run console
+
+local sync 
+http://www.idolhands.com/ruby-on-rails/guides-tips-and-tutorials/make-a-local-copy-of-your-mongohq-database

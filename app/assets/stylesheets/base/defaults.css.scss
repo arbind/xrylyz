@@ -1,16 +1,15 @@
-@import 'mixins/mixin-user-select.css.scss';
-@import 'mixins/mixin-transitions.css.scss';
+@import 'mixins/mixin-user-select';
+@import 'mixins/mixin-transitions';
 
-* {
+// wrap these in .rylyz ? prefix all styles with ry ?
+
+all {
   padding: 0px;
   margin: 0px;
   text-decoration: none;
   
   @include transitionsOnMixin;
-  @include unselectableMixin;
 }
-
-*::selection {background-color:transparent} /* For opera and IE  so user can not see selected text */
 
 ul, ol { margin-left: 8px; }
 

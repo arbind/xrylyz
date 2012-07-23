@@ -24,7 +24,7 @@
   var clip = new ZeroClipboard.Client();
   var snippet = $('#snippet').text()
   clip.setText(snippet);
-  clip.glue('snippet');
+  clip.glue('copy-link');
   clip.addEventListener('onComplete', onCopyComplete );
   function onCopyComplete(client, text ) {
     $('#copy-link').addClass('copied').html('copied! now you can paste to your site.');

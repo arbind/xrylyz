@@ -29,23 +29,32 @@ class RylyzBloggerSite
     s = nil
     d = nil
 
-    uri = URI.parse(url)
-    uri = URI.parse("http://#{url}") unless uri.scheme
-    if uri.scheme
-      s = uri.scheme.downcase
-      d = uri.host.downcase
+    begin
+      uri = URI.parse(url)
+      uri = URI.parse("http://#{url}") unless uri.scheme
+      if uri.scheme
+        s = uri.scheme.downcase
+        d = uri.host.downcase
+      end
+      return nil if d.blank?
+      return nil unless ["http", "https"].include?(s)
+      return nil unless hostname_resolves?(d)
+      [s, d]
+    rescue
+      nil
     end
-    return nil if d.blank?
-    return nil unless ["http", "https"].include?(s)
-    return nil unless hostname_resolves?(d)
-    [s, d]
   end
 
   def scrape_attributes
-    page = MetaInspector.new(url)
-    return false unless page
-    self.title = page.title
-    self.description = page.description
+    begin
+      # MetaInspector has lots of internal errors - for example: it sometimes tries to call false.empty?
+      # Lets replace this with something more robust soon!
+      page = MetaInspector.new(url)
+      self.title = page.title
+      self.description = page.description
+    rescue
+    end
+    true
   end
 
   require 'resolv'

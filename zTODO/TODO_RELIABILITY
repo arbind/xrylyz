@@ -2,6 +2,7 @@
   - WID Exception
   - Channel Exception
   - Add Thread Management
+  - MetaInspector is flakey - replace its usage in RylyzBloggerSite.scrape_attributes
   - Add Session Management
   - Manage Socket Connection
     - Do not open connection on every page impression
