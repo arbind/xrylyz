@@ -53,7 +53,12 @@ class Sudo::Apps::QuizController < Sudo::SudoController
 
     if @quiz
       q = params[:quiz]
-
+      d = params[:dates]
+      if d and d[:start] 
+        start_at = DateTime.strptime(d[:start], "%m/%d/%Y").utc.beginning_of_day
+        q['online_at'] = start_at
+        q['offline_at'] = start_at + 1.day
+      end
       @quiz.update_attributes(q)
       # @quiz.save
     end

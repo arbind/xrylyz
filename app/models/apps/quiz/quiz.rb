@@ -6,9 +6,9 @@ class Quiz
   field :kind, :type => String
   field :topic, :type => String
   field :description, :type => String
-  
-  field :online_after, :type => DateTime, :default => nil
-  field :offline_after, :type => DateTime, :default => nil
+
+  field :online_at, :type => DateTime,  :default => Proc.new { DateTime.now.utc.beginning_of_day }
+  field :offline_at, :type => DateTime, :default => Proc.new { DateTime.now.utc.beginning_of_day + 1.day }
 
   field :is_approved, :type => Boolean, :default => false
   field :is_rejected, :type => Boolean, :default => false

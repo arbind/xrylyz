@@ -1,5 +1,11 @@
 :javascript
-  $(function() { $( "#pickStart" ).datepicker();  $( "#pickStop" ).datepicker() });
+  $(function() { 
+    $( "#pickStart" ).datepicker();
+    $( "#pickStop"  ).datepicker();
+    $( "#pickStart" ).datepicker( "option", "dateFormat", "mm/dd/yy" );
+    $( "#pickStop"  ).datepicker( "option", "dateFormat", "mm/dd/yy" );
+
+  });
 
 .quiz
   = @quiz.questions.size
@@ -49,8 +55,9 @@
       %input.long{ :type => 'text', :name => 'quiz[description]', :value => "#{@quiz.description}", :placeholder => 'description' }
       %br
       %br
-      %label
-      %input{:type=>'text', :name=>'dates[start]', :id=>'pickStart', :placeholder => '01/01/01'}
+      %input.short{:type=>'text', :name=>'dates[start]', :id=>'pickStart', :placeholder => @quiz.online_at.strftime('%m/%d/%Y')}
+      -
+      %input.short{:type=>'text', :name=>'dates[end]', :id=>'pickStop', :placeholder => @quiz.offline_at.strftime('%m/%d/%Y')}
       %br
       %br
 

@@ -16,12 +16,6 @@
     = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/sudo/application"
 
-    / jquery ui css and js files
-    = stylesheet_link_tag    "http://jqueryui.com/themes/ui-lightness/jquery-ui.css", :media => "all"
-    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.core.js"
-    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.widget.js"
-    = javascript_include_tag "http://jqueryui.com/ui/jquery.ui.datepicker.js"
-
     = yield :head
     = csrf_meta_tags
   %body.rylyz.sudo
