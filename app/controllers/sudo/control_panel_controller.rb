@@ -17,7 +17,11 @@ class Sudo::ControlPanelController < Sudo::SudoController
 	end
 
 	def api() end
-		
+
+	def preview_activation_emails
+		sent_email_count = BloggerMailer.preview_activation_emails
+		redirect_to :sudo_signups, :notice =>"Activation emails would be sent to #{pluralize(sent_email_count, 'people')}!"
+	end
 	def send_activation_emails
 		sent_email_count = BloggerMailer.send_activation_emails
 		redirect_to :sudo_signups, :notice =>"Sent emails to #{sent_email_count} people!"

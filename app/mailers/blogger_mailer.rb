@@ -4,6 +4,10 @@ class BloggerMailer
   LOG_SCOPE           = 'email-to-blogger'
   ACTIVATION_TEMPLATE = 'activation'
 
+  def self.preview_activation_emails(options = {})
+    bloggers_for_activation(options).count
+  end
+
   def self.send_activation_emails(options = {})
     blogger_recipients = bloggers_for_activation(options)
     return 0 if blogger_recipients.empty?

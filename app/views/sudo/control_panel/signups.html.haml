@@ -4,10 +4,13 @@
     - @plans.each do |plan|
       %li= "#{pluralize(plan.bloggers.count, 'blogger')} signed up for the #{plan.name} plan"
 .section
-  %form{:action=>"load_signups", :method=>"POST"}
-    %button.submit-button{:type=>"submit"} Load Signups
-  %form{:action=>"send_activation_emails", :method=>"POST"}
-    %button.submit-button{:type=>"submit"} Activate!
+  .toolbar
+    %form{:action=>"load_signups", :method=>"POST"}
+      %button.submit-button{:type=>"submit"} Load Signups
+    %form{:action=>sudo_preview_activation_emails_path, :method=>"POST"}
+      %button.submit-button{:type=>"submit"} Preview Activation Emails
+    %form{:action=>"send_activation_emails", :method=>"POST"}
+      %button.submit-button{:type=>"submit"} Activate Bloggers!
 
 .section
   %ol

@@ -95,13 +95,14 @@ post 'test_purchase', :as => :dashboard_test_purchase
   end
 
   scope "/sudo", :module => :sudo, :controller => 'control_panel' do
-    get '',                         :as => :sudo_index, :to => 'control_panel#index'
+    get '',                           :as => :sudo_index, :to => 'control_panel#index'
     get 'index'
-    get 'new_bloggers',             :as => :sudo_new_bloggers
-    get 'signups',                  :as => :sudo_signups
-    post 'load_signups',            :as => :sudo_load_signups
-    post 'send_activation_emails',  :as => :sudo_send_activation_emails
-    get 'api',                      :as => :sudo_api
+    get 'new_bloggers',               :as => :sudo_new_bloggers
+    get 'signups',                    :as => :sudo_signups
+    post 'load_signups',              :as => :sudo_load_signups
+    post 'preview_activation_emails', :as => :sudo_preview_activation_emails
+    post 'send_activation_emails',    :as => :sudo_send_activation_emails
+    get 'api',                        :as => :sudo_api
     # +++ add super user functionality - make sure to include super secure authentication
   end
 
