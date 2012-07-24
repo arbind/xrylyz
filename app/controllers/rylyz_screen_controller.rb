@@ -111,7 +111,7 @@ class RylyzScreenController
   #   materialize_message_capsule_for_wid 'start-timer', wid
   # end
 
-  def self.capsule
+  def self.materialize_capsule
     ctx = {appName: app_name, screenName: screen_name}
     c = RylyzMessageCapsule.new
     c.app_name app_name

@@ -133,19 +133,22 @@ class RylyzMessageCapsule
 
   def add_css_class(selector, css_class)
     ctx = event_context
-    data = {selector: selector, cssClass: css_class}
+    sel = "#ryApp #{selector}" # ensure that the selection happens withing rylyz app only
+    data = {selector: sel, cssClass: css_class}
     @events << materialize_event('css', 'add-css-class', ctx, data)
     self
   end
   def remove_css_class(selector, css_class)
     ctx = event_context
-    data = {selector: selector, cssClass: css_class}
+    sel = "#ryApp #{selector}" # ensure that the selection happens withing rylyz app only
+    data = {selector: sel, cssClass: css_class}
     @events << materialize_event('css', 'remove-css-class', ctx, data)
     self
   end
   def set_css_attribute(selector, css_attribute, css_value)
     ctx = event_context
-    data = {selector: selector, cssAttribute: css_attribute, cssValue: css_value}
+    sel = "#ryApp #{selector}" # ensure that the selection happens withing rylyz app only
+    data = {selector: sel, cssAttribute: css_attribute, cssValue: css_value}
     @events << materialize_event('css', 'set-css-attribute', ctx, data)
     self
   end

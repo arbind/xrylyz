@@ -192,15 +192,26 @@
           color: green;
         }
       }
-      .ryCorrect  #ryStatus {
-        color: #cc0000;
+      .ryCorrect {
+        #ryStatus {
+         color: green;
+        }
+        #ryQuestionReflection {
+
       }
-      .ryWrong #ryStatus {
-        color: #cc0000;
+      }
+      .ryWrong {
+        #ryStatus {
+          color: #822;
+        }
+        #ryQuestionReflection {
+
+      }
       }
     }
 
     .ryChoice {
+      @include transitionsSlowMixin;
       position: relative;
       padding: 1em;
       margin-bottom: 10px;
@@ -210,24 +221,32 @@
       &:hover {
         background: LightYellow;
       }
-      .ryCorrect {
-        color: #fff;
-        background: green;
-        &:hover {
-          background: green;
-        }
-      }
-      .ryWrong {
-        background: transparent;
-        filter:alpha(opacity=55);
-        opacity: 0.55;
-        &:hover {
-          background: transparent;
-        }
-      }
-
     }
+    .ryChoice.ryCorrect {
+      color: #fff;
+      background: green;
+      -webkit-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+      -moz-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+      -o-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+      -ms-transform: rotate(-1deg) scale(1.05) translateY(-5%);
+      transform: rotate(-1deg) scale(1.05) translateY(-5%);
+      text-shadow: 0 1px 1px black;
+      &:hover {
+        background: green;
+      }
+    }
+    .ryChoice.ryWrong {
+      background: transparent;
+      filter:alpha(opacity=55);
+      opacity: 0.55;
+      font-weight:normal;
+      &:hover {
+        background: transparent;
+      }
+    }
+
     .rySelected {
+      @include transitionsSlowMixin;
       background: #222;
       color: #fff;
       font-weight: bold;
@@ -243,22 +262,32 @@
       &:hover {
         background: #222;
       }
-      .ryCorrect {
-        color: white;
-        background: green;
-        &:hover {
-          background: green;
-        }
-      }
-      .ryWrong {
-        background: #cc0000;
-        color: white;
-        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-        filter: alpha(opacity=100);
-        opacity: 1;
-      }
-
     }
+    .rySelected.ryCorrect {
+      color: white;
+      background: green;
+      &:hover {
+        background: green;
+      }
+    }
+    .rySelected.ryWrong {
+      font-weight: normal;
+      color: #FFCCCC;
+      background: #422;
+      -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+      filter: alpha(opacity=100);
+      opacity: 1;
+      -webkit-transform: rotate(0deg) scale(1) translateY(0%);
+      -moz-transform: rotate(0deg) scale(1) translateY(0%);
+      -o-transform: rotate(0deg) scale(1) translateY(0%);
+      -ms-transform: rotate(0deg) scale(1) translateY(0%);
+      transform: rotate(0deg) scale(1) translateY(0%);
+      &:hover {
+        color: #FFCCCC;
+        background: #422;
+      }
+    }
+
     .ryChoices {
       .ryAnswers {
         visibility: hidden;

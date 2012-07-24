@@ -9,7 +9,7 @@ class AppQuizController < RylyzAppController
 
   class ScreenGameOldController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
 
       game = AppQuizController.daily_game(visitor, wid)
@@ -22,7 +22,7 @@ class AppQuizController < RylyzAppController
 
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
 
       game = AppQuizController.daily_game(visitor, wid)
@@ -33,7 +33,7 @@ class AppQuizController < RylyzAppController
     end
 
     def self.on_select_question(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
       select = tokens['select']
         cap.exception("Nothing Selected").fire2player(wid) and return if !select
@@ -49,23 +49,29 @@ class AppQuizController < RylyzAppController
 
   class ScreenQuestionController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
       settings = tokens['settings']
       select = settings['select']
       game_question = QuizQuestion::GameQuestion.find(select)
 
+      status_data = {status:'', klass:''}
+      reflection_data = {reflection:'', klass:''}
       prompt_data = game_question.for_display_as_prompt
-      cap.show_data('prompt', prompt_data).call_javascript('startPhasePromptQuestion', {question_id: select}).fire2player(wid)
+      cap.
+        show_data('status', status_data).
+        show_data('reflection', reflection_data).
+        show_data('prompt', prompt_data).
+        call_javascript('startPhasePromptQuestion', {question_id: select}).
+        fire2player(wid)
     end
-
 
     def self.calculate_score(time)
       Random.rand(100)
     end
 
     def self.on_choose_answer(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
 
       id = tokens['id']
@@ -83,8 +89,14 @@ class AppQuizController < RylyzAppController
 
       game = game_question.game
 
-      key = game_question.leaderboard_key
-      leaderboard = LeaderboardService.record_score(key, wid, "some_url", score, nil)
+      # key = game_question.leaderboard_key
+      # leaderboard = LeaderboardService.record_score(key, wid, "some_url", score, nil)
+
+      answerClasses = []
+      (1..4).each do |n|
+        klass = (n == game_question.correct_answer ? 'ryCorrect' : 'ryWrong')
+        cap.add_css_class(".ryAnswer#{n}", klass)
+      end
 
       klass = 'none'
       if game_question.correct_answer == choice
@@ -94,14 +106,19 @@ class AppQuizController < RylyzAppController
         klass = 'ryWrong'
         status = "You chose poorly"
       end
-
       status_data = {status:status, klass:klass}
-      capsule.show_data('status', status_data).show_data('leaders', leaderboard).call_javascript('startPhaseFinished').fire2player(wid);
+      reflection_data = {reflection:'Some cool reflection about this question', klass:'klass'}
+      cap.
+        show_data('status', status_data).
+        show_data('reflection', reflection_data).
+        # show_data('leaders', leaderboard).
+        call_javascript('startPhaseFinished').
+        fire2player(wid);
     end
 
 
     def self.on_time_over(visitor, tokens)
-      cap = capsule
+      cap = materialize_capsule
       wid = tokens['wid']
 
       id = tokens['id']
@@ -118,23 +135,25 @@ class AppQuizController < RylyzAppController
 
       game = game_question.game
 
-      key = game_question.leaderboard_key
-      leaderboard = LeaderboardService.leading_players_for_game(key)
+      # key = game_question.leaderboard_key
+      # leaderboard = LeaderboardService.leading_players_for_game(key)
+
+      answerClasses = []
+      (1..4).each do |n|
+        klass = (n == game_question.correct_answer ? 'ryCorrect' : 'ryWrong')
+        cap.add_css_class(".ryAnswer#{n}", klass)
+      end
 
       klass = 'ryTimeOver'
       status = "Time Over!"
-
       status_data = {status:status, klass:klass}
-      capsule.show_data('status', status_data).show_data('leaders', leaderboard).call_javascript('startPhaseFinished').fire2player(wid);
-    end
-
-
-    def self.on_hint(visitor, tokens)
-      wid = tokens['wid']
-
-      id = tokens['id']
-      game_question = QuizQuestion::GameQuestion.find(id)
-      return if -1<game_question.selected_answer
+      reflection_data = {reflection:'Some cool reflection about this question', klass:klass}
+      cap.
+        show_data('status', status_data).
+        show_data('reflection', reflection_data).
+        # show_data('leaders', leaderboard).
+        call_javascript('startPhaseFinished').
+        fire2player(wid);
     end
 
   end
@@ -147,13 +166,13 @@ class AppQuizController < RylyzAppController
       key = game.leaderboard_key
       leaderboard = LeaderboardService.leading_players_for_game(key)
 
-      capsule = materialize_message_capsule_for_all('load-data')
-      capsule.build_events do |messages|
+      cap = materialize_message_capsule_for_all('load-data')
+      cap.build_events do |messages|
         data = leaderboard
         messages << {displayName:'leaders', data: data}
       end
 
-      capsule.notify
+      cap.notify
     end
   end
 

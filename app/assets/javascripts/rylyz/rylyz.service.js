@@ -27,8 +27,8 @@
 				if (display) {
 					if ($.isArray(event.data)){
 						if (!display.isCollection()) throw "Can not update object data with a collection (must be an object).";
-				    display.collection.reset(event.data);
-			  	}
+              display.collection.reset(event.data);
+            }
 			  	else {
 						if (display.isCollection()) throw "Can not update collection data with an  object (must be an array).";
 			    	display.model.set(event.data);
@@ -54,6 +54,44 @@
 		},
 		handleDataEvent4RemoveCollectionItem: function(event) {
 		},
+
+    handleAddCSSClass: function(event) {
+      var cssList = event.data;
+      if (!$.isArray(cssList)) cssList = [event.data];
+
+      var selector, cssClass;
+      $.each(cssList, function(idx, item) {
+        selector = item['selector'];
+        cssClass = item['cssClass'];
+        jQuery(selector).addClass(cssClass);
+        console.log('Adding class ' +cssClass+ 'to ' + selector)
+      });
+
+    },
+    handleRemoveCSSClass: function(event){
+      var cssList = event.data;
+      if (!$.isArray(cssList)) cssList = [event.data];
+
+      var selector, cssClass;
+      $.each(cssList, function(idx, item) {
+        selector = item['selector'];
+        cssClass = item['cssClass'];
+        jQuery(selector).removeClass(cssClass);
+      });
+    },
+    handleSetCSSAttribute: function(event){
+      var cssList = event.data;
+      if (!$.isArray(cssList)) cssList = [event.data];
+
+      var selector, cssAttribute, cssValue;
+      $.each(cssClassList, function(idx, item) {
+        selector = item['selector'];
+        cssAttribute = item['cssAttribute'];
+        cssValue = item['cssValue'];
+        jQuery(selector).css(cssAttribute, cssValue);
+      });
+    },
+
     handleStartTimer: function(event) {
       var data = event['data'];
       if (!data) throw "No timer name was specified";
@@ -425,8 +463,7 @@
     queue:"css",
     type:"add-css-class",
     handleEvent: function(ev) {
-      throw "handler not yet implemented: " + ev
-      //Rylyz.Service.handle__(ev);
+      Rylyz.Service.handleAddCSSClass(ev);
     }
   }
   Rylyz.event.registerEventHandler(hAddCSSClass);
@@ -435,8 +472,7 @@
     queue:"css",
     type:"remove-css-class",
     handleEvent: function(ev) {
-      throw "handler not yet implemented: " + ev
-      //Rylyz.Service.handle__(ev);
+      Rylyz.Service.handleRemoveCSSClass(ev);
     }
   }
   Rylyz.event.registerEventHandler(hRemoveCSSClass);
@@ -445,8 +481,7 @@
     queue:"css",
     type:"set-css-attribute",
     handleEvent: function(ev) {
-      throw "handler not yet implemented: " + ev
-      //Rylyz.Service.handle__(ev);
+      Rylyz.Service.handleSetCSSAttribute(ev);
     }
   }
   Rylyz.event.registerEventHandler(hSetCSSAttribute);
