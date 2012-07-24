@@ -56,12 +56,12 @@
 }
 #ryCloseButton {
   position:absolute;
-  top: -30px;
-  right: -30px;
+  top: 30px;
+  right: 30px;
   padding: 0px 4px 4px 4px;
   font: bold 25px/30px Arial, Helvetica;
   color: #888888;
-  background-color: black;
+  background-color: white;
   border: 4px solid #888888;
   border-radius: 50%;
   -moz-border-radius: 50%;
@@ -442,7 +442,7 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
-
+      <div id="ryCloseButton" onclick="Rylyz.Wygyt.suspendWygyt()">x</div>
         <!-- APP Content -->
       <div class="wygyt-app">
         <div id="ryWelcome">
@@ -1166,9 +1166,6 @@
   </div>
   <!---------------- </MOCK SCREEN> ------------- -->
 
-
-
-  <div id="ryCloseButton">x</div>
 </div>
 
 <div id="ryConsole" style="display: block; "/>
