@@ -1,0 +1,308 @@
+This trace is from wygyt app (wygyt with comming soon screen) not loading (a couple times), then loading ok a third time:
+
+
+
+--> $rvmsudo rails s -p80
+=> Booting WEBrick
+=> Rails 3.1.1 application starting in development on http://0.0.0.0:80
+=> Call with -d to detach
+=> Ctrl-C to shutdown server
+DEFINING SECRETS FOR DEVELOPMENT DEPLOYMENT
+RYLYZ_PLAYER_HOST = rylyz-local.com
+REAL_TIME = ON
+o--- start_channel with scope: private for channel_name: wygyt
+-------o private-rylyz-wygyt-rylyz-local.com Thread Starting-------x private-rylyz-wygyt-rylyz-local.com Thread Launched
+Pusher : connecting : ws://ws.pusherapp.com:80/app/a9206fc7a3b77a7986c5?client=js&version=1.7.1
+
+o--- no handlers to bind
+Websocket connected
+Dispatching callbacks for pusher:connection_established
+Pusher : sending event : {"event":"pusher:subscribe","data":{"channel":"private-rylyz-wygyt-rylyz-local.com","auth":"a9206fc7a3b77a7986c5:d548ab218e77f3e31bcc4cf4b1810b9b2c03675db4fc6bbc3f3ee1c5e37dc88c","channel_data":null}}
+Sending started-listening on private-rylyz-wygyt-rylyz-local.com
+No global callbacks to dispatch for pusher:connection_established
+Pusher : event received : channel: ; event: pusher:connection_established
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Pusher : event received : channel: private-rylyz-wygyt-rylyz-local.com; event: started-listening
+[2012-07-22 22:55:56] INFO  WEBrick 1.3.1
+[2012-07-22 22:55:56] INFO  ruby 1.9.2 (2011-07-09) [x86_64-darwin11.0.1]
+[2012-07-22 22:55:56] INFO  WEBrick::HTTPServer#start: pid=62275 port=80
+
+
+Started GET "/assets/wygyt.js?sitekey=aef3ffd64522" for 127.0.0.1 at 2012-07-22 22:56:15 -0700
+Served asset /wygyt.js - 304 Not Modified (7ms)
+
+
+Started GET "/assets/rylyz.wygyt.css?a=0" for 127.0.0.1 at 2012-07-22 22:56:16 -0700
+Served asset /rylyz.wygyt.css - 304 Not Modified (7ms)
+
+
+Started GET "/assets/play.rylyz.js?_=1343022976223" for 127.0.0.1 at 2012-07-22 22:56:16 -0700
+Served asset /play.rylyz.js - 200 OK (55ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10085.1595929", "channel_name"=>"private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:56:16 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10085.1595929", "channel_name"=>"private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 11ms (Views: 8.9ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10085.1595929", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:56:17 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10085.1595929", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 7ms (Views: 5.7ms)
+Dispatching callbacks for client-rylyz-open-wid-channel
+No callbacks to dispatch for client-rylyz-open-wid-channel
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Dispatching callbacks for client-rylyz-open-wid-channel
+Sending update-me on private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com
+o--- start_channel with scope: private for channel_name: r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a
+-------o private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com Thread Starting-------x private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com Thread Launched
+o--- no handlers to bind
+x--- Can not Bind handler because the socket is nil!!!!!!!!
+x---This is really an unexpected error calling on_channel_event in pusher_services initializer!
+scope: private
+channel_name: r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a
+scoped_event_name: client-rylyz-event
+socket: 
+returning without binding
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Pusher : event received : channel: private-rylyz-wygyt-rylyz-local.com; event: client-rylyz-open-wid-channel
+
+Pusher : connecting : ws://ws.pusherapp.com:80/app/a9206fc7a3b77a7986c5?client=js&version=1.7.1
+Websocket connected
+Dispatching callbacks for pusher:connection_established
+Pusher : sending event : {"event":"pusher:subscribe","data":{"channel":"private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com","auth":"a9206fc7a3b77a7986c5:263b416d8f612ee588e655a46fdc858d87d0418ba3305e3117885c173e5e7f51","channel_data":null}}
+Sending started-listening on private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com
+No global callbacks to dispatch for pusher:connection_established
+Pusher : event received : channel: ; event: pusher:connection_established
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Pusher : event received : channel: private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com; event: started-listening
+
+
+Started GET "/assets/stylesheets/wygyt/app_wygyt.css?a=1" for 127.0.0.1 at 2012-07-22 22:56:44 -0700
+Served asset /stylesheets/wygyt/app_wygyt.css - 304 Not Modified (3ms)
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Pusher : event received : channel: private-rylyz-r8l9z-1ebe0959-1834-878b-af8d-e1465941f11a-rylyz-local.com; event: client-rylyz-event
+
+
+Started GET "/assets/wygyt.js?sitekey=aef3ffd64522" for 127.0.0.1 at 2012-07-22 22:57:16 -0700
+Served asset /wygyt.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/rylyz.wygyt.css?a=0" for 127.0.0.1 at 2012-07-22 22:57:16 -0700
+Served asset /rylyz.wygyt.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/play.rylyz.js?_=1343023036697" for 127.0.0.1 at 2012-07-22 22:57:16 -0700
+Served asset /play.rylyz.js - 200 OK (2ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10348.693986", "channel_name"=>"private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:57:17 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10348.693986", "channel_name"=>"private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 6ms (Views: 4.2ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10348.693986", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:57:17 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10348.693986", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 5ms (Views: 4.2ms)
+Dispatching callbacks for client-rylyz-open-wid-channel
+No callbacks to dispatch for client-rylyz-open-wid-channel
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Dispatching callbacks for client-rylyz-open-wid-channel
+Sending update-me on private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com
+o--- start_channel with scope: private for channel_name: r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d
+-------o private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com Thread Starting-------x private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com Thread Launched
+o--- no handlers to bind
+x--- Can not Bind handler because the socket is nil!!!!!!!!
+x---This is really an unexpected error calling on_channel_event in pusher_services initializer!
+scope: private
+channel_name: r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d
+scoped_event_name: client-rylyz-event
+socket: 
+returning without binding
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Pusher : event received : channel: private-rylyz-wygyt-rylyz-local.com; event: client-rylyz-open-wid-channel
+
+Pusher : connecting : ws://ws.pusherapp.com:80/app/a9206fc7a3b77a7986c5?client=js&version=1.7.1
+Websocket connected
+Dispatching callbacks for pusher:connection_established
+Pusher : sending event : {"event":"pusher:subscribe","data":{"channel":"private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com","auth":"a9206fc7a3b77a7986c5:40ab8f52f97140f3cbbd57925d17e16747dee91d12b8b7fa052ce04a81e04991","channel_data":null}}
+Sending started-listening on private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com
+No global callbacks to dispatch for pusher:connection_established
+Pusher : event received : channel: ; event: pusher:connection_established
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Pusher : event received : channel: private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com; event: started-listening
+
+
+Started GET "/assets/stylesheets/wygyt/app_wygyt.css?a=1" for 127.0.0.1 at 2012-07-22 22:57:21 -0700
+Served asset /stylesheets/wygyt/app_wygyt.css - 304 Not Modified (0ms)
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Pusher : event received : channel: private-rylyz-r8l9z-cc544150-6c24-bcc5-9393-48c5043cf28d-rylyz-local.com; event: client-rylyz-event
+
+
+Started GET "/assets/wygyt.js?sitekey=aef3ffd64522" for 127.0.0.1 at 2012-07-22 22:57:34 -0700
+Served asset /wygyt.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/rylyz.wygyt.css?a=0" for 127.0.0.1 at 2012-07-22 22:57:34 -0700
+Served asset /rylyz.wygyt.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/play.rylyz.js?_=1343023054729" for 127.0.0.1 at 2012-07-22 22:57:34 -0700
+Served asset /play.rylyz.js - 200 OK (1ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:57:35 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 6ms (Views: 3.7ms)
++++++++++++++++++++++++++++++++++++++++++++++++
+{"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:57:35 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-wygyt-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 5ms (Views: 3.8ms)
+Dispatching callbacks for client-rylyz-open-wid-channel
+No callbacks to dispatch for client-rylyz-open-wid-channel
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Dispatching callbacks for client-rylyz-open-wid-channel
+Sending update-me on private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com
+o--- start_channel with scope: private for channel_name: ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45
+-------o private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com Thread Starting-------x private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com Thread Launched
+
+Pusher : connecting : ws://ws.pusherapp.com:80/app/a9206fc7a3b77a7986c5?client=js&version=1.7.1
+o--- no handlers to bind
+No global callbacks to dispatch for client-rylyz-open-wid-channel
+Pusher : event received : channel: private-rylyz-wygyt-rylyz-local.com; event: client-rylyz-open-wid-channel
+Websocket connected
+Dispatching callbacks for pusher:connection_established
+Pusher : sending event : {"event":"pusher:subscribe","data":{"channel":"private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com","auth":"a9206fc7a3b77a7986c5:cd403abbd52300cdf5f276abd668b96ee5de602b23a683b86a5aa5e9aee9f6b8","channel_data":null}}
+Sending started-listening on private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com
+No global callbacks to dispatch for pusher:connection_established
+Pusher : event received : channel: ; event: pusher:connection_established
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: started-listening
+
+
+Started GET "/assets/stylesheets/wygyt/app_wygyt.css?a=1" for 127.0.0.1 at 2012-07-22 22:57:37 -0700
+Served asset /stylesheets/wygyt/app_wygyt.css - 304 Not Modified (0ms)
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+OPENING wygyt FOR {"wid"=>"ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45", "url"=>"file:///Users/sequoia/Desktop/siliconbeachfest/blog.html", "pusher_socket_id"=>"10025.1683625", "action"=>"open_app", "appName"=>"wygyt"}
+o--- start_channel with scope: private for channel_name: b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37
+-------o private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com Thread Starting
+Pusher : connecting : ws://ws.pusherapp.com:80/app/a9206fc7a3b77a7986c5?client=js&version=1.7.1
+-------x private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com Thread Launched
+o--- no handlers to bind
+Sending launch-listener on private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com
+Websocket connected
+Dispatching callbacks for pusher:connection_established
+Pusher : sending event : {"event":"pusher:subscribe","data":{"channel":"private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com","auth":"a9206fc7a3b77a7986c5:2ed46b4c7ed36b28073585cca35f11fda87e4451668d515229652f6d7d4ebee1","channel_data":null}}
+Sending started-listening on private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com
+Sending open-app on private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com
+No global callbacks to dispatch for pusher:connection_established
+Pusher : event received : channel: ; event: pusher:connection_established
++++++++++++++++++++++++++++++++++++++++++++++++Dispatching callbacks for started-listening
+
+No callbacks to dispatch for started-listening
+{"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com", "controller"=>"wygyt/auth", "action"=>"pusher_access"}
++++++++++++++++++++++++++++++++++++++++++++++++
+No global callbacks to dispatch for started-listening
+Dispatching callbacks for started-listening
+No callbacks to dispatch for started-listening
+No global callbacks to dispatch for started-listening
+
+
+Started POST "/wygyt/auth/pusher_access" for 127.0.0.1 at 2012-07-22 22:57:38 -0700
+  Processing by Wygyt::AuthController#pusher_access as */*
+  Parameters: {"socket_id"=>"10025.1683625", "channel_name"=>"private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com"}
+WARNING: Can't verify CSRF token authenticity
+Completed 200 OK in 8ms (Views: 5.9ms)
+Pusher : event received : channel: private-rylyz-b493a3ae-fc00-4bbf-89a8-071424ee5100-2012-07-22-22-57-37-rylyz-local.com; event: started-listening
+No global callbacks to dispatch for client-rylyz-event
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: client-rylyz-event
+Dispatching callbacks for launch-listener
+No callbacks to dispatch for launch-listener
+No global callbacks to dispatch for launch-listener
+Dispatching callbacks for launch-listener
+No callbacks to dispatch for launch-listener
+No global callbacks to dispatch for launch-listener
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: launch-listener
+Dispatching callbacks for open-app
+No callbacks to dispatch for open-app
+No global callbacks to dispatch for open-app
+Dispatching callbacks for open-app
+No callbacks to dispatch for open-app
+No global callbacks to dispatch for open-app
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: open-app
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+No callbacks to dispatch for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Dispatching callbacks for client-rylyz-event
+No global callbacks to dispatch for client-rylyz-event
+Pusher : event received : channel: private-rylyz-ralaz-3f2b8f10-9e62-b8ae-9407-142b556fee45-rylyz-local.com; event: client-rylyz-event
+

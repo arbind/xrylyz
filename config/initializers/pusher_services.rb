@@ -150,13 +150,25 @@ class PusherChannels
     PusherChannels.instance.on_channel_event(:presence, channel_name, presence_event_name, block)
   end
   def on_channel_event(scope, channel_name, scoped_event_name, handler)
-    channel_socket(scope, channel_name).bind(scoped_event_name) do |data| # +++ *** getting error on this line whne channel_socket is nil for some reason?
+    socket = channel_socket(scope, channel_name)
+    if socket.nil?
+      puts "x--- Can not Bind handler because the socket is nil!!!!!!!!" 
+      puts "x---This is really an unexpected error calling on_channel_event in pusher_services initializer!" 
+      puts "scope: #{scope}" 
+      puts "channel_name: #{channel_name}" 
+      puts "scoped_event_name: #{scoped_event_name}" 
+      puts "socket: #{socket}" 
+      puts "returning without binding" 
+      return
+    end 
+    socket.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
       begin #safeguard the handler block
         handler.call( data )
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "-----  Runtime Exception! #{e}"
         puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts "data: #{data}"
         puts e.backtrace
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)
@@ -164,6 +176,7 @@ class PusherChannels
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "----- Exception! #{e}"
         puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+        puts "data: #{data}"
         puts e.backtrace
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         #+++ Report exception back to widget (Trigger on scope channel_name)
@@ -199,11 +212,15 @@ class PusherChannels
   def start_private_channel(channel_name, handlers=nil)  start_channel(:private, channel_name, handlers)  end
   def start_presence_channel(channel_name, handlers=nil) start_channel(:presence, channel_name, handlers) end
   def start_channel(scope, channel_name, handlers=nil)
+    puts "o--- start_channel with scope: #{scope} for channel_name: #{channel_name}"
     Thread::exclusive {
       @channels[scope][channel_name] = listener_thread_for_channel(scope, channel_name)
     }
+
+    puts "o--- no handlers to bind" if handlers.nil?
     return @channels[scope][channel_name] if handlers.nil?
 
+    puts "o--- binding #{handlers.count} handlers to channel #{scope}:#{channel_name} for event:#{event_name}"
     handlers.each do |event_name, handler_blk|
       on_channel_event(scope, channel_name, event_name, handler_blk)
     end
@@ -234,7 +251,7 @@ class PusherChannels
         end
 
       # socket.bind('pusher_internal:member_removed') do |data|
-      #   puts "-------x Unsubscribed! #{data}"
+      #   #puts "-------x Unsubscribed! #{data}"
           # can add another listener to stop this listener if needed on this event
           # just check it if it was a single private channel, or if there are no more users, or etc...
           # {
@@ -254,6 +271,8 @@ class PusherChannels
         socket.connect # thread goes to sleep and waits for channel events
       end
       @channels[scope][channel_name] = listener_thread
+      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls) 
+      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on! 
       sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
       puts "-------x #{scoped_channel_name} Thread Launched"
     rescue
