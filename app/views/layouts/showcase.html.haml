@@ -1,0 +1,44 @@
+!!! 5
+%html{ :lang => "en"}
+  %head
+    %title= "rylyz"
+
+    = stylesheet_link_tag    "fonts/istokweb", :media => "all"
+    = stylesheet_link_tag    "fonts/ubuntu", :media => "all"
+
+    = stylesheet_link_tag    "base/index", :media => "all"
+    = stylesheet_link_tag    "website/base/index", :media => "all"
+    = stylesheet_link_tag    "website/home_page/application", :media => "all"
+
+    = javascript_include_tag "base/index"
+    = javascript_include_tag "website/base/index"
+    = javascript_include_tag "website/home_page/application"
+
+    - wygyt_host = ['www.rylyz.com', 'rylyz.com'].include?(request.host) ?  'wygyt.rylyz.ws' : request.host
+    = javascript_include_tag "http://#{wygyt_host}/assets/wygyt.js?sitekey=#{RYLYZ_PLAYER_HOST}x88888888"
+
+    = csrf_meta_tags
+  %body.rylyz.showcase
+    #site-header
+      #site-name
+        #site-logo
+          %a{href: root_path}
+            =image_tag "rylyz/rylyz-logo-green.png"
+        = @html_page_title
+      #site-menu
+        .primary.toolbar
+          %a{:href=>home_page_path}
+            %button home
+          %a{:href=>showcase_blog_path}
+            %button blog
+
+    #content
+      - unless flash.empty?
+        = render :partial => 'util/flash_messages'
+      = yield
+
+    #site-footer
+      %p        
+        = link_to "&copy; rylyz.com".html_safe, root_path          
+        = link_to  "privacy policy", privacy_policy_path
+        = link_to  "contact us", contact_us_path
