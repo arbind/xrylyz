@@ -1,4 +1,10 @@
 - @html_page_title = "Quiz::Quizes"
+.toolbar
+  %a{href: sudo_apps_quiz_quizes_path}
+    .button quizes
+  %a{href: sudo_apps_quiz_questions_path}
+    .button questions
+
 .right-column
   #submenu
     - unless @html_submenu_buttons.nil?

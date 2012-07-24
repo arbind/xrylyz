@@ -1,3 +1,9 @@
+.toolbar
+  %a{href: sudo_apps_quiz_quizes_path}
+    .button quizes
+  %a{href: sudo_apps_quiz_questions_path}
+    .button questions
+
 %h1= "Members (#{@members.count})"
 - @members.each do |member|
   - blogger = member.blogger
