@@ -14,7 +14,8 @@
     = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/home_page/application"
 
-    - wygyt_host = "wygyt.#{request.host.split('.')[-2]}.ws" # "rylyz" = "www.rylyz.com.split('.')[-2]'  , "rylyz-local" = "rylyz-local.com.split('.')[-2]'
+    - wygyt_host = ['www.rylyz.com', 'rylyz.com'].include?(request.host) ?  'wygyt.rylyz.ws' : request.host
+    / - wygyt_host = "wygyt.#{request.host.split('.')[-2]}.ws" # "rylyz" = "www.rylyz.com.split('.')[-2]'  , "rylyz-local" = "rylyz-local.com.split('.')[-2]'
     = javascript_include_tag "http://#{wygyt_host}/assets/wygyt.js?sitekey=#{RYLYZ_PLAYER_HOST}x88888888"
 
     = csrf_meta_tags
