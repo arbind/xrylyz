@@ -76,6 +76,8 @@ PusherClient.logger = Logger.new(STDOUT)
 class PusherChannels
   include Singleton
 
+  attr_reader :channels
+
   def initialize
     @channels = {
       :public => {},
@@ -152,15 +154,15 @@ class PusherChannels
   def on_channel_event(scope, channel_name, scoped_event_name, handler)
     socket = channel_socket(scope, channel_name)
     if socket.nil?
-      puts "x--- Can not Bind handler because the socket is nil!!!!!!!!" 
-      puts "x---This is really an unexpected error calling on_channel_event in pusher_services initializer!" 
-      puts "scope: #{scope}" 
-      puts "channel_name: #{channel_name}" 
-      puts "scoped_event_name: #{scoped_event_name}" 
-      puts "socket: #{socket}" 
-      puts "returning without binding" 
+      puts "x--- Can not Bind handler because the socket is nil!!!!!!!!"
+      puts "x---This is really an unexpected error calling on_channel_event in pusher_services initializer!"
+      puts "scope: #{scope}"
+      puts "channel_name: #{channel_name}"
+      puts "scoped_event_name: #{scoped_event_name}"
+      puts "socket: #{socket}"
+      puts "returning without binding"
       return
-    end 
+    end
     socket.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
       begin #safeguard the handler block
         handler.call( data )
@@ -271,8 +273,8 @@ class PusherChannels
         socket.connect # thread goes to sleep and waits for channel events
       end
       @channels[scope][channel_name] = listener_thread
-      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls) 
-      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on! 
+      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls)
+      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on!
       sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
       puts "-------x #{scoped_channel_name} Thread Launched"
     rescue

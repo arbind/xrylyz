@@ -103,6 +103,7 @@ post 'test_purchase', :as => :dashboard_test_purchase
     post 'preview_activation_emails', :as => :sudo_preview_activation_emails
     post 'send_activation_emails',    :as => :sudo_send_activation_emails
     get 'api',                        :as => :sudo_api
+    get 'signals',                    :as => :sudo_signals
     # +++ add super user functionality - make sure to include super secure authentication
   end
 

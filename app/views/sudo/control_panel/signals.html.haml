@@ -1,0 +1,33 @@
+.section
+  Public
+  %ul
+  - @channels[:public].each do |key, thread|
+    %li
+      = "#{key}: #{thread}"
+
+
+.section
+  Private
+  %ul
+    %li
+      %span.wide400.inline.button
+        key
+      %span.wide50.inline.button
+        alive?
+      %span.wide50.inline.button
+        status
+    - @channels[:private].each do |key, thread|
+      %li
+        %span.wide400.inline
+          = "#{key}"
+        %span.wide50.inline
+          = "#{thread.alive?}"
+        %span.wide50.inline
+          = "#{thread.status}"
+
+.section
+  Presence
+  %ul
+  - @channels[:presence].each do |key, thread|
+    %li
+      = "#{key}: #{thread}"

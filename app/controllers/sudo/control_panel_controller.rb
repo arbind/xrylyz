@@ -1,6 +1,6 @@
 class Sudo::ControlPanelController < Sudo::SudoController
 	require 'csv'
-	
+
 	def index
 		@members = RylyzMember.all
 		@presences = RylyzMemberPresence.all
@@ -8,7 +8,10 @@ class Sudo::ControlPanelController < Sudo::SudoController
 	end
 
 	def new_bloggers
+	end
 
+	def signals
+		@channels = PusherChannels.instance.channels
 	end
 
 	def signups
@@ -45,7 +48,7 @@ class Sudo::ControlPanelController < Sudo::SudoController
 						last_signup_at = Time.parse(dt.to_s).utc if not dt.nil?
 					rescue
 					end
-					last_signup_at ||= Time.now.utc 
+					last_signup_at ||= Time.now.utc
 
 				  blogger = RylyzBlogger.new(
 				  	email: email,
