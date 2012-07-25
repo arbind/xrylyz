@@ -5,9 +5,9 @@
     %li
       = "#{key}: #{thread}"
 
-
 .section
   Private
+  = "Channels: #{@channels.size} - #{@channels[:private].size}"
   %ul
     %li
       %span.wide400.inline.button
@@ -16,6 +16,9 @@
         alive?
       %span.wide50.inline.button
         status
+      %span.wide50.inline.button
+        socket
+    /- @channels[:private].first[1][:socket].disconnect
     - @channels[:private].each do |key, thread|
       %li
         %span.wide400.inline
@@ -24,6 +27,9 @@
           = "#{thread.alive?}"
         %span.wide50.inline
           = "#{thread.status}"
+        %span.wide200.inline
+          = "#{thread[:socket].connected}"
+          = "#{thread[:socket].socket_id}"
 
 .section
   Presence
