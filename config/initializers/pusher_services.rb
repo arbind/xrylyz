@@ -194,9 +194,12 @@ class PusherChannels
   def private_socket(channel_name)  channel_socket(:private, channel_name)  end
   def presence_socket(channel_name) channel_socket(:presence, channel_name) end
   def channel_socket(scope, channel_name)
-    listener_thread = listener_thread_for_channel(scope, channel_name)
+    # listener_thread = listener_thread_for_channel(scope, channel_name)
+    # s = nil
+    # s = listener_thread[:socket] if listener_thread
     s = nil
-    s = listener_thread[:socket] if listener_thread
+    s = @listener_thr[:socket] if @listener_thr
+    s
   end
 
   def stop_public_channel(channel_name)   stop_channel(:public, channel_name)   end
@@ -204,7 +207,7 @@ class PusherChannels
   def stop_presence_channel(channel_name) stop_channel(:presence, channel_name) end
   def stop_channel(scope, channel_name)
     channel = @channels[scope][channel_name]
-    Pusher[scoped_channel_name].trigger("started-listening", {}.to_json )
+    Pusher[scoped_channel_name].trigger("stopped-listening", {}.to_json )
 
     return if not channel
     #+++TODO turn off the socket and end the thread.
@@ -230,10 +233,17 @@ class PusherChannels
   end
 
   def listener_thread_for_channel(scope, channel_name)
-    return @channels[scope][channel_name] if @channels[scope][channel_name]
+    # return @channels[scope][channel_name] if @channels[scope][channel_name]
     scoped_channel_name = materialize_channel_name(scope, channel_name)
+    if @listener_thr
+      socket = @listener_thr[:socket]
+      socket.subscribe(scoped_channel_name, "USER_ID")
+      PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
+      return @listener_thr
+    end
     begin
-      listener_thread = Thread.new do
+      # listener_thread = Thread.new do
+       @listener_thr = Thread.new do
         puts "-------o #{scoped_channel_name} Thread Starting"
         Thread.current[:connected] = false
         Thread.current[scope] = true
@@ -243,6 +253,8 @@ class PusherChannels
 
         options = {:secret => Pusher.secret}
         socket = PusherClient::Socket.new(Pusher.key, options)
+        # +++ Check if we got a socket - else throw error and relesae this thread
+        # <-----
 
         socket.subscribe(scoped_channel_name, "USER_ID")
         s = scope
@@ -271,16 +283,19 @@ class PusherChannels
         Thread.current[:socket] = socket
 
         socket.connect # thread goes to sleep and waits for channel events
+        ## <--- How do we close the socket, and reuse this thread??
       end
-      @channels[scope][channel_name] = listener_thread
-      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls)
-      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on!
-      sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
+      # @channels[scope][channel_name] = listener_thread # could this be inserting a nil thread? <----
+      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls) 
+      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on! 
+      # sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
+      sleep 0.1 while 'sleep'!=@listener_thr.status
       puts "-------x #{scoped_channel_name} Thread Launched"
     rescue
       puts "!!! Could not launch listener thread."
     end
-    listener_thread
+    # listener_thread
+    @listener_thr
   end
 
   private
@@ -343,6 +358,8 @@ else
   begin
     PusherChannels.instance.start_private_channel("wygyt")
     PusherChannels.instance.on_private_channel_event("wygyt", "open-wid-channel") do |data|
+      puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+      puts data
       tokens = JSON.parse(data)
 
       wid = tokens["wid"]

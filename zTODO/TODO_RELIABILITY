@@ -1,6 +1,7 @@
 *** Reliability
-  - WID Exception
-  - Channel Exception
+  ?fixed WID Exception
+  ?fixed Channel Exception
+  Refactor config/initializers/pusher_service.rb into CapsuleService, RylyzSocket, RylyzChannel, PusherSocketService(plugin to implement CapsuleService)
   - Add Thread Management
   - MetaInspector is flakey - replace its usage in RylyzBloggerSite.scrape_attributes
   - Add Session Management

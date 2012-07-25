@@ -1,4 +1,13 @@
 .section
+  = "Threads (#{Thread.list.count})"
+  %ul
+  - Thread.list.each do |t|
+    %li
+      = t.alive? ? "alive": "ended"
+      = t[:name]
+
+
+.section
   Public
   %ul
   - @channels[:public].each do |key, thread|
