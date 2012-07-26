@@ -48,6 +48,9 @@ class AppQuizController < RylyzAppController
   end
 
   class ScreenQuestionController < RylyzScreenController
+    @@correct_list = ["that's correct!", "nice!", "way to go!", "you got it!" "that's right!", "you rock!" "sweet!", "yes!", "perfect!", "precisely!", "right on!"]
+    @@wrong_list = ["nice try.", "not quite.", "that was close.", "no cigar.", "not easy, right?", "nope.", "was that your 2nd choice?"]
+
     def self.on_load_data(visitor, tokens)
       cap = materialize_capsule
       wid = tokens['wid']
@@ -101,10 +104,10 @@ class AppQuizController < RylyzAppController
       klass = 'none'
       if game_question.correct_answer == choice
         klass = 'ryCorrect'
-        status = "That's Correct!"
+        status = @@correct_list.sample
       else
         klass = 'ryWrong'
-        status = "You chose poorly"
+        status = @@wrong_list.sample
       end
       status_data = {status:status, klass:klass}
       reflection_data = {reflection:'Some cool reflection about this question', klass:'klass'}

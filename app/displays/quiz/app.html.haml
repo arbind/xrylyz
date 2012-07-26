@@ -145,6 +145,7 @@
       %object{:name=>"header"}
       #ryAppContainer
         .ryQuestions
+          %h2.ryQuestionsHeading You have 15 more questions:
           %collection{:name=>"level1-questions"}
           %collection{:name=>"level2-questions"}
           %collection{:name=>"level3-questions"}
@@ -168,11 +169,9 @@
       .button{"nav-onClick"=>"game"} Back
 
   %object{:name=>"header"}
-    #ryCloseQuiz
-      Close
     .ryHeader
       #ryAppName
-        Trivia
+        Olympic Trivia
       %p#ryScore
         100
 
@@ -195,7 +194,7 @@
         %span.ryCheck
     ! [! } else { !]
     %li
-      %a.ryQuestion.ryUnlocked{"fire-onClick"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
+      %a.ryQuestion.ryUnlocked.ryUnanswered{"fire-onClick-one"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
         %span.ryCheck
     ! [! } !]
 
