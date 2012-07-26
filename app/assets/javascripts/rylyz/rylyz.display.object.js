@@ -320,7 +320,9 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
 
     //re-bind handlers for this display
     this.fireOn("click"); // bind all fire-onClick events
+    this.fireOn("click-one"); // bind all fire-onClick events
     this.fireOn("hover"); // bind all fire-onHover events
+    this.fireOn("hover-one"); // bind all fire-onHover events
     this.eventOn("nav", "click"); // bind all nav-onClick events
     this.eventOn("intent", "click"); // bind all intent-onClick events
 
@@ -402,17 +404,31 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
       parentDisplay.addSubDisplay(collectionDisplay);
     })
   },
-  fireOn: function(domEventType, suppressWarning) {
-    var eventType = $.trim(domEventType.toLowerCase()); //name of the dom event in lower case
-    var fireOn = "fire-on" + eventType.capitalize(); //name of the data attribute
+  fireOn: function(domEventName, suppressWarning) {
+    //fire-onClick, fire-onClick-one, fire-onHover, fire-onHover-one etc.
+    var eventName = $.trim(domEventName.toLowerCase()); //name of the dom event in lower case
+    eventTokens = eventName.split('-');
+    eventType = eventTokens[0];
+    var eventQualifier = null;
+    if (1 < eventTokens.length) eventQualifier = eventTokens[1];
 
+    var domAttribute = "fire-on" + eventName.capitalize(); //name of the data attribute
     var eventBase = this.materializeEvent();
-    this.$("[" + fireOn + "]").bind(eventType, function(domEvent) {
-      Rylyz.event.fireOnDOMEvent(eventType, domEvent, eventBase);
-    });
+
+
+    if ('one'==eventQualifier) {  //bind once with jQuery.one()
+      this.$("[" + domAttribute + "]").one(eventType, function(domEvent) {
+        Rylyz.event.fireOnDOMEvent(domEventName, domEvent, eventBase);
+      });
+    }
+    else { //bind with jQuery.bind()
+      this.$("[" + domAttribute + "]").bind(eventType, function(domEvent) {
+        Rylyz.event.fireOnDOMEvent(domEventName, domEvent, eventBase);
+      });
+    }
     //verify the syntax
-    var onClickElements = this.$("[" + fireOn + "]");
-    if (0==onClickElements.length){
+    var onClickElements = this.$("[" + domAttribute + "]");
+    if (0===onClickElements.length){
       //if (!suppressWarning) console.warn("No events described with " + fireOn + "!\n\n");
       return;
     }
@@ -420,7 +436,7 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     var eventDescription, toEval, ev;
 
     _.each(onClickElements, function(element){
-      eventDescription = element.getAttribute(fireOn);
+      eventDescription = element.getAttribute(domAttribute);
       try {
         ev = null;
         toEval = "ev = " + eventDescription;
@@ -435,14 +451,16 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
     })
   },
 
-  eventOn: function(rylyzEventType, domEventType) {
-    var uiEventType = $.trim(domEventType.toLowerCase()); //name of the dom event in lower case
+  eventOn: function(rylyzEventType, domEventName) {
+    // +++ TODO add ability to click once 
+    var uiEventType = $.trim(domEventName.toLowerCase()); //name of the dom event in lower case
     var eventOnDomEvent = rylyzEventType + "-on" + uiEventType.capitalize(); //name of the data attribute
 
     var eventBase = this.materializeEvent();
     eventBase.queue = rylyzEventType; //nav
     eventBase.type = eventOnDomEvent; //nav-onClick
 
+    // +++ TODO allow .bind or .one if domeEventType is something like fire-onNav-one 
     this.$("[" + eventOnDomEvent + "]").bind(uiEventType, function(domEvent) {
       var element = srcElementForDOMEvent(domEvent);
       var ev = eventBase;
