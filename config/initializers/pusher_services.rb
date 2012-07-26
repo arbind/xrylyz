@@ -3,6 +3,7 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+
 # +++TOOD detect when wid is no longer connected:
 # 1. scan threads and collect the ones time of last send or receive > 5 seconds
 # 2. ping the wids of the collected threads, setting a timer to check for a pong
@@ -76,6 +77,15 @@ PusherClient.logger = Logger.new(STDOUT)
 class PusherChannels
   include Singleton
 
+  @pusher_socket = nil
+  @pusher_listener_thread = nil
+
+  @@socket_logger = Logger.new('soceket_logger1')
+
+  def self.socket_logger
+    @@socket_logger
+  end
+  
   attr_reader :channels
 
   def initialize
@@ -135,35 +145,34 @@ class PusherChannels
   end
   def trigger_channel_event(scope, channel_name, event_name, tokens)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    puts "Sending #{event_name} on #{scoped_channel_name}"
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] #{event_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent #{event_name} [#{scope}-#{channel_name}]"
+    PusherChannels::socket_logger.info "<--------------------------- #{tokens.to_json}]"
   end
 
   def on_public_channel_event(channel_name, event_name, &block)
     public_event_name = "rylyz-#{event_name}"
-    PusherChannels.instance.on_channel_event(:public, channel_name, public_event_name, block)
+    PusherChannels.instance.bind_channel_event_handler(:public, channel_name, public_event_name, block)
   end
   def on_private_channel_event(channel_name, event_name, &block)
     private_event_name = "client-rylyz-#{event_name}"
-    PusherChannels.instance.on_channel_event(:private, channel_name, private_event_name, block)
+    PusherChannels.instance.bind_channel_event_handler(:private, channel_name, private_event_name, block)
   end
   def on_presence_channel_event(channel_name, event_name, &block)
     presence_event_name = "client-rylyz-#{event_name}"
-    PusherChannels.instance.on_channel_event(:presence, channel_name, presence_event_name, block)
+    PusherChannels.instance.bind_channel_event_handler(:presence, channel_name, presence_event_name, block)
   end
-  def on_channel_event(scope, channel_name, scoped_event_name, handler)
-    socket = channel_socket(scope, channel_name)
-    if socket.nil?
-      puts "x--- Can not Bind handler because the socket is nil!!!!!!!!"
-      puts "x---This is really an unexpected error calling on_channel_event in pusher_services initializer!"
-      puts "scope: #{scope}"
-      puts "channel_name: #{channel_name}"
-      puts "scoped_event_name: #{scoped_event_name}"
-      puts "socket: #{socket}"
-      puts "returning without binding"
-      return
-    end
-    socket.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
+  def bind_channel_event_handler(scope, channel_name, scoped_event_name, handler)
+    raise "Not connected to Pusher!" if @pusher_socket.nil?
+    scoped_channel_name = materialize_channel_name(scope, channel_name)
+
+    channel = @pusher_socket.channels[scoped_channel_name]
+    raise "Not subscribed to #{scope}: #{scoped_channel_name}! Can not bind event handler or #{scoped_event_name}" if channel.nil?
+
+    channel.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
+    PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
+    PusherChannels::socket_logger.info "> #{data}"
       begin #safeguard the handler block
         handler.call( data )
       rescue RuntimeError => e
@@ -190,27 +199,31 @@ class PusherChannels
     end
   end
 
-  def public_socket(channel_name)   channel_socket(:public, channel_name)   end
-  def private_socket(channel_name)  channel_socket(:private, channel_name)  end
-  def presence_socket(channel_name) channel_socket(:presence, channel_name) end
-  def channel_socket(scope, channel_name)
-    # listener_thread = listener_thread_for_channel(scope, channel_name)
-    # s = nil
-    # s = listener_thread[:socket] if listener_thread
-    s = nil
-    s = @listener_thr[:socket] if @listener_thr
-    s
-  end
+  # def public_socket(channel_name)   channel_socket(:public, channel_name)   end
+  # def private_socket(channel_name)  channel_socket(:private, channel_name)  end
+  # def presence_socket(channel_name) channel_socket(:presence, channel_name) end
+  # def channel_socket(scope, channel_name)
+  #   # listener_thread = subscribe_to_channel(scope, channel_name)
+  #   # s = nil
+  #   # s = listener_thread[:socket] if listener_thread
+  #   s = nil
+  #   s = @listener_thr[:socket] if @listener_thr
+  #   s
+  # end
 
   def stop_public_channel(channel_name)   stop_channel(:public, channel_name)   end
   def stop_private_channel(channel_name)  stop_channel(:private, channel_name)  end
   def stop_presence_channel(channel_name) stop_channel(:presence, channel_name) end
   def stop_channel(scope, channel_name)
-    channel = @channels[scope][channel_name]
+    scoped_channel_name = materialize_channel_name(scope, channel_name)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] stopped-listening"
     Pusher[scoped_channel_name].trigger("stopped-listening", {}.to_json )
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent stopped-listening [#{scope}-#{channel_name}]"
 
-    return if not channel
-    #+++TODO turn off the socket and end the thread.
+    if @listener_thr
+      socket = @listener_thr[:socket]
+      socket.unsubscribe(scoped_channel_name)
+    end
   end
 
   def start_public_channel(channel_name, handlers=nil)   start_channel(:public, channel_name, handlers)   end
@@ -218,84 +231,83 @@ class PusherChannels
   def start_presence_channel(channel_name, handlers=nil) start_channel(:presence, channel_name, handlers) end
   def start_channel(scope, channel_name, handlers=nil)
     puts "o--- start_channel with scope: #{scope} for channel_name: #{channel_name}"
-    Thread::exclusive {
-      @channels[scope][channel_name] = listener_thread_for_channel(scope, channel_name)
-    }
-
-    puts "o--- no handlers to bind" if handlers.nil?
-    return @channels[scope][channel_name] if handlers.nil?
+    channel = subscribe_to_channel(scope, channel_name)
+    return if handlers.nil?
 
     puts "o--- binding #{handlers.count} handlers to channel #{scope}:#{channel_name} for event:#{event_name}"
     handlers.each do |event_name, handler_blk|
-      on_channel_event(scope, channel_name, event_name, handler_blk)
+      bind_channel_event_handler(scope, channel_name, event_name, handler_blk)
     end
-    @channels[scope][channel_name]
+    nil
   end
 
-  def listener_thread_for_channel(scope, channel_name)
-    # return @channels[scope][channel_name] if @channels[scope][channel_name]
+  def subscribe_to_channel(scope, channel_name, user_id=RYLYZ_PLAYER_HOST)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    if @listener_thr
-      socket = @listener_thr[:socket]
-      socket.subscribe(scoped_channel_name, "USER_ID")
+    channel = @pusher_socket.subscribe(scoped_channel_name, user_id)
+    if (channel.subscribed)
       PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
-      return @listener_thr
+      puts  "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
+      PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
     end
-    begin
-      # listener_thread = Thread.new do
-       @listener_thr = Thread.new do
-        puts "-------o #{scoped_channel_name} Thread Starting"
-        Thread.current[:connected] = false
-        Thread.current[scope] = true
-        Thread.current[:name] = scoped_channel_name
-        Thread.current[:start_time] = Time.now()
-        Thread.current[:last_heartbeat] = nil
+    channel
+  end
 
-        options = {:secret => Pusher.secret}
-        socket = PusherClient::Socket.new(Pusher.key, options)
-        # +++ Check if we got a socket - else throw error and relesae this thread
-        # <-----
+  def connect(&on_connection_established)
+    return unless @pusher_listener_thread.nil?
 
-        socket.subscribe(scoped_channel_name, "USER_ID")
-        s = scope
-        c = channel_name
-        socket.bind('pusher:connection_established') do |data|
-          Thread.current[:connected] = true
-          PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
-        end
+    begin # create a new socket and subscribe to channel  
+      @pusher_listener_thread = Thread.new do
+        puts "o-------- Pusher Thread: Started"
 
-      # socket.bind('pusher_internal:member_removed') do |data|
-      #   #puts "-------x Unsubscribed! #{data}"
-          # can add another listener to stop this listener if needed on this event
-          # just check it if it was a single private channel, or if there are no more users, or etc...
-          # {
-          #   "event": "pusher_internal:member_removed",
-          #   "channel": "presence-example-channel",
-          #   "data": {
-          #     "user_id": String,
-          #   }
-          # }
-      # end
+        Thread.current[:name]           = "Pusher Listener"
+        Thread.current[:start_time]     = Time.now()
+        Thread.current[:pusher_socket]         = nil
+        Thread.current[:pusher_connected]      = false
+        Thread.current[:pusher_last_heartbeat] = nil
 
-        socket.bind('pusher:heartbeat') do |data|
-          Thread.current[:last_heartbeat] = Time.now()
-        end
-        Thread.current[:socket] = socket
+        @pusher_socket = open_socket(on_connection_established)
 
-        socket.connect # thread goes to sleep and waits for channel events
-        ## <--- How do we close the socket, and reuse this thread??
+        @pusher_socket.connect unless @pusher_socket.nil? # thread goes to sleep and waits for channel events
+        puts "!-------- Pusher Thread: NO LONGER LISTENING TO PUSHER CHANNEL EVENTS"
       end
-      # @channels[scope][channel_name] = listener_thread # could this be inserting a nil thread? <----
-      # +++ 1? Move this wait time to the client: allow Thread to set up all Pusher sockets (which may also be async calls) 
-      # +++ 2? continue only when listener_thread.status and when all pusher sockets are active - so check them aso before moving on! 
-      # sleep 0.1 while 'sleep'!=listener_thread.status #sleep main thread until listner_thread has started and is listening (in sleep mode)
-      sleep 0.1 while 'sleep'!=@listener_thr.status
-      puts "-------x #{scoped_channel_name} Thread Launched"
-    rescue
-      puts "!!! Could not launch listener thread."
+      puts "o-------- Pusher Thread: Listener Launched and Runing"
+    rescue Exception => e
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+      puts "!!! Could not launch Pusher listener thread."
+      puts "----- Exception! #{e}"
+      puts e.backtrace
+      puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
     end
-    # listener_thread
-    @listener_thr
+    @pusher_listener_thread
+  end
+
+  def open_socket(on_connection_established)
+    begin
+      puts "o-------- Pusher Socket: opening connection"
+      socket = PusherClient::Socket.new(Pusher.key, {:secret => Pusher.secret} )
+
+      socket.bind('pusher:connection_established') do |data|
+        puts "o-------- Pusher Socket: connected"
+        on_connection_established.call(socket)
+      end
+
+      socket.bind('pusher:connection_failed') do |data|
+        puts "!-------- Pusher Socket: FAILED TO CONNECT"
+      end
+
+      socket .bind('pusher:heartbeat') do |data|
+        Thread.current[:last_heartbeat] = Time.now()
+      end
+
+      socket
+    rescue Exception => e
+      puts "!!! Pusher Soceket: CAN NOT CREATE A NEW PUSHER SOCKET."
+      puts "Are you running in production without the key?"
+      puts e.message
+      puts "Exception: #{e}"
+      puts e.backtrace
+      nil
+    end
   end
 
   private
@@ -355,11 +367,9 @@ if not start_realtime_sockets
   puts "REALTIME SOCKETS ARE OFF"
 else
   puts "REAL_TIME = ON"
-  begin
+  PusherChannels.instance.connect do |socket|
     PusherChannels.instance.start_private_channel("wygyt")
     PusherChannels.instance.on_private_channel_event("wygyt", "open-wid-channel") do |data|
-      puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-      puts data
       tokens = JSON.parse(data)
 
       wid = tokens["wid"]
@@ -370,7 +380,9 @@ else
       visitor.wid = wid  #+++ *** sometimes getting nil for visitor here - did not auth properly?
       visitor.source_url = url
       VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#wid}] update-me"
       PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+      PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent update-me [#{wid}] (on wid)]"
 
       PusherChannels.instance.start_private_channel(wid)
       PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
@@ -398,7 +410,9 @@ else
           ev = {
             exception: e.to_s
           }
+          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         ensure
           tokens = tokens || {}
         end
@@ -409,6 +423,8 @@ else
 
           #for hi events, the event type will specify the handler
           if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
+
+          PusherChannels::socket_logger.info " wid[#{wid}] event: #{action}"
 
           action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
 
@@ -434,7 +450,9 @@ else
             puts "tokens: #{tokens}"
             puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
             ev = { exception: msg }
+            puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
             PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+            PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
           end
         rescue RuntimeError => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -445,7 +463,9 @@ else
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           #+++TODO make this a convenience function: to trigger exceptions back
           ev = { exception: e.to_s }
+          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         rescue Exception => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           puts "WID Channel Exception invoking #{target_controller}.#{action}"
@@ -454,7 +474,9 @@ else
           puts e.backtrace
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           ev = { exception: e.to_s }
+          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         else
           # Do this if no exception was raised
         ensure
@@ -462,10 +484,6 @@ else
         end
       end
     end
-  rescue Exception => e
-    puts "!!! Pusher can not Connect."
-    puts "Are you running in production without the key?"
-    puts e.message
   end
 end
 
