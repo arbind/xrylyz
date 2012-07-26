@@ -24,7 +24,7 @@ class Quiz
 
 
   # adapter
-  belongs_to :game, :class_name => 'Quiz::Game', :inverse_of => :quiz
+  has_many :game, :class_name => 'Quiz::Game', :inverse_of => :quiz
   class Game
     include Mongoid::Document
     include Mongoid::Timestamps
@@ -32,7 +32,7 @@ class Quiz
     field :key, :type => String
     field :playing_referer, :type => String
 
-    has_one :quiz
+    belongs_to :quiz
     has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
     # has_one :player
 

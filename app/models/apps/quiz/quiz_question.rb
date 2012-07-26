@@ -91,7 +91,7 @@ class QuizQuestion
   end
 
   # adapter
-  belongs_to :game_question, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :quiz_question
+  has_many :game_question, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :quiz_question
 
   class GameQuestion
     include Mongoid::Document
@@ -101,7 +101,7 @@ class QuizQuestion
     field :time_to_answer, :type => Integer, :default => -1
     field :score, :type => Integer, :default => -1
 
-    has_one :quiz_question, :class_name => "QuizQuestion"
+    belongs_to :quiz_question, :class_name => "QuizQuestion"
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
 
     # adapter usage pattern:
