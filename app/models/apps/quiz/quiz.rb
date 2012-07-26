@@ -59,6 +59,9 @@ class Quiz
       self
     end
 
+    def answered_questions() questions.answered end
+    def unanswered_questions() questions.unanswered end
+
     def level1_questions_as_card() leveln_questions(1).map(&:for_display_as_card); end
     def level2_questions_as_card() leveln_questions(2).map(&:for_display_as_card); end
     def level3_questions_as_card() leveln_questions(3).map(&:for_display_as_card); end

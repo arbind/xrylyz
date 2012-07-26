@@ -33,6 +33,7 @@ class QuizQuestion
   scope :level2, where(level: 2)
   scope :level3, where(level: 3)
 
+  # scope :unanswered, where(selected_answer: )
   scope :approved, where(is_approved: true)
   scope :rejected, where(is_rejected: true)
 
@@ -103,6 +104,10 @@ class QuizQuestion
 
     belongs_to :quiz_question, :class_name => "QuizQuestion"
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
+
+
+    scope :answered, where(selected_answer: {'$gt' => 0})
+    scope :unanswered, where(selected_answer: {'$lt' => 1})
 
     # adapter usage pattern:
     # create then adapt

@@ -26,10 +26,18 @@ class AppQuizController < RylyzAppController
       wid = tokens['wid']
 
       game = AppQuizController.daily_game(visitor, wid)
-      cap.show_data('level1-questions', game.level1_questions_as_card)
-      cap.show_data('level2-questions', game.level2_questions_as_card)
-      cap.show_data('level3-questions', game.level3_questions_as_card)
-      cap.fire2player(wid)
+      questions_left = game.unanswered_questions.count
+      if 0 < questions_left
+        title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
+      else
+        title = "Congratulations! you scored: XXX points!"
+      end
+      cap.
+        show_data('game-title', {title: title}).
+        show_data('level1-questions', game.level1_questions_as_card).
+        show_data('level2-questions', game.level2_questions_as_card).
+        show_data('level3-questions', game.level3_questions_as_card).
+        fire2player(wid)
     end
 
     def self.on_select_question(visitor, tokens)
