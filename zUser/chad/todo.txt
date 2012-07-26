@@ -1,0 +1,8 @@
+Style question/answer page:
+  - progress bar
+  - header and question
+  - better layout?
+
+Style leaderboard
+
+CSS refactor and optimization

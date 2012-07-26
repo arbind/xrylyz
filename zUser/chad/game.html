@@ -56,17 +56,17 @@
 }
 #ryCloseButton {
   position:absolute;
-  top: 30px;
-  right: 30px;
-  padding: 0px 4px 4px 4px;
-  font: bold 25px/30px Arial, Helvetica;
-  color: #888888;
-  background-color: white;
-  border: 4px solid #888888;
-  border-radius: 50%;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+  top: 8px;
+  right: 10px;
+  z-index: 1000;
+  padding: 0px 5px 3px;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  background: black;
+  border: 2px solid #fff;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
   cursor: pointer;
   &:hover {
     color: #FFFFCC;
@@ -276,14 +276,7 @@
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-/* line 124, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-#ryTrivia {
-  /*
-  .ryHidden {
-    display: none;
-  }
-  */
-}
+
 /* line 125, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia h1, #ryTrivia h2, #ryTrivia h3 {
   margin: 0;
@@ -315,8 +308,6 @@
 /* line 156, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 #ryTrivia .ryInner {
   float: left;
-  width: 100%;
-  box-sizing: border-box;
   padding: 0 20px 20px;
 }
 /* line 164, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
@@ -377,10 +368,7 @@
   filter:alpha(opacity=55);
   opacity: 0.55;
 }
-/* line 219, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
-.ryChoice.ryWrong:hover {
-  background: transparent;
-}
+
 
 /* line 200, ../../../../app/assets/apps/stylesheets/quiz/app_quiz.scss.erb */
 .rySelected {
@@ -424,6 +412,42 @@
 .ryChoices .ryAnswers {
   visibility: hidden;
 }
+.ryLeaderboardDate {
+  font-weight: bold;
+}
+.ryLeaderboardFilter {
+  float: left;
+  margin-bottom: 1em;
+  font-size: 12px;
+}
+.ryLeaders {
+  clear: both;
+}
+#leaderboard {
+  padding: 20px;
+}
+#leaderboard a {
+  text-decoration: none;
+}
+.ryLeaders table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+.ryLeaders td,
+.ryLeaders th {
+  padding: .5em;
+  text-align: left;
+}
+.ryLeaders tr {
+  border-bottom: 1px solid #aaa;
+}
+.ryLeaders tbody tr:nth-child(even) {
+  background: #ddd;
+}
+.paginate {
+  font-size: .8em;
+}
 
   </style>
 
@@ -442,7 +466,7 @@
   <div id="ryAppFrame">
     <div id="ryApp">
       <div id="ryCloseButton" onclick="Rylyz.Wygyt.suspendWygyt()">x</div>
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="wygyt-app">
         <div id="ryWelcome">
           <h1>Welcome</h1>
@@ -469,8 +493,9 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="wygyt-app">
         <div id="ryTriviaSplash">
           <h1>Play Social Trivia</h1>
@@ -497,8 +522,9 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <h1>
           Placeholder
@@ -522,13 +548,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -672,13 +698,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -742,13 +768,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -812,13 +838,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -882,13 +908,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -954,13 +980,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+        <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -1024,13 +1050,13 @@
 
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
         <div id="ryQuizGame">
           <object name="header">
             <div class="header-object">
-              <div id="ryCloseQuiz">Close</div>
               <div class="ryHeader">
                 <div id="ryAppName">Trivia</div>
                 <p id="ryScore">100</p>
@@ -1094,42 +1120,69 @@
 
   <!---------------- <MOCK SCREEN> ------------- -->
   <h1 class="mockscreen">TriviaApp: LeaderBoard</h1>
-
   <div id="ryAppFrame">
     <div id="ryApp">
+      <div id="ryCloseButton">x</div>
 
-        <!-- APP Content -->
+      <!-- APP Content -->
       <div class="quiz-app">
-        <div>
-          <h2>Leaderboard</h2>
-          <h3 class="ryLeaderboardDate"> <a href="#">&lt; prev</a>:: 08/01 - 09/01 ::<a href="#">next &gt;</a> </h3>
-          <div class="ryLeaderboardRange"><a href="#">day</a> <a href="#">week</a> <a href="#">month</a> <a href="#">all time</a></div>
-          <div class="ryLeaderboardGroup"><a href="#">all players</a> | <a href="#"> players on myfavblog.com</a> | <a href="#">players in USA</a></div>
+        <div id="leaderboard">
+          <h1>Leaderboard</h1>
+          <p class="ryLeaderboardDate"> <a href="#" class="prev paginate">&laquo; prev</a> 08/01 - 09/01 <a href="#" class="next paginate">next &raquo;</a> </p>
+          <div class="ryLeaderboardFilter">
+            <strong>Filter: </strong>
+            <select>
+              <option>Day</option>
+              <option>Week</option>
+              <option>Month</option>
+            </select>
+            <select>
+              <option>All Players</option>
+              <option>Players from myfavblog.com</option>
+              <option>Players in USA</option>
+            </select>
+           </div>
+          <!-- <div class="ryLeaderboardRange"><a href="#">day</a> <a href="#">week</a> <a href="#">month</a> <a href="#">all time</a></div>
+          <div class="ryLeaderboardGroup"><a href="#">all players</a> | <a href="#"> players on myfavblog.com</a> | <a href="#">players in USA</a></div> -->
           <div class="ryLeaders">
-            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
-              <div>nickname</div>
-              <div>Country</div>
-              <div>Score</div>
-              <div>Total Time</div>
-              <div># Questions</div>
-              <div><a href="#">referrer url</a></div>
-            </div>
-            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
-              <div>nickname</div>
-              <div>Country</div>
-              <div>Score</div>
-              <div>Total Time</div>
-              <div># Questions</div>
-              <div><a href="#">referrer url</a></div>
-            </div>
-            <div class="ryLeader" style="background-color:#eee; margin: 4px;padding: 4px; border: 1px solid blue;">
-              <div>nickname</div>
-              <div>Country</div>
-              <div>Score</div>
-              <div>Total Time</div>
-              <div># Questions</div>
-              <div><a href="#">referrer url</a></div>
-            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nickname</th>
+                  <th>Country</th>
+                  <th>Score</th>
+                  <th>Time</th>
+                  <th># Questions</th>
+                  <th>Blog</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Hulk Hogan</td>
+                  <td>United States</td>
+                  <td>1000</td>
+                  <td>2:50</td>
+                  <td>12</td>
+                  <td><a href="#">Hulkamania Blog</a></td>
+                </tr>
+                <tr>
+                  <td>Hulk Hogan</td>
+                  <td>United States</td>
+                  <td>1000</td>
+                  <td>2:50</td>
+                  <td>12</td>
+                  <td><a href="#">Hulkamania Blog</a></td>
+                </tr>
+                <tr>
+                  <td>Hulk Hogan</td>
+                  <td>United States</td>
+                  <td>1000</td>
+                  <td>2:50</td>
+                  <td>12</td>
+                  <td><a href="#">Hulkamania Blog</a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
