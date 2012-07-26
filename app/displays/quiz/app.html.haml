@@ -145,6 +145,7 @@
       %object{:name=>"header"}
       #ryAppContainer
         .ryQuestions
+          %object{:name=>"loading-screen"}
           %object{:name=>"game-title"}
           %collection{:name=>"level1-questions"}
           %collection{:name=>"level2-questions"}
@@ -174,6 +175,10 @@
         Olympic Trivia
       %p#ryScore
         100
+
+  %object{:name=>"loading-screen"}
+    #ryLoadingScreen
+      %h1 Loading
 
   %object{:name=>"game-title", "data-defaults"=>"{title: 'You have 20 more questions:'}"}
     %h2.ryQuestionsHeading [[title]]

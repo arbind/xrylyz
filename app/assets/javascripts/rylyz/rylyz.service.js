@@ -68,6 +68,16 @@
       });
 
     },
+    handleFadeIn: function(event){
+      var selector;
+      selector = event.data['selector'];
+      jQuery(selector).fadeIn();
+    },
+    handleFadeOut: function(event) {
+      var selector;
+      selector = event.data['selector'];
+      jQuery(selector).fadeOut();
+    },
     handleRemoveCSSClass: function(event){
       var cssList = event.data;
       if (!$.isArray(cssList)) cssList = [event.data];
@@ -476,6 +486,25 @@
     }
   }
   Rylyz.event.registerEventHandler(hRemoveCSSClass);
+
+
+  var hFadeIn = {
+    queue:"css",
+    type:"fade-in",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleFadeIn(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hFadeIn);
+
+  var hFadeOut = {
+    queue:"css",
+    type:"fade-out",
+    handleEvent: function(ev) {
+      Rylyz.Service.handleFadeOut(ev);
+    }
+  }
+  Rylyz.event.registerEventHandler(hFadeOut);
 
   var hSetCSSAttribute = {
     queue:"css",

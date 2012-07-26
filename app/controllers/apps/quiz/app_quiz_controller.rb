@@ -37,6 +37,7 @@ class AppQuizController < RylyzAppController
         show_data('level1-questions', game.level1_questions_as_card).
         show_data('level2-questions', game.level2_questions_as_card).
         show_data('level3-questions', game.level3_questions_as_card).
+        fade_out('#ryLoadingScreen').
         fire2player(wid)
     end
 

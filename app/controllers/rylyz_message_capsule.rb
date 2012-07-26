@@ -152,6 +152,22 @@ class RylyzMessageCapsule
     @events << materialize_event('css', 'set-css-attribute', ctx, data)
     self
   end
+  def fade_in(selector)
+    ctx = event_context
+    sel = "#ryApp #{selector}" # ensure that the selection happens withing rylyz app only
+    data = {selector: sel}
+    @events << materialize_event('css', 'fade-in', ctx, data)
+    self
+  end
+
+  def fade_out(selector)
+    ctx = event_context
+    sel = "#ryApp #{selector}" # ensure that the selection happens withing rylyz app only
+    data = {selector: sel}
+    @events << materialize_event('css', 'fade-out', ctx, data)
+    self
+  end
+
   def enable_button(button_id)
     ctx = event_context
     data = {name: button_id}
