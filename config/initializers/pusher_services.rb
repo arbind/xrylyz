@@ -3,6 +3,7 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
+
 # +++TOOD detect when wid is no longer connected:
 # 1. scan threads and collect the ones time of last send or receive > 5 seconds
 # 2. ping the wids of the collected threads, setting a timer to check for a pong
@@ -75,7 +76,12 @@ PusherClient.logger = Logger.new(STDOUT)
 
 class PusherChannels
   include Singleton
+  @@socket_logger = Logger.new('soceket_logger1')
 
+  def self.socket_logger
+    @@socket_logger
+  end
+  
   attr_reader :channels
 
   def initialize
@@ -137,6 +143,8 @@ class PusherChannels
     scoped_channel_name = materialize_channel_name(scope, channel_name)
     puts "Sending #{event_name} on #{scoped_channel_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent #{event_name} [#{scope}-#{channel_name}]"
+    PusherChannels::socket_logger.info "<--------------------------- #{tokens.to_json}]"
   end
 
   def on_public_channel_event(channel_name, event_name, &block)
@@ -164,6 +172,9 @@ class PusherChannels
       return
     end
     socket.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
+    PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on socket"
+    PusherChannels::socket_logger.info "> #{data}"
+
       begin #safeguard the handler block
         handler.call( data )
       rescue RuntimeError => e
@@ -205,6 +216,7 @@ class PusherChannels
   def stop_channel(scope, channel_name)
     channel = @channels[scope][channel_name]
     Pusher[scoped_channel_name].trigger("started-listening", {}.to_json )
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
 
     return if not channel
     #+++TODO turn off the socket and end the thread.
@@ -248,8 +260,11 @@ class PusherChannels
         s = scope
         c = channel_name
         socket.bind('pusher:connection_established') do |data|
+          PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got pusher:connection_established [#{scope}-#{channel_name}]"
+          PusherChannels::socket_logger.info ">  #{data}"
           Thread.current[:connected] = true
           PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
+          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name} (after connection_establishd)]"
         end
 
       # socket.bind('pusher_internal:member_removed') do |data|
@@ -266,6 +281,8 @@ class PusherChannels
       # end
 
         socket.bind('pusher:heartbeat') do |data|
+    PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got pusher:heartbeat on socket"
+    PusherChannels::socket_logger.info "> #{data}"
           Thread.current[:last_heartbeat] = Time.now()
         end
         Thread.current[:socket] = socket
@@ -354,6 +371,7 @@ else
       visitor.source_url = url
       VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
       PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent update-me [#{wid} (on wid)]"
 
       PusherChannels.instance.start_private_channel(wid)
       PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
@@ -382,6 +400,7 @@ else
             exception: e.to_s
           }
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         ensure
           tokens = tokens || {}
         end
@@ -418,6 +437,7 @@ else
             puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
             ev = { exception: msg }
             PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
           end
         rescue RuntimeError => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -429,6 +449,7 @@ else
           #+++TODO make this a convenience function: to trigger exceptions back
           ev = { exception: e.to_s }
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         rescue Exception => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           puts "WID Channel Exception invoking #{target_controller}.#{action}"
@@ -438,6 +459,7 @@ else
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           ev = { exception: e.to_s }
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
+    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         else
           # Do this if no exception was raised
         ensure
