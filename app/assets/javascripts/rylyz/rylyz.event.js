@@ -164,13 +164,14 @@ Rylyz.event = function() {
       if (DBUG) dbugOut('scheduled countdowntimer: ' + countDownName + "to fire event: " +ev.type+ " in " +waitForMilliseconds+" ms");
     },
     //+++rename to fireThisDOMEvent, since it converts dom event to rylyz event and  fires immediately:
-    fireOnDOMEvent: function(eventType, domEvent, eventBase) {  
+    fireOnDOMEvent: function(eventType, domEvent, eventBase) {
       var srcElement = srcElementForDOMEvent(domEvent);
       if (!srcElement) return;
       var fireOn = "fire-on" + eventType.capitalize(); //name of the data attribute
       var eventDescription = srcElement.getAttribute(fireOn);
-      //+++ modify description from 
+      //+++ modify description from
       var ev;
+      var msg;
       try {
         ev = null;
         //+++ modify (to simplify dom attribute interface) to be:
@@ -179,27 +180,27 @@ Rylyz.event = function() {
         eval(toEval);
       }
       catch (err) {
-        var msg = "Invalid syntax for " +eventType+ ":\n"
+        msg = "Invalid syntax for " +eventType+ ":\n";
         msg += fireOn +  ' = "' + eventDescription + '"\n';
-        msg += "Be sure to quote the values and use commas to separate parameters!\n\n"
+        msg += "Be sure to quote the values and use commas to separate parameters!\n\n";
         console.error(msg);
         return;
       }
       if ('object' != typeof ev) {
-        var msg = (typeof ev) + " is an invalid type for " +eventType+ ":\n"
+        msg = (typeof ev) + " is an invalid type for " +eventType+ ":\n";
         msg += fireOn +  ' = "' + eventDescription + '"\n';
-        msg += "The event should be evaluate to an object description!\n\n"
+        msg += "The event should be evaluate to an object description!\n\n";
         console.error(msg);
         return;
       }
-      if (!ev.type){ 
-        var msg = " type needs to be specified for " +eventType+ " event :\n"
+      if (!ev.type){
+        msg = " type needs to be specified for " +eventType+ " event :\n";
         msg += fireOn +  ' = "' + eventDescription + '"\n';
-        msg += "include type:'event-type'!\n\n"
+        msg += "include type:'event-type'!\n\n";
         console.error(msg);
         return;
       }
-      jQuery.extend(ev, eventBase)
+      jQuery.extend(ev, eventBase);
       this.fireEvent(ev);
     },
     fireEvent: function(ev) {
