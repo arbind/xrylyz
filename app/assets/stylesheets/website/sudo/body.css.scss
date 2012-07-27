@@ -1,0 +1,19 @@
+.button.correct {
+  float:none;
+  display:inline-block;
+  color: #282;
+  font-weight:bold;
+  background-color:#0F0;
+  cursor:crosshair;
+}
+.button.incorrect {
+  float:none;
+  display:inline-block;
+  color: #822;
+  font-weight:bold;
+  background-color:transparent;
+  &:hover{
+    color: #282;
+    background-color:#0F0;
+  }
+}

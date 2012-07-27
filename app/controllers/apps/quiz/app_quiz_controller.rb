@@ -18,7 +18,7 @@ class AppQuizController < RylyzAppController
       if 0 < questions_left
         title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
       else
-        title = "Congratulations! you scored: XXX points!"
+        title = "Congratulations!" # add total score
       end
       cap.
         show_data('game-title', {title: title}).
@@ -135,11 +135,9 @@ class AppQuizController < RylyzAppController
         klass = 'ryWrong'
         status = @@wrong_list.sample
       end
-      status_data = {status:status, klass:klass}
-      reflection_data = {reflection:'Some cool reflection about this question', klass:'klass'}
+      status_data = {klass:klass, status:status, reflection:game_question.reflection}
       cap.
         show_data('status', status_data).
-        show_data('reflection', reflection_data).
         # show_data('leaders', leaderboard).
         call_javascript('startPhaseFinished').
         fire2player(wid);
@@ -175,11 +173,9 @@ class AppQuizController < RylyzAppController
 
       klass = 'ryTimeOver'
       status = "Time Over!"
-      status_data = {status:status, klass:klass}
-      reflection_data = {reflection:'Some cool reflection about this question', klass:klass}
+      status_data = {klass:klass, status:status, reflection:game_question.reflection}
       cap.
         show_data('status', status_data).
-        show_data('reflection', reflection_data).
         # show_data('leaders', leaderboard).
         call_javascript('startPhaseFinished').
         fire2player(wid);

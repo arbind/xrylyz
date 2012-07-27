@@ -9,6 +9,7 @@ class QuizQuestion
   field :prompt , :type => String
   field :answers , :type => Hash, :default => {} #indexed by integer 1, 2, 3, 4
   field :correct_answer, :type => Integer, :default => -1
+  field :reflection , :type => String
 
   field :member_id, :type => BSON::ObjectId
   field :author_name, :type => String
@@ -124,6 +125,7 @@ class QuizQuestion
     def answer3() quiz_question.answer3 end
     def answer4() quiz_question.answer4 end
     def correct_answer() quiz_question.correct_answer end
+    def reflection() quiz_question.reflection end
     def category() quiz_question.category end
     def season() quiz_question.season end
     def level() quiz_question.level end
@@ -173,6 +175,7 @@ class QuizQuestion
         category: category,
         season: season,
         prompt: prompt,
+        reflection: reflection,
         correct_answer: correct_answer,
         selected_answer: selected_answer,
         time_to_answer: time_to_answer,
