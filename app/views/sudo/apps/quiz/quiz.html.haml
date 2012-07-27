@@ -62,19 +62,19 @@
       %br
       %br
 
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2= "Level 1 - #{@quiz.questions.level1.count}"
         - @quiz.questions.level1.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}
             %a{:href=>"#", :onClick=>"$.post('#{sudo_apps_quiz_remove_question_url(@question)}', {question_id: '#{q.id}'}, function(data) {$('#quiz_update').submit();} )"}
               = q.prompt
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2= "Level 2 - #{@quiz.questions.level2.count}"
         - @quiz.questions.level2.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}
             %a{:href=>"#", :onClick=>"$.post('#{sudo_apps_quiz_remove_question_url(@question)}', {question_id: '#{q.id}'}, function(data) {$('#quiz_update').submit();} )"}
               = q.prompt
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2= "Level 3 - #{@quiz.questions.level3.count}"
         - @quiz.questions.level3.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}
@@ -82,19 +82,19 @@
               = q.prompt
       %br
       %br
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2 Level 1
         - QuizQuestion.complete.level1.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}
             %a{:href=>"#", :onClick=>"$.post('#{sudo_apps_quiz_add_question_url(@question)}', {question_id: '#{q.id}'}, function(data) {$('#quiz_update').submit();} )"}
               = q.prompt
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2 Level 2
         - QuizQuestion.complete.level2.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}
             %a{:href=>"#", :onClick=>"$.post('#{sudo_apps_quiz_add_question_url(@question)}', {question_id: '#{q.id}'}, function(data) {$('#quiz_update').submit();} )"}
               = q.prompt
-      .wide-one-third.high300
+      .wide-one-third.high300.scroll
         %h2 Level 3
         - QuizQuestion.complete.level3.each do |q|
           %div{:style=>"border:1px solid black; margin: 3px"}

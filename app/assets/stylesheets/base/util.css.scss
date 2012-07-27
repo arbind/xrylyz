@@ -69,6 +69,8 @@
   @include roundRightCornersMixin;
 }
 
+.scroll { overflow:scroll; }
+
 .widefull, .wide-full, .fullwidth {width: 100%;}
 .date_width, .width_date { width: 12em; }
 .time_width, .width_time { width: 10em; }
