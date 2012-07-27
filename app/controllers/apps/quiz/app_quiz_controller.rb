@@ -7,18 +7,6 @@ class AppQuizController < RylyzAppController
   def self.on_load_data(visitor, tokens)
   end
 
-  class ScreenGameOldController < RylyzScreenController
-    def self.on_load_data(visitor, tokens)
-      cap = materialize_capsule
-      wid = tokens['wid']
-
-      game = AppQuizController.daily_game(visitor, wid)
-      cap.show_data('level1-rset', game.level1_questions_as_card)
-      # cap.show_data('level2-questions', game.level2_questions_as_card)
-      # cap.show_data('level3-questions', game.level3_questions_as_card)
-      cap.fire2player(wid)
-    end
-  end
 
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
@@ -57,8 +45,36 @@ class AppQuizController < RylyzAppController
   end
 
   class ScreenQuestionController < RylyzScreenController
-    @@correct_list = ["that's correct!", "nice!", "way to go!", "you got it!" "that's right!", "you rock!" "sweet!", "yes!", "perfect!", "precisely!", "right on!"]
-    @@wrong_list = ["nice try.", "not quite.", "that was close.", "no cigar.", "not easy, right?", "nope.", "was that your 2nd choice?"]
+    @@correct_list = [
+     "that's correct!",
+     "on the money!",
+     "star",
+     "nice!",
+     "yep!",
+     "affirmative",
+     "way to go!",
+     "bueno",
+     "correctomundo!",
+     "you got it!",
+     "that's right!",
+     "you rock!",
+     "sweet!",
+     "yes!",
+     "perfect!",
+     "precisely!",
+     "right on!"
+   ]
+
+    @@wrong_list = [
+    "nice try - but no",
+     "not quite",
+     "so close",
+     "negative",
+     "no cigar",
+     "not easy - right?",
+     "nope",
+     "almost"
+   ]
 
     def self.on_load_data(visitor, tokens)
       cap = materialize_capsule
@@ -75,6 +91,7 @@ class AppQuizController < RylyzAppController
         show_data('reflection', reflection_data).
         show_data('prompt', prompt_data).
         call_javascript('startPhasePromptQuestion', {question_id: select}).
+        fade_out('#ryLoadingScreen').
         fire2player(wid)
     end
 

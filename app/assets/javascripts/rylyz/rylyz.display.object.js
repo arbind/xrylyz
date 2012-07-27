@@ -18,6 +18,15 @@ window.Rylyz.ObjectDisplay = Backbone.View.extend({
   tagName: "div",  //html tag element
   className: "",  //css classname
 
+  resetToDefaultData: function() {
+    this.model.set(this.dataDefaults)
+    this.resetSubDisplaysToDefaultData();
+  },
+  resetSubDisplaysToDefaultData: function() {
+    $.each(this.allSubDisplays(), function(idx, subDisplay) {
+      subDisplay.resetToDefaultData();
+    });    
+  },
   origin: function() {
     var o = null;
     if (this.parent) o = this.parent.origin() + "." + this.name;

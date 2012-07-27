@@ -106,8 +106,8 @@ class QuizQuestion
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
 
 
-    scope :answered, where(selected_answer: {'$gt' => 0})
-    scope :unanswered, where(selected_answer: {'$lt' => 1})
+    scope :answered, where(selected_answer: {'$gt' => -1})
+    scope :unanswered, where(selected_answer: {'$lt' => 0})
 
     # adapter usage pattern:
     # create then adapt
@@ -134,11 +134,21 @@ class QuizQuestion
     end
 
     def for_display_as_card
+
+      answer_class = "" # default to not answered
+      if (selected_answer.zero?)
+        answer_class = "ryTimeOver"
+      elsif (correct_answer == selected_answer)
+        answer_class = "ryCorrect"
+      elsif (0<selected_answer)
+        answer_class = "ryWrong" 
+      end
       {
         id: _id,
         level: level,
         category: category,
-        answered: selected_answer > 0
+        answered: selected_answer > -1,
+        answer_class: answer_class
       }
     end
 

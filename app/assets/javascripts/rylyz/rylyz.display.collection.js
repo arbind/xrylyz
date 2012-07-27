@@ -7,6 +7,10 @@ window.Rylyz.CollectionDisplay = Rylyz.ObjectDisplay.extend({
   screen:null,
   dataDefaults:null,
 
+  resetToDefaultData: function() {
+    this.collection.reset(this.dataDefaults)
+    this.resetSubDisplaysToDefaultData();
+  },
   initializeTemplateName: function() {
     this.templateName = this.templateName || this.options.templateName || this.name;
     //this.itemTemplateName is set in initializeDisplay()

@@ -6,6 +6,7 @@
     quizapp.resetState = function() {
       Rylyz.timer.cancel('hide-options');
       Rylyz.timer.cancel('score-timer');
+      Rylyz.timer.cancel('back-to-game-timer');
       quizapp.gamePhase = "prompted";
       quizapp.hintGiven = false;
     }
@@ -22,20 +23,25 @@
       Rylyz.timer.start('score-timer');
     }
     quizapp.startPhaseAnswered = function(options) {
-      console.log("----starting Answering! "  + options)
       quizapp.gamePhase = "answered";
     }
     quizapp.startPhaseFinished = function(options) {
       console.log("----finish Answering! "  + options)
-      quizapp.gamePhase = "finished";
+      setTimeout(function(){quizapp.gamePhase = "finished";}, 488); //allow 1/2 a second before clicking will take them back to game screen
+      Rylyz.timer.start('back-to-game-timer');      
     }
 
     // nav
     quizapp.goBackToGame = function() {
       quizapp.resetState();
+
+      var screen = Rylyz.currentScreen()
+      setTimeout(function(){screen.resetToDefaultData();}, 500)
+
       var navEvent = {queue:'nav', type:'nav-onClick', appName:'quiz', nextScreen:'game'}
       Rylyz.event.fireEvent(navEvent);
-    }
+
+    };
 
     // CSS update utilities
     quizapp.noMoreHinting = function() {
@@ -59,6 +65,7 @@
 
     quizapp.choose = function(num, question_id) {
       if ("thinking" != quizapp.gamePhase) return;
+      quizapp.startPhaseAnswered();
 
       Rylyz.timer.stop('score-timer')
       var answer = '.ryAnswer' + num
@@ -88,6 +95,10 @@
       quizapp.startPhaseThinking();
     }
     Rylyz.timer.register('hide-options', quizapp.tickHideOptionsTimer, 3500, false, quizapp.startHideOptionsTimer, quizapp.stopHideOptionsTimer);
+
+    // back-to-game timer
+    Rylyz.timer.register('back-to-game-timer', quizapp.goBackToGame, 3500, false);
+
 
     // scoreing timer
     quizapp.timeOver = 20; // seconds before time is over for player to choose answer
@@ -145,7 +156,6 @@
       %object{:name=>"header"}
       #ryAppContainer
         .ryQuestions
-          %object{:name=>"loading-screen"}
           %object{:name=>"game-title"}
           %collection{:name=>"level1-questions"}
           %collection{:name=>"level2-questions"}
@@ -160,25 +170,28 @@
         %object{:name=>"prompt"}
 
   %screen{:name=>"leaderboard"}
-    %collection{:name=>"leaders"}
-    .button-bar
-      .button{"nav-onClick"=>"game"} Back
+    #ryQuizGame
+      %object{:name=>"header"}
+      %collection{:name=>"leaders"}
+      .button-bar
+        .button{"nav-onClick"=>"game"} Back
 
 
   %screen{:name=>"submit-question"}
     .button-bar
       .button{"nav-onClick"=>"game"} Back
 
-  %object{:name=>"header"}
+  %object{:name=>"header", "data-defaults"=>"{score: 120}"}
+    %object{:name=>"loading-screen"}
     .ryHeader
       #ryAppName
         Olympic Trivia
       %p#ryScore
-        100
+        [[score]] points
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
   %object{:name=>"loading-screen"}
     #ryLoadingScreen
-      %h1 Loading
 
   %object{:name=>"game-title", "data-defaults"=>"{title: 'You have 20 more questions:'}"}
     %h2.ryQuestionsHeading [[title]]
@@ -199,16 +212,17 @@
     ! [! if (answered) { !]
     %li
       %a.ryQuestion.ryUnlocked.ryAnswered
-        %span.ryCheck
+        %span.ryCheck{:class=>'[[answer_class]]'}
+        %span.ryX{:class=>'[[answer_class]]'}
+        %span.ryClock{:class=>'[[answer_class]]'}
     ! [! } else { !]
     %li
       %a.ryQuestion.ryUnlocked.ryUnanswered{"fire-onClick-one"=>"{queue:'hi', type:'select-question', select:'[[id]]'}"}
-        %span.ryCheck
     ! [! } !]
 
 
 
-  %object{:name=>"prompt", "data-defaults"=>"{id: '50078743caff508a6d000018', prompt:'question?', answer1:'a1', answer2:'a2', answer3:'a3', answer4:''}"}
+  %object{:name=>"prompt", "data-defaults"=>"{id: '', prompt:'', answer1:'', answer2:'', answer3:'', answer4:''}"}
     #ryTrivia
       %h1
         [[prompt]]
@@ -227,12 +241,12 @@
         #ryTriviaResults
           %object{:name=>"status"}
 
-  %object{:name=>"status", "data-defaults" => "{status:'...', klass:'hidden'}"}
+  %object{:name=>"status", "data-defaults" => "{status:'', klass:'hidden', reflection:''}"}
     %div{:class => '[[klass]]'}
       %h2#ryStatus
         [[status]]
       #ryQuestionReflection
-        question reflection sentence.
+        [[reflection]]
 
   %collection{:name=>"leaders", :item=>"leader", "data-defaults"=>"[{nickname:'mike', score:10},{nickname:'john', score:20}]"}
     %h2 Leaders
