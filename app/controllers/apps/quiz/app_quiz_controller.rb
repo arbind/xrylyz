@@ -27,7 +27,7 @@ beginning_time = Time.now
 end_time = Time.now
 
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "on_load materialize capsule #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load materialize capsule #{(end_time - beginning_time)}s to handle materialize capsule"
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 beginning_time = Time.now
@@ -35,7 +35,7 @@ beginning_time = Time.now
 end_time = Time.now
 
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "on_load find dail_game #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load find dail_game #{(end_time - beginning_time)}s to handle lookup daily quiz"
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
       if game.nil?
@@ -47,7 +47,7 @@ beginning_time = Time.now
 end_time = Time.now
 
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle count unanswered questions"
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
       if 0 < questions_left
@@ -74,7 +74,7 @@ beginning_time = Time.now
 end_time = Time.now
 
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "on_load fire capsule #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load fire capsule #{(end_time - beginning_time)}s to handle fire capsule to player"
 puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     end
 
