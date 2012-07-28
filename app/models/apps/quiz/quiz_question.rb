@@ -114,8 +114,14 @@ class QuizQuestion
     # create then adapt
     # precondition for adapt: instance has already been created
     def adapt(quiz_question)
+beginning_time = Time.now
       self.quiz_question = quiz_question
       save
+end_time = Time.now
+
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "adapt GameQuestion adapt #{(end_time - beginning_time)}s to handle gq = GameQuestion.save"
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       self
     end
 

@@ -97,10 +97,22 @@ puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       self.source_url = visitor.source_url
       self.player_nickname = visitor.nickname
       quiz.questions.each do |q|
+beginning_time = Time.now
         gq = self.questions.create
+end_time = Time.now
+
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "adapt create GameQuestion #{(end_time - beginning_time)}s to handle gq = self.questions.create"
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         gq.adapt(q)
       end
+beginning_time = Time.now
       save
+end_time = Time.now
+
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "adapt create Game #{(end_time - beginning_time)}s to handle save"
+puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       self
     end
 
