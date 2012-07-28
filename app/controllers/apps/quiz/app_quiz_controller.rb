@@ -130,8 +130,16 @@ puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       wid = tokens['wid']
       settings = tokens['settings']
       select = settings['select']
+beginning_time = Time.now
       game_question = QuizQuestion::GameQuestion.find(select)
+end_time = Time.now
 
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle finding game question"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+
+beginning_time = Time.now
       status_data = {status:'', klass:'', reflection:''}
       prompt_data = game_question.for_display_as_prompt
       cap.
@@ -140,6 +148,11 @@ puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         call_javascript('startPhasePromptQuestion', {question_id: select}).
         fade_out('#ryLoadingScreen').
         fire2player(wid)
+end_time = Time.now
+
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle firing capsule"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     end
 
     def self.calculate_score(time)

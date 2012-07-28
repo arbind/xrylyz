@@ -27,9 +27,17 @@ class Quiz
 
   def self.daily_quiz_on(day) quizes_on(day).first end
   def self.quizes_on(day)
+beginning_time = Time.now
     on_day = day.beginning_of_day
     on_next_day = on_day + 1.day
-    where(is_approved: true).and(online_at: {'$gte'=>on_day}).and(online_at: {'$lt' => on_next_day}).asc(:online_at)
+    result = where(is_approved: true).and(online_at: {'$gte'=>on_day}).and(online_at: {'$lt' => on_next_day}).asc(:online_at)
+end_time = Time.now
+
+puts "Quiz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "Quiz find dail_game #{(end_time - beginning_time)}s to handle find quizes_on"
+puts "Quiz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+result
   end
 
   # adapter
@@ -54,10 +62,29 @@ class Quiz
     end
 
     def self.daily_game(visitor)
+beginning_time = Time.now
       adapter = where(key: visitor.wid).first
+end_time = Time.now
+
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "Game find dail_game #{(end_time - beginning_time)}s to handle find adapter"
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
       if adapter.nil?
+beginning_time = Time.now
         q = daily_quiz
+end_time = Time.now
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "Game find dail_game #{(end_time - beginning_time)}s to handle Game.daily_quiz"
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+beginning_time = Time.now
         adapter = create_adapter(q, visitor) unless q.nil?
+end_time = Time.now
+
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "Game find dail_game #{(end_time - beginning_time)}s to handle create_adapter"
+puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       end
       adapter
     end
