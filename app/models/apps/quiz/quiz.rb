@@ -131,7 +131,9 @@ puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       questions.timed_out
     end
 
-    def level1_questions_as_card() leveln_questions(1).map(&:for_display_as_card); end
+    def level1_questions_as_card()
+      leveln_questions(1).map(&:for_display_as_card);
+    end
     def level2_questions_as_card() leveln_questions(2).map(&:for_display_as_card); end
     def level3_questions_as_card() leveln_questions(3).map(&:for_display_as_card); end
 
@@ -159,7 +161,13 @@ puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private
 
     def leveln_questions(level)
+beginning_time = Time.now
       questions.select { |q| q.level == level }
+end_time = Time.now
+
+puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "LevenN create find LevenN #{(end_time - beginning_time)}s to handle questions.select { |q| q.level == level }"
+puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     end
 
     def self.daily_quiz
