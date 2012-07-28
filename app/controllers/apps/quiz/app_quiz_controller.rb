@@ -62,12 +62,23 @@ puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       end
 
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
+
+beginning_time = Time.now
+      level1_questions = game.level1_questions_as_card
+      level2_questions = game.level2_questions_as_card
+      level3_questions = game.level3_questions_as_card
+end_time = Time.now
+
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load questions_as_card #{(end_time - beginning_time)}s to handle questions as card"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
 beginning_time = Time.now
       cap.
         show_data('game-title', {title: title}).
-        show_data('level1-questions', game.level1_questions_as_card).
-        show_data('level2-questions', game.level2_questions_as_card).
-        show_data('level3-questions', game.level3_questions_as_card).
+        show_data('level1-questions', level1_questions).
+        show_data('level2-questions', level2_questions).
+        show_data('level3-questions', level3_questions).
         show_data('invite-link', invite_link_data).
         fade_out('#ryLoadingScreen').
         fire2player(wid)
