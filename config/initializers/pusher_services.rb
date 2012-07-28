@@ -432,7 +432,7 @@ else
           #for hi events, the event type will specify the handler
           if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
 
-          PusherChannels::socket_logger.info " wid[#{wid}] event: #{action}"
+          # PusherChannels::socket_logger.info " wid[#{wid}] event: #{action}"
 
           action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
 
