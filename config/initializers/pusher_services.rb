@@ -171,7 +171,7 @@ class PusherChannels
     channel = @pusher_socket.channels[scoped_channel_name]
     raise "Not subscribed to #{scope}: #{scoped_channel_name}! Can not bind event handler or #{scoped_event_name}" if channel.nil?
 
-    channel.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
+    channel.bind(scoped_event_name) do |data|
       begin #safeguard the handler block
         # PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
         # PusherChannels::socket_logger.info "> #{data}"
@@ -435,7 +435,7 @@ else
           # PusherChannels::socket_logger.info " wid[#{wid}] event: #{action}"
 
           action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
-
+          puts "action: #{action}"
           target_controller = nil
 
           ctrlr = controllers[:display_controller] #see if display controller has a handler
