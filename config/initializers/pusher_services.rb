@@ -181,7 +181,7 @@ class PusherChannels
         end_time = Time.now
 
         puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        puts "Time elapsed #{(end_time - beginning_time)*1000}ms to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+        puts "Time elapsed #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
         puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"

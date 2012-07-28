@@ -21,15 +21,34 @@ class AppQuizController < RylyzAppController
 
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+beginning_time = Time.now
       cap = materialize_capsule
       wid = tokens['wid']
+end_time = Time.now
 
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load materialize capsule #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+beginning_time = Time.now
       game = AppQuizController.daily_game(visitor)
+end_time = Time.now
+
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load find dail_game #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
       if game.nil?
         cap.show_screen('splash').fire2player(wid)
         return
       end
+beginning_time = Time.now
       questions_left = game.unanswered_questions.count
+end_time = Time.now
+
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
       if 0 < questions_left
         title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
@@ -43,6 +62,7 @@ class AppQuizController < RylyzAppController
       end
 
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
+beginning_time = Time.now
       cap.
         show_data('game-title', {title: title}).
         show_data('level1-questions', game.level1_questions_as_card).
@@ -51,6 +71,11 @@ class AppQuizController < RylyzAppController
         show_data('invite-link', invite_link_data).
         fade_out('#ryLoadingScreen').
         fire2player(wid)
+end_time = Time.now
+
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "on_load fire capsule #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     end
 
     def self.on_select_question(visitor, tokens)
