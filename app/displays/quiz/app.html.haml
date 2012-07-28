@@ -97,7 +97,7 @@
     Rylyz.timer.register('hide-options', quizapp.tickHideOptionsTimer, 3500, false, quizapp.startHideOptionsTimer, quizapp.stopHideOptionsTimer);
 
     // back-to-game timer
-    Rylyz.timer.register('back-to-game-timer', quizapp.goBackToGame, 3500, false);
+    Rylyz.timer.register('back-to-game-timer', quizapp.goBackToGame, 12000, false);
 
 
     // scoreing timer
@@ -281,7 +281,7 @@
     %div{:class => '[[klass]]'}
       %h2#ryStatus
         [[status]]
-      #ryQuestionReflection
+      .ryQuestionReflection
         [[reflection]]
 
   %collection{:name=>"leaders", :item=>"leader", "data-defaults"=>"[{nickname:'mike', score:10},{nickname:'john', score:20}]"}
