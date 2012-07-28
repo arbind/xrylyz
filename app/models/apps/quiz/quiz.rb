@@ -162,12 +162,13 @@ puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     def leveln_questions(level)
 beginning_time = Time.now
-      questions.select { |q| q.level == level }
+      list = questions.select { |q| q.level == level }
 end_time = Time.now
 
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 puts "LevenN create find LevenN #{(end_time - beginning_time)}s to handle questions.select { |q| q.level == level }"
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    list
     end
 
     def self.daily_quiz
