@@ -52,9 +52,12 @@ result
     field :comment, :type => String, :default => ''
     field :player_nickname, :type => String, :default => nil
 
-    belongs_to :quiz
+    belongs_to :quiz, index: true
     has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
     # has_one :player
+
+    index({ key: 1 }, { unique: true, name: "key_index" })
+    index({ source_url: 1 }, { unique: false, name: "source_url_index" })
 
     def self.create_adapter(quiz, visitor)
       g = self.create

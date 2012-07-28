@@ -103,8 +103,8 @@ class QuizQuestion
     field :time_to_answer, :type => Integer, :default => -1
     field :score, :type => Integer, :default => -1
 
-    belongs_to :quiz_question, :class_name => "QuizQuestion"
-    belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
+    belongs_to :quiz_question, :class_name => "QuizQuestion", index: true
+    belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions, index: true
 
 
     scope :answered,    where(selected_answer: {'$gt' => -1})
