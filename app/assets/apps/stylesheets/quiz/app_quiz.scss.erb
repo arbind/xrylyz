@@ -41,7 +41,7 @@
     /* shared by all screens */
     #ryQuizGame {
       position: relative;
-      height: 600px;
+      xheight: 600px;
       font-family: helvetica, arial, sans-serif;
     }
     .ryHeader {
@@ -92,9 +92,9 @@
     .ryQuestion {
       position: relative;
       display: inline-block;
-      width: 100px;
-      height: 100px;
-      margin-bottom: 30px;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
       color: #000;
       background: white url(http://wygyt.rylyz.ws/assets/rylyz/olympic-icon.png) center center no-repeat;
       border: 1px solid #888;
@@ -351,6 +351,44 @@
       font-weight: bold;
     }
   }
+
+  #ryGameOver {
+    padding-bottom: 125px;
+    background: url(http://wygyt.rylyz.ws/assets/rylyz/olympic-logo.png) center bottom no-repeat;
+    h1 {
+      font-size: 48px;
+      color: #666;
+      margin-bottom: .3em;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: .3em;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: normal;
+      margin-bottom: .3em;
+    }
+    .ryInviteFriends {
+      margin-top: .8em;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .ryInviteUrl{
+      font-size: 18px;
+      font-weight: normal;  
+      margin: 12px 2px;
+      background-color: #EFEFEF;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+  }
+
 
 
 }

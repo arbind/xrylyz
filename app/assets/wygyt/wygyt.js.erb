@@ -86,7 +86,8 @@ Rylyz.Wygyt = {
     if (window.queryParams['ryPlay']){
       //+++ launch start app based on ryPlay
       //+++ lookup and use ryInvitedBy 
-      Rylyz.Wygyt.startWygyt(startApp);
+      setTimeout(function(){jQuery('#ryLaunch').addClass('ryPoweredOn')}, 500);
+      setTimeout(function(){Rylyz.Wygyt.startWygyt(startApp)}, 800);
     }
   },
   showAsButton: function() {
@@ -107,7 +108,6 @@ Rylyz.Wygyt = {
     ryLaunch.appendTo('body');
     jQuery('#ryLaunch').hover(function(ev){jQuery('#ryLaunch').addClass('ryWarmOn')}, function(){jQuery('#ryLaunch').removeClass('ryWarmOn')})
     jQuery("#ryLaunch").click(function(ev){ev.stopPropagation(); jQuery('#ryLaunch').addClass('ryPoweredOn'); Rylyz.Wygyt.startWygyt(startApp);});
-
     Rylyz.Wygyt.showForAll();
   },
   showForAll: function() {
@@ -224,7 +224,7 @@ Rylyz.Wygyt = {
       jQuery("#rylyz-wygyt").append(html);
     }
     else {
-      jQuery('#ryLaunch').removeClass('ryPoweredOn');
+      setTimeout(function(){jQuery('#ryLaunch').removeClass('ryPoweredOn')}, 500);
     }
   },
   startWygyt: function(data) {

@@ -4,6 +4,17 @@ class AppQuizController < RylyzAppController
     Quiz::Game.daily_game(visitor)
   end
 
+  def self.time_till_next_quiz
+    q = Quiz.daily_quiz_for_tomorrow
+    return nil if q.nil?
+    Util.distance_of_time_in_words_to_now(q.online_at.utc.beginning_of_day) # mongoid? have to reset to beginning of day?
+    # try test
+    # t = Time.strptime('07/30/2012', "%m/%d/%Y").utc.beginning_of_day
+    # q = Quiz.daily_quiz_for_today
+    # q.online_at = t
+    # q.online_at  -> does not store time at beginning of day!
+  end
+
   def self.on_load_data(visitor, tokens)
   end
 
@@ -19,22 +30,25 @@ class AppQuizController < RylyzAppController
         return
       end
       questions_left = game.unanswered_questions.count
+
       if 0 < questions_left
         title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
       else
         title = "Congratulations!" # add total score
       end
 
-      if  12 == questions_left
+      if  questions_left.zero? or 12 == questions_left
         cap.show_screen('game-over').fire2player(wid)
         return
       end
 
+      invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
       cap.
         show_data('game-title', {title: title}).
         show_data('level1-questions', game.level1_questions_as_card).
         show_data('level2-questions', game.level2_questions_as_card).
         show_data('level3-questions', game.level3_questions_as_card).
+        show_data('invite-link', invite_link_data).
         fade_out('#ryLoadingScreen').
         fire2player(wid)
     end
@@ -93,12 +107,10 @@ class AppQuizController < RylyzAppController
       select = settings['select']
       game_question = QuizQuestion::GameQuestion.find(select)
 
-      status_data = {status:'', klass:''}
-      reflection_data = {reflection:'', klass:''}
+      status_data = {status:'', klass:'', reflection:''}
       prompt_data = game_question.for_display_as_prompt
       cap.
         show_data('status', status_data).
-        show_data('reflection', reflection_data).
         show_data('prompt', prompt_data).
         call_javascript('startPhasePromptQuestion', {question_id: select}).
         fade_out('#ryLoadingScreen').
@@ -203,11 +215,21 @@ class AppQuizController < RylyzAppController
       
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
 
-      msg_data = {title:'my title', msg: 'my msg'}
+      title = 'Nice Job!'
+      msg  = "#{game.answered_correct.count} right out of #{game.questions.count}"
+      come_back = "Come back again tomorrow to play."
+      next_quiz = ""
+      time_till_next_quiz = AppQuizController.time_till_next_quiz
+      come_back = "Hope you had fun playing!"
+      unless time_till_next_quiz.nil?
+        come_back = "Play again tomorrow!"
+        next_quiz = "#{time_till_next_quiz} until a new daily quiz!"
+      end
+      msg_data = {title:title, msg: msg, come_back: come_back, next_quiz: next_quiz}
       cap.
-        show_data('game-summary', summary_data).
         show_data('closing-message', msg_data).
         show_data('invite-link', invite_link_data).
+        fade_out('#ryLoadingScreen').
         fire2player(wid)
     end
   end

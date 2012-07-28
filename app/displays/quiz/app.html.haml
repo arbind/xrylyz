@@ -149,7 +149,7 @@
       %form{:id=>"nickname-form", :class=>"nickname", :target=>"", :action => "", :method => "", :name=>"nickname"}
         %h3 Please enter your nickname:
         .field
-          %input.text{:type => "text", :name => "nickname", :placeholder => "i.e. tenderlovemaking"}
+          %input.text{:type => "text", :name => "nickname", :placeholder => "nickname"}
         .field
           %a.button.play{:onclick=>"Rylyz.sendForm(this)"} Start Playing
 
@@ -162,6 +162,8 @@
           %collection{:name=>"level1-questions"}
           %collection{:name=>"level2-questions"}
           %collection{:name=>"level3-questions"}
+        %object{:name=>"invite-link"}
+
 
   %screen{:name=>"question"}
     #ryQuizGame
@@ -193,27 +195,27 @@
         Coming soon!
 
   %screen{:name=>"game-over"}
-    #ryWelcome
+    #ryQuizGame
+      %object{:name=>"header"}
+    #ryGameOver
       %object{:name=>"closing-message"}  
-      %object{:name=>"game-summary"}
       %object{:name=>"invite-link"}
 
-  %object{:name=>"closing-message", "data-defaults"=>"{title:'come back soon', msg: 'try again tomorrow'}"}
+  %object{:name=>"closing-message", "data-defaults"=>"{title:'', msg: '', next_quiz: '', come_back:''}"}
     %h1
-      Great Job!
-    %h2
       [[title]]
-    %p
+    %h2
       [[msg]]
+    %h3
+      [[come_back]]
+    %h3
+      [[next_quiz]]
 
-
-  %object{:name=>"game-summary", "data-defaults"=>"{numAnsweredCorrect:0, numAnsweredWrong: 0, numTimedOut:0, numTotalQuestions:0}"}
-    %p
-      You got [[numAnsweredCorrect]] out of [[numTotalQuestions]] right!
-
-  %object{:name=>"invite-link", "data-defaults"=>"{inviteUrl:'here.com'}"}
-    %p
-      Invite your friends: [[inviteUrl]]
+  %object{:name=>"invite-link", "data-defaults"=>"{inviteUrl:''}"}
+    .ryInviteFriends
+      Ask your friends to play, send them this url:
+      .ryInviteUrl
+        %span.selectable{:onclick=>'jQuery(this).select();'} [[inviteUrl]]
 
   %object{:name=>"header", "data-defaults"=>"{score: ''}"}
     %object{:name=>"loading-screen"}
