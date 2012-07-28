@@ -172,10 +172,17 @@ class PusherChannels
     raise "Not subscribed to #{scope}: #{scoped_channel_name}! Can not bind event handler or #{scoped_event_name}" if channel.nil?
 
     channel.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
-    PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
-    PusherChannels::socket_logger.info "> #{data}"
       begin #safeguard the handler block
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
+        PusherChannels::socket_logger.info "> #{data}"
+        RubyProf.start
         handler.call( data )
+        result = RubyProf.stop
+        printer = RubyProf::FlatPrinter.new(result)
+        printer.print(STDOUT)
+        PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> End #{scoped_event_name} on #{scope}-#{channel_name}"
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "-----  Runtime Exception! #{e}"

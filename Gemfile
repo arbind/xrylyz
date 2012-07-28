@@ -9,6 +9,10 @@ group :production do
   gem 'thin'
 end
 
+# performance profiler
+gem 'ruby-prof'
+
+
 # utils
 gem 'json'
 gem 'haml'
