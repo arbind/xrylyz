@@ -22,6 +22,15 @@ class Quiz
   # validates_presence_of :category
   # validates_presence_of :name
 
+  def self.daily_quiz_for_today() daily_quiz_on(DateTime.now.utc) end
+  def self.daily_quiz_for_tomorrow() daily_quiz_on(DateTime.now.utc + 1.day) end
+
+  def self.daily_quiz_on(day) quizes_on(day).first end
+  def self.quizes_on(day)
+    on_day = day.beginning_of_day
+    on_next_day = on_day + 1.day
+    where(is_approved: true).and(online_at: {'$gte'=>on_day}).and(online_at: {'$lt' => on_next_day}).asc(:online_at)
+  end
 
   # adapter
   has_many :game, :class_name => 'Quiz::Game', :inverse_of => :quiz
@@ -29,28 +38,37 @@ class Quiz
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    field :key, :type => String
-    field :playing_referer, :type => String
+    field :key, :type => String, :default => nil;
+    field :source_url, :type => String, :default => nil
+    field :rating, :type => Integer, :default => -1
+    field :comment, :type => String, :default => ''
+    field :player_nickname, :type => String, :default => nil
 
     belongs_to :quiz
     has_many :questions, :class_name => "QuizQuestion::GameQuestion", :inverse_of => :game
     # has_one :player
 
-    def self.create_adapter(quiz, identifier)
+    def self.create_adapter(quiz, visitor)
       g = self.create
-      g.adapt(quiz, identifier)
+      g.adapt(quiz, visitor)
     end
 
-    def self.daily_game(visitor, identifier)
-      adapter = where(key: identifier).first
-      adapter ||= create_adapter(daily_quiz, identifier)
+    def self.daily_game(visitor)
+      adapter = where(key: visitor.wid).first
+      if adapter.nil?
+        q = daily_quiz
+        adapter = create_adapter(q, visitor) unless q.nil?
+      end
+      adapter
     end
 
     # precondition for adapt: instance has already been created
-    def adapt(quiz, identifier)
+    def adapt(quiz, visitor)
       self.quiz = quiz
       # self.player = player
-      self.key = identifier
+      self.key = visitor.wid
+      self.source_url = visitor.source_url
+      self.player_nickname = visitor.nickname
       quiz.questions.each do |q|
         gq = self.questions.create
         gq.adapt(q)
@@ -85,7 +103,7 @@ class Quiz
     end
 
     def self.daily_quiz
-      Quiz.all.first
+      Quiz.daily_quiz_for_today
     end
   end
 end

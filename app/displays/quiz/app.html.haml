@@ -140,6 +140,7 @@
     %screen{:name=>"question"}
     %screen{:name=>"leaderboard"}
     %screen{:name=>"submit-question"}
+    %screen{:name=>"splash"}
 
   %screen{:name=>"input-nickname"}
     #signin
@@ -180,6 +181,15 @@
   %screen{:name=>"submit-question"}
     .button-bar
       .button{"nav-onClick"=>"game"} Back
+
+  %screen{:name=>"splash"}
+    #ryWelcome
+      %h1
+        Welcome
+      %h2
+        Play games and use cool apps
+      %p
+        Coming soon!
 
   %object{:name=>"header", "data-defaults"=>"{score: 120}"}
     %object{:name=>"loading-screen"}

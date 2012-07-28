@@ -1,3 +1,22 @@
+Add logic to select daily quiz or comming soon splash screen if none
+Add conclusion page
+    this is your results
+    Congrats message based number right:
+    Add summary: number correct/ number wrong/ number unanswered
+    Next quiz is in x hours.
+    Come back to take the next quiz in x hours
+    Giver your friends the challenge play!
+
+Move spinner to middle
+Indicator for write / wrong / clock
+Remove Score
+Auto url open
+Change to 12 questions
+-- Release
+
+Promote to players
+
+
 o load signups
 
 broken:

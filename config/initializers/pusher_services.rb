@@ -80,7 +80,8 @@ class PusherChannels
   @pusher_socket = nil
   @pusher_listener_thread = nil
 
-  @@socket_logger = Logger.new('soceket_logger1')
+  # @@socket_logger = Logger.new('soceket_logger1')
+  @@socket_logger = Logger.new(STDOUT)
 
   def self.socket_logger
     @@socket_logger

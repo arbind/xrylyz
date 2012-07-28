@@ -1,7 +1,7 @@
 class AppQuizController < RylyzAppController
 
-  def self.daily_game(visitor, identifier)
-    Quiz::Game.daily_game(visitor, identifier)
+  def self.daily_game(visitor)
+    Quiz::Game.daily_game(visitor)
   end
 
   def self.on_load_data(visitor, tokens)
@@ -13,7 +13,11 @@ class AppQuizController < RylyzAppController
       cap = materialize_capsule
       wid = tokens['wid']
 
-      game = AppQuizController.daily_game(visitor, wid)
+      game = AppQuizController.daily_game(visitor)
+      if game.nil?
+        cap.show_screen('splash').fire2player(wid)
+        return
+      end
       questions_left = game.unanswered_questions.count
       if 0 < questions_left
         title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
