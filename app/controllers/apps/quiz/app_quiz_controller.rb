@@ -37,7 +37,7 @@ class AppQuizController < RylyzAppController
         title = "Congratulations!" # add total score
       end
 
-      if  questions_left.zero? or 12 == questions_left
+      if  questions_left.zero?
         cap.show_screen('game-over').fire2player(wid)
         return
       end
