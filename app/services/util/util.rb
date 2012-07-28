@@ -11,4 +11,19 @@ class Util
   # text utils
   def self.pluralize(*args) @@text_helper.pluralize(*args) end
 
+  def self.invite_url(host_url, game_name='auto')
+    url = Addressable::URI.parse(host_url)
+    return nil if url.nil?
+
+    url.query_values = {} if url.query_values.nil?
+    url.query_values = url.query_values.merge({ryPlay: game_name})
+    url
+  end
+
+  def self.invite_href(host_url, game_name='auto')
+    url = invite_url(host_url, game_name)
+    return '' if url.nil?
+    url.to_s
+  end
+
 end

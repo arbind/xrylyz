@@ -141,6 +141,7 @@
     %screen{:name=>"leaderboard"}
     %screen{:name=>"submit-question"}
     %screen{:name=>"splash"}
+    %screen{:name=>"game-over"}
 
   %screen{:name=>"input-nickname"}
     #signin
@@ -191,13 +192,36 @@
       %p
         Coming soon!
 
-  %object{:name=>"header", "data-defaults"=>"{score: 120}"}
+  %screen{:name=>"game-over"}
+    #ryWelcome
+      %object{:name=>"closing-message"}  
+      %object{:name=>"game-summary"}
+      %object{:name=>"invite-link"}
+
+  %object{:name=>"closing-message", "data-defaults"=>"{title:'come back soon', msg: 'try again tomorrow'}"}
+    %h1
+      Great Job!
+    %h2
+      [[title]]
+    %p
+      [[msg]]
+
+
+  %object{:name=>"game-summary", "data-defaults"=>"{numAnsweredCorrect:0, numAnsweredWrong: 0, numTimedOut:0, numTotalQuestions:0}"}
+    %p
+      You got [[numAnsweredCorrect]] out of [[numTotalQuestions]] right!
+
+  %object{:name=>"invite-link", "data-defaults"=>"{inviteUrl:'here.com'}"}
+    %p
+      Invite your friends: [[inviteUrl]]
+
+  %object{:name=>"header", "data-defaults"=>"{score: ''}"}
     %object{:name=>"loading-screen"}
     .ryHeader
       #ryAppName
         Olympic Trivia
       %p#ryScore
-        [[score]] points
+        [[score]] 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
   %object{:name=>"loading-screen"}

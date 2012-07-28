@@ -24,6 +24,12 @@ class AppQuizController < RylyzAppController
       else
         title = "Congratulations!" # add total score
       end
+
+      if  12 == questions_left
+        cap.show_screen('game-over').fire2player(wid)
+        return
+      end
+
       cap.
         show_data('game-title', {title: title}).
         show_data('level1-questions', game.level1_questions_as_card).
@@ -187,21 +193,41 @@ class AppQuizController < RylyzAppController
 
   end
 
+  class ScreenGameOverController < RylyzScreenController
+    def self.on_load_data(visitor, tokens)
+      cap = materialize_capsule
+      wid = tokens['wid']
+      game = AppQuizController.daily_game(visitor)
+
+      summary_data = game.summary
+      
+      invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
+
+      msg_data = {title:'my title', msg: 'my msg'}
+      cap.
+        show_data('game-summary', summary_data).
+        show_data('closing-message', msg_data).
+        show_data('invite-link', invite_link_data).
+        fire2player(wid)
+    end
+  end
+
   class ScreenLeaderboardController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
+      cap = materialize_capsule
       wid = tokens['wid']
-      game = AppQuizController.daily_game(visitor, wid)
+      game = AppQuizController.daily_game(visitor)
 
       key = game.leaderboard_key
       leaderboard = LeaderboardService.leading_players_for_game(key)
 
-      cap = materialize_message_capsule_for_all('load-data')
-      cap.build_events do |messages|
-        data = leaderboard
-        messages << {displayName:'leaders', data: data}
-      end
+      # cap = materialize_message_capsule_for_all('load-data')
+      # cap.build_events do |messages|
+      #   data = leaderboard
+      #   messages << {displayName:'leaders', data: data}
+      # end
 
-      cap.notify
+      # cap.notify
     end
   end
 
@@ -210,6 +236,7 @@ class AppQuizController < RylyzAppController
 
   class ScreenInputNicknameController < RylyzScreenController
     def self.on_data_input(visitor, tokens)
+      cap = materialize_capsule
       wid = tokens['wid']
 
       formMetadata = tokens['formData']

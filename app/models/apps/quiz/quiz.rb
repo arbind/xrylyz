@@ -80,6 +80,18 @@ class Quiz
     def answered_questions() questions.answered end
     def unanswered_questions() questions.unanswered end
 
+    def answered_correct
+      questions.select { |q| q.selected_answer == q.quiz_question.correct_answer }
+    end
+
+    def answered_wrong
+      questions.reject { |q| q.selected_answer==q.quiz_question.correct_answer or q.selected_answer.zero? }
+    end
+
+    def timed_out
+      questions.timed_out
+    end
+
     def level1_questions_as_card() leveln_questions(1).map(&:for_display_as_card); end
     def level2_questions_as_card() leveln_questions(2).map(&:for_display_as_card); end
     def level3_questions_as_card() leveln_questions(3).map(&:for_display_as_card); end
@@ -94,6 +106,15 @@ class Quiz
 
     def leaderboard_key
       LeaderboardService.key(quiz.id)
+    end
+
+    def summary
+      {
+        numTotalQuestions:  questions.count,
+        numAnsweredCorrect: answered_correct.count,
+        numAnsweredWrong:   answered_wrong.count,
+        numTimedOut:        timed_out.count,
+      }
     end
 
     private

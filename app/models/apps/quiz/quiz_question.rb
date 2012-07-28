@@ -107,9 +107,9 @@ class QuizQuestion
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions
 
 
-    scope :answered, where(selected_answer: {'$gt' => -1})
-    scope :unanswered, where(selected_answer: {'$lt' => 0})
-
+    scope :answered,    where(selected_answer: {'$gt' => -1})
+    scope :unanswered,  where(selected_answer: {'$lt' => 0})
+    scope :timed_out,   where(selected_answer: 0)
     # adapter usage pattern:
     # create then adapt
     # precondition for adapt: instance has already been created

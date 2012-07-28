@@ -83,6 +83,11 @@ Rylyz.Wygyt = {
   show: function() {
     if ('button' == Rylyz.Wygyt.displayFormat) Rylyz.Wygyt.showAsButton();
     else Rylyz.Wygyt.showAsFooter(); //assume ('footer' == Rylyz.Wygyt.displayFormat)
+    if (window.queryParams['ryPlay']){
+      //+++ launch start app based on ryPlay
+      //+++ lookup and use ryInvitedBy 
+      Rylyz.Wygyt.startWygyt(startApp);
+    }
   },
   showAsButton: function() {
     var html = Rylyz.Wygyt.buttonHTML("play", "Play",
