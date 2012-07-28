@@ -10,7 +10,7 @@ class RylyzScreenController
   end
 
   def self.app_uid
-    puts "App name: #{app_name}"
+    # puts "App name: #{app_name}"
     PusherChannels.instance.channel_name_for_app(app_name)
   end
 

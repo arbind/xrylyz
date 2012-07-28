@@ -146,10 +146,10 @@ class PusherChannels
   end
   def trigger_channel_event(scope, channel_name, event_name, tokens)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] #{event_name}"
+    # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] #{event_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
-    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent #{event_name} [#{scope}-#{channel_name}]"
-    PusherChannels::socket_logger.info "<--------------------------- #{tokens.to_json}]"
+    # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent #{event_name} [#{scope}-#{channel_name}]"
+    # PusherChannels::socket_logger.info "<--------------------------- #{tokens.to_json}]"
   end
 
   def on_public_channel_event(channel_name, event_name, &block)
@@ -173,16 +173,16 @@ class PusherChannels
 
     channel.bind(scoped_event_name) do |data| # +++ *** getting error on this line when channel_socket is nil for some reason?
       begin #safeguard the handler block
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
-        PusherChannels::socket_logger.info "> #{data}"
-        RubyProf.start
+        # PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
+        # PusherChannels::socket_logger.info "> #{data}"
+
+        beginning_time = Time.now
         handler.call( data )
-        result = RubyProf.stop
-        printer = RubyProf::FlatPrinter.new(result)
-        printer.print(STDOUT)
-        PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> End #{scoped_event_name} on #{scope}-#{channel_name}"
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        end_time = Time.now
+
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts "Time elapsed #{(end_time - beginning_time)*1000}ms to handle #{scoped_event_name} on #{scope}-#{channel_name}"
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "-----  Runtime Exception! #{e}"
@@ -224,9 +224,9 @@ class PusherChannels
   def stop_presence_channel(channel_name) stop_channel(:presence, channel_name) end
   def stop_channel(scope, channel_name)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] stopped-listening"
+    # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] stopped-listening"
     Pusher[scoped_channel_name].trigger("stopped-listening", {}.to_json )
-    PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent stopped-listening [#{scope}-#{channel_name}]"
+    # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent stopped-listening [#{scope}-#{channel_name}]"
 
     if @listener_thr
       socket = @listener_thr[:socket]
@@ -238,11 +238,11 @@ class PusherChannels
   def start_private_channel(channel_name, handlers=nil)  start_channel(:private, channel_name, handlers)  end
   def start_presence_channel(channel_name, handlers=nil) start_channel(:presence, channel_name, handlers) end
   def start_channel(scope, channel_name, handlers=nil)
-    puts "o--- start_channel with scope: #{scope} for channel_name: #{channel_name}"
+    # puts "o--- start_channel with scope: #{scope} for channel_name: #{channel_name}"
     channel = subscribe_to_channel(scope, channel_name)
     return if handlers.nil?
 
-    puts "o--- binding #{handlers.count} handlers to channel #{scope}:#{channel_name} for event:#{event_name}"
+    # puts "o--- binding #{handlers.count} handlers to channel #{scope}:#{channel_name} for event:#{event_name}"
     handlers.each do |event_name, handler_blk|
       bind_channel_event_handler(scope, channel_name, event_name, handler_blk)
     end
@@ -254,8 +254,8 @@ class PusherChannels
     channel = @pusher_socket.subscribe(scoped_channel_name, user_id)
     if (channel.subscribed)
       PusherChannels.instance.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
-      puts  "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
-      PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
+      # puts  "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
+      # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent started-listening [#{scope}-#{channel_name}]"
     end
     channel
   end
@@ -388,9 +388,9 @@ else
       visitor.wid = wid  #+++ *** sometimes getting nil for visitor here - did not auth properly?
       visitor.source_url = url
       VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#wid}] update-me"
+      # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#wid}] update-me"
       PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
-      PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent update-me [#{wid}] (on wid)]"
+      # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent update-me [#{wid}] (on wid)]"
 
       PusherChannels.instance.start_private_channel(wid)
       PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
@@ -418,9 +418,9 @@ else
           ev = {
             exception: e.to_s
           }
-          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
+          # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
+          # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         ensure
           tokens = tokens || {}
         end
@@ -458,9 +458,9 @@ else
             puts "tokens: #{tokens}"
             puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
             ev = { exception: msg }
-            puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
+            # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
             PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-            PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
+            # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
           end
         rescue RuntimeError => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -471,9 +471,9 @@ else
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           #+++TODO make this a convenience function: to trigger exceptions back
           ev = { exception: e.to_s }
-          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
+          # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
+          # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         rescue Exception => e
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           puts "WID Channel Exception invoking #{target_controller}.#{action}"
@@ -482,9 +482,9 @@ else
           puts e.backtrace
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           ev = { exception: e.to_s }
-          puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
+          # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
           PusherChannels.instance.trigger_private_channel_event(wid, 'server-side-exception', ev)
-          PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
+          # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         else
           # Do this if no exception was raised
         ensure

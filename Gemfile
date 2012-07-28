@@ -10,8 +10,7 @@ group :production do
 end
 
 # performance profiler
-gem 'ruby-prof'
-
+# gem 'ruby-prof'
 
 # utils
 gem 'json'

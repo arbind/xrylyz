@@ -3,9 +3,9 @@ class Wygyt::AuthController < ApplicationController
   protect_from_forgery :except => :pusher_auth
 
   def pusher_access
-    puts "+++++++++++++++++++++++++++++++++++++++++++++++"
-    puts params
-    puts "+++++++++++++++++++++++++++++++++++++++++++++++"
+    # puts "+++++++++++++++++++++++++++++++++++++++++++++++"
+    # puts params
+    # puts "+++++++++++++++++++++++++++++++++++++++++++++++"
     if pusher_should_deny_access?
       render :json => "bad_robot".to_json
     else
