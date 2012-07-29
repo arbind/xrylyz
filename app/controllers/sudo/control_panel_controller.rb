@@ -3,12 +3,27 @@ class Sudo::ControlPanelController < Sudo::SudoController
 
 
   def test
-    Speed.of do
-      visitor = Visitor.new
-      visitor.wid = "xyz-#{DateTime.now}"
-      game = Quiz::Game.daily_game(visitor)
-    end
-    
+  #   Speed.of do
+  #     visitor = RyVisitor.new
+  #     visitor.wid = "xyz-#{DateTime.now}"
+  #     game = Quiz::Game.daily_game(visitor)
+  #   end
+
+
+#  =========================
+	PusherChannels.instance.setup
+# ===================================
+
+
+
+
+
+
+
+
+
+
+
     render text:"done at #{DateTime.now}"
 
   end
