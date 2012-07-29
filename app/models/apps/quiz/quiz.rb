@@ -24,13 +24,9 @@ class Quiz
   # validates_presence_of :name
 
   def populate_cache
-beginning_time = Time.now
+  game = Util.duration_of('CACHE quiz.questions') do
     QuizQuestion.where(quiz: self).cache unless questions.nil?
-end_time = Time.now
-
-puts "QuizCACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "QuizCACHE Cache #{(end_time - beginning_time)*1000}ms to cache questions"
-puts "QuizCACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  end
 
   end
 
@@ -39,17 +35,14 @@ puts "QuizCACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   def self.daily_quiz_on(day) quizes_on(day).first end
   def self.quizes_on(day)
-beginning_time = Time.now
+
+  result = Util.duration_of("Quiz.quizes_on #{day}") do
     on_day = day.beginning_of_day
     on_next_day = on_day + 1.day
     result = where(is_approved: true).and(online_at: {'$gte'=>on_day}).and(online_at: {'$lt' => on_next_day}).asc(:online_at)
-end_time = Time.now
+  end
 
-puts "Quiz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "Quiz find dail_game #{(end_time - beginning_time)*1000}ms to handle find quizes_on"
-puts "Quiz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-result
+  result
   end
 
   # adapter
@@ -73,47 +66,30 @@ result
     index({ source_url: 1 }, { unique: false, name: "source_url_index" })
 
 
-  def populate_cache
-beginning_time = Time.now
-    QuizQuestion::GameQuestion.where(game: self).cache unless quiz.nil?
-end_time = Time.now
-
-puts "GAMECACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "GAMECACHE Cache #{(end_time - beginning_time)*1000}ms to cache questions"
-puts "GAMECACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-  end
+    def populate_cache
+    Util.duration_of('CACHE: Game game_questions') do
+      QuizQuestion::GameQuestion.where(game: self).cache unless quiz.nil?
+    end
+    end
 
 
     def self.create_adapter(quiz, visitor)
+    Util.duration_of("Game.create_adater(quiz) [#{quiz.name}: #{quiz.kind}: #{quiz.topic}]") do
       g = self.create
       g.adapt(quiz, visitor)
     end
+    end
 
     def self.daily_game(visitor)
-beginning_time = Time.now
+    adapter = Util.duration_of("GameQuestion.daily_game [#{visitor.wid}]") do
       adapter = where(key: visitor.wid).first
-end_time = Time.now
-
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "Game find dail_game #{(end_time - beginning_time)*1000}ms to handle find adapter"
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    end
 
       if adapter.nil?
-beginning_time = Time.now
         q = daily_quiz
-end_time = Time.now
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "Game find dail_game #{(end_time - beginning_time)*1000}ms to handle Game.daily_quiz"
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-beginning_time = Time.now
         adapter = create_adapter(q, visitor) unless q.nil?
-end_time = Time.now
-
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "Game find dail_game #{(end_time - beginning_time)*1000}ms to handle create_adapter"
-puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       end
+
       adapter
     end
 
@@ -127,22 +103,14 @@ puts "Game ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       self.source_url = visitor.source_url
       self.player_nickname = visitor.nickname
       quiz.questions.each do |q|
-beginning_time = Time.now
         gq = self.questions.create
-end_time = Time.now
 
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "adapt create GameQuestion #{(end_time - beginning_time)*1000}ms to handle gq = self.questions.create"
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        gq.adapt(q)
+        Util.duration_of('game_question.adapt(quiz_question)') do
+          gq.adapt(q)
+        end
+
       end
-beginning_time = Time.now
       save
-end_time = Time.now
-
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "adapt create Game #{(end_time - beginning_time)*1000}ms to handle save"
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       self
     end
 
@@ -191,30 +159,23 @@ puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private
 
     def leveln_questions(level)
-      # list = questions.select { |q| q.level == level }
 
-beginning_time = Time.now
+    list = Util.duration_of("game.questions.questions.where(level: #{level}") do
       list = questions.where(level:level)
-end_time = Time.now
+    end
 
-puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "LevenN create find LevenNWhere #{(end_time - beginning_time)*1000}ms to handle questions.where(level:level)"
-puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-    # list
-
-beginning_time = Time.now
+    list = Util.duration_of("game.questions.select level=#{level}") do
       list = questions.select { |q| q.level == level }
-end_time = Time.now
+    end
 
-puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "LevenN create find LevenNSelect #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }  "
-puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-list
+      list
     end
 
     def self.daily_quiz
+    Util.duration_of("Quiz.daily_quiz_for_today") do
       Quiz.daily_quiz_for_today
     end
+    end
+
   end
 end

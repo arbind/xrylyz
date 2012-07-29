@@ -21,59 +21,44 @@ class AppQuizController < RylyzAppController
 
   class ScreenGameController < RylyzScreenController
     def self.on_load_data(visitor, tokens)
-beginning_time = Time.now
       cap = materialize_capsule
       wid = tokens['wid']
-end_time = Time.now
 
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "on_load materialize capsule #{(end_time - beginning_time)}s to handle materialize capsule"
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-beginning_time = Time.now
+    game = Util.duration_of('AppQuizController.daily_game(visitor)') do
       game = AppQuizController.daily_game(visitor)
-end_time = Time.now
-
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "on_load find dail_game #{(end_time - beginning_time)}s to handle lookup daily quiz"
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    end
 
       if game.nil?
         cap.show_screen('splash').fire2player(wid)
         return
       end
-beginning_time = Time.now
+    questions_left = Util.duration_of('questions_left = game.unanswered_questions.count') do
       questions_left = game.unanswered_questions.count
-end_time = Time.now
-
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "on_load count unanswered questions #{(end_time - beginning_time)}s to handle count unanswered questions"
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
+    end
       if 0 < questions_left
         title = "You have #{Util.pluralize(questions_left, 'more question')} to go!"
       else
         title = "Congratulations!" # add total score
       end
 
-      if  questions_left.zero?
+      if questions_left.zero?
         cap.show_screen('game-over').fire2player(wid)
         return
       end
 
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
 
-beginning_time = Time.now
+    level1_questions = Util.duration_of('level1_questions = game.level1_questions_as_card') do
       level1_questions = game.level1_questions_as_card
+    end
+    level2_questions = Util.duration_of('level2_questions = game.level1_questions_as_card') do
       level2_questions = game.level2_questions_as_card
+    end
+    level3_questions = Util.duration_of('level3_questions = game.level1_questions_as_card') do
       level3_questions = game.level3_questions_as_card
-end_time = Time.now
+    end
 
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "on_load questions_as_card #{(end_time - beginning_time)}s to handle questions as card"
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-beginning_time = Time.now
+    Util.duration_of('game.on_load capsule fire2player') do
       cap.
         show_data('game-title', {title: title}).
         show_data('level1-questions', level1_questions).
@@ -82,11 +67,8 @@ beginning_time = Time.now
         show_data('invite-link', invite_link_data).
         fade_out('#ryLoadingScreen').
         fire2player(wid)
-end_time = Time.now
+    end
 
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "on_load fire capsule #{(end_time - beginning_time)}s to handle fire capsule to player"
-# puts "on_load ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     end
 
     def self.on_select_question(visitor, tokens)
@@ -95,11 +77,16 @@ end_time = Time.now
       select = tokens['select']
         cap.exception("Nothing Selected").fire2player(wid) and return if !select
 
+    game_question = Util.duration_of('QuizQuestion::GameQuestion.find(select)') do
       game_question = QuizQuestion::GameQuestion.find(select)
+    end
         cap.exception("Game Question Not Found").fire2player(wid) and return if !game_question
 
       settings = {select: game_question.id.to_s}
+    Util.duration_of('game.on_select capsule fire2player') do
       cap.show_screen('question', settings).fire2player(wid)
+    end
+
     end
 
   end

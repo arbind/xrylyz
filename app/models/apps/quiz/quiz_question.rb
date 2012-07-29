@@ -123,15 +123,11 @@ class QuizQuestion
     # create then adapt
     # precondition for adapt: instance has already been created
     def adapt(quiz_question)
-beginning_time = Time.now
+    Util.duration_of('game_question.adapt(quiz_question') do
       self.quiz_question = quiz_question
       self.level = quiz_question.level
       save
-end_time = Time.now
-
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "adapt GameQuestion adapt #{(end_time - beginning_time)*1000}ms to handle gq = GameQuestion.save"
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    end
       self
     end
 
@@ -152,8 +148,6 @@ puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
 
     def for_display_as_card
-
-beginning_time = Time.now
       answer_class = "" # default to not answered
       if (selected_answer.zero?)
         answer_class = "ryTimeOver"
@@ -162,19 +156,13 @@ beginning_time = Time.now
       elsif (0<selected_answer)
         answer_class = "ryWrong" 
       end
-      x = {
+      {
         id: _id,
         level: level,
         category: category,
         answered: selected_answer > -1,
         answer_class: answer_class
       }
-end_time = Time.now
-
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "adapt display:hash adapt #{(end_time - beginning_time)*1000}ms to display card"
-puts "adapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    x
     end
 
     def for_display_as_prompt

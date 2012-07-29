@@ -176,13 +176,10 @@ class PusherChannels
         # PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
         # PusherChannels::socket_logger.info "> #{data}"
 
-        beginning_time = Time.now
+        Util.duration_of("handling #{scoped_event_name} on channel #{scope}-#{channel_name}") do
         handler.call( data )
-        end_time = Time.now
+        end
 
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        puts "Time elapsed #{(end_time - beginning_time)}s to handle #{scoped_event_name} on #{scope}-#{channel_name}"
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "-----  Runtime Exception! #{e}"
