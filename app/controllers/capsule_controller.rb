@@ -1,5 +1,11 @@
 class CapsuleController < ApplicationController
 
+  def test
+    setup = PusherChannels.instance.setup
+    render text:"#{setup} - #{DateTime.now}"
+  end
+
+
   def wid_event
     wid = params[:wid]
     data = params[:data]

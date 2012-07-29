@@ -5,9 +5,10 @@ RylyzPlayer::Application.routes.draw do
 
 
   scope "/capsule", :controller => 'capsule' do
+    get 'setup',                :as => :capsule_setup
     get 'wid_event/:wid',       :as => :capsule_wid_event, :to => 'capsule#wid_event'
   end
-
+ 
   # Public Website Routes (no current_member required)
   scope :module => :website, :controller=> "home_page" do #The rylyz website
     get "index",                :as => :home_page

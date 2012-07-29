@@ -239,7 +239,7 @@ class PusherChannels
   end
 
   def setup
-    puts "Already Setup" and return unless self.pusher_socket.nil?
+    return :Already_Setup unless self.pusher_socket.nil?
 
     if not start_realtime_sockets
       puts "REALTIME SOCKETS ARE OFF"
@@ -308,6 +308,8 @@ class PusherChannels
         end
       end
     end
+
+    :Now_Setup
   end    
 
 
