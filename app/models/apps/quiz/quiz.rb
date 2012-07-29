@@ -24,8 +24,14 @@ class Quiz
   # validates_presence_of :name
 
   def populate_cache
+beginning_time = Time.now
     QuizQuestion.where(quiz: self).cache unless questions.nil?
-    # questions.cache unless questions.nil?
+end_time = Time.now
+
+puts "QuizCACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "QuizCACHE Cache #{(end_time - beginning_time)}s to cache questions"
+puts "QuizCACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
   end
 
   def self.daily_quiz_for_today() daily_quiz_on(DateTime.now.utc) end
@@ -68,8 +74,13 @@ result
 
 
   def populate_cache
-    # quiz.cache unless quiz.nil?
-    # questions.cache unless questions.nil?
+beginning_time = Time.now
+    QuizQuestion::GameQuestion.where(game: self).cache unless quiz.nil?
+end_time = Time.now
+
+puts "GAMECACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "GAMECACHE Cache #{(end_time - beginning_time)}s to cache questions"
+puts "GAMECACHE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   end
 
 
@@ -197,7 +208,7 @@ beginning_time = Time.now
 end_time = Time.now
 
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }"
+puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }  "
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 list
     end
