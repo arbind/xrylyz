@@ -1,6 +1,6 @@
 class CapsuleController < ApplicationController
 
-  def test
+  def setup
     setup = PusherChannels.instance.setup
     render text:"#{setup} - #{DateTime.now}"
   end
