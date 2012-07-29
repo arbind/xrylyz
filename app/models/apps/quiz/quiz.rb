@@ -164,9 +164,9 @@ class Quiz
       list = questions.where(level:level)
     end
 
-    list = Speed.of("game.questions.select level=#{level}") do
-      list = questions.select { |q| q.level == level }
-    end
+    # list = Speed.of("game.questions.select level=#{level}") do
+    #   list = questions.select { |q| q.level == level }
+    # end
 
       list
     end

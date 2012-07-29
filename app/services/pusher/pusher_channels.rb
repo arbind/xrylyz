@@ -170,7 +170,6 @@ class PusherChannels
 
   def subscribe_to_channel(scope, channel_name, user_id=RYLYZ_PLAYER_HOST)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    debugger
     channel = self.pusher_socket.subscribe(scoped_channel_name, user_id)
     if (channel.subscribed)
       self.trigger_channel_event(scope, channel_name, "started-listening", {}.to_json)
