@@ -103,6 +103,7 @@ class QuizQuestion
     field :selected_answer, :type => Integer, :default => -1
     field :time_to_answer, :type => Integer, :default => -1
     field :score, :type => Integer, :default => -1
+    field :level, :type => Integer, :default => -1
 
     belongs_to :quiz_question, :class_name => "QuizQuestion", index: true
     belongs_to :game, :class_name => "Quiz::Game", :inverse_of => :questions, index: true
@@ -111,6 +112,8 @@ class QuizQuestion
     scope :answered,    where(selected_answer: {'$gt' => -1})
     scope :unanswered,  where(selected_answer: {'$lt' => 0})
     scope :timed_out,   where(selected_answer: 0)
+
+    index({ level: 1 }, { unique: false, name: "level_index" })
 
     def populate_cache
       # game.cache unless game.nil?
@@ -122,6 +125,7 @@ class QuizQuestion
     def adapt(quiz_question)
 beginning_time = Time.now
       self.quiz_question = quiz_question
+      self.level = quiz_question.level
       save
 end_time = Time.now
 
@@ -140,7 +144,7 @@ end_time = Time.now
     def reflection() quiz_question.reflection end
     def category() quiz_question.category end
     def season() quiz_question.season end
-    def level() quiz_question.level end
+    # def level() quiz_question.level end   # this is now indexed
     def info() quiz_question.info end
 
     def leaderboard_key

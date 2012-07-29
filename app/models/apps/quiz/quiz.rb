@@ -204,11 +204,13 @@ end_time = Time.now
     # list
 
 beginning_time = Time.now
-      list = questions.select { |q| q.level == level }
+      # list = questions.select { |q| q.level == level }
+      list = questions.where(level:level)
 end_time = Time.now
 
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }  "
+# puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }  "
+puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.where(level:level)  "
 puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 list
     end
