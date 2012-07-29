@@ -3,6 +3,7 @@
   %ul
   - Thread.list.each do |t|
     %li
+      = "p#{t.priority}"
       = t.alive? ? "alive": "ended"
       = t[:name]
 

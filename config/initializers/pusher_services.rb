@@ -275,6 +275,7 @@ class PusherChannels
         @pusher_socket.connect unless @pusher_socket.nil? # thread goes to sleep and waits for channel events
         puts "!-------- Pusher Thread: NO LONGER LISTENING TO PUSHER CHANNEL EVENTS"
       end
+      @pusher_listener_thread.priority = 88
       puts "o-------- Pusher Thread: Listener Launched and Runing"
     rescue Exception => e
       puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
