@@ -239,7 +239,7 @@ class PusherChannels
   end
 
   def setup
-    puts "Alredy Setup" and return unless self.pusher_socket.nil?
+    puts "Already Setup" and return unless self.pusher_socket.nil?
 
     if not start_realtime_sockets
       puts "REALTIME SOCKETS ARE OFF"
@@ -267,107 +267,44 @@ class PusherChannels
           self.start_private_channel(wid)
           puts "Started private channel wid[#{wid}]"
           self.on_private_channel_event(wid, "event") do |data|
-            visitor = VISITOR_WIDS[wid]
-            tokens = nil
-            # t = Thread.new do  <<------
-              begin
-                # lookup the TargetController
-                tokens = JSON.parse(data)
-                # context = tokens["context"] || NoOBJECT
-                # appName = context["appName"] || "rylyz"
-                # appController = "App#{appName.underscore.camelize}Controller"
+#==========================
+            data_payload = Rack::Utils.escape(data)
+            #  to post with cookies (sesson) see: http://dzone.com/snippets/custom-httphttps-getpost
+            use_ssl = false
+            host = RYLYZ_PLAYER_HOST
+            path = "/capsule/wid_event/#{wid}?data=#{data_payload}"
+            port = use_ssl ? 443: 80
 
-                # screenName = context["screenName"] || nil
-                # screenController = "Screen#{screenName.underscore.camelize}Controller" unless screenName.nil?
+            url = "http://#{host}#{path}"
+            puts "----> #{url}"
+            contents = HTTParty.get(url)
+            puts "<---- #{contents}"
 
-                #lookup the method to call
-              rescue Exception => e
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                puts "WID Channel Exception for #{target_controller}.#{action}"
-                puts "Could not read data in to json"
-                puts "data: #{data}"
-                puts "Exception: #{e}"
-                puts e.backtrace
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                ev = {
-                  exception: e.to_s
-                }
-                # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-                self.trigger_private_channel_event(wid, 'server-side-exception', ev)
-                # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
-              ensure
-                tokens = tokens || {}
-              end
-              begin #safeguard the handler block
+            # http = Net::HTTP.new(host, port)
+            # http.use_ssl = use_ssl
 
-                controllers = RylyzAppController::lookup_controller(tokens)
-                action = tokens["action"] || "action_is_unknown"
+            # resp, response_data = http.get(path, nil) # GET request -> so the host can set his cookies
+            # cookie = resp.response['set-cookie'] # save cookie for wid
 
-                #for hi events, the event type will specify the handler
-                if ("hi" == action); action = tokens["type"] || "type_is_unknown" end
+            # check response_data for errors
 
-                # PusherChannels::socket_logger.info " wid[#{wid}] event: #{action}"
+            # POST request -> logging in  - http://dzone.com/snippets/custom-httphttps-getpost
+            # data = 'serwis=wp.pl&url=profil.html&tryLogin=1&countTest=1&logowaniessl=1&login_username=blah&login_password=blah'
+            # headers = {
+            # 'Cookie' => cookie,
+            # 'Referer' => 'http://profil.wp.pl/login.html',
+            # 'Content-Type' => 'application/x-www-form-urlencoded'
+            # }
+            # resp, data = http.post(path, data, headers)
+            # # Output on the screen -> we should get either a 302 redirect (after a successful login) or an error page
+            # puts 'Code = ' + resp.code
+            # puts 'Message = ' + resp.message
+            # resp.each {|key, val| puts key + ' = ' + val}
+            # puts data
 
-                action = "on_#{action.underscore}"  # e.g "on_load_data" or "on_start_new_game"
-                puts "action: #{action}"
-                target_controller = nil
-
-                ctrlr = controllers[:display_controller] #see if display controller has a handler
-                target_controller = ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-                ctrlr = controllers[:screen_controller]  #else see if scereen controllerhas a handler
-                target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-                ctrlr = controllers[:app_controller]  #else see if app controller has a handler
-                target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-                ctrlr = RylyzAppController   #finally see if rylyz controller has a handler
-                target_controller ||= ctrlr if (not ctrlr.nil?) and ctrlr.methods.include?(action.to_sym)
-
-                target_controller.send(action, visitor, tokens) unless target_controller.nil?
-                if target_controller.nil?
-                  msg = "#{action}: handler not found in the display, screen or the app controller! Design ERROR!"
-                  puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                  puts msg
-                  puts "tokens: #{tokens}"
-                  puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                  ev = { exception: msg }
-                  # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-                  self.trigger_private_channel_event(wid, 'server-side-exception', ev)
-                  # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
-                end
-              rescue RuntimeError => e
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"
-                puts "tokens: #{tokens}"
-                puts "Exception: #{e}"
-                puts e.backtrace
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                #+++TODO make this a convenience function: to trigger exceptions back
-                ev = { exception: e.to_s }
-                # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-                self.trigger_private_channel_event(wid, 'server-side-exception', ev)
-                # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
-              rescue Exception => e
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                puts "WID Channel Exception invoking #{target_controller}.#{action}"
-                puts "tokens: #{tokens}"
-                puts "Exception: #{e}"
-                puts e.backtrace
-                puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-                ev = { exception: e.to_s }
-                # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-                self.trigger_private_channel_event(wid, 'server-side-exception', ev)
-                # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
-              else
-                # Do this if no exception was raised
-              ensure
-                # Do this whether or not an exception was raised
-              end
-            # end    <---- Thread.new
-            #t.priority = 3
-
+# =========================
           end
+
         end
       end
     end
