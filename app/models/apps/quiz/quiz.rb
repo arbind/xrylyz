@@ -24,7 +24,7 @@ class Quiz
   # validates_presence_of :name
 
   def populate_cache
-  game = Util.duration_of('CACHE quiz.questions') do
+  game = Speed.of('CACHE quiz.questions') do
     QuizQuestion.where(quiz: self).cache unless questions.nil?
   end
 
@@ -36,7 +36,7 @@ class Quiz
   def self.daily_quiz_on(day) quizes_on(day).first end
   def self.quizes_on(day)
 
-  result = Util.duration_of("Quiz.quizes_on #{day}") do
+  result = Speed.of("Quiz.quizes_on #{day}") do
     on_day = day.beginning_of_day
     on_next_day = on_day + 1.day
     result = where(is_approved: true).and(online_at: {'$gte'=>on_day}).and(online_at: {'$lt' => on_next_day}).asc(:online_at)
@@ -67,21 +67,21 @@ class Quiz
 
 
     def populate_cache
-    Util.duration_of('CACHE: Game game_questions') do
+    Speed.of('CACHE: Game game_questions') do
       QuizQuestion::GameQuestion.where(game: self).cache unless quiz.nil?
     end
     end
 
 
     def self.create_adapter(quiz, visitor)
-    Util.duration_of("Game.create_adater(quiz) [#{quiz.name}: #{quiz.kind}: #{quiz.topic}]") do
+    Speed.of("Game.create_adater(quiz) [#{quiz.name}: #{quiz.kind}: #{quiz.topic}]") do
       g = self.create
       g.adapt(quiz, visitor)
     end
     end
 
     def self.daily_game(visitor)
-    adapter = Util.duration_of("GameQuestion.daily_game [#{visitor.wid}]") do
+    adapter = Speed.of("Game.daily_game [#{visitor.wid}]") do
       adapter = where(key: visitor.wid).first
     end
 
@@ -105,7 +105,7 @@ class Quiz
       quiz.questions.each do |q|
         gq = self.questions.create
 
-        Util.duration_of('game_question.adapt(quiz_question)') do
+        Speed.of('game.adapt(quiz)') do
           gq.adapt(q)
         end
 
@@ -160,11 +160,11 @@ class Quiz
 
     def leveln_questions(level)
 
-    list = Util.duration_of("game.questions.questions.where(level: #{level}") do
+    list = Speed.of("game.questions.where(level: #{level}") do
       list = questions.where(level:level)
     end
 
-    list = Util.duration_of("game.questions.select level=#{level}") do
+    list = Speed.of("game.questions.select level=#{level}") do
       list = questions.select { |q| q.level == level }
     end
 
@@ -172,7 +172,7 @@ class Quiz
     end
 
     def self.daily_quiz
-    Util.duration_of("Quiz.daily_quiz_for_today") do
+    Speed.of("Quiz.daily_quiz_for_today") do
       Quiz.daily_quiz_for_today
     end
     end

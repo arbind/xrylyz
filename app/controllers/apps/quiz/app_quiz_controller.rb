@@ -24,7 +24,7 @@ class AppQuizController < RylyzAppController
       cap = materialize_capsule
       wid = tokens['wid']
 
-    game = Util.duration_of('AppQuizController.daily_game(visitor)') do
+    game = Speed.of('AppQuizController.daily_game(visitor)') do
       game = AppQuizController.daily_game(visitor)
     end
 
@@ -32,7 +32,7 @@ class AppQuizController < RylyzAppController
         cap.show_screen('splash').fire2player(wid)
         return
       end
-    questions_left = Util.duration_of('questions_left = game.unanswered_questions.count') do
+    questions_left = Speed.of('questions_left = game.unanswered_questions.count') do
       questions_left = game.unanswered_questions.count
     end
       if 0 < questions_left
@@ -48,17 +48,17 @@ class AppQuizController < RylyzAppController
 
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
 
-    level1_questions = Util.duration_of('level1_questions = game.level1_questions_as_card') do
+    level1_questions = Speed.of('level1_questions = game.level1_questions_as_card') do
       level1_questions = game.level1_questions_as_card
     end
-    level2_questions = Util.duration_of('level2_questions = game.level1_questions_as_card') do
+    level2_questions = Speed.of('level2_questions = game.level1_questions_as_card') do
       level2_questions = game.level2_questions_as_card
     end
-    level3_questions = Util.duration_of('level3_questions = game.level1_questions_as_card') do
+    level3_questions = Speed.of('level3_questions = game.level1_questions_as_card') do
       level3_questions = game.level3_questions_as_card
     end
 
-    Util.duration_of('game.on_load capsule fire2player') do
+    Speed.of('game.on_load capsule fire2player') do
       cap.
         show_data('game-title', {title: title}).
         show_data('level1-questions', level1_questions).
@@ -77,13 +77,13 @@ class AppQuizController < RylyzAppController
       select = tokens['select']
         cap.exception("Nothing Selected").fire2player(wid) and return if !select
 
-    game_question = Util.duration_of('QuizQuestion::GameQuestion.find(select)') do
+    game_question = Speed.of('QuizQuestion::GameQuestion.find(select)') do
       game_question = QuizQuestion::GameQuestion.find(select)
     end
         cap.exception("Game Question Not Found").fire2player(wid) and return if !game_question
 
       settings = {select: game_question.id.to_s}
-    Util.duration_of('game.on_select capsule fire2player') do
+    Speed.of('game.on_select capsule fire2player') do
       cap.show_screen('question', settings).fire2player(wid)
     end
 

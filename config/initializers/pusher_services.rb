@@ -176,7 +176,7 @@ class PusherChannels
         # PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
         # PusherChannels::socket_logger.info "> #{data}"
 
-        Util.duration_of("handling #{scoped_event_name} on channel #{scope}-#{channel_name}") do
+        Speed.of("handling #{scoped_event_name} on channel #{scope}-#{channel_name}") do
         handler.call( data )
         end
 

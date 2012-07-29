@@ -123,7 +123,7 @@ class QuizQuestion
     # create then adapt
     # precondition for adapt: instance has already been created
     def adapt(quiz_question)
-    Util.duration_of('game_question.adapt(quiz_question') do
+    Speed.of('game_question.adapt(quiz_question)') do
       self.quiz_question = quiz_question
       self.level = quiz_question.level
       save

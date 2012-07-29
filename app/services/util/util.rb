@@ -5,18 +5,6 @@ class Util
 
   # rylyz utils
 
-  def self.duration_of(tag='timed', threshhold=0, &blk)
-    start_time = Time.now
-    result = yield
-    done_time = Time.now
-    duration = 1000 * (done_time - start_time) # converts seconds to ms
-    if duration > threshhold
-      duration = duration.to_i
-      puts "#~~~~~~~~~~~~~~~~[ #{duration}ms #{tag} ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    end
-    result
-  end
-
   def self.invite_href(host_url, game_name='auto')
     url = invite_url(host_url, game_name)
     return '' if url.nil?
