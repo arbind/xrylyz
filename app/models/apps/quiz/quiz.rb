@@ -1,6 +1,7 @@
 class Quiz
   include Mongoid::Document
   include Mongoid::Timestamps
+  after_initialize :populate_cache
 
   field :name, :type => String
   field :kind, :type => String
@@ -21,6 +22,11 @@ class Quiz
 
   # validates_presence_of :category
   # validates_presence_of :name
+
+  def populate_cache
+    QuizQuestion.where(quiz: self).cache unless questions.nil?
+    # questions.cache unless questions.nil?
+  end
 
   def self.daily_quiz_for_today() daily_quiz_on(DateTime.now.utc) end
   def self.daily_quiz_for_tomorrow() daily_quiz_on(DateTime.now.utc + 1.day) end
@@ -45,6 +51,7 @@ result
   class Game
     include Mongoid::Document
     include Mongoid::Timestamps
+    after_initialize :populate_cache
 
     field :key, :type => String, :default => nil;
     field :source_url, :type => String, :default => nil
@@ -58,6 +65,13 @@ result
 
     index({ key: 1 }, { unique: true, name: "key_index" })
     index({ source_url: 1 }, { unique: false, name: "source_url_index" })
+
+
+  def populate_cache
+    # quiz.cache unless quiz.nil?
+    # questions.cache unless questions.nil?
+  end
+
 
     def self.create_adapter(quiz, visitor)
       g = self.create
@@ -95,6 +109,8 @@ end_time = Time.now
     # precondition for adapt: instance has already been created
     def adapt(quiz, visitor)
       self.quiz = quiz
+      # QuizQuestion.where(quiz: quiz).cache
+
       # self.player = player
       self.key = visitor.wid
       self.source_url = visitor.source_url
@@ -164,14 +180,26 @@ end_time = Time.now
     private
 
     def leveln_questions(level)
+      # list = questions.select { |q| q.level == level }
+
+# beginning_time = Time.now
+#       list = questions.where(level:level)
+# end_time = Time.now
+
+# puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+# puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle questions.where(level:level)"
+# puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+    # list
+
 beginning_time = Time.now
       list = questions.select { |q| q.level == level }
 end_time = Time.now
 
-# puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# puts "LevenN create find LevenN #{(end_time - beginning_time)}s to handle questions.select { |q| q.level == level }"
-# puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    list
+puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+puts "LevenN create find LevenN #{(end_time - beginning_time)*1000}ms to handle list = questions.select { |q| q.level == level }"
+puts "LevenN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+list
     end
 
     def self.daily_quiz

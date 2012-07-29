@@ -98,6 +98,7 @@ class QuizQuestion
   class GameQuestion
     include Mongoid::Document
     include Mongoid::Timestamps
+    after_initialize :populate_cache
 
     field :selected_answer, :type => Integer, :default => -1
     field :time_to_answer, :type => Integer, :default => -1
@@ -110,6 +111,11 @@ class QuizQuestion
     scope :answered,    where(selected_answer: {'$gt' => -1})
     scope :unanswered,  where(selected_answer: {'$lt' => 0})
     scope :timed_out,   where(selected_answer: 0)
+
+    def populate_cache
+      # game.cache unless game.nil?
+    end
+
     # adapter usage pattern:
     # create then adapt
     # precondition for adapt: instance has already been created
