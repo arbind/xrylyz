@@ -1,6 +1,18 @@
 class Sudo::ControlPanelController < Sudo::SudoController
 	require 'csv'
 
+
+  def test
+    Speed.of do
+      visitor = Visitor.new
+      visitor.wid = "xyz-#{DateTime.now}"
+      game = Quiz::Game.daily_game(visitor)
+    end
+    
+    render text:"done at #{DateTime.now}"
+
+  end
+
 	def index
 		@members = RylyzMember.all
 		@presences = RylyzMemberPresence.all

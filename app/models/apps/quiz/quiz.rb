@@ -105,7 +105,7 @@ class Quiz
       quiz.questions.each do |q|
         gq = self.questions.create
 
-        Speed.of('game.adapt(quiz)') do
+        Speed.of('game_question.adapt(question)') do
           gq.adapt(q)
         end
 
