@@ -161,7 +161,7 @@ class Quiz
     def leveln_questions(level)
 
     list = Speed.of("game.questions.where(level: #{level}") do
-      list = questions.where(level:level)
+      list = questions.where(level:level).to_a # to_a to load the results from the mongo iterator
     end
 
     # list = Speed.of("game.questions.select level=#{level}") do
