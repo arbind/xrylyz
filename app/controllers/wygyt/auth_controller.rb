@@ -15,6 +15,7 @@ class Wygyt::AuthController < ApplicationController
       # if all is well, create a visitor session
       v = RyVisitor.new
       v.socket_id = socket_id
+      puts "!!!!!!!!! There is already a visitor for this socket[#{socket_id}]" if VISITOR_SOCKETS[socket_id]
       VISITOR_SOCKETS[socket_id]=v  #make this visitor available by socket_id
       render :json => pusher_response
     end

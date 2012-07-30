@@ -1,12 +1,42 @@
 class CapsuleController < ApplicationController
+  @@wygyts_connected = 0
 
   def setup
     setup = PusherChannels.instance.setup
     render text:"#{setup} - #{DateTime.now}"
   end
 
+  def on_wygyt_opened
+    @@wygyts_connected += 1
 
-  def wid_event
+    wid = params[:wid]
+    data = params[:data]
+    tokens = JSON.parse(data)
+    wid2 = tokens["wid"]
+    render json:{status:'error'} unless wid == wid2
+
+    url = tokens["url"]
+    socket_id = tokens["pusher_socket_id"]
+
+    visitor = VISITOR_SOCKETS[socket_id] # this visitor should have been stored when the wygyt authenticated
+    visitor.wid = wid
+    visitor.source_url = url
+    VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
+    # This is where to look up the visitor, and restore their session if previous socket connection was lost 
+    # also close any previous wid channels if this is a reconnect
+
+    session_data = {} # +++ TODO send a new session - or retrieve an existing one.
+
+    PusherChannels.instance.trigger_private_channel_event(wid, "start-session", session_data)
+    PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+    render nothing: true
+  end
+
+  def on_wygyt_closed
+    # +++ TODO !!!
+  end
+
+  def on_wygyt_event
     wid = params[:wid]
     data = params[:data]
     visitor = VISITOR_WIDS[wid]
@@ -15,7 +45,7 @@ class CapsuleController < ApplicationController
     puts "visitor: #{visitor}"
     puts "data: #{data}"
 
-    render json: {status: 'error', msg:'no visitor found'} if visitor.nil?
+    render json: {status: 'error', msg:'no visitor found'} and return if visitor.nil?
 
     tokens = nil
     # t = Thread.new do  <<------
@@ -86,7 +116,7 @@ class CapsuleController < ApplicationController
           # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
           render json: { status: 'error', msg:'Controler not found' } and return
         end
-        render json: { status: 'ok' }
+        render json: { status: 'ok' } and return
       rescue RuntimeError => e
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         puts "WID Channel Runtime Exception invoking #{target_controller}.#{action}"

@@ -11,14 +11,14 @@ class PusherChannels
 
   attr_reader :channels
 
-  # def initialize
-  #   @channels = {
-  #     :public => {},
-  #     :private => {},
-  #     :presence => {}
-  #   }
-  #   db_populate_channels
-  # end
+  def initialize
+    @channels = {
+      :public => {},
+      :private => {},
+      :presence => {}
+    }
+    db_populate_channels
+  end
 
   # !!!! begin
   # to isolate a listener to this server only: add a hostname to the channel name:
@@ -94,34 +94,34 @@ class PusherChannels
     raise "Not subscribed to #{scope}: #{scoped_channel_name}! Can not bind event handler or #{scoped_event_name}" if channel.nil?
 
     channel.bind(scoped_event_name) do |data|
-      begin #safeguard the handler block
-        # PusherChannels::socket_logger.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>> Got #{scoped_event_name} on #{scope}-#{channel_name}"
-        # PusherChannels::socket_logger.info "> #{data}"
+      # When a channel event comes in, schedule it to be run by a thread pool so this thread can continue listening
+      pusher_thread_pool.schedule(scoped_event_name, data) do |scoped_event_name, data|
+        begin #safeguard the handler block
+          Speed.of("handling #{scoped_event_name} on channel #{scope}-#{channel_name}") do
+          handler.call( data )
+          end
 
-        Speed.of("handling #{scoped_event_name} on channel #{scope}-#{channel_name}") do
-        handler.call( data )
+        rescue RuntimeError => e
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          puts "-----  Runtime Exception! #{e}"
+          puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+          puts "data: #{data}"
+          puts e.backtrace
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          #+++ Report exception back to widget (Trigger on scope channel_name)
+        rescue Exception => e
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          puts "----- Exception! #{e}"
+          puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
+          puts "data: #{data}"
+          puts e.backtrace
+          puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+          #+++ Report exception back to widget (Trigger on scope channel_name)
+        else
+          # Do this if no exception was raised
+        ensure
+          # Do this whether or not an exception was raised
         end
-
-      rescue RuntimeError => e
-        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        puts "-----  Runtime Exception! #{e}"
-        puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
-        puts "data: #{data}"
-        puts e.backtrace
-        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        #+++ Report exception back to widget (Trigger on scope channel_name)
-      rescue Exception => e
-        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        puts "----- Exception! #{e}"
-        puts "When handling event: #{scoped_event_name}  scope: #{scope}  channel: #{channel_name}"
-        puts "data: #{data}"
-        puts e.backtrace
-        puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-        #+++ Report exception back to widget (Trigger on scope channel_name)
-      else
-        # Do this if no exception was raised
-      ensure
-        # Do this whether or not an exception was raised
       end
     end
   end
@@ -184,13 +184,14 @@ class PusherChannels
 
     begin # create a new socket and subscribe to channel  
       self.pusher_listener_thread = Thread.new do
-        puts "o-------- Pusher Thread: Started"
+        puts "\no-------- Pusher Thread: Started"
 
         Thread.current[:name]           = "Pusher Listener"
         Thread.current[:start_time]     = Time.now()
         Thread.current[:pusher_socket]         = nil
         Thread.current[:pusher_connected]      = false
         Thread.current[:pusher_last_heartbeat] = nil
+        Thread.current[:num_jobs] = 0
 
         self.pusher_socket = open_socket(on_connection_established)
 
@@ -216,10 +217,14 @@ class PusherChannels
 
       socket.bind('pusher:connection_established') do |data|
         puts "o-------- Pusher Socket: connected"
+        Thread.current[:pusher_connected]      = true
+        Thread.current[:pusher_socket]         = socket
+        Thread.current[:messgae]      = "Opened Pusher Socket"
         on_connection_established.call(socket)
       end
 
       socket.bind('pusher:connection_failed') do |data|
+        Thread.current[:messgae]      = "Failed to open Pusher Socket"
         puts "!-------- Pusher Socket: FAILED TO CONNECT"
       end
 
@@ -238,86 +243,77 @@ class PusherChannels
     end
   end
 
+  def start_realtime_sockets
+    return true if ("on" == ENV['REAL_TIME'].to_s.downcase)
+    return false if ("off" == ENV['REAL_TIME'].to_s.downcase)
+    return false if ("assets" == ENV['RAILS_GROUPS'].to_s.downcase)
+    return false if defined?(Rails::Console)
+    return true
+  end
+
+  puts "CONSOLE IS RUNNING" if defined?(Rails::Console)
+  puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}" if ENV['RAILS_GROUPS']
+
   def setup
-    return :Already_Setup unless self.pusher_socket.nil?
+    return :Already_Setup if self.pusher_socket
 
-    if not start_realtime_sockets
+    unless start_realtime_sockets
       puts "REALTIME SOCKETS ARE OFF"
-    else
-      puts "REAL_TIME = ON"
-      self.connect do |socket|
-        puts "Starting private channel wygyt"
-        self.start_private_channel("wygyt")
-        puts "Started private channel wygyt"
-        self.on_private_channel_event("wygyt", "open-wid-channel") do |data|
-          tokens = JSON.parse(data)
-
-          wid = tokens["wid"]
-          url = tokens["url"]
-          socket_id = tokens["pusher_socket_id"]
-
-          visitor = VISITOR_SOCKETS[socket_id]
-          visitor.wid = wid  #+++ *** sometimes getting nil for visitor here - did not auth properly?
-          visitor.source_url = url
-          VISITOR_WIDS[wid] = visitor # make visitor available by wid lookup
-          # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#wid}] update-me"
-          self.trigger_private_channel_event(wid, "update-me", visitor.for_display)
-          # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent update-me [#{wid}] (on wid)]"
-          puts "Starting private channel wid[#{wid}]"
-          self.start_private_channel(wid)
-          puts "Started private channel wid[#{wid}]"
-          self.on_private_channel_event(wid, "event") do |data|
-#==========================
-            data_payload = Rack::Utils.escape(data)
-            #  to post with cookies (sesson) see: http://dzone.com/snippets/custom-httphttps-getpost
-            use_ssl = false
-            host = RYLYZ_PLAYER_HOST
-            path = "/capsule/wid_event/#{wid}?data=#{data_payload}"
-            port = use_ssl ? 443: 80
-
-            url = "http://#{host}#{path}"
-            puts "----> #{url}"
-            contents = HTTParty.get(url)
-            puts "<---- #{contents}"
-
-            # http = Net::HTTP.new(host, port)
-            # http.use_ssl = use_ssl
-
-            # resp, response_data = http.get(path, nil) # GET request -> so the host can set his cookies
-            # cookie = resp.response['set-cookie'] # save cookie for wid
-
-            # check response_data for errors
-
-            # POST request -> logging in  - http://dzone.com/snippets/custom-httphttps-getpost
-            # data = 'serwis=wp.pl&url=profil.html&tryLogin=1&countTest=1&logowaniessl=1&login_username=blah&login_password=blah'
-            # headers = {
-            # 'Cookie' => cookie,
-            # 'Referer' => 'http://profil.wp.pl/login.html',
-            # 'Content-Type' => 'application/x-www-form-urlencoded'
-            # }
-            # resp, data = http.post(path, data, headers)
-            # # Output on the screen -> we should get either a 302 redirect (after a successful login) or an error page
-            # puts 'Code = ' + resp.code
-            # puts 'Message = ' + resp.message
-            # resp.each {|key, val| puts key + ' = ' + val}
-            # puts data
-
-# =========================
-          end
-
-        end
-      end
+      return :REAL_TIME_is_OFF
     end
 
+    puts "=========================================="
+    puts "REAL_TIME = ON"
+    puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
+    puts "Pusher app_id => #{SECRETS[:PUSHER][:APP_ID]}"
+    puts "Pusher key    => #{SECRETS[:PUSHER][:KEY]}"
+    puts "=========================================="
+
+    self.pusher_thread_pool = ThreadPool.new()
+
+    use_ssl = false
+    host = RYLYZ_PLAYER_HOST
+    port = use_ssl ? 443: 80
+    on_wygyt_event_path = "/capsule/on_wygyt_event"
+    on_wygyt_opened_path = "/capsule/on_wygyt_opened"
+
+    # connect to pusher, on success:
+    #   setup a shared wygyt channel and its one event handler (that opens new wid channels unique to each client)
+    self.connect do |socket|
+      # Once we connect to pusher, start a channel to listen for new wygyt connections (shared by all clients)
+      ::PusherChannels.instance.start_private_channel("wygyt")
+      ::PusherChannels.instance.on_private_channel_event("wygyt", "open-wid-channel") do |data|
+        # New wygyt has connected and is requesting to open a wid channel (unique to each client) 
+        # First, start listening for events on the requested wid (wygyt id) channel
+        # Then send the new wygyt connection info to capsule controller to start a session for this wygyt
+        #   (once asession is started, the client can close its shared wygyt channel and start communicating on its private wid channel)
+        # the wid channel name is generate by the client and provided when requesting to open-wid-channel
+
+        # subscribe to this wygyt's wid channel 
+        tokens = JSON.parse(data)
+        wid = tokens["wid"]
+        ::PusherChannels.instance.start_private_channel(wid)
+        ::PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
+          # send wygyt events to the capsule controller
+          path =  "#{on_wygyt_event_path}/#{wid}"
+          Util.http_get(host, path, {data: data})
+        end
+
+        # start a session for this new wygyt
+        path =  "#{on_wygyt_opened_path}/#{wid}"
+        Util.http_get(host, path, {data: data})
+      end
+    end
     :Now_Setup
   end    
-
 
   def pusher_socket() PUSHER_SOCKET.first end
   def pusher_socket=(socket) PUSHER_SOCKET << socket if PUSHER_SOCKET.empty? end
   def pusher_listener_thread() PUSHER_LISTENER_THREAD.first end
   def pusher_listener_thread=(thread) PUSHER_LISTENER_THREAD << thread if PUSHER_LISTENER_THREAD.empty?  end
 
+  def pusher_thread_pool() PUSHER_THREAD_POOL.first end
+  def pusher_thread_pool=(pool) PUSHER_THREAD_POOL << pool if PUSHER_THREAD_POOL.empty? end
 
   private
   #+++ TODO synch channels and handlers in case server needs to be restarted
@@ -338,6 +334,5 @@ class PusherChannels
   def db_delete_event_handler
     #+++TODO delete from DB:in case of server crash
   end
-
 
 end

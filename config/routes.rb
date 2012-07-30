@@ -3,10 +3,11 @@ RylyzPlayer::Application.routes.draw do
 
   root :controller => :root, :action => :index
 
-
   scope "/capsule", :controller => 'capsule' do
-    get 'setup',                :as => :capsule_setup
-    get 'wid_event/:wid',       :as => :capsule_wid_event, :to => 'capsule#wid_event'
+    get 'setup',                    :as => :capsule_setup
+    get 'on_wygyt_event/:wid',      :as => :capsule_wid_event, :to => 'capsule#on_wygyt_event'
+    get 'on_wygyt_closed:wid',      :as => :capsule_wid_event, :to => 'capsule#on_wygyt_closed'
+    get 'on_wygyt_opened/:wid',     :as => :capsule_wid_event, :to => 'capsule#on_wygyt_opened'
   end
  
   # Public Website Routes (no current_member required)

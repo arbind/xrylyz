@@ -39,7 +39,10 @@ class QuizQuestion
   scope :rejected, where(is_rejected: true)
 
   scope :complete, where(is_complete: true)
-
+  scope :unused, where(quiz: nil)
+  scope :unused_level1, where(quiz: nil).and(level: 1)
+  scope :unused_level2, where(quiz: nil).and(level: 2)
+  scope :unused_level3, where(quiz: nil).and(level: 2)
 
   def before_save_check_if_complete
     complete = true

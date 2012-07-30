@@ -6,7 +6,7 @@
       = "p#{t.priority}"
       = t.alive? ? "alive": "ended"
       = t[:name]
-
+      = " - #{Util.pluralize(t[:num_jobs], 'jobs')}"
 
 .section
   Public

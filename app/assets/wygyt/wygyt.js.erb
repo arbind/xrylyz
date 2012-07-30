@@ -26,6 +26,7 @@ var uniqueCounter = 0;
 Rylyz.Wygyt = {
   //channelName: 'private-rylyz',
   started: false,
+  sessionStarted: false,
   wygytChannelName: 'wygyt',
   wygytChannel: null,
   clientChannel: null,
@@ -346,9 +347,10 @@ window.Rylyz.Pusher = {
     var onConnect, onFail;
 
     Rylyz.Wygyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "started-listening", function(data) {
+    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "start-session", function(data) {
       //+++ move into wygyt as a function
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wygyt.wygytChannelName);
+      Rylyz.Wygyt.sessionStarted = true;
       Rylyz.Wygyt.show();
     });
     Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {

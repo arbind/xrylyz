@@ -3,12 +3,21 @@ require 'httparty'
 require 'pusher-client'
 require 'active_support/inflector'
 
-
-  # @@pusher_socket = nil
-  # @@pusher_listener_thread = nil
+Rails.application.config.after_initialize do
+  Thread.new do
+    sleep 8 # to allow the webserver to load
+    capsule_setup_url = "http://#{RYLYZ_PLAYER_HOST}/capsule/setup"
+    puts        "........................................."
+    puts         capsule_setup_url
+    puts        "........................................."
+    contents   = HTTParty.get(capsule_setup_url)
+    puts         contents
+  end
+end
 
 PUSHER_SOCKET = [] # stores exactly one socket: since the constant itself can not be assigned, we put the socket into array
 PUSHER_LISTENER_THREAD = [] # stores exactly one thread 
+PUSHER_THREAD_POOL = []
 
 # +++TOOD detect when wid is no longer connected:
 # 1. scan threads and collect the ones time of last send or receive > 5 seconds
@@ -69,30 +78,19 @@ PusherClient.logger = Logger.new(STDOUT)
 #  "pusher:error" => {},  # "data": { "message": String, "code": Integer }
 # }
 
+
+
+
+
 # PusherChannels.instance.on_private_channel_event("wygyt", "start-wygyt") do |data|
 #    local_response = HTTParty.get('http://127.0.0.1:8000/pusher/test', :query => {:data => data})
 # end
 
 
-def start_realtime_sockets
-  return true if ("on" == ENV['REAL_TIME'].to_s.downcase)
-  return false if ("off" == ENV['REAL_TIME'].to_s.downcase)
-  return false if ("assets" == ENV['RAILS_GROUPS'].to_s.downcase)
-  return false if defined?(Rails::Console)
-  return true
-end
-
-unless start_realtime_sockets
-  puts "=========================================="
-  puts "Pusher using #{ENV['RAILS_ENV']} mode settings"
-  puts "Pusher app_id => #{SECRETS[:PUSHER][:APP_ID]}"
-  puts "Pusher key    => #{SECRETS[:PUSHER][:KEY]}"
-  puts "=========================================="
-end
 
 
-puts "CONSOLE IS RUNNING" if defined?(Rails::Console)
-puts "RAILS_GROUPS = #{ENV['RAILS_GROUPS']}" if ENV['RAILS_GROUPS']
+
+
 
 # PusherChannels.instance.start_private_channel("app-service")
 # PusherChannels.instance.on_private_channel_event("app-service", "start-app") do |data|

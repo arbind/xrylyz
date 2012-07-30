@@ -22,6 +22,36 @@ class Util
     url
   end
 
+  def self.http_get(host, path='/', params = {}, use_ssl = false, cookies = {}, port=nil)
+    # data_payload = Rack::Utils.escape(data)
+    href = href_for(host, path, params, use_ssl, port)
+    # +++ TODO cookies (session) see: http://dzone.com/snippets/custom-httphttps-getpost
+    HTTParty.get(href)
+  end
+
+
+  def self.href_for(host, path='/', params = {}, use_ssl = false, port=nil)
+    url = url_for(host, path, params, use_ssl, port)
+    return '' if url.nil?
+    url.to_s
+  end
+
+  def self.url_for(host, path='/', params = {}, use_ssl = false, port=nil)
+    url_port = port || (use_ssl ? 443: 80)
+    protocol = use_ssl ? 'https' : 'http'
+    if path.match(/^\//) # see if path starts with a /
+      url_path = path 
+    else
+      url_path = "/" << path 
+    end
+    href = "#{protocol}://#{host}:#{url_port}#{url_path}"
+    url = Addressable::URI.parse(href)
+    return nil if url.nil?
+    url.query_values ||= {}
+    url.query_values = url.query_values.merge(params) 
+    url
+  end
+
   # ActionView::Helpers::NumberHelper utils
   def self.percentage(decimal, precision=0) @@number_helper.number_to_percentage(100*decimal, precision: precision) end
   def self.number_to_currency(*args) @@number_helper.number_to_currency(*args) end
