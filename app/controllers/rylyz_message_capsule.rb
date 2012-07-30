@@ -197,7 +197,7 @@ class RylyzMessageCapsule
   end
   def fire2player(wid = @player_channel_id)
     # @events.each {|e| puts e }
-    PusherChannels.instance.trigger_private_channel_event(wid, 'fire-event', @events) unless @events.empty?
+    PusherChannels.instance.trigger_presence_channel_event(wid, 'fire-event', @events) unless @events.empty?
   end
 
   private 

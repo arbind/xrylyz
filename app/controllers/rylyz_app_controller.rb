@@ -101,7 +101,7 @@ class RylyzAppController
       scope:'private',
       wid:wid
     }
-   PusherChannels.instance.trigger_private_channel_event(wid, "launch-listener", event)
+   PusherChannels.instance.trigger_presence_channel_event(wid, "launch-listener", event)
 
 		# send a direct message(wid) to open this app
     ctx = {
@@ -111,7 +111,7 @@ class RylyzAppController
       context: ctx,
       display:app_display
     }
-    PusherChannels.instance.trigger_private_channel_event(wid, "open-app", event)
+    PusherChannels.instance.trigger_presence_channel_event(wid, "open-app", event)
   end
 
   def self.materialize_message_capsule_for_all (event_type)

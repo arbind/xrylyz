@@ -6,7 +6,7 @@ RylyzPlayer::Application.routes.draw do
   scope "/capsule", :controller => 'capsule' do
     get 'setup',                    :as => :capsule_setup
     get 'on_wygyt_event/:wid',      :as => :capsule_wid_event, :to => 'capsule#on_wygyt_event'
-    get 'on_wygyt_closed:wid',      :as => :capsule_wid_event, :to => 'capsule#on_wygyt_closed'
+    get 'on_wygyt_closed/:wid',     :as => :capsule_wid_event, :to => 'capsule#on_wygyt_closed'
     get 'on_wygyt_opened/:wid',     :as => :capsule_wid_event, :to => 'capsule#on_wygyt_opened'
   end
  

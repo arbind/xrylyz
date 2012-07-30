@@ -15,6 +15,8 @@ class CapsuleController < ApplicationController
     wid2 = tokens["wid"]
     render json:{status:'error'} unless wid == wid2
 
+    puts "OOooooooooooooooooooooooooooOOOPEN WyGYT #{wid}"
+
     url = tokens["url"]
     socket_id = tokens["pusher_socket_id"]
 
@@ -27,13 +29,17 @@ class CapsuleController < ApplicationController
 
     session_data = {} # +++ TODO send a new session - or retrieve an existing one.
 
-    PusherChannels.instance.trigger_private_channel_event(wid, "start-session", session_data)
-    PusherChannels.instance.trigger_private_channel_event(wid, "update-me", visitor.for_display)
+    PusherChannels.instance.trigger_presence_channel_event(wid, "start-session", session_data)
+    PusherChannels.instance.trigger_presence_channel_event(wid, "update-me", visitor.for_display)
     render nothing: true
   end
 
   def on_wygyt_closed
     # +++ TODO !!!
+    wid = params[:wid]
+    puts "CLOOOoooooooooooooooooooooOOSE WyGYT #{wid}"
+    #logout wid
+    render nothing: true
   end
 
   def on_wygyt_event
@@ -72,7 +78,7 @@ class CapsuleController < ApplicationController
           exception: e.to_s
         }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_private_channel_event(wid, 'server-side-exception', ev)
+        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
       ensure
         tokens = tokens || {}
@@ -112,7 +118,7 @@ class CapsuleController < ApplicationController
           puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
           ev = { exception: msg }
           # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-          self.trigger_private_channel_event(wid, 'server-side-exception', ev)
+          self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
           # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
           render json: { status: 'error', msg:'Controler not found' } and return
         end
@@ -127,7 +133,7 @@ class CapsuleController < ApplicationController
         #+++TODO make this a convenience function: to trigger exceptions back
         ev = { exception: e.to_s }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_private_channel_event(wid, 'server-side-exception', ev)
+        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         render json: { status: 'error', msg:'runtime exception' } and return
       rescue Exception => e
@@ -139,7 +145,7 @@ class CapsuleController < ApplicationController
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         ev = { exception: e.to_s }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_private_channel_event(wid, 'server-side-exception', ev)
+        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         render json: { status: 'error', msg:'exception' } and return
       else

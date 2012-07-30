@@ -346,14 +346,26 @@ window.Rylyz.Pusher = {
     if(DBUG) console.info("o-- Cycle: about to start wygyt");
     var onConnect, onFail;
 
-    Rylyz.Wygyt.clientChannel = Rylyz.Pusher.privateChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "start-session", function(data) {
+    Rylyz.Wygyt.clientChannel = Rylyz.Pusher.presenceChannel(Rylyz.wid(), Rylyz.Pusher.onWIDChannelConnected, Rylyz.Pusher.onWIDChannelFailed);
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "pusher:member_added", function(member) {
+      console.log("!!!! Member JOINED! " + Rylyz.wid());
+      Rylyz.Pusher.closePrivateChannel(Rylyz.Wygyt.wygytChannelName);
+      console.log(member.id, member.info);
+      console.log(member);
+    });
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "pusher:member_removed", function(member) {
+      // uh ooh - server went away?
+      console.log("!!!! Member removed!");
+      console.log(member.id, member.info);
+      console.log(member);
+    });
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "start-session", function(data) {
       //+++ move into wygyt as a function
       Rylyz.Pusher.closePrivateChannel(Rylyz.Wygyt.wygytChannelName);
       Rylyz.Wygyt.sessionStarted = true;
       Rylyz.Wygyt.show();
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "open-app", function(data) {
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "open-app", function(data) {
       var appName = Rylyz.lookupProperty("appName", data);
       var display = data["display"];
       //jQuery("#rylyz-wygyt").append(display);
@@ -363,18 +375,18 @@ window.Rylyz.Pusher = {
       Rylyz.showApp(appName);
     });
 
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "update-me", function(data) {
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "update-me", function(data) {
       Rylyz.me = data; ///+++ turn this into a Model Class that can be referenced by other displays
     });
 
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "fire-event", function(data) {
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "fire-event", function(data) {
         if (DBUG) console.log("firing event for wid channel: " + Rylyz.wid());
       Rylyz.event.fireEvent(data);
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "server-side-exception", function(data) {
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "server-side-exception", function(data) {
       Rylyz.Service.reportServerSideException(Rylyz.wid(), data)
     });
-    Rylyz.Pusher.onPrivateChannelEvent(Rylyz.wid(), "launch-listener", function(data) {
+    Rylyz.Pusher.onPresenceChannelEvent(Rylyz.wid(), "launch-listener", function(data) {
       scope = data["scope"];
       wid = data["wid"];
       launchChannel = data["launchChannel"];
@@ -473,7 +485,7 @@ window.Rylyz.Pusher = {
   triggerWIDEvent: function(action, tokens) {
     data = { action: action }
     jQuery.extend(data, tokens)
-    return Rylyz.Pusher.triggerPrivateChannelEvent(Rylyz.wid(), "event", data);
+    return Rylyz.Pusher.triggerPresenceChannelEvent(Rylyz.wid(), "event", data);
   },
   triggerPublicChannelEvent: function(channelName, eventName, tokens) {
     return Rylyz.Pusher.triggerChannelEvent("public", channelName, eventName, tokens);

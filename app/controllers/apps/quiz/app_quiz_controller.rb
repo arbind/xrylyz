@@ -311,7 +311,7 @@ end_time = Time.now
       ctx = {appName: app_name}
       event  = {queue:'screen', type:'navigation', nextScreen:'game', context:ctx }
       client_events << event
-      PusherChannels.instance.trigger_private_channel_event(wid, "fire-event", client_events)
+      PusherChannels.instance.trigger_presence_channel_event(wid, "fire-event", client_events)
     end
   end
 

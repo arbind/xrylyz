@@ -5,7 +5,7 @@ require 'active_support/inflector'
 
 Rails.application.config.after_initialize do
   Thread.new do
-    sleep 8 # to allow the webserver to load
+    sleep 2 # to allow the webserver to load
     capsule_setup_url = "http://#{RYLYZ_PLAYER_HOST}/capsule/setup"
     puts        "........................................."
     puts         capsule_setup_url
@@ -14,6 +14,8 @@ Rails.application.config.after_initialize do
     puts         contents
   end
 end
+
+
 
 PUSHER_SOCKET = [] # stores exactly one socket: since the constant itself can not be assigned, we put the socket into array
 PUSHER_LISTENER_THREAD = [] # stores exactly one thread 

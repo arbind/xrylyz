@@ -1,5 +1,6 @@
 class PusherChannels
   include Singleton
+  attr_accessor :config
 
   # @@socket_logger = Logger.new('soceket_logger1')
   @@socket_logger = Logger.new(STDOUT)
@@ -12,6 +13,13 @@ class PusherChannels
   attr_reader :channels
 
   def initialize
+    @config = {
+      wygyt_uses_ssl: false,
+      wygyt_host: RYLYZ_PLAYER_HOST,
+      on_wygyt_event_path: "/capsule/on_wygyt_event",
+      on_wygyt_opened_path: "/capsule/on_wygyt_opened",
+      on_wygyt_closed_path: "/capsule/on_wygyt_closed"     
+    }
     @channels = {
       :public => {},
       :private => {},
@@ -68,7 +76,7 @@ class PusherChannels
   end
   def trigger_channel_event(scope, channel_name, event_name, tokens)
     scoped_channel_name = materialize_channel_name(scope, channel_name)
-    # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] #{event_name}"
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{scoped_channel_name}] #{event_name}"
     Pusher[scoped_channel_name].trigger(event_name, tokens.to_json )
     # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent #{event_name} [#{scope}-#{channel_name}]"
     # PusherChannels::socket_logger.info "<--------------------------- #{tokens.to_json}]"
@@ -232,6 +240,16 @@ class PusherChannels
         Thread.current[:last_heartbeat] = Time.now()
       end
 
+     socket.bind('pusher_internal:member_removed') do |data|
+        puts "!!!!!------ Pusher Socket: MEMBER REMOVED #{data}"
+        cfg = ::PusherChannels.instance.config
+        path =  "#{cfg[:on_wygyt_closed_path]}/#{data['user_id']}"
+        Util.http_get(cfg[:wygyt_host], path, {data: data})
+      end
+     socket.bind('pusher_internal:member_added') do |data|
+        puts "!!!!!------ Pusher Socket: MEMBER REMOVED #{data}"
+      end
+
       socket
     rescue Exception => e
       puts "!!! Pusher Soceket: CAN NOT CREATE A NEW PUSHER SOCKET."
@@ -271,12 +289,6 @@ class PusherChannels
 
     self.pusher_thread_pool = ThreadPool.new()
 
-    use_ssl = false
-    host = RYLYZ_PLAYER_HOST
-    port = use_ssl ? 443: 80
-    on_wygyt_event_path = "/capsule/on_wygyt_event"
-    on_wygyt_opened_path = "/capsule/on_wygyt_opened"
-
     # connect to pusher, on success:
     #   setup a shared wygyt channel and its one event handler (that opens new wid channels unique to each client)
     self.connect do |socket|
@@ -292,16 +304,32 @@ class PusherChannels
         # subscribe to this wygyt's wid channel 
         tokens = JSON.parse(data)
         wid = tokens["wid"]
-        ::PusherChannels.instance.start_private_channel(wid)
-        ::PusherChannels.instance.on_private_channel_event(wid, "event") do |data|
+        ::PusherChannels.instance.start_presence_channel(wid)
+
+        # These presence events never seem to get called on the channel - only internally to the socket
+        # ::PusherChannels.instance.on_presence_channel_event(wid, "pusher_internal:member_added") do |data|
+        #   puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MEMBER ADDED"
+        # end
+
+        # ::PusherChannels.instance.on_presence_channel_event(wid, "pusher_internal:member_removed") do |data|
+        #   puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!! MEMBER REMOVED"
+        #   path =  "#{on_wygyt_closed_path}/#{wid}"
+        #   Util.http_get(host, path, {data: data})
+        # end
+
+        ::PusherChannels.instance.on_presence_channel_event(wid, "event") do |data|
           # send wygyt events to the capsule controller
-          path =  "#{on_wygyt_event_path}/#{wid}"
-          Util.http_get(host, path, {data: data})
+          cfg = ::PusherChannels.instance.config
+          path =  "#{cfg[:on_wygyt_event_path]}/#{wid}"
+          Util.http_get(cfg[:wygyt_host], path, {data: data})
         end
 
         # start a session for this new wygyt
-        path =  "#{on_wygyt_opened_path}/#{wid}"
-        Util.http_get(host, path, {data: data})
+        cfg = ::PusherChannels.instance.config
+        path =  "#{cfg[:on_wygyt_opened_path]}/#{wid}"
+        puts "path = #{path}"
+        puts "host= #{cfg[:host]}"
+        Util.http_get(cfg[:wygyt_host], path, {data: data})
       end
     end
     :Now_Setup
