@@ -1,7 +1,7 @@
 RylyzPlayer::Application.configure do
 
 RYLYZ_PLAYER_HOST = "rylyz-local.com"
-
+  SUDO_ACTION = :"play.well"
 
   # Settings specified here will take precedence over those in config/application.rb
 
