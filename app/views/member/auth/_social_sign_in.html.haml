@@ -1,20 +1,37 @@
-/ Social Network Providers
+/ OAuth Providers
 - social_sign_in_button_partial = 'member/auth/social_sign_in_button'
-= render partial: social_sign_in_button_partial, locals: { provider: "Facebook",   image: "facebook.jpeg" }
-= render partial: social_sign_in_button_partial, locals: { provider: "Twitter",    image: "twitter.jpeg" }
-= render partial: social_sign_in_button_partial, locals: { provider: "Google Plus",image: "googleplus.png", path: "google_oauth2" }
-/ = render partial: social_sign_in_button_partial, locals: { provider: "Meetup",     image: "meetup.png" }
-%br
-/ Email Providers
-= render partial: social_sign_in_button_partial, locals: { provider: "Gmail",      image: "gmail.jpeg",      path: "google_oauth2" }
-/ = render partial: social_sign_in_button_partial, locals: { provider: "Yahoo Mail", image: "yahoomail.jpeg",  path: "yahoo" }
-= render partial: social_sign_in_button_partial, locals: { provider: "Hotmail",    image: "hotmail.jpeg",    path: "windowslive" }
-%br
-/ Blog Host Providers
-= render partial: social_sign_in_button_partial, locals: { provider: "Tumblr",     image: "tumblr.jpeg" }
-= render partial: social_sign_in_button_partial, locals: { provider: "Blogger",    image: "blogger.jpeg",    path: "google_oauth2" }
-%br
-/ Other Service Providers
-= render partial: social_sign_in_button_partial, locals: { provider: "RunKeeper",  image: "runkeeper.jpeg"}
-= render partial: social_sign_in_button_partial, locals: { provider: "LinkedIn",   image: "linkedin.jpeg" }
-/ = render partial: social_sign_in_button_partial, locals: { provider: "Netflix",    image: "netflix.jpeg" }
+- if @activating_blogger
+  %h2.oauth
+    = @activating_blogger.email
+    %br
+    You will activate your account
+    - if @activating_blogger.plan
+      = "with #{Util.percentage(@activating_blogger.plan.base_profit_sharing_rate)} profit sharing."
+
+%h1.oauth
+  Sign in Securely With:
+.oauth_group.social_network_provider
+  %h2 Social Network Providers:
+  .center
+    = render partial: social_sign_in_button_partial, locals: { provider: "Facebook",   image: "facebook.jpeg" }
+    = render partial: social_sign_in_button_partial, locals: { provider: "Twitter",    image: "twitter.jpeg" }
+    = render partial: social_sign_in_button_partial, locals: { provider: "Google Plus",image: "googleplus.png", path: "google_oauth2" }
+    = render partial: social_sign_in_button_partial, locals: { provider: "LinkedIn",   image: "linkedin.jpeg" }
+    / = render partial: social_sign_in_button_partial, locals: { provider: "Meetup",     image: "meetup.png" }
+
+.oauth_group.email_provider
+  %h2 Email Providers:
+  = render partial: social_sign_in_button_partial, locals: { provider: "Gmail",      image: "gmail.jpeg",      path: "google_oauth2" }
+  / = render partial: social_sign_in_button_partial, locals: { provider: "Yahoo Mail", image: "yahoomail.jpeg",  path: "yahoo" }
+  = render partial: social_sign_in_button_partial, locals: { provider: "Hotmail",    image: "hotmail.jpeg",    path: "windowslive" }
+
+.oauth_group.blog_provider
+  %h2 Blog Providers:
+  = render partial: social_sign_in_button_partial, locals: { provider: "Tumblr",     image: "tumblr.jpeg" }
+  = render partial: social_sign_in_button_partial, locals: { provider: "Blogger",    image: "blogger.jpeg",    path: "google_oauth2" }
+.oauth_group.misc_provider
+  %h2 Web Service Providers:
+  = render partial: social_sign_in_button_partial, locals: { provider: "RunKeeper",  image: "runkeeper.jpeg"}
+  / = render partial: social_sign_in_button_partial, locals: { provider: "Netflix",    image: "netflix.jpeg" }
+%p 
+We use OAuth - so no need to create another username and password!

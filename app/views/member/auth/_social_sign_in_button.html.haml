@@ -2,7 +2,7 @@
 - auth_endpoint = "/auth/#{path}"
 - img_name = image || "#{provider.underscore}.jpeg"
 - img_url = "social/#{img_name}"
-.social.button.clear{:onclick => "document.location.href='#{auth_endpoint}'"}
+.social.button{:onclick => "document.location.href='#{auth_endpoint}'"}
   = image_tag(img_url)
   %label #{provider}
 

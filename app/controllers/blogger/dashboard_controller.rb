@@ -1,7 +1,7 @@
 class Blogger::DashboardController < ApplicationController
   include ApplicationHelper
   before_filter :redirect_wygyt_to_www # make sure redirect before filters run first
-
+  before_filter :turn_widget_off, :only =>[:activate_me, :login] # widget will takes over session if pointing to same domain (holodeck, rylyz-local, etc)
   before_filter :require_member_to_be_signed_in,  :except => [ :activate_me, :this_is_not_me, :login, :logout, :signup ]
   before_filter :require_blogger_to_be_signed_in, :except => [ :index, :activate_me, :this_is_not_me, :login, :logout, :signup ]
   before_filter :check_for_blogger, :only => [ :index ]
@@ -20,9 +20,7 @@ class Blogger::DashboardController < ApplicationController
     @activating_blogger = RylyzBlogger.where(:share_key => share_key).first
     redirect_to :home_page, :notice=>'Please signup to activate an account!' and return if @activating_blogger.nil?
 
-puts "o id #{@activating_blogger.id}"
     session[:activating_blogger_id] = @activating_blogger.id
-puts "o ss #{session[:activating_blogger_id]}"
     redirect_to :dashboard_login
   end
 

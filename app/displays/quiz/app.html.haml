@@ -133,7 +133,6 @@
     }
     Rylyz.timer.register('score-timer', quizapp.tickScoreTimer, quizapp.tickPeriod, true, quizapp.startScoreTimer, quizapp.stopScoreTimer);
 
-
   %app{:name=>"quiz", "data-defaults"=>"{title:'Quiz'}", :"start-screen" => "game"}
     %screen{:name=>"input-nickname"}
     %screen{:name=>"game"}
@@ -200,22 +199,21 @@
     #ryGameOver
       %object{:name=>"closing-message"}  
       %object{:name=>"invite-link"}
-
-  %object{:name=>"closing-message", "data-defaults"=>"{title:'', msg: '', next_quiz: '', come_back:''}"}
+  
+  %object{:name=>"closing-message", "data-defaults"=>"{title:'', msg: '', come_back: '', next_quiz: '', bookmark: '', play_on_your_own_blog: '', signup: '', signup_href: ''}"}
     %h1
-      [[title]]
-    %h2
       [[msg]]
+    %h3 [[next_quiz]]
+    .newline [[bookmark]]
+    .newline [[come_back]]
     %h3
-      [[come_back]]
-    %h3
-      [[next_quiz]]
+      %a.newline{href: '[[signup_href]]', target: '_blank'} [[signup]]
 
   %object{:name=>"invite-link", "data-defaults"=>"{inviteUrl:''}"}
     .ryInviteFriends
-      Ask your friends to play, send them this url:
+      Ask your friends to play by sending them this url:
       .ryInviteUrl
-        %span.selectable [[inviteUrl]]
+        %span.rySelectable [[inviteUrl]]
 
   %object{:name=>"header", "data-defaults"=>"{score: ''}"}
     %object{:name=>"loading-screen"}

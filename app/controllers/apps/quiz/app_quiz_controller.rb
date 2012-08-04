@@ -251,17 +251,17 @@ end_time = Time.now
       
       invite_link_data = {inviteUrl: Util.invite_href(game.source_url)}
 
-      title = 'Nice Job!'
-      msg  = "#{game.answered_correct.count} right out of #{game.questions.count}"
-      come_back = "Come back again tomorrow to play."
+      msg  = "You got #{game.answered_correct.count} right out of #{game.questions.count}!"
+      bookmark = "Bookmark this site to play again tomorrow!"
+      come_back = "A new set of trivia is released each day of the Olympics."
+      signup = "Signup to install this widget on your own site."
+      signup_href = "http://rylyz.com/play" # add lRef=xyz for the blogger that has this site key
       next_quiz = ""
       time_till_next_quiz = AppQuizController.time_till_next_quiz
-      come_back = "Hope you had fun playing!"
       unless time_till_next_quiz.nil?
-        come_back = "Play again tomorrow!"
-        next_quiz = "#{time_till_next_quiz} until a new daily quiz!"
+        next_quiz = "#{time_till_next_quiz.capitalize} more until a new daily quiz!"
       end
-      msg_data = {title:title, msg: msg, come_back: come_back, next_quiz: next_quiz}
+      msg_data = {msg: msg, come_back: come_back, next_quiz: next_quiz, bookmark: bookmark, signup:signup, signup_href: signup_href}
       cap.
         show_data('closing-message', msg_data).
         show_data('invite-link', invite_link_data).

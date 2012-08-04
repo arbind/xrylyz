@@ -6,6 +6,13 @@ module ApplicationHelper
 		# +++ check if card is valid and hasn't expired
 	end
 
+
+	# turn_widget_off
+	# make sure to point wygyt to a differnt domain than the website (i.e. holodeck.rylyz.com could use wygyt-holodeck.rylyz..com)
+	# the widget may take over the session if pointing to same domain (holodeck, rylyz-local, etc)
+	# also - you can use this method in any controller action to not show the widge for that page
+  def turn_widget_off() @do_not_show_widget = true end
+
 	# page flow navigation helpers
 	def clear_next_page_from_session() # clears next_page vars from the session
 		session.delete :next_page_on_success
@@ -42,8 +49,9 @@ module ApplicationHelper
   def wygyt_code_snippet (rylyz_blogger_site)
     code =<<EOL
 <script src='http://wygyt.rylyz.ws/assets/wygyt.js?sitekey=#{rylyz_blogger_site.site_key}' type='text/javascript'></script>
-<div id='rylyz-wygyt' style='font-size:1px;'><a href='http://www.rylyz.com'>play games online</a></div>
 EOL
+# add a backlink at some point to get some seo juice for ourselves
+# <div id='rylyz-wygyt' style='font-size:1px;'><a href='http://www.rylyz.com'>play games online</a></div>
   	code.html_safe
   end
 

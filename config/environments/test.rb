@@ -1,9 +1,10 @@
 RylyzPlayer::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-# !!! We don't really use a test environment
-RYLYZ_PLAYER_HOST = "rylyz-holodeck.ws"
-RYLYZ_PLAYER_HOST.downcase!
+  SUDO_ACTION = :"play.well"
+
+  # !!! We don't really use a test environment
+  RYLYZ_PLAYER_HOST = "rylyz-holodeck.ws"
 
 
 # holodeck is kind of like our test environment

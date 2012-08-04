@@ -25,7 +25,7 @@ class BloggerMailer
     blogger_recipients = bloggers.reject do |blogger|
       blogger.do_not_email or
       not blogger.member.nil? or
-      TimestampLogger.last_stamped_after?(LOG_SCOPE, blogger.id, ACTIVATION_TEMPLATE, 15.days.ago)
+      TimestampLogger.last_stamped_after?(LOG_SCOPE, blogger.id, ACTIVATION_TEMPLATE, 7.days.ago)
     end
   end
 

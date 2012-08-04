@@ -14,8 +14,9 @@
     = javascript_include_tag "website/base/index"
     = javascript_include_tag "website/home_page/application"
 
-    - wygyt_host = ['www.rylyz.com', 'rylyz.com'].include?(request.host) ?  'wygyt.rylyz.ws' : request.host
-    = javascript_include_tag "http://#{wygyt_host}/assets/wygyt.js?sitekey=#{RYLYZ_PLAYER_HOST}x88888888"
+    - unless @do_not_show_widget
+      - wygyt_host = ['www.rylyz.com', 'rylyz.com'].include?(request.host) ?  'wygyt.rylyz.ws' : request.host.gsub(/\.com/, '.ws')
+      = javascript_include_tag "http://#{wygyt_host}/assets/wygyt.js?sitekey=#{RYLYZ_PLAYER_HOST}x88888888"
 
     = csrf_meta_tags
   %body.rylyz.showcase

@@ -1,4 +1,5 @@
 class Member::AuthController < ApplicationController
+  protect_from_forgery :except => [:omniauth_login_callback, :omniauth_failure_callback]
   include ApplicationHelper
 
   def login
@@ -32,8 +33,9 @@ class Member::AuthController < ApplicationController
     next_page = nil
 
     # logout clears activating_blogger from the session, so capture it in case logout is invoked (or self.current_member = nil)
+# puts "auth session: #{session}"
     activating_blogger_id = session[:activating_blogger_id]
-# puts "auth 1 - activating_blogger_id"
+# puts "auth 1 - activating_blogger_id: #{activating_blogger_id}"
     begin
 # puts "auth 2"
       #lookup existing presence from this provider (repeat sign in), or create a new one (fist sign in)

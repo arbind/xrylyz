@@ -1,3 +1,4 @@
+@import 'mixins/mixin-user-select';
 @import 'mixins/mixin-transitions.css.scss';
 
 #ryApp {
@@ -220,7 +221,7 @@
     #ryTriviaResults {
       width: 361px;
       padding-left: 20px;
-      padding-top: 36px;
+      padding-top: 8px;
       text-align: center;
       float: left;
       #ryStatus {
@@ -358,7 +359,7 @@
     padding-bottom: 125px;
     background: url(http://wygyt.rylyz.ws/assets/rylyz/olympic-logo.png) center bottom no-repeat;
     h1 {
-      font-size: 48px;
+      font-size: 32px;
       color: #666;
       margin-bottom: .3em;
     }
@@ -378,7 +379,7 @@
       font-weight: bold;
     }
     .ryInviteUrl{
-      font-size: 18px;
+      font-size: 16px;
       font-weight: normal;  
       margin: 12px 2px;
       background-color: #EFEFEF;
@@ -391,6 +392,8 @@
     }
   }
 
-
+  .rySelectable {
+    @include selectableMixin;
+  }
 
 }
