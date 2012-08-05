@@ -4,7 +4,7 @@
   %h2.oauth
     = @activating_blogger.email
     %br
-    You will activate your account
+    You can now activate your account
     - if @activating_blogger.plan
       = "with #{Util.percentage(@activating_blogger.plan.base_profit_sharing_rate)} profit sharing."
 
