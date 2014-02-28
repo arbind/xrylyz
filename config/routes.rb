@@ -24,7 +24,7 @@ RylyzPlayer::Application.routes.draw do
   end
 
   scope :controller=> "ping" do
-    get "ping",
+    get "ping"
   end
 
 

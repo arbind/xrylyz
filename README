@@ -8,15 +8,18 @@ o An example blog page showing a usage of wyjyt.js [http://rylyz-holodeck.heroku
 
 == To start the service locally on port 80
 /etc/hosts: add the following 2 lines for development:
-127.0.0.1 rylyz-local.com
-127.0.0.1 wygyt.rylyz-local.ws
+127.0.0.1       rylyz-local.ws
+127.0.0.1       rylyz-local.com
+127.0.0.1       wygyt.rylyz-local.ws
 
 start the server with:
 --> $ sudo apachectl stop
---> $ rvmsudo RAILS_ENV=development rails s -p80
+--> $ rbenvsudo rails s -p80
 
 Running on port 80 leverages the benefits of websockets
-When running locally, turn off your default webserver, 
+When running locally, turn off your default webserver,
+(Make sure rails is running in development to engage asset pipeline)
+
 
 == Start MongoDB
 mongod run --config /usr/local/Cellar/mongodb/2.0.3-x86_64/mongod.conf
