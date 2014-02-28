@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 # technology stack
 gem 'rails', '3.1.1'
+gem 'sprockets', '~> 2.0.4'
+
 gem 'mongoid' #MongoDB
 gem 'bson_ext'
 gem 'newrelic_rpm' #Server Monitoring
@@ -63,7 +65,7 @@ end
 # gem 'capistrano'
 
 group :development do
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  # gem 'ruby-debug19', :require => 'ruby-debug'
   gem "guard-livereload"
   gem "yajl-ruby"
 end
