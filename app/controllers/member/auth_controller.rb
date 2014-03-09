@@ -94,10 +94,9 @@ class Member::AuthController < ApplicationController
       next_page = next_page_on_failure
       error = "Login failed. #{e.message}"
     ensure
-# puts "auth 15 - ensure"
-    session[:activating_blogger_id] = activating_blogger_id if activating_blogger_id # restore the session
-
+      session[:activating_blogger_id] = activating_blogger_id if activating_blogger_id # restore the session
       next_page ||= next_page_on_success
+# puts "auth 15 - ensure #{next_page} #{next_page_on_success}"
 
       if next_page.nil?
 # puts "auth 16 - redirect set to dashboard"
