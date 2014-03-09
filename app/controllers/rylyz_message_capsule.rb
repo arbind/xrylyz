@@ -9,7 +9,7 @@ class RylyzMessageCapsule
   # end
 
   def initialize
-    @events = []
+    clear_events
     @context = {}
     @app_channel_id = nil
     @game_channel_id = nil
@@ -18,6 +18,10 @@ class RylyzMessageCapsule
     @screen_name = nil
   end
 
+  def clear_events
+    @events = []
+    self
+  end
   # below accessors are not your typical attribute accessors!
   # equals =(arh) will set the property and return the property value
   # method call (arg) will set the property and reurn self to allow chaining
@@ -63,7 +67,9 @@ class RylyzMessageCapsule
 
   # add events to queue
   def show_data(display_name, data)
-    ctx = event_context({displayName: display_name})
+    local_context = {}
+    local_context[:displayName] = display_name if display_name
+    ctx = event_context(local_context)
     @events << materialize_event('app-server', 'load-data', ctx, data)
     self
   end
@@ -80,6 +86,13 @@ class RylyzMessageCapsule
     @events << materialize_event('app-server', 'update-me', ctx, visitor.for_display)
     self
   end
+  def add_item(display_name, data)
+    ctx = event_context({displayName: display_name})
+    @events << materialize_event('app-server', 'add-item', ctx, data)
+    self
+  end
+
+
   def start_timer(timer_name)
     ctx = event_context
     data = {name: timer_name}
@@ -191,13 +204,15 @@ class RylyzMessageCapsule
   # FIRE Event
   def fire2app(channel_id = @app_channel_id)
     PusherChannels.instance.trigger_private_channel_event(channel_id, 'fire-event', @events) unless @events.empty?
+    self
   end
   def fire2game(channel_id = @game_channel_id)
     PusherChannels.instance.trigger_private_channel_event(channel_id, 'fire-event', @events) unless @events.empty?
+    self
   end
   def fire2player(wid = @player_channel_id)
-    # @events.each {|e| puts e }
     PusherChannels.instance.trigger_presence_channel_event(wid, 'fire-event', @events) unless @events.empty?
+    self
   end
 
   private 
