@@ -78,7 +78,7 @@ class CapsuleController < ApplicationController
           exception: e.to_s
         }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
+        PusherChannels.instance.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
       ensure
         tokens = tokens || {}
@@ -133,7 +133,7 @@ class CapsuleController < ApplicationController
         #+++TODO make this a convenience function: to trigger exceptions back
         ev = { exception: e.to_s }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
+        PusherChannels.instance.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         render json: { status: 'error', msg:'runtime exception' } and return
       rescue Exception => e
@@ -145,7 +145,7 @@ class CapsuleController < ApplicationController
         puts ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
         ev = { exception: e.to_s }
         # puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sending[#{wid}] server-side-exception"
-        self.trigger_presence_channel_event(wid, 'server-side-exception', ev)
+        PusherChannels.instance.trigger_presence_channel_event(wid, 'server-side-exception', ev)
         # PusherChannels::socket_logger.info "<<<<<<<<<<<<<<<<<<<<<<<<<<<< Sent server-side-exception [#{wid} (on wid)]"
         render json: { status: 'error', msg:'exception' } and return
       else
