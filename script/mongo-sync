@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+puts "..........................................................."
+system 'heroku config'
+puts "..........................................................."
+puts
+print "enter source mongodb url: "
+source_db = gets.strip
+
+print "enter target database name on localhost: "
+target_db_name = gets.strip
+
+# source_db = "mongodb://heroku:6PftgH5ZNf-O25Oo1JrNJKXn_Bbk3n3bS5UgD6WsGZZqJIlFFJIq-tiMH17vR_bSut7mNfU4sAfFPIN6aZ_TWQ@flame.mongohq.com:27044/app5974514"
+tokens = source_db.split ":"
+username = tokens[1].gsub "//", ""
+password, host = tokens[2].split '@'
+port, db_name = tokens[3].split '/'
+
+dump_command    = "mongodump -h #{host}:#{port} -d #{db_name} -u #{username} -p #{password}"
+restore_command = "mongorestore -h localhost:27017 -d #{target_db_name} --drop dump/#{db_name}/"
+
+puts
+puts "This will dump database #{db_name} from #{host}:#{port} into the ./dump folder:"
+puts dump_command
+
+puts
+print "enter 'ok':"
+ok = gets.strip
+abort("Not ok!") unless ok.eql? "ok"
+
+puts
+puts "This will blow away local collections in #{target_db_name} and restore it from the ./dump/#{db_name}:"
+puts restore_command
+
+puts
+print "enter 'ok':"
+ok = gets.strip
+abort("Not ok!") unless ok.eql? "ok"
+
+exec "#{dump_command} ; #{restore_command}"
