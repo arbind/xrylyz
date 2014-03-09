@@ -124,4 +124,12 @@ class RylyzAppController
     RylyzMessageCapsule.new('app-server', event_type, ctx, wid)
   end
 
+  def self.materialize_capsule
+    ctx = {appName: app_name}
+    c = RylyzMessageCapsule.new
+    c.app_name app_name
+    c.context ctx
+    c.app_channel_id app_uid
+  end
+
 end
